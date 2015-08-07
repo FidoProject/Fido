@@ -18,7 +18,7 @@ double Neuron::getOutput(std::vector<double> inputs) {
 
 	// The last weight it the threshold
 	// http://www.ai-junkie.com/ann/evolved/nnt6.html
-	returnNumber += -1 + weights[weights.size()-1];
+	returnNumber += -1 * weights[weights.size()-1];
 
 	return returnNumber;
 }

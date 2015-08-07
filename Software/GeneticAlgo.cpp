@@ -50,5 +50,6 @@ net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 			weights[a] = net::Neuron::randomWeight();
 		}
 	}
+	
 }
 
