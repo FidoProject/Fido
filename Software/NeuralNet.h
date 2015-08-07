@@ -12,7 +12,7 @@ namespace net {
 		std::vector< std::vector<Neuron> > net;
 
 		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeruronsPerHiddenLayer_);
-		NeuralNet(NeuralNet otherNet);
+		NeuralNet(NeuralNet const &otherNet);
 		std::vector<double> getWeights();
 		void setWeights(std::vector<double> w);
 		std::vector<double> getOutput(std::vector<double> input);

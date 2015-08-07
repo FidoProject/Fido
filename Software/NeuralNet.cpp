@@ -24,7 +24,7 @@ NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int 
 }
 
 // Makes a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer
-NeuralNet::NeuralNet(NeuralNet otherNet) {
+NeuralNet::NeuralNet(NeuralNet const &otherNet) {
 	numInputs = otherNet.numInputs;
 	numOutputs = otherNet.numOutputs;
 	numHiddenLayers = otherNet.numHiddenLayers;
