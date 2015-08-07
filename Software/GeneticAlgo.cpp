@@ -34,9 +34,9 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
 		offspring1Weights.push_back(dadWeights[a]);
 		offspring2Weights.push_back(momWeights[a]);
 	}
-	offspring1 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeruronsPerHiddenLayer);
+	offspring1 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeuronsPerHiddenLayer);
 	offspring1.setWeights(offspring1Weights);
-	offspring2 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeruronsPerHiddenLayer);
+	offspring2 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeuronsPerHiddenLayer);
 	offspring2.setWeights(offspring2Weights);
 }
 
