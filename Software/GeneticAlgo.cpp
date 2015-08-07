@@ -1,11 +1,11 @@
 #include "GeneticAlgo.h"
 using namespace gen;
 
-GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, double(*getFitness_)(net::NeuralNet neuralNet)) {
+GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet> neuralNet)) {
 	populationSize = populationSize_;
 	mutationRate = mutationRate_;
 	crossoverRate = crossoverRate_;
-	getFitness = getFitness_;
+	getPopulationFitness = getPopulationFitness_;
 }
 
 // Uses the crossoverRate variable to determine if two neural networks are mixed 
@@ -36,7 +36,7 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
 	}
 	offspring1 = net::NeuralNet(mom);
 	offspring1.setWeights(offspring1Weights);
-	offspring2 = net::NeuralNet(mom);
+	offspring2 = net::NeuralNet(dad);
 	offspring2.setWeights(offspring2Weights);
 }
 
@@ -57,3 +57,15 @@ net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 	return mutatedNet;
 }
 
+// Returns the most fit neural network in a population that undergoes a specified number of generations.
+// modelNework is used to determine the number of inputs, outputs, hidden layers, and neurons per hidden layer for each netwokr in the population
+net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork) {
+	population.clear();
+	
+	for(int a = 0; a < populationSize; a++) population.push_back(net::NeuralNet(modelNetwork));
+
+	for(int a = 0; a < numberOfGenerations; a++) {
+		std::vector<double> fitnesses = getPopulationFitness(population);
+
+	}
+}
