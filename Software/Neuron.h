@@ -9,7 +9,7 @@ namespace net {
 
 	/* Class representing a single neuron.
 	 *
-	 * Includes inputs, outputs, weights, and a threshold.  A quality class by all accounts.
+	 * Each neuron takes a variable number of inputs each assigned a weight and returns one output. Each neuron has a threshold value. A quality class by all accounts.
 	 * */
 	class Neuron {
 	public:
