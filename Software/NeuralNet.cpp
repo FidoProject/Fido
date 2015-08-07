@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// Initializes a neural network
 NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeruronsPerHiddenLayer_) {
 	numInputs = numInputs_;
 	numOutputs = numOutputs_;
@@ -23,6 +24,8 @@ NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int 
 	net.push_back(outputLayer);
 }
 
+// Gets the weights of each neuron in the net and organizizes them into a vector starting from the first neuron in the first layer
+// to the last neuron in the output layer
 vector<double> NeuralNet::getWeights() {
 	vector<double> weights;
 	for(int a = 0; a < net.size(); a++) {
@@ -35,6 +38,9 @@ vector<double> NeuralNet::getWeights() {
 	return weights;
 }
 
+
+// Sets the weights of each neuron in the net according to a vector.
+// Starts at the first neuron in the first layer and goes to the last neruon in the last layer
 void NeuralNet::setWeights(vector<double> w) {
 	int counter = 0;
 	for(int a = 0; a < net.size(); a++) {
@@ -47,6 +53,8 @@ void NeuralNet::setWeights(vector<double> w) {
 	}
 }
 
+// The crowning function of this class.
+// Neural network produces an output based on an input vector of doubles
 vector<double> NeuralNet::getOutput(vector<double> input) {
 	vector<double> output;
 	for(int a = 0; a < net.size(); a++) {
@@ -59,6 +67,9 @@ vector<double> NeuralNet::getOutput(vector<double> input) {
 	return output;
 }
 
+
+// A s-shaped math function
+// Each neuron takes the summation of their inputs times their respective weights and plugs it into this fuction to get a gradient output  
 double NeuralNet::sigmoid(double activiation) {
 	return ( 1 / ( 1 + exp(-activiation / 1)));
 }
