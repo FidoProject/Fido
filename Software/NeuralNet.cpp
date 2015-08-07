@@ -23,8 +23,26 @@ NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int 
 	net.push_back(outputLayer);
 }
 
+// Makes a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer
 NeuralNet::NeuralNet(NeuralNet otherNet) {
-	
+	numInputs = otherNet.numInputs;
+	numOutputs = otherNet.numOutputs;
+	numHiddenLayers = otherNet.numHiddenLayers;
+	numNeruronsPerHiddenLayer = otherNet.numNeruronsPerHiddenLayer;
+
+	std::vector<Neuron> firstHiddenLayer;
+	for(int a = 0; a < numHiddenLayers; a++) firstHiddenLayer.push_back(Neuron(numInputs));
+	net.push_back(firstHiddenLayer);
+
+	for(int a = 0; a < numHiddenLayers; a++) {
+		std::vector<Neuron> hiddenLayer;
+		for(int b = 0; b < numNeruronsPerHiddenLayer; b++) hiddenLayer.push_back(Neuron(numHiddenLayers));
+		net.push_back(hiddenLayer);
+	}
+
+	std::vector<Neuron> outputLayer;
+	for(int a = 0; a < numOutputs; a++) outputLayer.push_back(Neuron(numNeruronsPerHiddenLayer));
+	net.push_back(outputLayer);
 }
 
 // Gets the weights of each neuron in the net and organizizes them into a vector starting from the first neuron in the first layer
