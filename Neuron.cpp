@@ -2,7 +2,7 @@
 
 Neuron::Neuron(int numInputs) {
 	// Each weight is a random double between 0 and 1
-	for(int a = 0; a < numInputs; a++) weights.push_back((rand() % RAND_MAX) / RAND_MAX);
+	for(int a = 0; a < numInputs; a++) weights.push_back(rand() / RAND_MAX);
 }
 
 Neuron::Neuron(std::vector<double> w) {
