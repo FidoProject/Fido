@@ -11,27 +11,32 @@ namespace net {
 	/* Class representing a neural network.
 	 *
 	 * A flexible implementation designed to be usable in a wide scope of projects.
-	 * */
+	 */
 	class NeuralNet {
 	public:
 		// A two dimensional network of neurons.
 		std::vector< std::vector<Neuron> > net;
 
-		// Initialize a network using the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.
+		/* Manually initialize a neural network.
+		 * 
+		 * Uses the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.
+		 */
 		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_);
 		
 		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
 		NeuralNet(NeuralNet const &otherNet);
 
-		/* Get the weights of each neuron in the net. O
+		/* Get the weights of each neuron in the net.
 		 * 
 		 * These values are organized into a vector starting from the first neuron
-		 * in the first layer to the last neuron in the output layer. */
+		 * in the first layer to the last neuron in the output layer. 
+		 */
 		std::vector<double> getWeights();
 		
 		/* Set the weights of each neuron in the net according to a vector.
 		 * 
-		 * Starts at the first neuron in the first layer and goes to the last neruon in the last layer. */
+		 * Starts at the first neuron in the first layer and goes to the last neruon in the last layer. 
+		 */
 		void setWeights(std::vector<double> w);
 
 		/* Produce an output based on an input vector of doubles.
