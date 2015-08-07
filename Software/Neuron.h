@@ -5,12 +5,18 @@
 #include <vector>
 #include <stdlib.h>
 
-class Neuron {
-public:
-	Neuron(int numInputs);
-	Neuron(std::vector<double> w);
-	double getOutput(std::vector<double> inputs);
-	std::vector<double> weights;
-};
+namespace net {
+	class Neuron {
+	public:
+		Neuron(int numInputs);
+		Neuron(std::vector<double> w);
+		double getOutput(std::vector<double> inputs);
+		std::vector<double> weights;
+
+		static double randomWeight() {
+			return rand() % RAND_MAX;
+		} 
+	};
+}
 
 #endif

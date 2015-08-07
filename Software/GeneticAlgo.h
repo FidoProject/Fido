@@ -9,20 +9,21 @@
 
 #include "NeuralNet.h"
 
+namespace gen {
+	class GeneticAlgo {
+	public:
+		std::map<double, net::NeuralNet > population;
 
-class GeneticAlgo {
-public:
-	std::map<double, NeuralNet > population;
-
-	GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, double(*getFitness_)(NeuralNet neuralNet));
-	void crossover(NeuralNet mom, NeuralNet dad, NeuralNet& offspring1, NeuralNet& offspring2);
-	NeuralNet mutate(NeuralNet net);
-	NeuralNet getBestNeuralNetwork(int numberOfGenerations);
-	double(*getFitness)(NeuralNet neuralNet);
+		GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, double(*getFitness_)(net::NeuralNet neuralNet));
+		void crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet& offspring1, net::NeuralNet& offspring2);
+		net::NeuralNet mutate(net::NeuralNet net);
+		net::NeuralNet getBestNeuralNetwork(int numberOfGenerations);
+		double(*getFitness)(net::NeuralNet neuralNet);
 
 
-	int populationSize, numberOfGenerations;
-	float mutationRate, crossoverRate;
-};
+		int populationSize, numberOfGenerations;
+		float mutationRate, crossoverRate;
+	};
+}
 
 #endif

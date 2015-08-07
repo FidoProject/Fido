@@ -1,7 +1,7 @@
 #include "GeneticAlgo.h"
+using namespace gen;
 
-// Initializer
-GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, double(*getFitness_)(NeuralNet neuralNet)) {
+GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, double(*getFitness_)(net::NeuralNet neuralNet)) {
 	populationSize = populationSize_;
 	mutationRate = mutationRate_;
 	crossoverRate = crossoverRate_;
@@ -11,7 +11,7 @@ GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossov
 // Uses the crossoverRate variable to determine if two neural networks are mixed 
 // and then and mixes their neurons weights to produce two new neural networks
 
-void GeneticAlgo::crossover(NeuralNet mom, NeuralNet dad, NeuralNet& offspring1, NeuralNet& offspring2) {
+void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet& offspring1, net::NeuralNet& offspring2) {
 	float crossoverDeterminer = rand() / RAND_MAX;
 	if(crossoverDeterminer > crossoverRate) {
 		offspring1 = mom;
@@ -34,20 +34,20 @@ void GeneticAlgo::crossover(NeuralNet mom, NeuralNet dad, NeuralNet& offspring1,
 		offspring1Weights.push_back(dadWeights[a]);
 		offspring2Weights.push_back(momWeights[a]);
 	}
-	offspring1 = NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeruronsPerHiddenLayer);
+	offspring1 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeruronsPerHiddenLayer);
 	offspring1.setWeights(offspring1Weights);
-	offspring2 = NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeruronsPerHiddenLayer);
+	offspring2 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeruronsPerHiddenLayer);
 	offspring2.setWeights(offspring2Weights);
 }
 
 // Uses the mutationRate variable to randomnly changes the weights of a neural network
-NeuralNet GeneticAlgo::mutate(NeuralNet net) {
+net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 	std::vector<double> weights = net.getWeights();
 
 	for(int a = 0; a < weights.size(); a++) {
 		float mutationDeterminer = rand() / RAND_MAX;
 		if(mutationDeterminer <= mutationRate) {
-			weights[a] = ;
+			weights[a] = net::Neuron::randomWeight();
 		}
 	}
 }
