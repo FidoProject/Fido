@@ -1,8 +1,6 @@
 # Fido
 
-***
-
-### Concepts
+### Black Box Model Specifications
 
 #### Inputs and Outputs
 
@@ -10,12 +8,12 @@
 |:------------:|:---------------:|
 | Full IMU     | Piezo Buzzer    |
 | Microphone   | RGB LED         |
-| zebra stripes| Pager Vibrator? |
+| Qi Charging  | Pager Vibrator  |
 
-### Negative and Positive Reinforcements
+#### Negative and Positive Reinforcements
 
-| Positive     | Negative      |
-|:------------:|:-------------:|
-|       ?      |       ?       |
-|       ?      |       ?       |
-|       ?      |       ?       |
+| Positive     | Negative     |
+|:------------:|:------------:|
+|       ?      |       ?      |
+|       ?      |       ?      |
+|       ?      |       ?      |
