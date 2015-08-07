@@ -34,9 +34,9 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
 		offspring1Weights.push_back(dadWeights[a]);
 		offspring2Weights.push_back(momWeights[a]);
 	}
-	offspring1 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeuronsPerHiddenLayer);
+	offspring1 = net::NeuralNet(mom);
 	offspring1.setWeights(offspring1Weights);
-	offspring2 = net::NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeuronsPerHiddenLayer);
+	offspring2 = net::NeuralNet(mom);
 	offspring2.setWeights(offspring2Weights);
 }
 
@@ -50,6 +50,10 @@ net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 			weights[a] = net::Neuron::randomWeight();
 		}
 	}
-	
+
+	net::NeuralNet mutatedNet = net::NeuralNet(net);
+	mutatedNet.setWeights(weights);
+
+	return mutatedNet;
 }
 

@@ -21,8 +21,7 @@ namespace net {
 		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_);
 		
 		// Makes a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
-		NeuralNet(NeuralNet otherNet);
-		
+		NeuralNet(NeuralNet const otherNet);
 
 		/* Gets the weights of each neuron in the net. O
 		 * 

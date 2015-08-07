@@ -23,7 +23,7 @@ NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int 
 	net.push_back(outputLayer);
 }
 
-NeuralNet::NeuralNet(NeuralNet otherNet) {
+NeuralNet::NeuralNet(NeuralNet const &otherNet) {
 	numInputs = otherNet.numInputs;
 	numOutputs = otherNet.numOutputs;
 	numHiddenLayers = otherNet.numHiddenLayers;
