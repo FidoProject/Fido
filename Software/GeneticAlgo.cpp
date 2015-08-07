@@ -1,11 +1,15 @@
 #include "GeneticAlgo.h"
 
+// Initializer
 GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, double(*getFitness_)(NeuralNet neuralNet)) {
 	populationSize = populationSize_;
 	mutationRate = mutationRate_;
 	crossoverRate = crossoverRate_;
 	getFitness = getFitness_;
 }
+
+// Uses the crossoverRate variable to determine if two neural networks are mixed 
+// and then and mixes their neurons weights to produce two new neural networks
 
 void GeneticAlgo::crossover(NeuralNet mom, NeuralNet dad, NeuralNet& offspring1, NeuralNet& offspring2) {
 	float crossoverDeterminer = rand() / RAND_MAX;
@@ -35,3 +39,16 @@ void GeneticAlgo::crossover(NeuralNet mom, NeuralNet dad, NeuralNet& offspring1,
 	offspring2 = NeuralNet(mom.numInputs, mom.numOutputs, mom.numHiddenLayers, mom.numNeruronsPerHiddenLayer);
 	offspring2.setWeights(offspring2Weights);
 }
+
+// Uses the mutationRate variable to randomnly changes the weights of a neural network
+NeuralNet GeneticAlgo::mutate(NeuralNet net) {
+	std::vector<double> weights = net.getWeights();
+
+	for(int a = 0; a < weights.size(); a++) {
+		float mutationDeterminer = rand() / RAND_MAX;
+		if(mutationDeterminer <= mutationRate) {
+			weights[a] = ;
+		}
+	}
+}
+
