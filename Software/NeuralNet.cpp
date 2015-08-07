@@ -2,7 +2,12 @@
 
 using namespace std;
 
-NeuralNet::NeuralNet(int numInputs, int numOutputs, int numHiddenLayers, int numNeruronsPerHiddenLayer) {
+NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeruronsPerHiddenLayer_) {
+	numInputs = numInputs_;
+	numOutputs = numOutputs_;
+	numHiddenLayers = numHiddenLayers_;
+	numNeruronsPerHiddenLayer = numNeruronsPerHiddenLayer_;
+
 	vector<Neuron> firstHiddenLayer;
 	for(int a = 0; a < numHiddenLayers; a++) firstHiddenLayer.push_back(Neuron(numInputs));
 	net.push_back(firstHiddenLayer);

@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
 #include <map>
 
 #include "NeuralNet.h"
@@ -10,17 +12,17 @@
 
 class GeneticAlgo {
 public:
-
-	GeneticAlgo(int populationSize_, int numberOfGenerations_, int mutationRate_, int crossoverRate_);
-
 	std::map<double, NeuralNet > population;
 
+	GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, double(*getFitness_)(NeuralNet neuralNet));
 	void crossover(NeuralNet mom, NeuralNet dad, NeuralNet& offspring1, NeuralNet& offspring2);
 	NeuralNet mutate(NeuralNet net);
-	NeuralNet getBest(int (*fitnessFunc)(NeuralNet net1));
+	NeuralNet getBestNeuralNetwork(int numberOfGenerations);
+	double(*getFitness)(NeuralNet neuralNet);
 
-private:
-	int populationSize, numberOfGenerations, mutationRate, crossoverRate;
+
+	int populationSize, numberOfGenerations;
+	float mutationRate, crossoverRate;
 };
 
 #endif
