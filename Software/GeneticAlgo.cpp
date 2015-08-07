@@ -57,15 +57,52 @@ net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 	return mutatedNet;
 }
 
+net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
+	double totalFitnessOfPopulation = 0;
+	for(int a = 0; a < fitnesses.size(); a++) totalFitnessOfPopulation += fitnesses[a];
+	double cutOff = (double)((rand() / RAND_MAX) * totalFitnessOfPopulation);
+	
+	double fitnessCounter = 0;
+	for (int a = 0; a < fitnesses.size(); a++) {
+		fitnessCounter += fitnesses[a];
+		if(fitnessCounter >= cutOff) {
+			return population[a];
+		}
+	}
+	std::cout << "There was an error in selecting a network based on fitness\n";
+	throw 1;
+}
+
 // Returns the most fit neural network in a population that undergoes a specified number of generations.
 // modelNework is used to determine the number of inputs, outputs, hidden layers, and neurons per hidden layer for each netwokr in the population
 net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork) {
 	population.clear();
+	fitnesses.clear();
 	
 	for(int a = 0; a < populationSize; a++) population.push_back(net::NeuralNet(modelNetwork));
+	fitnesses = getPopulationFitness(population);
 
 	for(int a = 0; a < numberOfGenerations; a++) {
-		std::vector<double> fitnesses = getPopulationFitness(population);
+		
+		std::vector<net::NeuralNet> nextGeneration;
+		while(nextGeneration.size() < populationSize) {
+			net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();
+			net::NeuralNet baby1, baby2;
 
+			crossover(parent1, parent2, baby1, baby2);
+			mutate(baby1);
+			mutate(baby2);
+
+			nextGeneration.push_back(baby1);
+			nextGeneration.push_back(baby2);
+		}
+		population = nextGeneration;
+		fitnesses = getPopulationFitness(population);
 	}
+
+	int mostFitIndex = 0;
+	for(int a = 1; a < fitnesses.size(); a++) {
+		if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
+	}
+	return population[mostFitIndex];
 }

@@ -5,6 +5,7 @@
 
 #include "Neuron.h"
 #include "NeuralNet.h"
+#include "GeneticAlgo.h"
 
 int main() {
 

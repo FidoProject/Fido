@@ -2,6 +2,13 @@
 
 using namespace net;
 
+NeuralNet::NeuralNet() {
+	numInputs = 0;
+	numOutputs = 0;
+	numHiddenLayers = 0;
+	numNeuronsPerHiddenLayer = 0;
+}
+
 NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_) {
 	numInputs = numInputs_;
 	numOutputs = numOutputs_;

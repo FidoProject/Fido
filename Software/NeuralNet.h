@@ -14,8 +14,9 @@ namespace net {
 	 * */
 	class NeuralNet {
 	public:
-		// A two dimensional network of neurons.
-		std::vector< std::vector<Neuron> > net;
+
+		// Makes an empty neural network
+		NeuralNet();
 
 		// Initialize a network using the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.
 		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_);
@@ -43,6 +44,9 @@ namespace net {
 		 *
 		 * Used by the network to get a gradient value for each neurons output. */
 		double sigmoid(double activiation);
+
+		// A two dimensional network of neurons.
+		std::vector< std::vector<Neuron> > net;
 
 		// Variables used to describe Neural Networks.
 		int numInputs, numOutputs, numHiddenLayers, numNeuronsPerHiddenLayer;

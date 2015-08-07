@@ -13,6 +13,8 @@ namespace gen {
 	class GeneticAlgo {
 	public:
 		std::vector<net::NeuralNet> population;
+		std::vector<double> fitnesses;
+
 		int populationSize, numberOfGenerations;
 		float mutationRate, crossoverRate;
 
@@ -20,6 +22,7 @@ namespace gen {
 		void crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet& offspring1, net::NeuralNet& offspring2);
 		net::NeuralNet mutate(net::NeuralNet net);
 		net::NeuralNet getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork);
+		net::NeuralNet selectNNBasedOnFitness();
 		std::vector<double>(*getPopulationFitness)(std::vector<net::NeuralNet> neuralNet);
 	};
 }
