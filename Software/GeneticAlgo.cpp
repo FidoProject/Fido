@@ -8,9 +8,6 @@ GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossov
 	getPopulationFitness = getPopulationFitness_;
 }
 
-// Uses the crossoverRate variable to determine if two neural networks are mixed 
-// and then and mixes their neurons weights to produce two new neural networks
-
 void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet& offspring1, net::NeuralNet& offspring2) {
 	float crossoverDeterminer = rand() / RAND_MAX;
 	if(crossoverDeterminer > crossoverRate) {
@@ -23,7 +20,7 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
 	std::vector<double> momWeights = mom.getWeights();
 	std::vector<double> dadWeights = dad.getWeights();
 
-	// Crossover index must be a minimum of 1 and a maxiumum of the second to last index of the weights
+	/// Crossover index must be a minimum of 1 and a maxiumum of the second to last index of the weights
 	int crossoverIndex = (rand() % momWeights.size() - 2) + 1;
 
 	for(int a = 0; a < crossoverIndex; a++) {
@@ -40,7 +37,6 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
 	offspring2.setWeights(offspring2Weights);
 }
 
-// Uses the mutationRate variable to randomnly changes the weights of a neural network
 net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 	std::vector<double> weights = net.getWeights();
 
@@ -56,6 +52,7 @@ net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 
 	return mutatedNet;
 }
+
 
 net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
 	double totalFitnessOfPopulation = 0;
@@ -73,8 +70,6 @@ net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
 	throw 1;
 }
 
-// Returns the most fit neural network in a population that undergoes a specified number of generations.
-// modelNework is used to determine the number of inputs, outputs, hidden layers, and neurons per hidden layer for each netwokr in the population
 net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork) {
 	population.clear();
 	fitnesses.clear();
