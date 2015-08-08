@@ -25,6 +25,8 @@ public:
 
 	// Print a tic tac toe board consisting of 0s (representing an empty space), 1s (representing the first player's piece), and 2 (representing a second player's piece)
 	static void printBoard(std::vector< std::vector<int> > board);
+    
+    // Pits two neural networks against each other in tic tac toe and shows each of their moves in the command line
 };
 
 #endif

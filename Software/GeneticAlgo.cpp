@@ -19,25 +19,18 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
 	std::vector<double> offspring2Weights;
 	std::vector<double> momWeights = mom.getWeights();
 	std::vector<double> dadWeights = dad.getWeights();
-    
-    std::cout << "MOM: " << momWeights.size() << "\n";
-    std::cout << "DAD: " << dadWeights.size() << "\n";
 
 	/// Crossover index must be a minimum of 1 and a maxiumum of the second to last index of the weights
 	int crossoverIndex = (rand() % (momWeights.size() - 2)) + 1;
 
 	for(int a = 0; a < crossoverIndex; a++) {
-        std::cout << "Aaa: " << a << "";
 		offspring1Weights.push_back(momWeights[a]);
 		offspring2Weights.push_back(dadWeights[a]);
 	}
 	for(int a = crossoverIndex; a < momWeights.size(); a++) {
-        std::cout << "Aaa: " << a << "";
 		offspring1Weights.push_back(dadWeights[a]);
 		offspring2Weights.push_back(momWeights[a]);
 	}
-    
-    std::cout << "SIZE: " << offspring1Weights.size() << "\n";
     
 	offspring1 = net::NeuralNet(mom);
 	offspring1.setWeights(offspring1Weights);
