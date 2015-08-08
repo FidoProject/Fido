@@ -9,10 +9,13 @@
 #include "TicTacToe.h"
 
 int main() {
+    srand(time(NULL));
 	std::cout << "Start\n";
 	TicTacToe game;
 	std::cout << "Finished intialization\n";
-	net::NeuralNet bestPlayer = game.getBestPlayer(2000);
+	net::NeuralNet bestPlayer = game.getBestPlayer(400);
 	std::cout << "Done\n";
-    net::NeuralNet secondBestPlayer = game.getBestPlayer(1000);
+    net::NeuralNet secondBestPlayer = game.getBestPlayer(200);
+    TicTacToe::playerVisualGame(bestPlayer, secondBestPlayer);
+    std::cout << "DONE\n";
 }

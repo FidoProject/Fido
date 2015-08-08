@@ -27,6 +27,7 @@ public:
 	static void printBoard(std::vector< std::vector<int> > board);
     
     // Pits two neural networks against each other in tic tac toe and shows each of their moves in the command line
+    static void playerVisualGame(net::NeuralNet player1, net::NeuralNet player2);
 };
 
 #endif

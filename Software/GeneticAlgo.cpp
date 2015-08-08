@@ -86,7 +86,7 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
 	fitnesses = getPopulationFitness(population);
 
 	for(int a = 0; a < numberOfGenerations; a++) {
-		
+		std::cout << "Generation: " << a << "\n";
 		std::vector<net::NeuralNet> nextGeneration;
 		while(nextGeneration.size() < populationSize) {
 			net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();

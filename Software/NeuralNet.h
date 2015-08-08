@@ -60,7 +60,9 @@ namespace net {
 
 		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
 		static double integer(double initialOutput) {
-			return (double)((int)initialOutput);
+            if(initialOutput > 1) return 2;
+            else if(initialOutput > 0) return 1;
+            else return 0;
 		}
 
 		// Takes the initial output of a neuron and uses an activation value of 0 to filter the output
