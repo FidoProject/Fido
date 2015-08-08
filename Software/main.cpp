@@ -8,5 +8,5 @@
 #include "GeneticAlgo.h"
 
 int main() {
-
+	
 }
