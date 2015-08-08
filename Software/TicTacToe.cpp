@@ -1,6 +1,6 @@
 #include "TicTacToe.h"
 
-net::NeuralNet TicTacToe::getBestProgramNetwork(int numberOfIterations) {
+net::NeuralNet TicTacToe::getBestPlayer(int numberOfIterations) {
 
 }
 
@@ -32,7 +32,8 @@ bool TicTacToe::doesFirstPlayerWin(net::NeuralNet player1, net::NeuralNet player
 	}
 
 	while(hasGameEnded(board) == false) {
-		/// do stuff
+		/// do stuff adf;ljas;lkfj;alskjdf;laksjdf;lkasjdflkjas;fdlk
+		
 	}
 }
 
@@ -48,7 +49,7 @@ bool TicTacToe::hasGameEnded(std::vector< std::vector<int> > board) {
 		for(int b = 1; b < board[a].size(); b++) {
 			if(intialValue != board[a][b]) isRowOneValue = false;
 		}
-		if(isRowOneValue == true) return true
+		if(isRowOneValue == true) return true;
 	}
 	
 	/// Check if someone fille up a column
@@ -58,7 +59,7 @@ bool TicTacToe::hasGameEnded(std::vector< std::vector<int> > board) {
 		for(int b = 1; b < board.size(); b++) {
 			if(intialValue != board[b][a]) isColumOneValue = false;
 		}
-		if(isColumOneValue == true) return true
+		if(isColumOneValue == true) return true;
 	}
 
 	/// Check if someone filled a diagonal

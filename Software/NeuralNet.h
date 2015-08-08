@@ -22,7 +22,7 @@ namespace net {
 		 * 
 		 * Uses the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.
 		 */
-		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_);
+		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, double(*filterNeuronOutput_)(double initialOutput));
 		
 		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
 		NeuralNet(NeuralNet const &otherNet);
@@ -45,10 +45,15 @@ namespace net {
 		 * The crowning function of this class.*/
 		std::vector<double> getOutput(std::vector<double> input);
 		
-		/* A s-shaped math function.
+		/* An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to filter the output
 		 *
-		 * Used by the network to get a gradient value for each neurons output. */
-		double sigmoid(double activiation);
+		 * A s-shaped math function. Used by the network to get a gradient value for each neurons output. */
+		static double sigmoid(double initialOutput) {
+			return ( 1 / ( 1 + exp(-initialOutput / 1)));
+		}
+
+		// Takes the initial output of a neuron and uses an activation value of 0 to filter the output
+		double(*filterNeuronOutput)(double initialOutput);
 
 		// A two dimensional network of neurons.
 		std::vector< std::vector<Neuron> > net;

@@ -10,6 +10,10 @@
 #include "NeuralNet.h"
 
 namespace gen {
+	/* Class representing a genetic algorithm used to prodece fit neural netwokrs.
+	 *
+	 *
+	 */
 	class GeneticAlgo {
 	public:
 		// A set of neural networks to act as a population.

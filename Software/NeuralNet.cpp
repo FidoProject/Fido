@@ -9,11 +9,12 @@ NeuralNet::NeuralNet() {
 	numNeuronsPerHiddenLayer = 0;
 }
 
-NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_) {
+NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, double(*filterNeuronOutput_)(double initialOutput)) {
 	numInputs = numInputs_;
 	numOutputs = numOutputs_;
 	numHiddenLayers = numHiddenLayers_;
 	numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer_;
+	filterNeuronOutput = filterNeuronOutput_;
 
 	std::vector<Neuron> firstHiddenLayer;
 	for(int a = 0; a < numHiddenLayers; a++) firstHiddenLayer.push_back(Neuron(numInputs));
@@ -35,6 +36,7 @@ NeuralNet::NeuralNet(NeuralNet const &otherNet) {
 	numOutputs = otherNet.numOutputs;
 	numHiddenLayers = otherNet.numHiddenLayers;
 	numNeuronsPerHiddenLayer = otherNet.numNeuronsPerHiddenLayer;
+	filterNeuronOutput = otherNet.filterNeuronOutput;
 
 	std::vector<Neuron> firstHiddenLayer;
 	for(int a = 0; a < numHiddenLayers; a++) firstHiddenLayer.push_back(Neuron(numInputs));
@@ -81,12 +83,8 @@ std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 		if(a > 0) input = output;
 		output.clear();
 		for(int b = 0; b < net[a].size(); b++) {
-			output.push_back(sigmoid(net[a][b].getOutput(input)));
+			output.push_back(filterNeuronOutput(net[a][b].getOutput(input)));
 		}
 	}
 	return output;
-}
-
-double NeuralNet::sigmoid(double activiation) {
-	return ( 1 / ( 1 + exp(-activiation / 1)));
 }
