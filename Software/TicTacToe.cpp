@@ -1,24 +1,27 @@
 #include "TicTacToe.h"
 
 net::NeuralNet TicTacToe::getBestPlayer(int numberOfIterations) {
+	gen::GeneticAlgo geneticAlgo(20, 0.2, 0.7, getPlayerFitnesses);
 
+	net::NeuralNet modelNet(9, 2, 2, 6, net::NeuralNet::sigmoid);
+
+	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }
 
 std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet> players) {
-	std::vector<double> scores;
+	std::vector<double> wins;
 	for(int a = 0; a < players.size(); a++) {
-		scores.push_back(2000);
+		wins.push_back(0);
 	}
 
 	for(int a = 0; a < players.size(); a++) {
 		for(int b = a+1; b < players.size(); b++) {
-			if(getOutcomeOfGame(players[a], players[b])) {
-				/// Change elo score to favor first player
-			} else {
-				/// Change elo score to favor second player
-			}
+			int outcome = getOutcomeOfGame(players[a], players[b]);
+			if(outcome == 1) wins[a]++;
+			else if(outcome == 2) wins[b]++;
 		}
 	}
+	return wins;
 }
 
 int TicTacToe::getOutcomeOfGame(net::NeuralNet player1, net::NeuralNet player2) {
@@ -36,10 +39,12 @@ int TicTacToe::getOutcomeOfGame(net::NeuralNet player1, net::NeuralNet player2) 
 		for(int a = 0; a < board.size(); a++) for(int b = 0; b < board[a].size(); b++) oneDBoard.push_back(board[a][b]);
 
 		std::vector<double> coordinates1 = player1.getOutput(oneDBoard);
-		if(board[(int)coordinates1[0]][(int)coordinates1[1]] == 0) board[(int)coordinates1[0]][(int)coordinates1[1]] = 1;
+		int p1X = ((int)coordinates1[0]) % 3, p1Y = ((int)coordinates1[1]) % 3;
+		if(board[p1X][p1Y] == 0) board[p1X][p1Y] = 1;
 
 		std::vector<double> coordinates2 = player2.getOutput(oneDBoard);
-		if(board[(int)coordinates2[0]][(int)coordinates2[1]] == 0) board[(int)coordinates2[0]][(int)coordinates2[1]] = 2;
+		int p2X = ((int)coordinates2[0]) % 3, p2Y = ((int)coordinates2[1]) % 3;
+		if(board[p2X][p2Y] == 0) board[p2X][p2Y] = 2;
 	}
 
 	/// Check if someone filled up a row

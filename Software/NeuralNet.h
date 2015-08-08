@@ -45,11 +45,22 @@ namespace net {
 		 * The crowning function of this class.*/
 		std::vector<double> getOutput(std::vector<double> input);
 		
-		/* An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to filter the output
+		/* An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
 		 *
-		 * A s-shaped math function. Used by the network to get a gradient value for each neurons output. */
+		 *
+		 */
 		static double sigmoid(double initialOutput) {
 			return ( 1 / ( 1 + exp(-initialOutput / 1)));
+		}
+
+		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
+		static double binary(double initialOutput) {
+			return (initialOutput > 0 ? 1 : 0);
+		}
+
+		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
+		static double integer(double initialOutput) {
+			return (double)((int)initialOutput);
 		}
 
 		// Takes the initial output of a neuron and uses an activation value of 0 to filter the output

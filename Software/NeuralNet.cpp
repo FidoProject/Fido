@@ -70,7 +70,10 @@ void NeuralNet::setWeights(std::vector<double> w) {
 	for(int a = 0; a < net.size(); a++) {
 		for(int b = 0; b < net[a].size(); b++) {
 			for(int c = 0; c < net[a][b].weights.size(); c++) {
-				net[a][b].weights[c] = w[counter];
+                std::cout << "Counter: " << counter << "\n";
+                std::cout << "a: " << a << "; b: " << b << "; c: " << c << "\n";
+				double newWeight = w[counter];
+                net[a][b].weights[c] = newWeight;
 				counter++;
 			}
 		}
