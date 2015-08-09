@@ -3,8 +3,11 @@
 
 #include "Neuron.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include <math.h>
+#include <string>
 
 namespace net {
 
@@ -26,6 +29,15 @@ namespace net {
 		
 		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
 		NeuralNet(NeuralNet const &otherNet);
+        
+        /* Restores a neural network from the specified file
+         * 
+         * The function for filtering neuron output may not be stored in the file currently, so must be passed in.
+         */
+        NeuralNet(std::string filename, double(*filterNeuronOutput_)(double initialOutput));
+        
+        // Stores a neural network in the specified file
+        void storeNet(std::string filename);
 
 		/* Get the weights of each neuron in the net.
 		 * 
@@ -64,14 +76,17 @@ namespace net {
             else return 0;
 		}
 
-		// Takes the initial output of a neuron and uses an activation value of 0 to filter the output
-		double(*filterNeuronOutput)(double initialOutput);
-
 		// A two dimensional network of neurons.
 		std::vector< std::vector<Neuron> > net;
 
 		// Variables used to describe Neural Networks.
 		int numInputs, numOutputs, numHiddenLayers, numNeuronsPerHiddenLayer;
+    private:
+        // Creates layers of neurons with random weights according to the values of numInputs, numOutputs, numHiddenLayers, and numNeuronsPerHiddenLayer
+        void setupNeuronLayers();
+        
+        // Takes the initial output of a neuron and uses an activation value of 0 to filter the output
+        double(*filterNeuronOutput)(double initialOutput);
 	};
 }
 

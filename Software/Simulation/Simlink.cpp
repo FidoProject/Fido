@@ -33,10 +33,12 @@ void Simlink::getStates() {
     	while (getline(stateIn,line)) {
     		std::vector<int> vect;
     		std::stringstream ss(line);
-    		int a; while (ss >> a) {
+    		int a; 
+    		while (ss >> a) {
     			vect.push_back(a);
     			if (ss.peek()==',') ss.ignore();
-    		} switch (i) { /// don't ask about the curlies
+    		} 
+    		switch (i) { /// don't ask about the curlies
     			{case 0: ///accel
     				for (int b=0; b<3; b++)
     					imu.accel[b] = vect[b];

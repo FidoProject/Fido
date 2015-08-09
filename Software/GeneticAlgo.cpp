@@ -92,7 +92,7 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
         for(int a = 1; a < fitnesses.size(); a++) {
             if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
         }
-        for(int a = 0; a < 6; a++) nextGeneration.push_back(population[mostFitIndex]);
+        for(int a = 0; a < 4; a++) nextGeneration.push_back(population[mostFitIndex]);
         
 		while(nextGeneration.size() < populationSize) {
 			net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();
