@@ -84,7 +84,8 @@ std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 		if(a > 0) input = output;
 		output.clear();
 		for(int b = 0; b < net[a].size(); b++) {
-			output.push_back(filterNeuronOutput(net[a][b].getOutput(input)));
+            double out = filterNeuronOutput(net[a][b].getOutput(input));
+			output.push_back(out);
 		}
 	}
 	return output;

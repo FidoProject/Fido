@@ -3,7 +3,7 @@
 net::NeuralNet TicTacToe::getBestPlayer(int numberOfIterations) {
 	gen::GeneticAlgo geneticAlgo(50, 0.8, 0.7, getPlayerFitnesses);
 
-	net::NeuralNet modelNet(9, 2, 1, 10, net::NeuralNet::integer);
+	net::NeuralNet modelNet(9, 2, 2, 6, net::NeuralNet::integer);
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }
@@ -20,10 +20,10 @@ std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet> pl
 			int outcome = getOutcomeOfGame(players[a], players[b]);
             if(outcome == 1) {
                 wins[a]++;
-                std::cout << "win: " << wins[a] << "\n";
+                //std::cout << "win: " << wins[a] << "\n";
             } else if(outcome == 2){
                 wins[b]++;
-                std::cout << "win: " << wins[a] << "\n";
+                //std::cout << "win: " << wins[a] << "\n";
             }
 		}
 	}
@@ -52,7 +52,7 @@ int TicTacToe::getOutcomeOfGame(net::NeuralNet player1, net::NeuralNet player2) 
         
 		std::vector<double> coordinates1 = player1.getOutput(oneDBoard);
 		int p1X = ((int)coordinates1[0]) % 3, p1Y = ((int)coordinates1[1]) % 3;
-        std::cout << "x, y: " << p1X << ", " << p1Y << "\n";
+        //std::cout << "x, y: " << p1X << ", " << p1Y << "\n";
         if(board[p1X][p1Y] == 0) {
             didOneMakeMove = true;
             board[p1X][p1Y] = 1;
