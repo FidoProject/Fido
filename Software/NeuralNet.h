@@ -34,9 +34,8 @@ namespace net {
 		 */
 		std::vector<double> getWeights();
 		
-		/* Set the weights of each neuron in the net according to a vector.
+		/* Set the weights of each input for each neuron in the net according to a vector.
 		 * 
-		 * Starts at the first neuron in the first layer and goes to the last neruon in the last layer. 
 		 */
 		void setWeights(std::vector<double> w);
 
