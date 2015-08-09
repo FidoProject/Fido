@@ -37,7 +37,7 @@ namespace gen {
 		 */ 
 		void crossover(net::NeuralNet &mom, net::NeuralNet &dad, net::NeuralNet &offspring1, net::NeuralNet &offspring2);
 		
-		// Randomnly change the weights of a neural network based on the mutation rate.
+		// Randomnly change the weights of the inputs of a neural network based on the mutation rate.
 		void mutate(net::NeuralNet &net);
 
 		// Select a random network from the population with a weight towards higher fitness levels
