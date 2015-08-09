@@ -33,7 +33,7 @@ namespace net {
 
 		// Return a random weight between zero and one.
 		static double randomWeight() {
-			return rand() % RAND_MAX;
+			return rand() / RAND_MAX;
 		} 
 	};
 }

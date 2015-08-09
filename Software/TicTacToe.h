@@ -14,7 +14,7 @@ public:
 	static std::vector<double> getPlayerFitnesses(std::vector<net::NeuralNet> players);
 
 	// Pits two neural networks against each other in tic tac toe and returns 0 if there is a tie, 1 if player1 wins, and 2 if player2 wins
-	static int getOutcomeOfGame(net::NeuralNet player1, net::NeuralNet player2);
+	static int getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2);
 
 	/* 
 	 * Determines if a tic tac toe game has ended given a 2d vector of ints representing the board
@@ -27,7 +27,9 @@ public:
 	static void printBoard(std::vector< std::vector<int> > board);
     
     // Pits two neural networks against each other in tic tac toe and shows each of their moves in the command line
-    static void playerVisualGame(net::NeuralNet player1, net::NeuralNet player2);
+    static void playVisualGame(net::NeuralNet player1, net::NeuralNet player2);
+    
+    static std::vector<double> prepareBoardForPlayerInput(int playerIndex);
 };
 
 #endif

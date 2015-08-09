@@ -16,6 +16,6 @@ int main() {
 	net::NeuralNet bestPlayer = game.getBestPlayer(400);
 	std::cout << "Done\n";
     net::NeuralNet secondBestPlayer = game.getBestPlayer(200);
-    TicTacToe::playerVisualGame(bestPlayer, secondBestPlayer);
+    //TicTacToe::playVisualGame(bestPlayer, secondBestPlayer);
     std::cout << "DONE\n";
 }

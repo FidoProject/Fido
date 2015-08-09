@@ -35,10 +35,10 @@ namespace gen {
 		 * The method uses the crossoverRate variable to determine if two neural networks are mixed 
 		 * and then and mixes their neurons weights to produce two new neural networks. 
 		 */ 
-		void crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet& offspring1, net::NeuralNet& offspring2);
+		void crossover(net::NeuralNet &mom, net::NeuralNet &dad, net::NeuralNet &offspring1, net::NeuralNet &offspring2);
 		
 		// Randomnly change the weights of a neural network based on the mutation rate.
-		net::NeuralNet mutate(net::NeuralNet net);
+		void mutate(net::NeuralNet &net);
 
 		// Select a random network from the population with a weight towards higher fitness levels
 		net::NeuralNet selectNNBasedOnFitness();
@@ -48,7 +48,7 @@ namespace gen {
 		 * modelNetwork is used to determine the number of inputs, outputs, hidden layers,
 		 * and neurons per hidden layer for each network in the population. 
 		 */
-		net::NeuralNet getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork);
+		net::NeuralNet getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet &modelNetwork);
 
 		// Get the fitnesses of each neural network in the population.
 		std::vector<double>(*getPopulationFitness)(std::vector<net::NeuralNet> neuralNet);

@@ -1,7 +1,7 @@
 #include "TicTacToe.h"
 
 net::NeuralNet TicTacToe::getBestPlayer(int numberOfIterations) {
-	gen::GeneticAlgo geneticAlgo(50, 0.8, 0.7, getPlayerFitnesses);
+	gen::GeneticAlgo geneticAlgo(50, 0.3, 0.7, getPlayerFitnesses);
 
 	net::NeuralNet modelNet(9, 2, 2, 6, net::NeuralNet::integer);
 
@@ -16,22 +16,68 @@ std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet> pl
 
 	for(int a = 0; a < players.size(); a++) {
 		for(int b = a+1; b < players.size(); b++) {
-
-			int outcome = getOutcomeOfGame(players[a], players[b]);
+            net::NeuralNet player1 = players[a], player2 = players[b];
+			int outcome = getOutcomeOfGame(&player1, &player2);
             if(outcome == 1) {
                 wins[a]++;
-                //std::cout << "win: " << wins[a] << "\n";
+                /*
+                std::cout << "\n\n";
+                std::vector<double> firstWeights, secondWeights, thirdWeights;
+                firstWeights = player1.getWeights();
+                std::cout << "outcome " << outcome << "\n";
+                
+                outcome = getOutcomeOfGame(&player1, &player2);
+                secondWeights = player1.getWeights();
+                std::cout << "outcome " << outcome << "\n";
+                
+                outcome = getOutcomeOfGame(&player1, &player2);
+                thirdWeights = player1.getWeights();
+                std::cout << "outcome " << outcome << "\n";
+                
+                bool firstEqualToSecond = true;
+                bool firstEqualToThird = true;
+                for(int a = 0; a < firstWeights.size(); a++) {
+                    if(firstWeights[a] != secondWeights[a]) firstEqualToSecond = false;
+                    if(firstWeights[a] != thirdWeights[a]) firstEqualToSecond = false;
+                }
+                
+                if(firstEqualToSecond == true) {
+                    std::cout << "First equal to second\n";
+                } else {
+                    std::cout << "First NOT EQUAL to second\n";
+                }
+                
+                if(firstEqualToThird == true) {
+                    std::cout << "First equal to third\n";
+                } else {
+                    std::cout << "First NOT EQUAL to third\n";
+                }*/
+                
+                std::cout << "win: " << wins[a] << "\n";
             } else if(outcome == 2){
                 wins[b]++;
-                //std::cout << "win: " << wins[a] << "\n";
+                std::cout << "win: " << wins[a] << "\n";
             }
 		}
 	}
 	return wins;
 }
 
-int TicTacToe::getOutcomeOfGame(net::NeuralNet player1, net::NeuralNet player2) {
-	std::vector< std::vector<int> > board;
+int TicTacToe::getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2) {
+    /*std::vector<double> weights1 = player1->getWeights(), weights2 = player2->getWeights();
+    std::cout << "Weights 1: ";
+    for (int a = 0; a < weights1.size(); a++) {
+        std::cout << weights1[a] << ", ";
+    }
+    std::cout << "\n";
+    
+    std::cout << "Weights 2: ";
+    for (int a = 0; a < weights2.size(); a++) {
+        std::cout << weights2[a];
+    }
+    std::cout << "\n";*/
+    
+    std::vector< std::vector<int> > board;
 	for(int a = 0; a < 3; a++) {
 		std::vector<int> row;
 		for(int b = 0; b < 3; b++) {
@@ -42,29 +88,34 @@ int TicTacToe::getOutcomeOfGame(net::NeuralNet player1, net::NeuralNet player2) 
     
     bool didOneMakeMove = true;
     
+    std::vector<double> oneDBoard;
+    for(int a = 0; a < board.size(); a++) for(int b = 0; b < board[a].size(); b++) oneDBoard.push_back(board[a][b]);
+    
 	while(hasGameEnded(board) == false && didOneMakeMove == true) {
         didOneMakeMove = false;
-		std::vector<double> oneDBoard;
-		for(int a = 0; a < board.size(); a++) for(int b = 0; b < board[a].size(); b++) oneDBoard.push_back(board[a][b]);
         //std::cout << "Board: ";
         //for(int a = 0; a < oneDBoard.size(); a++) std::cout << oneDBoard[a];
         //std::cout << "\n";
         
-		std::vector<double> coordinates1 = player1.getOutput(oneDBoard);
-		int p1X = ((int)coordinates1[0]) % 3, p1Y = ((int)coordinates1[1]) % 3;
+		std::vector<double> coordinates1 = player1->getOutput(oneDBoard);
+		long p1X = ((long)coordinates1[0]) % 3, p1Y = ((long)coordinates1[1]) % 3;
         //std::cout << "x, y: " << p1X << ", " << p1Y << "\n";
         if(board[p1X][p1Y] == 0) {
             didOneMakeMove = true;
             board[p1X][p1Y] = 1;
+            oneDBoard[((p1X*3)+p1Y)] = 1;
         }
 
-		std::vector<double> coordinates2 = player2.getOutput(oneDBoard);
-		int p2X = ((int)coordinates2[0]) % 3, p2Y = ((int)coordinates2[1]) % 3;
+		std::vector<double> coordinates2 = player2->getOutput(oneDBoard);
+		long p2X = ((long)coordinates2[0]) % 3, p2Y = ((long)coordinates2[1]) % 3;
+        //std::cout << "x, y: " << p2X << ", " << p2Y << "\n";
         if(board[p2X][p2Y] == 0) {
             didOneMakeMove = true;
             board[p2X][p2Y] = 2;
+            oneDBoard[((p2X*3)+p2Y)] = 1;
         }
 	}
+    
 
 	/// Check if someone filled up a row
 	for(int a = 0; a < board.size(); a++) {
@@ -108,7 +159,8 @@ int TicTacToe::getOutcomeOfGame(net::NeuralNet player1, net::NeuralNet player2) 
 		if(initialValue == 1) return 1;
 		else if(initialValue == 2) return 2;
 	}
-
+    
+    std::cout << "Reached end\n";
 	return 0;
 }
 
@@ -170,49 +222,3 @@ void TicTacToe::printBoard(std::vector< std::vector<int> > board) {
 		std::cout << "|\n";
 	}
 }
-
-void TicTacToe::playerVisualGame(net::NeuralNet player1, net::NeuralNet player2) {
-    std::vector< std::vector<int> > board;
-    for(int a = 0; a < 3; a++) {
-        std::vector<int> row;
-        for(int b = 0; b < 3; b++) {
-            row.push_back(0);
-        }
-        board.push_back(row);
-    }
-    
-    bool didOneMakeMove = true;
-    
-    std::cout << "Starting visual game\n";
-    printBoard(board);
-    while(hasGameEnded(board) == false && didOneMakeMove == true) {
-        didOneMakeMove = false;
-        std::cout << "\n\n\n";
-        printBoard(board);
-        
-        std::vector<double> oneDBoard;
-        for(int a = 0; a < board.size(); a++) for(int b = 0; b < board[a].size(); b++) oneDBoard.push_back(board[a][b]);
-        
-        std::vector<double> coordinates1 = player1.getOutput(oneDBoard);
-        int p1X = ((int)coordinates1[0]) % 3, p1Y = ((int)coordinates1[1]) % 3;
-        if(board[p1X][p1Y] == 0) {
-            didOneMakeMove = true;
-            board[p1X][p1Y] = 1;
-        }
-        
-        std::cout << "\n\n\n";
-        printBoard(board);
-        
-        std::vector<double> coordinates2 = player2.getOutput(oneDBoard);
-        int p2X = ((int)coordinates2[0]) % 3, p2Y = ((int)coordinates2[1]) % 3;
-        if(board[p2X][p2Y] == 0) {
-            didOneMakeMove = true;
-            board[p2X][p2Y] = 2;
-        }
-        
-        std::cout << "\n\n\n";
-        printBoard(board);
-    }
-    std::cout << "Ending visual game\n";
-}
-

@@ -8,7 +8,7 @@ GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossov
 	getPopulationFitness = getPopulationFitness_;
 }
 
-void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet& offspring1, net::NeuralNet& offspring2) {
+void GeneticAlgo::crossover(net::NeuralNet &mom, net::NeuralNet &dad, net::NeuralNet &offspring1, net::NeuralNet &offspring2) {
 	float crossoverDeterminer = rand() / RAND_MAX;
 	if(crossoverDeterminer > crossoverRate) {
 		offspring1 = mom;
@@ -43,7 +43,7 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
     std::vector<double>().swap(dadWeights);
 }
 
-net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
+void GeneticAlgo::mutate(net::NeuralNet &net) {
 	std::vector<double> weights = net.getWeights();
 
 	for(int a = 0; a < weights.size(); a++) {
@@ -53,12 +53,10 @@ net::NeuralNet GeneticAlgo::mutate(net::NeuralNet net) {
 		}
 	}
 
-	net::NeuralNet mutatedNet = net::NeuralNet(net);
-	mutatedNet.setWeights(weights);
+	net = net::NeuralNet(net);
+	net.setWeights(weights);
     
     std::vector<double>().swap(weights);
-    
-	return mutatedNet;
 }
 
 
@@ -78,7 +76,7 @@ net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
 	throw 1;
 }
 
-net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork) {
+net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet &modelNetwork) {
 	population.clear();
 	fitnesses.clear();
 	
@@ -86,8 +84,16 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
 	fitnesses = getPopulationFitness(population);
 
 	for(int a = 0; a < numberOfGenerations; a++) {
-		std::cout << "Generation: " << a << "\n";
-		std::vector<net::NeuralNet> nextGeneration;
+        std::cout << "Generation: " << a << "\n";
+        std::vector<net::NeuralNet> nextGeneration;
+        
+        /// Find the most fit neural network and add more to the population
+        int mostFitIndex = 0;
+        for(int a = 1; a < fitnesses.size(); a++) {
+            if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
+        }
+        for(int a = 0; a < 6; a++) nextGeneration.push_back(population[mostFitIndex]);
+        
 		while(nextGeneration.size() < populationSize) {
 			net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();
 			net::NeuralNet baby1, baby2;
