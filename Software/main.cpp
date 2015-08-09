@@ -19,7 +19,7 @@ int main() {
 	std::cout << "Start\n";
 	TicTacToe game;
 	std::cout << "Finished intialization\n";
-	net::NeuralNet bestPlayer = game.getBestPlayer(200);
+	net::NeuralNet bestPlayer = game.getBestPlayer(50);
 	std::cout << "Done\n";
     //net::NeuralNet secondBestPlayer = game.getBestPlayer(50);
     TicTacToe::playAgainstHuman(&bestPlayer);
