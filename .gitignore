@@ -19,7 +19,6 @@
 *.exe
 *.out
 *.app
-executable
 
 ###########
 ## LaTeX ##
@@ -77,3 +76,11 @@ eagle.epf
 *.drd.*
 *.info
 *.eps
+
+##########
+## Fido ##
+##########
+
+executable
+stateOut.txt
+stateIn.txt

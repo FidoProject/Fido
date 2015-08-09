@@ -6,7 +6,10 @@
 #include <math.h>
 #include <chrono>
 #include <thread>
-
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 namespace io {
 	class Simlink {
@@ -57,6 +60,12 @@ namespace io {
 		// Get the current battery level (0-100).
 		int getBattery();
 	private:
+		// Update the "state out" text file based on stored values.
+		void putStates();
+
+		// Update stored values based on "state in" text file.
+		void getStates();
+
 		// Get three axis of acceleration in m/s^2.
 		int* getAccel();
 
@@ -79,6 +88,9 @@ namespace io {
 		bool vibrating;
 
 		int irVal, micVal, batVal;
+
+		std::ofstream stateOut;
+		std::ifstream stateIn;
 
 		LED led;
 		Motors motors;
