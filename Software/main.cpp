@@ -2,17 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctime>
 
 #include "Neuron.h"
 #include "NeuralNet.h"
 #include "GeneticAlgo.h"
 #include "TicTacToe.h"
-
-/*
- Fix hasEnded
- Allow neural networks to be dumped and restored to/from files
- Add in safe-guards to functions (e.g net::getInput() needs to check that the input is of the right length)
- */
 
 int main() {
     srand(time(NULL));
@@ -20,30 +15,16 @@ int main() {
 	TicTacToe game;
 	std::cout << "Finished intialization\n";
 
-	net::NeuralNet bestPlayer("nn200.txt", net::NeuralNet::sigmoid);
-	net::NeuralNet secondBestPlayer(9, 1, 3, 9, net::NeuralNet::sigmoid);
-	std::cout << "W: ";
-	std::vector<double> weights = bestPlayer.getWeights();
-	for(int a = 0; a < weights.size(); a++) std::cout << weights[a] << ", ";
+	net::NeuralNet *bestPlayer = game.getBestPlayer(3);
+	//bestPlayer.storeNet("nn100.txt");
 
-	std::cout << "\n\nW: ";
-	weights = secondBestPlayer.getWeights();
-	for(int a = 0; a < weights.size(); a++) std::cout << weights[a] << ", ";
-    //bestPlayer.storeNet("nn200.txt");
-	std::cout << "d: " << &bestPlayer;
-	std::cout << "d: " << &secondBestPlayer;
-	TicTacToe::playVisualGame(&bestPlayer, &secondBestPlayer);
-	TicTacToe::playVisualGame(&secondBestPlayer, &bestPlayer);
-	TicTacToe::playVisualGame(&bestPlayer, &bestPlayer);
+	clock_t begin = clock();
+	std::cout << "Outcome: " << TicTacToe::getWinsAgainstRandomPlayers(bestPlayer, 1000) << "\n";
+	clock_t end = clock();
+	double elapsedSecs = double(end - begin) / CLOCKS_PER_SEC;
+	std::cout << "Time: " << elapsedSecs << "\n";
 
-	std::cout << "Outcome: " << TicTacToe::getWinsAgainstRandomPlayers(&secondBestPlayer, 100) << "\n";
-	std::cout << "Outcome: " << TicTacToe::getWinsAgainstRandomPlayers(&bestPlayer, 100) << "\n";
-
-    //net::NeuralNet secondBestPlayer = game.getBestPlayer(10);
-    //secondBestPlayer.storeNet("Documents/Fido/Software/nn10.txt");
-
-    //int outcome = TicTacToe::getOutcomeOfGame(&bestPlayer, &secondBestPlayer);
-    //std::cout << "Outcome: " << outcome << "\n";
+	TicTacToe::playAgainstHuman(bestPlayer);
 
     std::cout << "DONE\n";
 }

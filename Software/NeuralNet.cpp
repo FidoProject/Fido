@@ -19,12 +19,12 @@ NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int 
     setupNeuronLayers();
 }
 
-NeuralNet::NeuralNet(NeuralNet const &otherNet) {
-	numInputs = otherNet.numInputs;
-	numOutputs = otherNet.numOutputs;
-	numHiddenLayers = otherNet.numHiddenLayers;
-	numNeuronsPerHiddenLayer = otherNet.numNeuronsPerHiddenLayer;
-	filterNeuronOutput = otherNet.filterNeuronOutput;
+NeuralNet::NeuralNet(NeuralNet* otherNet) {
+	numInputs = otherNet->numInputs;
+	numOutputs = otherNet->numOutputs;
+	numHiddenLayers = otherNet->numHiddenLayers;
+	numNeuronsPerHiddenLayer = otherNet->numNeuronsPerHiddenLayer;
+	filterNeuronOutput = otherNet->filterNeuronOutput;
 
 	setupNeuronLayers();
 }
@@ -33,7 +33,7 @@ NeuralNet::NeuralNet(std::string filename, double(*filterNeuronOutput_)(double i
     filterNeuronOutput = filterNeuronOutput_;
     
 	std::ifstream input(filename);
-    if(input.is_open()) {
+    if(input.is_open()) { 
         input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
         
         setupNeuronLayers();
@@ -41,9 +41,6 @@ NeuralNet::NeuralNet(std::string filename, double(*filterNeuronOutput_)(double i
         std::vector<double> newWeights;
         double middleMan = 0;
         while(input >> middleMan) newWeights.push_back(middleMan);
-        
-        std::cout << "size: " << newWeights.size() << "\n";
-        
         setWeights(newWeights);
         
         input.close();
@@ -59,7 +56,7 @@ void NeuralNet::storeNet(std::string filename) {
         output << numInputs << " " << numOutputs << " " << numHiddenLayers << " " << numNeuronsPerHiddenLayer << "\n";
         std::vector<double> weights = getWeights();
         for(int a = 0; a < weights.size(); a++) output << weights[a] << " ";
-        
+
         output.close();
     } else {
         std::cout << "Could not store neural network\n";

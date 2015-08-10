@@ -28,7 +28,7 @@ namespace net {
 		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, double(*filterNeuronOutput_)(double initialOutput));
 		
 		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
-		NeuralNet(NeuralNet const &otherNet);
+		NeuralNet(NeuralNet* otherNet);
         
         /* Restores a neural network from the specified file
          * 
