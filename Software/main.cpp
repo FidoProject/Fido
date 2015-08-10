@@ -13,10 +13,9 @@ int main() {
     srand(time(NULL));
 	std::cout << "Start\n";
 	TicTacToe game;
-	std::cout << "Finished intialization\n";
 
-	net::NeuralNet *bestPlayer = game.getBestPlayer(3);
-	//bestPlayer.storeNet("nn100.txt");
+	net::NeuralNet *bestPlayer = game.getBestPlayer(12);
+	bestPlayer->storeNet("TTT_2by9_30_123.txt");
 
 	clock_t begin = clock();
 	std::cout << "Outcome: " << TicTacToe::getWinsAgainstRandomPlayers(bestPlayer, 1000) << "\n";
@@ -25,6 +24,4 @@ int main() {
 	std::cout << "Time: " << elapsedSecs << "\n";
 
 	TicTacToe::playAgainstHuman(bestPlayer);
-
-    std::cout << "DONE\n";
 }

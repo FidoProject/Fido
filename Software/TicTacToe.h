@@ -50,6 +50,7 @@ public:
 	// Pits a neural network against a set of neural networks in tic tac toe and returns the number of wins
 	static int getWinsAgainstSetOfPlayers(net::NeuralNet *player, std::vector<net::NeuralNet *> networks);
 
+	// A random set of neural networks used for evaluating the skill of other neural networks at TicTacToe
 	static std::vector<net::NeuralNet *> randomSet;
 };
 

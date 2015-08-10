@@ -3,11 +3,11 @@
 std::vector<net::NeuralNet *> TicTacToe::randomSet = std::vector<net::NeuralNet*>(0);
 
 net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {
-	gen::GeneticAlgo geneticAlgo(5, 0.2, 0.6, 1, getPlayerFitnesses);
+	gen::GeneticAlgo geneticAlgo(40, 0.25, 0.6, 5, getPlayerFitnesses);
 
-	net::NeuralNet modelNet(9, 1, 3, 9, net::NeuralNet::sigmoid);
+	net::NeuralNet modelNet(9, 1, 2, 9, net::NeuralNet::sigmoid);
 
-	for(int a = 0; a < 100; a++) randomSet.push_back(new net::NeuralNet(9, 1, 3, 9, net::NeuralNet::sigmoid));
+	for(int a = 0; a < 50; a++) randomSet.push_back(new net::NeuralNet(9, 1, 3, 9, net::NeuralNet::sigmoid));
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }
@@ -21,7 +21,7 @@ std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet *> 
 		scores.push_back(score);
 	}
 
-	//for(int a = 0; a < scores.size(); a++) scores[a] = pow(scores[a], 2);
+	for(int a = 0; a < scores.size(); a++) scores[a] = pow(scores[a], 2);
 
 	return scores;
 }
@@ -85,7 +85,6 @@ int TicTacToe::getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2
 		else if(initialValue == -1) return 2;
 	}
     
-    //std::cout << "Reached end\n";
 	return 0;
 }
 
