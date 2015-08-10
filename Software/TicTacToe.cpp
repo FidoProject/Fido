@@ -1,9 +1,9 @@
 #include "TicTacToe.h"
 
 net::NeuralNet TicTacToe::getBestPlayer(int numberOfIterations) {
-	gen::GeneticAlgo geneticAlgo(30, 0.1, 0.7, getPlayerFitnesses);
+	gen::GeneticAlgo geneticAlgo(100, 0.5, 0, getPlayerFitnesses);
 
-	net::NeuralNet modelNet(9, 1, 9, 9, net::NeuralNet::sigmoidTicTacToe);
+	net::NeuralNet modelNet(9, 1, 3, 9, net::NeuralNet::integer);
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }
@@ -11,20 +11,49 @@ net::NeuralNet TicTacToe::getBestPlayer(int numberOfIterations) {
 std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet> players) {
 	std::vector<double> scores;
 	for(int a = 0; a < players.size(); a++) {
-		scores.push_back(0);
+		scores.push_back(1000);
+	}
+	int numberMatchesPerPlayer = 20;
+
+	/// Elo Rating System
+	for(int a = 0; a < players.size(); a++) {
+		for(int b = a + 1; (b+1) % numberMatchesPerPlayer != 0 && b < players.size(); b++) {
+			//std::cout << "a " << (b-a) << "\n";
+			net::NeuralNet player1 = players[a], player2 = players[b];
+			std::cout << "w";
+			/// If there was a win
+			int outcome = getOutcomeOfGame(&player1, &player2);
+			if(outcome == 1 || outcome == 2) {
+				std::cout << "WTF";
+				double p1Points = 0, p2Points = 0;
+				double p1ExpectedPoints = 1 / (1 + pow(10, (scores[b] - scores[a]) / 400));
+				double p2ExpectedPoints = 1 / (1 + pow(10, (scores[a] - scores[b]) / 400));
+				double kfactor = 32;
+				if(outcome == 1) {
+					p1Points = 1;
+				} else if(outcome == 2){
+					p2Points = 1;
+				}
+				scores[a] += 100 * (p1Points - p1ExpectedPoints);
+				scores[b] += 100 * (p2Points - p2ExpectedPoints);
+			}
+		}
 	}
 
-	for(int a = 0; a < players.size(); a++) {
+	for(int a = 0; a < scores.size(); a++) scores[a] = pow(scores[a], 1.1);
+
+	/*for(int a = 0; a < players.size(); a++) {
 		for(int b = a + 1; b < players.size(); b++) {
             net::NeuralNet player1 = players[a], player2 = players[b];
 			int outcome = getOutcomeOfGame(&player1, &player2);
+			//playVisualGame(&player1, &player2);
             if(outcome == 1) {
 				scores[a]++;
             } else if(outcome == 2){
 				scores[b]++;
             }
 		}
-	}
+	}*/
 
 	return scores;
 }
@@ -258,9 +287,9 @@ std::vector<double> TicTacToe::prepareBoardForPlayerInput(std::vector< std::vect
     std::vector<double> returnVector;
     for(int a = 0; a < board.size(); a++) {
         for(int b = 0 ; b < board[a].size(); b++) {
-            if(board[a][b] == 0) returnVector.push_back(1);
-            else if(board[a][b] == playerNumber) returnVector.push_back(2);
-            else returnVector.push_back(3);
+            if(board[a][b] == 0) returnVector.push_back(0);
+            else if(board[a][b] == playerNumber) returnVector.push_back(1);
+            else returnVector.push_back(-1);
         }
     }
     

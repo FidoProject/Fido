@@ -21,7 +21,7 @@ int main() {
 	std::cout << "Finished intialization\n";
 
     net::NeuralNet bestPlayer = game.getBestPlayer(10);
-    //bestPlayer.storeNet("nn100.txt");
+    bestPlayer.storeNet("nn10.txt");
 	TicTacToe::playAgainstHuman(&bestPlayer);
 
     //net::NeuralNet secondBestPlayer = game.getBestPlayer(10);

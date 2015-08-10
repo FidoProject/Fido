@@ -66,7 +66,9 @@ namespace net {
 
 		// An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
 		static double sigmoidTicTacToe(double initialOutput) {
-			return (3 / (1 + exp(-initialOutput)));
+			//std::cout << "in " << initialOutput << "\n";
+			//std::cout << "out: " << ((int)(9 / (1 + exp(-initialOutput / 9.0)))) << "\n";
+			return (int)(9 / (1 + exp(-initialOutput / 9.0)));
 		}
 
 		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
@@ -77,8 +79,13 @@ namespace net {
 		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
 		static double integer(double initialOutput) {
             
-            if(initialOutput > 0) return ((long)initialOutput) % 3;
+            if(initialOutput > 0) return ((long)initialOutput) % 9;
             else return 0;
+		}
+
+		// Takes the initial output of a neuron and returns it unchanged
+		static double unchanged(double initialOutput) {
+			return initialOutput;
 		}
 
 		// A two dimensional network of neurons.

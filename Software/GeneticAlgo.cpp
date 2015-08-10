@@ -93,10 +93,11 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
         /// Find the most fit neural network and add more to the population
         int mostFitIndex = 0;
         for(int a = 1; a < fitnesses.size(); a++) {
-            if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
-        }
+           if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
+		}
 		bestNeuralNets.push_back(population[mostFitIndex]);
-        for(int a = 0; a < (int)(population.size()/10.0); a++) nextGeneration.push_back(population[mostFitIndex]);
+		//std::cout << "number: " << (int)(population.size() / 10.0) << "\n";
+        //for(int a = 0; a < (int)(population.size()/10.0); a++) nextGeneration.push_back(population[mostFitIndex]);
         
 		while(nextGeneration.size() < populationSize) {
 			net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();
