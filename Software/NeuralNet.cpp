@@ -32,7 +32,7 @@ NeuralNet::NeuralNet(NeuralNet const &otherNet) {
 NeuralNet::NeuralNet(std::string filename, double(*filterNeuronOutput_)(double initialOutput)) {
     filterNeuronOutput = filterNeuronOutput_;
     
-    std::ifstream input(filename);
+	std::ifstream input(filename);
     if(input.is_open()) {
         input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
         
@@ -84,11 +84,14 @@ void NeuralNet::setWeights(std::vector<double> w) {
 	for(int a = 0; a < net.size(); a++) {
 		for(int b = 0; b < net[a].size(); b++) {
 			for(int c = 0; c < net[a][b].weights.size(); c++) {
-				double newWeight = w[counter];
-                net[a][b].weights[c] = newWeight;
+				net[a][b].weights[c] = w[counter];
 				counter++;
 			}
 		}
+	}
+	if(counter != w.size()) {
+		std::cout << "Not the right number of weights\n";
+		throw 1;
 	}
 }
 
@@ -107,12 +110,12 @@ std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 
 void NeuralNet::setupNeuronLayers() {
     std::vector<Neuron> firstHiddenLayer;
-    for(int a = 0; a < numHiddenLayers; a++) firstHiddenLayer.push_back(Neuron(numInputs));
+    for(int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.push_back(Neuron(numInputs));
     net.push_back(firstHiddenLayer);
     
     for(int a = 0; a < numHiddenLayers; a++) {
         std::vector<Neuron> hiddenLayer;
-        for(int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.push_back(Neuron(numHiddenLayers));
+        for(int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
         net.push_back(hiddenLayer);
     }
     

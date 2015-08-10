@@ -79,7 +79,10 @@ net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
 net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet &modelNetwork) {
 	population.clear();
 	fitnesses.clear();
+
+	std::vector<net::NeuralNet> bestNeuralNets;
 	
+	std::cout << "Starting generation\n";
 	for(int a = 0; a < populationSize; a++) population.push_back(net::NeuralNet(modelNetwork));
 	fitnesses = getPopulationFitness(population);
 
@@ -92,7 +95,8 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
         for(int a = 1; a < fitnesses.size(); a++) {
             if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
         }
-        for(int a = 0; a < 4; a++) nextGeneration.push_back(population[mostFitIndex]);
+		bestNeuralNets.push_back(population[mostFitIndex]);
+        for(int a = 0; a < (int)(population.size()/10.0); a++) nextGeneration.push_back(population[mostFitIndex]);
         
 		while(nextGeneration.size() < populationSize) {
 			net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();
@@ -110,6 +114,11 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
         std::vector<net::NeuralNet>().swap(nextGeneration);
 		fitnesses = getPopulationFitness(population);
 	}
+
+	std::vector<double> bestNeuralNetsFitnesses = getPopulationFitness(bestNeuralNets);
+	std::cout << "bestNeuralNetsFitnesses: ";
+	for(int a = 0; a < bestNeuralNetsFitnesses.size(); a++) std::cout << bestNeuralNetsFitnesses[a] << ", ";
+	std::cout << "\n";
 
 	int mostFitIndex = 0;
 	for(int a = 1; a < fitnesses.size(); a++) {

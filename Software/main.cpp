@@ -19,8 +19,16 @@ int main() {
 	std::cout << "Start\n";
 	TicTacToe game;
 	std::cout << "Finished intialization\n";
-    net::NeuralNet bestPlayer("/Users/michaeltruell/Documents/Fido/Software/storage.txt", net::NeuralNet::integer);
-    TicTacToe::playAgainstHuman(&bestPlayer);
-    bestPlayer.storeNet("/Users/michaeltruell/Documents/Fido/Software/storage.txt");
+
+    net::NeuralNet bestPlayer = game.getBestPlayer(10);
+    //bestPlayer.storeNet("nn100.txt");
+	TicTacToe::playAgainstHuman(&bestPlayer);
+
+    //net::NeuralNet secondBestPlayer = game.getBestPlayer(10);
+    //secondBestPlayer.storeNet("Documents/Fido/Software/nn10.txt");
+
+    //int outcome = TicTacToe::getOutcomeOfGame(&bestPlayer, &secondBestPlayer);
+    //std::cout << "Outcome: " << outcome << "\n";
+
     std::cout << "DONE\n";
 }

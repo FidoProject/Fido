@@ -64,6 +64,11 @@ namespace net {
 			return ( 1 / ( 1 + exp(-initialOutput / 1)));
 		}
 
+		// An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
+		static double sigmoidTicTacToe(double initialOutput) {
+			return (3 / (1 + exp(-initialOutput)));
+		}
+
 		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
 		static double binary(double initialOutput) {
 			return (initialOutput > 0 ? 1 : 0);
