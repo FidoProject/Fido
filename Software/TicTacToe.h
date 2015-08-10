@@ -16,6 +16,9 @@ public:
 	// Pits two neural networks against each other in tic tac toe and returns 0 if there is a tie, 1 if player1 wins, and 2 if player2 wins
 	static int getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2);
 
+	// Gets the neural network's move in tic tac toe and executes it on the board
+	static void executeMove(net::NeuralNet *player, std::vector< std::vector<int> > &board, int playerNumber);
+
 	/* 
 	 * Determines if a tic tac toe game has ended given a 2d vector of ints representing the board
 	 *
