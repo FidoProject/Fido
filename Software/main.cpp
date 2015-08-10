@@ -20,9 +20,24 @@ int main() {
 	TicTacToe game;
 	std::cout << "Finished intialization\n";
 
-    net::NeuralNet bestPlayer("nn10.txt", net::NeuralNet::sigmoid);
-    //bestPlayer.storeNet("nn10.txt");
-	TicTacToe::playAgainstHuman(&bestPlayer);
+	net::NeuralNet bestPlayer("nn200.txt", net::NeuralNet::sigmoid);
+	net::NeuralNet secondBestPlayer(9, 1, 3, 9, net::NeuralNet::sigmoid);
+	std::cout << "W: ";
+	std::vector<double> weights = bestPlayer.getWeights();
+	for(int a = 0; a < weights.size(); a++) std::cout << weights[a] << ", ";
+
+	std::cout << "\n\nW: ";
+	weights = secondBestPlayer.getWeights();
+	for(int a = 0; a < weights.size(); a++) std::cout << weights[a] << ", ";
+    //bestPlayer.storeNet("nn200.txt");
+	std::cout << "d: " << &bestPlayer;
+	std::cout << "d: " << &secondBestPlayer;
+	TicTacToe::playVisualGame(&bestPlayer, &secondBestPlayer);
+	TicTacToe::playVisualGame(&secondBestPlayer, &bestPlayer);
+	TicTacToe::playVisualGame(&bestPlayer, &bestPlayer);
+
+	std::cout << "Outcome: " << TicTacToe::getWinsAgainstRandomPlayers(&secondBestPlayer, 100) << "\n";
+	std::cout << "Outcome: " << TicTacToe::getWinsAgainstRandomPlayers(&bestPlayer, 100) << "\n";
 
     //net::NeuralNet secondBestPlayer = game.getBestPlayer(10);
     //secondBestPlayer.storeNet("Documents/Fido/Software/nn10.txt");

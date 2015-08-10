@@ -18,11 +18,9 @@ std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet> pl
 	/// Elo Rating System
 	for(int a = 0; a < players.size(); a++) {
 		for(int b = a + 1; (b+1) % numberMatchesPerPlayer != 0 && b < players.size(); b++) {
-			//std::cout << "a " << (b-a) << "\n";
 			net::NeuralNet player1 = players[a], player2 = players[b];
-			//std::cout << "w";
+
 			/// If there was a win
-			//playVisualGame(&player1, &player2);
 			int outcome = getOutcomeOfGame(&player1, &player2);
 			if(outcome == 1 || outcome == 2) {
 				//std::cout << "WTF";
@@ -43,19 +41,6 @@ std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet> pl
 
 	for(int a = 0; a < scores.size(); a++) scores[a] = pow(scores[a], 1.1);
 
-	/*for(int a = 0; a < players.size(); a++) {
-		for(int b = a + 1; b < players.size(); b++) {
-            net::NeuralNet player1 = players[a], player2 = players[b];
-			int outcome = getOutcomeOfGame(&player1, &player2);
-			//playVisualGame(&player1, &player2);
-            if(outcome == 1) {
-				scores[a]++;
-            } else if(outcome == 2){
-				scores[b]++;
-            }
-		}
-	}*/
-
 	return scores;
 }
 
@@ -75,7 +60,7 @@ int TicTacToe::getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2
 
         if(hasGameEnded(board) == true) break;
         
-		executeMove(player1, board, 2);
+		executeMove(player2, board, 2);
 	}
     //printBoard(board);
 
@@ -173,7 +158,6 @@ bool TicTacToe::hasGameEnded(std::vector< std::vector<int> > board) {
         }
 	}
     
-    //std::cout << "3\n";
 	
 	/// Check if someone filled up a column
 	for(int a = 0; a < board[0].size(); a++) {
@@ -186,23 +170,20 @@ bool TicTacToe::hasGameEnded(std::vector< std::vector<int> > board) {
             if(isColumOneValue == true) return true;
         }
 	}
-    //std::cout << "4\n";
 
-	/// Check if someone filled a diagonal
+	/// Check if someone filled up a diagonal
 	int initialValue = board[0][0];
     if(initialValue != 0) {
         bool isDiagonalOneValue = true;
         for(int a = 1; a < board.size(); a++) if(board[a][a] != initialValue) isDiagonalOneValue = false;
         if(isDiagonalOneValue == true) return true;
     }
-    //std::cout << "5\n";
 	initialValue = board[0][board.size()-1];
 	if(initialValue != 0) {
         bool isDiagonalOneValue = true;
         for(int a = 1; a < board.size(); a++) if(board[a][(board.size() - 1) - a] != initialValue) isDiagonalOneValue = false;
         if(isDiagonalOneValue == true) return true;
     }
-	//std::cout << "6\n";
 	return false;
 }
 
@@ -232,11 +213,13 @@ void TicTacToe::playVisualGame(net::NeuralNet *player1, net::NeuralNet *player2)
     while(hasGameEnded(board) == false && didOneMakeMove == true) {
 		executeMove(player1, board, 1);
 		printBoard(board);
+		std::cout << "\n";
 
 		if(hasGameEnded(board) == true) break;
 
-		executeMove(player1, board, 2);
+		executeMove(player2, board, 2);
 		printBoard(board);
+		std::cout << "\n";
     }
 }
 
@@ -276,8 +259,19 @@ std::vector<double> TicTacToe::prepareBoardForPlayerInput(std::vector< std::vect
             else returnVector.push_back(-1);
         }
     }
-    
-    //for(int a = 0; a < returnVector.size(); a++) std::cout << returnVector[a] << ", ";
-    //std::cout << "\n";
+
     return returnVector;
+}
+
+
+int TicTacToe::getWinsAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames) {
+	int numberOfWins = 0;
+	for(int a = 0; a < numberOfGames; a++) {
+		net::NeuralNet random = net::NeuralNet(9, 1, 1, 9, net::NeuralNet::sigmoid);
+		playVisualGame(player, &random);
+		std::cout << "\n\n";
+		if(getOutcomeOfGame(player, &random) == 1) numberOfWins++;
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	}
+	return numberOfWins;
 }

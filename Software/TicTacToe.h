@@ -1,6 +1,9 @@
 #ifndef TICTACTOE_H
 #define TICTACTOE_H
 
+#include <chrono>
+#include <thread>
+
 #include "NeuralNet.h"
 #include "GeneticAlgo.h"
 
@@ -37,6 +40,9 @@ public:
     
     // Takes in a 2-d vector that represents the game board turns it into a suitable input for a neural network
     static std::vector<double> prepareBoardForPlayerInput(std::vector< std::vector<int> > board, int playerNumber);
+
+	// Pits a neural network against random neural networks in tic tac toe and returns the number of wins
+	static int getWinsAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames);
 };
 
 #endif
