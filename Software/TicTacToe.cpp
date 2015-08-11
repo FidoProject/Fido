@@ -3,27 +3,47 @@
 std::vector<net::NeuralNet *> TicTacToe::randomSet = std::vector<net::NeuralNet*>(0);
 
 net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {
-	gen::GeneticAlgo geneticAlgo(40, 0.25, 0.6, 5, getPlayerFitnesses);
+	gen::GeneticAlgo geneticAlgo(40, 0.2, 0.6, 5, getPopulationFitnesses);
 
 	net::NeuralNet modelNet(9, 1, 2, 9, net::NeuralNet::sigmoid);
 
-	for(int a = 0; a < 50; a++) randomSet.push_back(new net::NeuralNet(9, 1, 3, 9, net::NeuralNet::sigmoid));
+	for(int a = 0; a < 100; a++) randomSet.push_back(new net::NeuralNet(9, 1, 2, 9, net::NeuralNet::sigmoid));
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }
 
-std::vector<double> TicTacToe::getPlayerFitnesses(std::vector<net::NeuralNet *> players) {
-	std::vector<double> scores;
+std::vector<double> TicTacToe::getPopulationFitnesses(std::vector<net::NeuralNet *> players) {
+	std::vector< std::vector<double>* > scores;
+	std::vector<std::thread> threads;
+	int numThreads = 4;
+
+	int sizePerSubgroup = players.size() / numThreads;
+
+	for(int a = 0; a < numThreads; a++) {
+		scores.push_back(new std::vector<double>(0));
+		if(a == numThreads-1) {
+			threads.push_back(std::thread(getPlayerFitnessesThread, std::vector<net::NeuralNet *>(players.begin() + sizePerSubgroup*a, players.end()), scores[a]));
+		} else {
+			threads.push_back(std::thread(getPlayerFitnessesThread, std::vector<net::NeuralNet *>(players.begin() + sizePerSubgroup*a, players.begin() + sizePerSubgroup*(a + 1)), scores[a]));
+		}
+	}
+	for(int a = 0; a < numThreads; a++) threads[a].join();
+	
+	std::vector<double> returnVector;
+	for(int a = 0; a < scores.size(); a++) for(int b = 0; b < scores[a]->size(); b++) returnVector.push_back((*scores[a])[b]);
+
+	return returnVector;
+}
+
+void TicTacToe::getPlayerFitnessesThread(std::vector<net::NeuralNet *> players, std::vector<double> *fitnesses) {
 	/// Elo Rating System
 	for(int a = 0; a < players.size(); a++) {
 		double score = TicTacToe::getWinsAgainstSetOfPlayers(players[a], randomSet);
 		std::cout << "Score: " << score << "\n";
-		scores.push_back(score);
+		fitnesses->push_back(score);
 	}
 
-	for(int a = 0; a < scores.size(); a++) scores[a] = pow(scores[a], 2);
-
-	return scores;
+	for(int a = 0; a < fitnesses->size(); a++) (*fitnesses)[a] = pow((*fitnesses)[a], 3);
 }
 
 int TicTacToe::getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2) {

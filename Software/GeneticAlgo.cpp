@@ -82,7 +82,12 @@ net::NeuralNet* GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::
 	
 	std::cout << "Starting generation\n";
 	for(int a = 0; a < populationSize; a++) population.push_back(new net::NeuralNet(&modelNetwork));
+
+	clock_t begin = clock();
 	fitnesses = getPopulationFitness(population);
+	clock_t end = clock();
+	double elapsedSecs = double(end - begin) / CLOCKS_PER_SEC;
+	std::cout << "Time: " << elapsedSecs << "\n";
 
 	for(int a = 0; a < numberOfGenerations; a++) {
 		std::cout << "Generation: " << a << "\n";

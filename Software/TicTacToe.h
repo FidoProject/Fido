@@ -1,7 +1,6 @@
 #ifndef TICTACTOE_H
 #define TICTACTOE_H
 
-#include <chrono>
 #include <thread>
 
 #include "NeuralNet.h"
@@ -14,7 +13,10 @@ public:
 	net::NeuralNet* getBestPlayer(int numberOfIterations);
 
 	// Gets the fitness of each neural network in a population of neural networks
-	static std::vector<double> getPlayerFitnesses(std::vector<net::NeuralNet *> players);
+	static std::vector<double> getPopulationFitnesses(std::vector<net::NeuralNet *> players);
+
+	// A method meant to be run as a thread that gets the fitness of players and stores them in the fitnesses vector
+	static void getPlayerFitnessesThread(std::vector<net::NeuralNet *> players, std::vector<double> *fitnesses);
 
 	// Pits two neural networks against each other in tic tac toe and returns 0 if there is a tie, 1 if player1 wins, and 2 if player2 wins
 	static int getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2);
