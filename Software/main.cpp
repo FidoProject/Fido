@@ -15,7 +15,7 @@ int main() {
 	TicTacToe game;
 
 	net::NeuralNet *bestPlayer = game.getBestPlayer(1000);
-	bestPlayer->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/TTT_2by9_1000.txt");
+	bestPlayer->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/TTT_2by9_1000_200.txt");
 
 	clock_t begin = clock();
 	std::cout << "Outcome: " << TicTacToe::getScoreAgainstRandomPlayers(bestPlayer, 1000) << "\n";

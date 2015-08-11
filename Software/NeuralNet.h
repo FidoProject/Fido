@@ -45,16 +45,42 @@ namespace net {
 		 * in the first layer to the last neuron in the output layer. 
 		 */
 		std::vector<double> getWeights();
+
+		// Get the weights of each neuron in the net in 3d vector form
+		std::vector< std::vector< std::vector<double> > > getWeights3D();
+
+		/* Get the weights of each neuron in a hidden layer in a 2d vector format
+		 *
+		 * A hiddenLayerIndex value of 0 specifies the hidden layer that is directly fed the input and a value of numHiddenLayers-1 specifies the hidden layer closes to the ouput layer
+		 */
+		std::vector< std::vector<double> > getHiddenLayerWeights2D(int hiddenLayerIndex);
+
+		// Get the weights of each neuron in the output layer in a 2d vector format
+		std::vector< std::vector<double> > getOutputLayerWeights2D();
 		
 		/* Set the weights of each input for each neuron in the net according to a vector.
 		 * 
 		 */
 		void setWeights(std::vector<double> w);
 
+		// Set the weights of each input for each neuron in the net according to a 3d vector
+		void setWeights3D(std::vector< std::vector< std::vector<double> > > w);
+		
+		/* Set the weights of each neuron in a hidden layer using a 2d vector format
+		*
+		* A hiddenLayerIndex value of 0 specifies the hidden layer that is directly fed the input and a value of numHiddenLayers-1 specifies the hidden layer closes to the ouput layer
+		*/
+		void setHiddenLayerWeights2D(int hiddenLayerIndex, std::vector< std::vector<double> > w);
+
+		// Set the weights of each neuron in the output layer using a 2d vector format
+		void setOutputLayerWeights2D(std::vector< std::vector<double> > w);
+
 		/* Produce an output based on an input vector of doubles.
 		 *
 		 * The crowning function of this class.*/
 		std::vector<double> getOutput(std::vector<double> input);
+
+		std::vector< std::vector<double> > feedForward(std::vector<double> input);
 		
 		/* An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
 		 *
