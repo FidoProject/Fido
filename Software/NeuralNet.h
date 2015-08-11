@@ -34,7 +34,7 @@ namespace net {
          * 
          * The function for filtering neuron output may not be stored in the file currently, so must be passed in.
          */
-        NeuralNet(std::string filename, double(*filterNeuronOutput_)(double initialOutput));
+		NeuralNet(std::string filename, double(*activationFunction_)(double initialOutput));
         
         // Stores a neural network in the specified file
         void storeNet(std::string filename);

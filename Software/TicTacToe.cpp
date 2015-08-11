@@ -7,7 +7,7 @@ net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {
 
 	net::NeuralNet modelNet(9, 1, 2, 9, net::NeuralNet::sigmoid);
 
-	for(int a = 0; a < 100; a++) randomSet.push_back(new net::NeuralNet(9, 1, 2, 9, net::NeuralNet::sigmoid));
+	for(int a = 0; a < 200; a++) randomSet.push_back(new net::NeuralNet(9, 1, 2, 9, net::NeuralNet::sigmoid));
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }
@@ -38,7 +38,7 @@ std::vector<double> TicTacToe::getPopulationFitnesses(std::vector<net::NeuralNet
 void TicTacToe::getPlayerFitnessesThread(std::vector<net::NeuralNet *> players, std::vector<double> *fitnesses) {
 	/// Elo Rating System
 	for(int a = 0; a < players.size(); a++) {
-		double score = TicTacToe::getWinsAgainstSetOfPlayers(players[a], randomSet);
+		double score = TicTacToe::getScoreAgainstSetOfPlayers(players[a], randomSet);
 		std::cout << "Score: " << score << "\n";
 		fitnesses->push_back(score);
 	}
@@ -253,28 +253,36 @@ std::vector<double> TicTacToe::prepareBoardForPlayerInput(std::vector< std::vect
     return returnVector;
 }
 
-int TicTacToe::getWinsAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames) {
-	int numberOfWins = 0;
+double TicTacToe::getScoreAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames) {
+	double score = 0;
 	for(int a = 0; a < numberOfGames; a++) {
 		net::NeuralNet random = net::NeuralNet(9, 1, 3, 9, net::NeuralNet::sigmoid);
-		if(a < (int)(numberOfGames/2.0)) {
-			if(getOutcomeOfGame(player, &random) == 1) numberOfWins++;
+		if(a < (int)(numberOfGames / 2.0)) {
+			int outcome = getOutcomeOfGame(player, &random);
+			if(outcome == 1) score++;
+			else if(outcome == 0) score += 0.5;
 		} else {
-			if(getOutcomeOfGame(&random, player) == 2) numberOfWins++;
+			int outcome = getOutcomeOfGame(&random, player);
+			if(outcome == 2) score++;
+			else if(outcome == 0) score += 0.5;
 		}
 	}
-	return numberOfWins;
+	return score;
 }
 
 // Pits a neural network against a set of neural networks in tic tac toe and returns the number of wins
-int TicTacToe::getWinsAgainstSetOfPlayers(net::NeuralNet *player, std::vector<net::NeuralNet *> networks) {
-	int numberOfWins = 0;
+double TicTacToe::getScoreAgainstSetOfPlayers(net::NeuralNet *player, std::vector<net::NeuralNet *> networks) {
+	double score = 0;
 	for(int a = 0; a < networks.size(); a++) {
 		if(a < (int)(networks.size() / 2.0)) {
-			if(getOutcomeOfGame(player, networks[a]) == 1) numberOfWins++;
+			int outcome = getOutcomeOfGame(player, networks[a]);
+			if(outcome == 1) score++;
+			else if(outcome == 0) score += 0.5;
 		} else {
-			if(getOutcomeOfGame(networks[a], player) == 2) numberOfWins++;
+			int outcome = getOutcomeOfGame(networks[a], player);
+			if(outcome == 2) score++;
+			else if(outcome == 0) score += 0.5;
 		}
 	}
-	return numberOfWins;
+	return score;
 }

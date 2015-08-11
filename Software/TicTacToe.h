@@ -47,10 +47,10 @@ public:
     static std::vector<double> prepareBoardForPlayerInput(std::vector< std::vector<int> > board, int playerNumber);
 
 	// Pits a neural network against random neural networks in tic tac toe and returns the number of wins
-	static int getWinsAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames);
+	static double getScoreAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames);
 
 	// Pits a neural network against a set of neural networks in tic tac toe and returns the number of wins
-	static int getWinsAgainstSetOfPlayers(net::NeuralNet *player, std::vector<net::NeuralNet *> networks);
+	static double getScoreAgainstSetOfPlayers(net::NeuralNet *player, std::vector<net::NeuralNet *> networks);
 
 	// A random set of neural networks used for evaluating the skill of other neural networks at TicTacToe
 	static std::vector<net::NeuralNet *> randomSet;

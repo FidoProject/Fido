@@ -24,13 +24,13 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 	numOutputs = otherNet->numOutputs;
 	numHiddenLayers = otherNet->numHiddenLayers;
 	numNeuronsPerHiddenLayer = otherNet->numNeuronsPerHiddenLayer;
-	filterNeuronOutput = otherNet->filterNeuronOutput;
+	activationFunction = otherNet->activationFunction;
 
 	setupNeuronLayers();
 }
 
-NeuralNet::NeuralNet(std::string filename, double(*filterNeuronOutput_)(double initialOutput)) {
-    filterNeuronOutput = filterNeuronOutput_;
+NeuralNet::NeuralNet(std::string filename, double(*activationFunction_)(double initialOutput)) {
+	activationFunction = activationFunction_;
     
 	std::ifstream input(filename);
     if(input.is_open()) { 
@@ -98,7 +98,7 @@ std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 		if(a > 0) input = output;
 		output.clear();
 		for(int b = 0; b < net[a].size(); b++) {
-            double out = filterNeuronOutput(net[a][b].getOutput(input));
+            double out = activationFunction(net[a][b].getOutput(input));
 			output.push_back(out);
 		}
 	}
