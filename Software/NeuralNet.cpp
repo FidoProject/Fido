@@ -9,12 +9,12 @@ NeuralNet::NeuralNet() {
 	numNeuronsPerHiddenLayer = 0;
 }
 
-NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, double(*filterNeuronOutput_)(double initialOutput)) {
+NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, double(*activationFunction_)(double initialOutput)) {
 	numInputs = numInputs_;
 	numOutputs = numOutputs_;
 	numHiddenLayers = numHiddenLayers_;
 	numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer_;
-	filterNeuronOutput = filterNeuronOutput_;
+	activationFunction = activationFunction_;
 
     setupNeuronLayers();
 }
