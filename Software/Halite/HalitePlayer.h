@@ -5,7 +5,7 @@
 #include <time.h>
 #include <set>
 
-#include "NeuralNet.h"
+#include "../NeuralNet.h"
 #include "Networking.h"
 #include "hlt.h"
 

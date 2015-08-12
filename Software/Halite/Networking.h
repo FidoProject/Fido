@@ -1,7 +1,7 @@
 #ifndef NETWORKING_H
 #define NETWORKING_H
 
-#include <SFML\Network.hpp>
+#include <SFML/Network.hpp>
 #include <time.h>
 #include <set>
 #include <iostream>
