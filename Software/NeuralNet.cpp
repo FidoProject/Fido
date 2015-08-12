@@ -183,7 +183,7 @@ void NeuralNet::setupNeuronLayers() {
     for(int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.push_back(Neuron(numInputs));
     net.push_back(firstHiddenLayer);
     
-    for(int a = 0; a < numHiddenLayers; a++) {
+    for(int a = 0; a < numHiddenLayers-1; a++) {
         std::vector<Neuron> hiddenLayer;
         for(int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
         net.push_back(hiddenLayer);

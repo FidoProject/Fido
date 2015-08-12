@@ -10,17 +10,32 @@ Backpropogation::Backpropogation(double learningRate_, double momentumTerm_, dou
 void Backpropogation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
+	lastChangeInWeight.clear();
+	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
+	for(int a = 0; a < weights.size(); a++) {
+		std::vector< std::vector<double> > layer;
+		for(int b = 0; b < weights[a].size(); b++) {
+			std::vector<double> neuron;
+			for(int c = 0; c < weights[a][b].size(); c++) {
+				neuron.push_back(0);
+			}
+			layer.push_back(neuron);
+		}
+		lastChangeInWeight.push_back(layer);
+	}
+
 	do {
+		totalError = 0;
 		for(int a = 0; a < input.size(); a++) {
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
+		std::cout << "Iterations: " << iterations << "\n";
+		std::cout << "Error: " << totalError << "\n";
 	} while(totalError > targetErrorLevel && iterations < maxiumumIterations);
 }
 
 
-/// Implement momentum term
-/// Remember to update the activation energy weight
 /// Assumes sigmoid
 double Backpropogation::trainOnDataPoint(net::NeuralNet *network, std::vector<double> input, std::vector<double> correctOutput) {
 	std::vector< std::vector<double> > outputs = network->feedForward(input);
@@ -47,7 +62,7 @@ double Backpropogation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 		
 		for(int neuronIndex = 0; neuronIndex < network->numNeuronsPerHiddenLayer; neuronIndex++) {
 			double errorsTimesWeights = 0;
-			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerWeights.size(); previousNeuronIndex++) {
+			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
 				errorsTimesWeights += lastLayerError[previousNeuronIndex] * lastLayerWeights[previousNeuronIndex][neuronIndex];
 			}
 			double hiddenNeuronError = currentHiddenLayerOutput[neuronIndex] * (1 - currentHiddenLayerOutput[neuronIndex]) * errorsTimesWeights;
@@ -57,11 +72,27 @@ double Backpropogation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 	}
 
 	/// Update weights
-	for(int layerIndex = 0; layerIndex < errors.size(); layerIndex++) {
-		for(int neuronIndex = 0; neuronIndex < errors[layerIndex].size(); neuronIndex++) {
-			for(int previousOutput = 0; previousOutput < outputs[layerIndex + 1].size(); previousOutput++) {
-				weights[layerIndex][neuronIndex][previousOutput] += learningRate * errors[layerIndex][neuronIndex] * outputs[layerIndex + 1][previousOutput];
+	for(int errorIndex = 0; errorIndex < errors.size(); errorIndex++) {
+		int layerIndex = (errors.size() - 1) - errorIndex;
+		for(int neuronIndex = 0; neuronIndex < errors[errorIndex].size(); neuronIndex++) {
+			if(errorIndex == errors.size() - 1) {
+				for(int inputIndex = 0; inputIndex < input.size(); inputIndex++) {
+					double deltaWeight = learningRate * errors[errorIndex][neuronIndex] * input[inputIndex] + lastChangeInWeight[layerIndex][neuronIndex][inputIndex]*momentumTerm;
+					weights[layerIndex][neuronIndex][inputIndex] += deltaWeight;
+					lastChangeInWeight[layerIndex][neuronIndex][inputIndex] = deltaWeight;
+				}
+			} else {
+				for(int previousOutput = 0; previousOutput < outputs[layerIndex - 1].size(); previousOutput++) {
+					double deltaWeight = learningRate * errors[errorIndex][neuronIndex] * outputs[layerIndex - 1][previousOutput] + lastChangeInWeight[layerIndex][neuronIndex][previousOutput]*momentumTerm;
+					weights[layerIndex][neuronIndex][previousOutput] += deltaWeight;
+					lastChangeInWeight[layerIndex][neuronIndex][previousOutput] = deltaWeight;
+				}
 			}
+
+			/// Change the activation weight
+			double deltaWeight = -learningRate * errors[errorIndex][neuronIndex] + lastChangeInWeight[layerIndex][neuronIndex][weights[layerIndex][neuronIndex].size() - 1]*momentumTerm;
+			weights[layerIndex][neuronIndex][weights[layerIndex][neuronIndex].size() - 1] += deltaWeight;
+			lastChangeInWeight[layerIndex][neuronIndex][weights[layerIndex][neuronIndex].size() - 1] = deltaWeight;
 		}
 	}
 
