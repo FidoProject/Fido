@@ -32,7 +32,6 @@ int HalitePlayer::playGames() {
 			}
 		}
 		sendFrame(connection, moves);
-		if(noSentients == true) std::cout << "No sen";
 	}
 	unsigned short wins = 0;
 	getFinish(connection, wins);

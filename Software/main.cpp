@@ -9,14 +9,14 @@
 #include "GeneticAlgo.h"
 #include "TicTacToe.h"
 #include "Halite/Halite.h"
-#include "Halite/Basic.h"
 #include "Backpropagation.h"
 
 int main() {
     srand(time(NULL));
 
 	net::NeuralNet *player = Halite::getBestPlayer(15);
-	player->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/firsthalite.txt");
+	player->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestagainstbasic.txt");
+
 
 	/*TicTacToe game;
 	net::NeuralNet *bestPlayer = game.getBestPlayer(5000);
