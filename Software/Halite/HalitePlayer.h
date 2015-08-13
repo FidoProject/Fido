@@ -11,8 +11,10 @@
 
 class HalitePlayer {
 public:
+	HalitePlayer();
 	HalitePlayer(net::NeuralNet *network_);
-	void run();
+	void connect();
+	int playGames();
 	hlt::Move getMove(hlt::Location sentientLocation);
 
 	net::NeuralNet *network;

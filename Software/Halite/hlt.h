@@ -7,7 +7,7 @@
 
 namespace hlt
 {
-	struct Location { unsigned short x, y;  };
+	struct Location { unsigned short x, y; };
 	static bool operator<(const Location& l1, const Location& l2)
 	{
 		return ((l1.x + l1.y)*(unsigned int(l1.x) + l1.y + 1) / 2) + l1.y < ((l2.x + l2.y)*(unsigned int(l2.x) + l2.y + 1) / 2) + l2.y;
@@ -85,12 +85,6 @@ namespace hlt
 		}
 		Site& getSite(Location l)
 		{
-			if(l.y < 0) l.y += map_height;
-			if(l.y > map_height - 1) l.y -= map_height;
-
-			if(l.x < 0) l.x += map_width;
-			if(l.x > map_width - 1) l.x -= map_width;
-
 			return contents[l.y][l.x];
 		}
 		Site& getNorthernSite(Location l)

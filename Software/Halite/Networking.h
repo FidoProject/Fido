@@ -1,7 +1,7 @@
 #ifndef NETWORKING_H
 #define NETWORKING_H
 
-#include <SFML/Network.hpp>
+#include <SFML\Network.hpp>
 #include <time.h>
 #include <set>
 #include <iostream>
@@ -16,8 +16,8 @@ static sf::TcpSocket * connectToGame()
 		sf::TcpSocket * s = new sf::TcpSocket();
 		s->setBlocking(true);
 		std::string in;
-		unsigned short portNumber;
-		std::cout << "What port would you like to connect to? Please enter a valid port number: ";
+		unsigned short portNumber = 2000;
+		/*std::cout << "What port would you like to connect to? Please enter a valid port number: ";
 		while(true)
 		{
 			std::getline(std::cin, in);
@@ -30,7 +30,7 @@ static sf::TcpSocket * connectToGame()
 			{
 				std::cout << "That isn't a valid input. Please enter a valid port number: ";
 			}
-		}
+		}*/
 		if(sf::Socket::Status::Done == s->connect(sf::IpAddress::getLocalAddress(), portNumber))
 		{
 			std::cout << "Successfully established contact with " << s->getRemoteAddress() << ".\n";

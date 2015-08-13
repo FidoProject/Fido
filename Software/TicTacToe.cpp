@@ -3,11 +3,11 @@
 std::vector<net::NeuralNet *> TicTacToe::randomSet = std::vector<net::NeuralNet*>(0);
 
 net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {
-	gen::GeneticAlgo geneticAlgo(40, 0.2, 0.6, 5, getPopulationFitnesses);
+	gen::GeneticAlgo geneticAlgo(50, 0.2, 0.6, 5, getPopulationFitnesses);
 
-	net::NeuralNet modelNet(9, 1, 4, 9, net::NeuralNet::sigmoid);
+	net::NeuralNet modelNet(9, 1, 4, 12, net::NeuralNet::sigmoid);
 
-	for(int a = 0; a < 250; a++) randomSet.push_back(new net::NeuralNet(9, 1, 4, 9, net::NeuralNet::sigmoid));
+	///for(int a = 0; a < 250; a++) randomSet.push_back(new net::NeuralNet(9, 1, 4, 9, net::NeuralNet::sigmoid));
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }
@@ -38,7 +38,7 @@ std::vector<double> TicTacToe::getPopulationFitnesses(std::vector<net::NeuralNet
 void TicTacToe::getPlayerFitnessesThread(std::vector<net::NeuralNet *> players, std::vector<double> *fitnesses) {
 	/// Elo Rating System
 	for(int a = 0; a < players.size(); a++) {
-		double score = TicTacToe::getScoreAgainstSetOfPlayers(players[a], randomSet);
+		double score = TicTacToe::getScoreAgainstRandomPlayers(players[a], 1000);
 		std::cout << "Score: " << score << "\n";
 		fitnesses->push_back(score);
 	}
@@ -256,7 +256,7 @@ std::vector<double> TicTacToe::prepareBoardForPlayerInput(std::vector< std::vect
 double TicTacToe::getScoreAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames) {
 	double score = 0;
 	for(int a = 0; a < numberOfGames; a++) {
-		net::NeuralNet random = net::NeuralNet(9, 1, 3, 9, net::NeuralNet::sigmoid);
+		net::NeuralNet random = net::NeuralNet(9, 1, 4, 12, net::NeuralNet::sigmoid);
 		if(a < (int)(numberOfGames / 2.0)) {
 			int outcome = getOutcomeOfGame(player, &random);
 			if(outcome == 1) score++;
