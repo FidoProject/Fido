@@ -75,8 +75,8 @@ static void getFrame(sf::TcpSocket * s, hlt::Map& m, bool &done)
 {
 	sf::Packet r;
 	s->receive(r);
-	r >> done;
-	if(done == true) return;
+	//r >> done;
+	//if(done == true) return;
 	r >> m;
 }
 
