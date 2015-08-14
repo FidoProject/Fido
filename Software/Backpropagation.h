@@ -9,13 +9,13 @@
 
 namespace net {
 
-	class Backpropogation {
+	class Backpropagation {
 	public:
 		// Initialize the Backpropagation object with the learningRate and momentumTerm constants
-		Backpropogation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_);
+		Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_);
 		
 		// Initialize empty Backpropagation object
-		Backpropogation();
+		Backpropagation();
 
 		/* Trains a neural network on a training set.
 		 *
