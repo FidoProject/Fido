@@ -14,7 +14,8 @@ NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int 
 	numOutputs = numOutputs_;
 	numHiddenLayers = numHiddenLayers_;
 	numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer_;
-	activationFunction = activationFunction_;
+	outputActivationFunction = activationFunction_;
+	hiddenActivationFunction = activationFunction_;
 
     setupNeuronLayers();
 }
@@ -24,13 +25,15 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 	numOutputs = otherNet->numOutputs;
 	numHiddenLayers = otherNet->numHiddenLayers;
 	numNeuronsPerHiddenLayer = otherNet->numNeuronsPerHiddenLayer;
-	activationFunction = otherNet->activationFunction;
+	outputActivationFunction = otherNet->outputActivationFunction;
+	hiddenActivationFunction = otherNet->hiddenActivationFunction;
 
 	setupNeuronLayers();
 }
 
 NeuralNet::NeuralNet(std::string filename, double(*activationFunction_)(double initialOutput)) {
-	activationFunction = activationFunction_;
+	outputActivationFunction = activationFunction_;
+	hiddenActivationFunction = activationFunction_;
     
 	std::ifstream input(filename);
     if(input.is_open()) { 
@@ -148,13 +151,16 @@ void NeuralNet::setOutputLayerWeights2D(std::vector< std::vector<double> > w) {
 	}
 }
 
+
 std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 	std::vector<double> output;
 	for(int a = 0; a < net.size(); a++) {
 		if(a > 0) input = output;
 		output.clear();
 		for(int b = 0; b < net[a].size(); b++) {
-            double out = activationFunction(net[a][b].getOutput(input));
+			double out;
+			if(b == net[a].size()-1) out = outputActivationFunction(net[a][b].getOutput(input));
+			else out = hiddenActivationFunction(net[a][b].getOutput(input));
 			output.push_back(out);
 		}
 	}
@@ -169,7 +175,9 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 		std::vector<double> outputLayer;
 
 		for(int b = 0; b < net[a].size(); b++) {
-			double out = activationFunction(net[a][b].getOutput(input));
+			double out;
+			if(b == net[a].size() - 1) out = outputActivationFunction(net[a][b].getOutput(input));
+			else out = hiddenActivationFunction(net[a][b].getOutput(input));
 			outputLayer.push_back(out);
 		}
 

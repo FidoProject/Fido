@@ -14,10 +14,13 @@
 int main() {
     srand(time(NULL));
 
-	net::NeuralNet *player = new net::NeuralNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/firsthalite.txt", net::NeuralNet::sigmoid);
-	HalitePlayer hPlayer(player);
+	net::NeuralNet *player = Halite::getBestPlayer(200);
+	player->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestbasic.txt");
+
+	/*net::NeuralNet *player = new net::NeuralNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestbasic.txt", net::NeuralNet::sigmoid);
+	HalitePlayer hPlayer = HalitePlayer(player);
 	hPlayer.connect();
-	hPlayer.playGames();
+	hPlayer.playGames();*/
 
 	/*TicTacToe game;
 	net::NeuralNet *bestPlayer = game.getBestPlayer(5000);

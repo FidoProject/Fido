@@ -50,12 +50,15 @@ namespace gen {
 		// Select a random network from the population with a weight towards higher fitness levels
 		net::NeuralNet* selectNNBasedOnFitness();
 
+		// Uses the fitness and population values to mate fit individuals, mutate their weights, and place them into the next generation
+		void createNextGeneration();
+
 		/* Return the most fit neural network in a population that undergoes a specified number of generations.
 		 *
 		 * modelNetwork is used to determine the number of inputs, outputs, hidden layers,
 		 * and neurons per hidden layer for each network in the population. 
 		 */
-		net::NeuralNet* getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet &modelNetwork);
+		net::NeuralNet* getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet *modelNetwork);
 
 		// Get the fitnesses of each neural network in the population.
 		std::vector<double>(*getPopulationFitness)(std::vector<net::NeuralNet *> neuralNet);

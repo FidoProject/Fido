@@ -110,12 +110,21 @@ namespace net {
 
 		// Variables used to describe Neural Networks.
 		int numInputs, numOutputs, numHiddenLayers, numNeuronsPerHiddenLayer;
+
+		/* The activation function for the hidden neurons
+		 *
+		 * An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
+		 */
+		double(*hiddenActivationFunction)(double initialOutput);
+
+		/* The activation function for the output neurons
+		 *
+		 * An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
+		 */
+		double(*outputActivationFunction)(double initialOutput);
     private:
         // Creates layers of neurons with random weights according to the values of numInputs, numOutputs, numHiddenLayers, and numNeuronsPerHiddenLayer
-        void setupNeuronLayers();
-        
-        // Takes the initial output of a neuron and uses an activation value of 0 to filter the output
-        double(*activationFunction)(double initialOutput);
+        void setupNeuronLayers();   
 	};
 }
 

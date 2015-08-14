@@ -22,11 +22,9 @@ int HalitePlayer::playGames() {
 		moves.clear();
 		getFrame(connection, present_map, done);
 		if(done == true) break;
-		bool noSentients = true;
 		for(unsigned short a = 0; a < present_map.map_height; a++) {
 			for(unsigned short b = 0; b < present_map.map_width; b++) {
 				if(present_map.contents[a][b].owner == my_tag && present_map.contents[a][b].age == age_of_sentient) {
-					noSentients = false;
 					moves.insert(getMove({b, a}));
 				}
 			}
@@ -42,7 +40,7 @@ hlt::Move HalitePlayer::getMove(hlt::Location sentientLocation) {
 	std::vector< double > oneDInput;
 	for(int y = sentientLocation.y - 1; y <= sentientLocation.y + 1; y++) {
 		for(int x = sentientLocation.x - 1; x <= sentientLocation.x + 1; x++) {
-			std::vector<double> inputsForLocation;
+			double input1, input2;
 			unsigned short actualX, actualY;
 
 			if(x < 0) actualX = x + present_map.map_width;
@@ -55,16 +53,16 @@ hlt::Move HalitePlayer::getMove(hlt::Location sentientLocation) {
 
 			hlt::Site site = present_map.getSite({actualX, actualY});
 			if(site.owner == my_tag) {
-				if(site.age == age_of_sentient) inputsForLocation = { 1, 0 };
-				else inputsForLocation = { 0, (double)site.age / age_of_sentient };
+				if(site.age == age_of_sentient) input1 = 1, input2 = 0;
+				else input1 = 0, input2 = (double)site.age / age_of_sentient;
 			} else if(site.owner == 0) {
-				inputsForLocation = { 0, 0 };
+				input1 = 0, input2 = 0;
 			} else {
-				if(site.age == age_of_sentient) inputsForLocation = { -1, 0 };
-				else inputsForLocation = { 0, -1*((double)site.age / age_of_sentient) };
+				if(site.age == age_of_sentient)input1 = -1, input2 = 0;
+				else input1 = 0, input2 = -1*((double)site.age / age_of_sentient);
 			}
-			oneDInput.push_back(inputsForLocation[0]);
-			oneDInput.push_back(inputsForLocation[1]);
+			oneDInput.push_back(input1);
+			oneDInput.push_back(input2);
 		}
 	}
 
@@ -77,7 +75,7 @@ hlt::Move HalitePlayer::getMove(hlt::Location sentientLocation) {
 
 	for(int a = 0; a < sizeof(movesICanMake) / sizeof(movesICanMake[0]); a++) {
 		int currentIndex = movesICanMake[a] * 2;
-		std::vector<double> holder = { oneDInput[currentIndex], oneDInput[currentIndex+1] };
+		double holder1 = oneDInput[currentIndex], holder2 = oneDInput[currentIndex+1];
 		oneDInput[middleIndex] = 0; 
 		oneDInput[middleIndex+1] = 0;
 		oneDInput[currentIndex] = 1;
@@ -90,8 +88,8 @@ hlt::Move HalitePlayer::getMove(hlt::Location sentientLocation) {
 		}
 		oneDInput[middleIndex] = 1;
 		oneDInput[middleIndex + 1] = 0;
-		oneDInput[currentIndex] = holder[0];
-		oneDInput[currentIndex + 1] = holder[1];
+		oneDInput[currentIndex] = holder1;
+		oneDInput[currentIndex + 1] = holder2;
 	}
 
 	int moveNumber = -1;

@@ -1,10 +1,16 @@
 #include "Backpropagation.h"
 
+using namespace net;
+
 Backpropogation::Backpropogation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_) {
 	learningRate = learningRate_;
 	momentumTerm = momentumTerm_;
 	targetErrorLevel = targetErrorLevel_;
 	maxiumumIterations = maximumIterations_;
+}
+
+Backpropogation::Backpropogation() {
+
 }
 
 void Backpropogation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {

@@ -76,52 +76,49 @@ net::NeuralNet* GeneticAlgo::selectNNBasedOnFitness() {
 	throw 1;
 }
 
-net::NeuralNet* GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet &modelNetwork) {
+void GeneticAlgo::createNextGeneration() {
+	std::vector<net::NeuralNet *> nextGeneration;
+
+	int mostFitIndex = 0;
+	for(int b = 1; b < fitnesses.size(); b++) {
+		if(fitnesses[b] > fitnesses[mostFitIndex]) mostFitIndex = b;
+	}	
+	for(int b = 0; b < numberOfElitismCopies; b++)nextGeneration.push_back(population[mostFitIndex]);
+	std::cout << "Highest: " << fitnesses[mostFitIndex] << "\n";
+
+	while(nextGeneration.size() < populationSize) {
+		net::NeuralNet *parent1 = selectNNBasedOnFitness(), *parent2 = selectNNBasedOnFitness();
+		net::NeuralNet *baby1, *baby2;
+
+		crossover(parent1, parent2, baby1, baby2);
+		mutate(baby1);
+		mutate(baby2);
+
+		nextGeneration.push_back(baby1);
+		nextGeneration.push_back(baby2);
+	}
+	std::vector<net::NeuralNet *>().swap(population);
+	population = nextGeneration;
+	std::vector<net::NeuralNet *>().swap(nextGeneration);
+}
+
+net::NeuralNet* GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet *modelNetwork) {
 	population.clear();
 	fitnesses.clear();
 	
-	std::cout << "Starting generation\n";
-	for(int a = 0; a < populationSize; a++) population.push_back(new net::NeuralNet(&modelNetwork));
+	population.push_back(modelNetwork);
+	for(int a = 0; a < populationSize-1; a++) population.push_back(new net::NeuralNet(modelNetwork));
 
-	clock_t begin = clock();
 	fitnesses = getPopulationFitness(population);
-	clock_t end = clock();
-	double elapsedSecs = double(end - begin) / CLOCKS_PER_SEC;
-	std::cout << "Time: " << elapsedSecs << "\n";
 
 	for(int a = 0; a < numberOfGenerations; a++) {
 		std::cout << "Generation: " << a << "\n";
-		std::vector<net::NeuralNet *> nextGeneration;
-
-		/// Elitism
-		int mostFitIndex = 0;
-		for(int b = 1; b < fitnesses.size(); b++) {
-			if(fitnesses[b] > fitnesses[mostFitIndex]) mostFitIndex = b;
-		}
-		std::cout << "Highest: " << fitnesses[mostFitIndex] << "\n";
-
-		for(int b = 0; b < numberOfElitismCopies; b++)nextGeneration.push_back(population[mostFitIndex]);
-
-		while(nextGeneration.size() < populationSize) {
-			net::NeuralNet *parent1 = selectNNBasedOnFitness(), *parent2 = selectNNBasedOnFitness();
-			net::NeuralNet *baby1, *baby2;
-
-			crossover(parent1, parent2, baby1, baby2);
-			mutate(baby1);
-			mutate(baby2);
-
-			nextGeneration.push_back(baby1);
-			nextGeneration.push_back(baby2);
-		}
-		std::vector<net::NeuralNet *>().swap(population);
-		population = nextGeneration;
-        std::vector<net::NeuralNet *>().swap(nextGeneration);
+		
+		createNextGeneration();
 		fitnesses = getPopulationFitness(population);
 	}
 
 	int mostFitIndex = 0;
-	for(int a = 1; a < fitnesses.size(); a++) {
-		if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
-	}
+	for(int a = 1; a < fitnesses.size(); a++)if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
 	return population[mostFitIndex];
 }
