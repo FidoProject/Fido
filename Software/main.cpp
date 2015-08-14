@@ -8,14 +8,13 @@
 #include "NeuralNet.h"
 #include "GeneticAlgo.h"
 #include "TicTacToe.h"
-#include "Halite/Halite.h"
 #include "Backpropagation.h"
 
 int main() {
     srand(time(NULL));
 
-	net::NeuralNet *player = Halite::getBestPlayer(200);
-	player->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestbasic.txt");
+	//net::NeuralNet *player = Halite::getBestPlayer(200);
+	//player->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestbasic.txt");
 
 	/*net::NeuralNet *player = new net::NeuralNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestbasic.txt", net::NeuralNet::sigmoid);
 	HalitePlayer hPlayer = HalitePlayer(player);
