@@ -2,18 +2,18 @@
 
 using namespace net;
 
-Backpropogation::Backpropogation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_) {
+Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_) {
 	learningRate = learningRate_;
 	momentumTerm = momentumTerm_;
 	targetErrorLevel = targetErrorLevel_;
 	maxiumumIterations = maximumIterations_;
 }
 
-Backpropogation::Backpropogation() {
+Backpropagation::Backpropagation() {
 
 }
 
-void Backpropogation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {
+void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
 	lastChangeInWeight.clear();
@@ -43,7 +43,7 @@ void Backpropogation::trainOnData(net::NeuralNet *network, std::vector< std::vec
 
 
 /// Assumes sigmoid
-double Backpropogation::trainOnDataPoint(net::NeuralNet *network, std::vector<double> input, std::vector<double> correctOutput) {
+double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<double> input, std::vector<double> correctOutput) {
 	std::vector< std::vector<double> > outputs = network->feedForward(input);
 	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
 	std::vector< std::vector<double> > errors;
@@ -53,6 +53,7 @@ double Backpropogation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 	std::vector<double> outputNeuronErrors;
 	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];
 	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
+		std::cout << "Index: " << neuronIndex << "\n";
 		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputLayerOutput[neuronIndex] * (1 - outputLayerOutput[neuronIndex]);
 		networkError += pow(correctOutput[neuronIndex] - outputLayerOutput[neuronIndex], 2);
 		outputNeuronErrors.push_back(outputNeuronError);
