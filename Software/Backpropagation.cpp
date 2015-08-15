@@ -36,8 +36,8 @@ void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vec
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
-		std::cout << "Iterations: " << iterations << "\n";
-		std::cout << "Error: " << totalError << "\n";
+		///std::cout << "Iterations: " << iterations << "\n";
+		////std::cout << "Error: " << totalError << "\n";
 	} while(totalError > targetErrorLevel && iterations < maxiumumIterations);
 }
 
@@ -53,7 +53,6 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 	std::vector<double> outputNeuronErrors;
 	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];
 	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
-		std::cout << "Index: " << neuronIndex << "\n";
 		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputLayerOutput[neuronIndex] * (1 - outputLayerOutput[neuronIndex]);
 		networkError += pow(correctOutput[neuronIndex] - outputLayerOutput[neuronIndex], 2);
 		outputNeuronErrors.push_back(outputNeuronError);

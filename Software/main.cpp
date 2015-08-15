@@ -16,26 +16,28 @@
 int main() {
     srand(time(NULL));
 
-	//net::NeuralNet *player = Halite::getBestPlayer(200);
-	//player->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestbasic.txt");
-	
-	net::QLearn learn = net::QLearn(new net::NeuralNet(3, 1, 3, 3, net::NeuralNet::sigmoid), net::Backpropagation(0.5, 0.9, 0.003, 100000), 1, 0.5, 2);
+	net::QLearn learn = net::QLearn(new net::NeuralNet(3, 1, 3, 3, net::NeuralNet::sigmoid), net::Backpropagation(0.5, 0.9, 0.01, 100000), 1, 0.5, 2);
 	std::vector<double> state(1);
 	double reward;
 	for(int a = 0; a < 100; a++) {
-		state[0] = 1;
-		int action = learn.getAction(state);
-		//if(action == 0) learn.applyReinforcement(0, );
+		int determiner = a % 2;
+
+		state[0] = determiner;
+		int action = learn.chooseAction(state);
+		state[0] = (determiner + 1) % 2;
+		if(action != determiner) learn.applyReinforcement(-0.1, state);
+		else learn.applyReinforcement(1, state);
 	}
 
-	/*net::NeuralNet *player = new net::NeuralNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/bestbasic.txt", net::NeuralNet::sigmoid);
-	HalitePlayer hPlayer = HalitePlayer(player);
-	hPlayer.connect();
-	hPlayer.playGames();*/
+	std::cout << "input plz\n";
+	std::cin >> state[0];
+	while(true) {
+		std::cout << "Action taken: " << learn.chooseAction(state) << "\n";
+		std::cout << "reward plz\n";
+		std::cin >> reward;
+		std::cout << "new state plz\n";
+		std::cin >> state[0];
+		learn.applyReinforcement(reward, state);
+	}
 
-	/*TicTacToe game;
-	net::NeuralNet *bestPlayer = game.getBestPlayer(5000);
-	bestPlayer->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/TTT_4by9_5000_1000.txt");
-	std::cout << "Outcome: " << TicTacToe::getScoreAgainstRandomPlayers(bestPlayer, 10000) << "\n";
-	TicTacToe::playAgainstHuman(bestPlayer);*/
 } 

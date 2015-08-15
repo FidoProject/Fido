@@ -25,19 +25,22 @@ namespace net {
 		 */
 		QLearn(NeuralNet *network_, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_);
 
-		/* Gets an output from the network for the inputs specified (the variable state) and reward value of the action with the greatest reward. 
-		 *
-		 *
-		 */
-		double maxRewardForState(std::vector<double> state);
+		// Gets the action that the network deems most benificial for the currentState
+		int chooseAction(std::vector<double> currentState);
 
-		// Gets the action that the network deems most benificial for the inputs specified 
-		int getAction(std::vector<double> currentState);
-
-		/*Given the immediate reward from the last action taken and the new inputs given to the network. 
-		 * Calculates the correct value for the longterm reward of the lastAction and trains the network accordingly.
+		/* Given the immediate reward from the last action taken and the new state 
+		 * Calculates the correct value for the longterm reward of the lastAction and trains the network accordingly to output this correctly
 		 */
 		void applyReinforcement(int reward, std::vector<double> newState);
+	private:
+		std::vector<double> nnInputForStateAndAction(std::vector<double> state, int action);
+
+		void getBestActionAndReward(std::vector<double> state, int &bestAction, double &bestReward);
+
+		// Gets the reward value of the action with the greatest reward.
+		double highestReward(std::vector<double> state);
+
+		int bestAction(std::vector<double> state);
 	};
 };
 
