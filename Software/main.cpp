@@ -8,7 +8,6 @@
 #include "NeuralNet.h"
 #include "GeneticAlgo.h"
 #include "TicTacToe.h"
-#include "Halite/Halite.h"
 #include "Backpropagation.h"
 #include "QLearn.h"
 
