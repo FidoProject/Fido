@@ -11,7 +11,7 @@
 namespace net {
 	class QLearn {
 	public:
-		NeuralNet *network;
+		std::vector<NeuralNet *> networks;
 		Backpropagation backprop;
 		int lastAction, numberOfActions;
 		double learningRate, devaluationFactor;
@@ -23,18 +23,18 @@ namespace net {
 		 * Devaluation factor is a constant between 0 and 1 that weighs future reward vs immediate reward. 
 		 * A value of 0 will make the network only value immediate reward, while a value of 1 will make it consider future reward with the same weight as immediate reward. 
 		 */
-		QLearn(NeuralNet *network_, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_);
+		QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_);
 
 		// Gets the action that the network deems most benificial for the currentState
-		int chooseAction(std::vector<double> currentState);
+		int chooseBestAction(std::vector<double> currentState);
+
+		int chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant);
 
 		/* Given the immediate reward from the last action taken and the new state 
 		 * Calculates the correct value for the longterm reward of the lastAction and trains the network accordingly to output this correctly
 		 */
-		void applyReinforcement(int reward, std::vector<double> newState);
+		void applyReinforcementToLastAction(double reward, std::vector<double> newState);
 	private:
-		std::vector<double> nnInputForStateAndAction(std::vector<double> state, int action);
-
 		void getBestActionAndReward(std::vector<double> state, int &bestAction, double &bestReward);
 
 		// Gets the reward value of the action with the greatest reward.

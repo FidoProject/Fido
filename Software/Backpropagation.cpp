@@ -7,10 +7,13 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 	momentumTerm = momentumTerm_;
 	targetErrorLevel = targetErrorLevel_;
 	maxiumumIterations = maximumIterations_;
+	hiddenActivationFunctionDerivative = sigmoidDerivative;
+	outputActivationFunctionDerivative = sigmoidDerivative;
 }
 
 Backpropagation::Backpropagation() {
-
+	hiddenActivationFunctionDerivative = sigmoidDerivative;
+	outputActivationFunctionDerivative = sigmoidDerivative;
 }
 
 void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {
@@ -37,7 +40,7 @@ void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vec
 		}
 		iterations++;
 		///std::cout << "Iterations: " << iterations << "\n";
-		////std::cout << "Error: " << totalError << "\n";
+		std::cout << "Error: " << totalError << "\n";
 	} while(totalError > targetErrorLevel && iterations < maxiumumIterations);
 }
 
@@ -53,7 +56,7 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 	std::vector<double> outputNeuronErrors;
 	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];
 	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
-		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputLayerOutput[neuronIndex] * (1 - outputLayerOutput[neuronIndex]);
+		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputActivationFunctionDerivative(outputLayerOutput[neuronIndex]);
 		networkError += pow(correctOutput[neuronIndex] - outputLayerOutput[neuronIndex], 2);
 		outputNeuronErrors.push_back(outputNeuronError);
 	}
@@ -71,7 +74,7 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
 				errorsTimesWeights += lastLayerError[previousNeuronIndex] * lastLayerWeights[previousNeuronIndex][neuronIndex];
 			}
-			double hiddenNeuronError = currentHiddenLayerOutput[neuronIndex] * (1 - currentHiddenLayerOutput[neuronIndex]) * errorsTimesWeights;
+			double hiddenNeuronError = hiddenActivationFunctionDerivative(currentHiddenLayerOutput[neuronIndex]) * errorsTimesWeights;
 			currentLayerError.push_back(hiddenNeuronError);
 		}
 		errors.push_back(currentLayerError);

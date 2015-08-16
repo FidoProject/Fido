@@ -2,53 +2,71 @@
 
 using namespace net;
 
-QLearn::QLearn(NeuralNet *network_, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_) {
-	network = network_;
+QLearn::QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_) {
 	backprop = backprop_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
 	numberOfActions = numberOfActions_;
 	lastAction = -1;
+
+	for(int a = 0; a < numberOfActions; a++) networks.push_back(new net::NeuralNet(modelNetwork));
 }
 
-int QLearn::chooseAction(std::vector<double> currentState) {
+int QLearn::chooseBestAction(std::vector<double> currentState) {
 	int action = bestAction(currentState);
 	lastAction = action;
 	lastState = currentState;
 	return action;
 }
 
-void QLearn::applyReinforcement(int reward, std::vector<double> newState) {
-	if(lastAction == -1) return;
+int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant) {
+	double determiner = (double)rand() / (double)RAND_MAX;
+	std::vector<double> exponentTerms;
+	double sumOfExponentTerms = 0;
 
-	double targetValueForLastState = (reward + (learningRate*highestReward(newState))) / 2;
-	std::vector<double> nnInput = nnInputForStateAndAction(lastState, lastAction);
-	backprop.trainOnData(network, { nnInput }, { { targetValueForLastState } });
+	for(int a = 0; a < networks.size(); a++) {
+		double reward = networks[a]->getOutput(currentState)[0];
+		double exponentTerm = exp(reward / explorationConstant);
+		exponentTerms.push_back(exponentTerm);
+		sumOfExponentTerms += exponentTerm;
+	}
+
+	double sumOfProbabilities = 0;
+	for(int a = 0; a < networks.size(); a++) {
+		sumOfProbabilities += (exponentTerms[a] / sumOfExponentTerms);
+		if(sumOfProbabilities >= determiner) {
+			lastAction = a;
+			lastState = currentState;
+			return a;
+		}
+	}
+
+	throw 1;
 }
 
-std::vector<double> QLearn::nnInputForStateAndAction(std::vector<double> state, int action) {
-	std::vector<double> nnInput = state;
-	for(int a = 0; a < numberOfActions; a++) nnInput.push_back(0);
-	nnInput[state.size() + action] = 1;
+void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState) {
+	if(lastAction == -1) return;
 
-	return nnInput;
+	double oldValue = highestReward(lastState);
+	double feedback = (reward + (devaluationFactor*highestReward(newState)));
+	double targetValueForLastState = ((1 - learningRate) * oldValue) + (learningRate*feedback);
+
+	std::cout << "T val: " << targetValueForLastState << "\n";
+
+	backprop.trainOnData(networks[lastAction], { lastState }, { { targetValueForLastState } });
 }
 
 void QLearn::getBestActionAndReward(std::vector<double> state, int &bestAction, double &bestReward) {
 	bestAction = 0;
 	bestReward = -99999;
 
-	std::vector<double> nnInput = state;
-	for(int a = 0; a < numberOfActions; a++) nnInput.push_back(0);
-
-	for(int a = 0; a < numberOfActions; a++) {
-		nnInput[state.size() + a] = 1;
-		double rewardForAction = network->getOutput(nnInput)[0];
-		if(rewardForAction > bestReward) {
-			bestReward = rewardForAction;
+	for(int a = 0; a < networks.size(); a++) {
+		double reward = networks[a]->getOutput(state)[0];
+		std::cout << "State:  " << state[0] << "; Reward for " << a << ": " << reward << "\n";
+		if(reward > bestReward) {
 			bestAction = a;
+			bestReward = reward;
 		}
-		nnInput[state.size() + a] = 0;
 	}
 }
 
@@ -65,5 +83,5 @@ int QLearn::bestAction(std::vector<double> state) {
 	double bestReward;
 	getBestActionAndReward(state, bestAction, bestReward);
 
-	return bestReward;
+	return bestAction;
 }

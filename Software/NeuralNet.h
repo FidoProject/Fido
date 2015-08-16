@@ -101,7 +101,7 @@ namespace net {
 		}
 
 		// Takes the initial output of a neuron and returns it unchanged
-		static double unchanged(double initialOutput) {
+		static double simpleLinear(double initialOutput) {
 			return initialOutput;
 		}
 

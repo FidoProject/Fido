@@ -30,6 +30,16 @@ namespace net {
 		double learningRate, momentumTerm, targetErrorLevel;
 		int maxiumumIterations;
 		std::vector< std::vector< std::vector<double> > > lastChangeInWeight;
+
+		static double sigmoidDerivative(double neuronOuput) {
+			return neuronOuput * (1 - neuronOuput);
+		}
+		static double simpleLinearDerivative(double neuronOutput) {
+			return 1;
+		}
+
+		double(*hiddenActivationFunctionDerivative)(double neuronOuput);
+		double(*outputActivationFunctionDerivative)(double neuronOuput);
 	};
 }
 

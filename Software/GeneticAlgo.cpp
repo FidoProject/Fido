@@ -10,7 +10,7 @@ GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossov
 }
 
 void GeneticAlgo::crossover(net::NeuralNet *mom, net::NeuralNet *dad, net::NeuralNet *&offspring1, net::NeuralNet *&offspring2) {
-	float crossoverDeterminer = rand() / RAND_MAX;
+	float crossoverDeterminer = (float)rand() / (float)RAND_MAX;
 	if(crossoverDeterminer > crossoverRate) {
 		offspring1 = mom;
 		offspring2 = dad;
@@ -48,7 +48,7 @@ void GeneticAlgo::mutate(net::NeuralNet *net) {
 	std::vector<double> weights = net->getWeights();
 
 	for(int a = 0; a < weights.size(); a++) {
-		float mutationDeterminer = rand() / RAND_MAX;
+		float mutationDeterminer = (float)rand() / (float)RAND_MAX;
 		if(mutationDeterminer <= mutationRate) {
 			weights[a] = net::Neuron::randomWeight();
 		}
@@ -63,7 +63,7 @@ void GeneticAlgo::mutate(net::NeuralNet *net) {
 net::NeuralNet* GeneticAlgo::selectNNBasedOnFitness() {
 	double totalFitnessOfPopulation = 0;
 	for(int a = 0; a < fitnesses.size(); a++) totalFitnessOfPopulation += fitnesses[a];
-	double cutOff = (double)((rand() / RAND_MAX) * totalFitnessOfPopulation);
+	double cutOff = (((double)rand() / (double)RAND_MAX) * totalFitnessOfPopulation);
 	
 	double fitnessCounter = 0;
 	for (int a = 0; a < fitnesses.size(); a++) {
