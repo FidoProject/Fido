@@ -28,18 +28,25 @@ namespace net {
 		// Gets the action that the network deems most benificial for the currentState
 		int chooseBestAction(std::vector<double> currentState);
 
+		/* Gets an action using the Boltzman softmax probability distribution
+		 *
+		 * Non-random search heuristic used so that the neural network explores actions despite their reward value. 
+		 * The lower the exploration constanstant, the more likely it is to pick the best action for the current state.
+		 */
 		int chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant);
 
-		/* Given the immediate reward from the last action taken and the new state 
-		 * Calculates the correct value for the longterm reward of the lastAction and trains the network accordingly to output this correctly
+		/* Given the immediate reward from the last action taken and the new state, 
+		 * this function updates the correct value for the longterm reward of the lastAction and trains the network in charge of the lastAction to output the corect reward value
 		 */
 		void applyReinforcementToLastAction(double reward, std::vector<double> newState);
 	private:
+		// Gets the action with the highest reward for a state and gets that action's reward
 		void getBestActionAndReward(std::vector<double> state, int &bestAction, double &bestReward);
 
-		// Gets the reward value of the action with the greatest reward.
+		// Returns the reward value of the action with the greatest reward.
 		double highestReward(std::vector<double> state);
 
+		// Returns the action with the highest reward
 		int bestAction(std::vector<double> state);
 	};
 };
