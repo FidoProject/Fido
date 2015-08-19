@@ -8584,21 +8584,6 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <circle x="0" y="0" radius="0.152596875" width="0.4064" layer="31"/>
 <circle x="0" y="0" radius="1.627346875" width="0.9652" layer="29"/>
 </package>
-<package name="SOT23-3">
-<wire x1="1.4224" y1="0.6604" x2="1.4224" y2="-0.6604" width="0.1524" layer="51"/>
-<wire x1="1.4224" y1="-0.6604" x2="-1.4224" y2="-0.6604" width="0.1524" layer="51"/>
-<wire x1="-1.4224" y1="-0.6604" x2="-1.4224" y2="0.6604" width="0.1524" layer="51"/>
-<wire x1="-1.4224" y1="0.6604" x2="1.4224" y2="0.6604" width="0.1524" layer="51"/>
-<wire x1="-0.8" y1="0.7" x2="-1.4" y2="0.7" width="0.2032" layer="21"/>
-<wire x1="-1.4" y1="0.7" x2="-1.4" y2="-0.1" width="0.2032" layer="21"/>
-<wire x1="0.8" y1="0.7" x2="1.4" y2="0.7" width="0.2032" layer="21"/>
-<wire x1="1.4" y1="0.7" x2="1.4" y2="-0.1" width="0.2032" layer="21"/>
-<smd name="3" x="0" y="1.1" dx="0.8" dy="0.9" layer="1"/>
-<smd name="2" x="0.95" y="-1" dx="0.8" dy="0.9" layer="1"/>
-<smd name="1" x="-0.95" y="-1" dx="0.8" dy="0.9" layer="1"/>
-<text x="-0.8255" y="1.778" size="0.4064" layer="25">&gt;NAME</text>
-<text x="-1.016" y="-0.1905" size="0.4064" layer="27">&gt;VALUE</text>
-</package>
 </packages>
 <symbols>
 <symbol name="PHOTOCELL">
@@ -8650,18 +8635,6 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <text x="6.35" y="0" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="2" x="2.54" y="-2.54" visible="off" length="short" direction="pas" rot="R90"/>
 <pin name="1" x="0" y="-2.54" visible="off" length="short" direction="pas" rot="R90"/>
-</symbol>
-<symbol name="MCP9700">
-<wire x1="-7.62" y1="5.08" x2="7.62" y2="5.08" width="0.254" layer="94"/>
-<wire x1="7.62" y1="5.08" x2="7.62" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="7.62" y1="-2.54" x2="-7.62" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="-2.54" x2="-7.62" y2="5.08" width="0.254" layer="94"/>
-<text x="-2.286" y="-1.524" size="1.778" layer="95">GND</text>
-<text x="-7.62" y="5.588" size="1.778" layer="95">&gt;Name</text>
-<text x="2.54" y="5.588" size="1.778" layer="96">&gt;Value</text>
-<pin name="GND" x="0" y="-5.08" visible="off" length="short" rot="R90"/>
-<pin name="VCC" x="-10.16" y="2.54" visible="pin" length="short"/>
-<pin name="VO" x="10.16" y="2.54" visible="pin" length="short" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -8724,26 +8697,6 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 </connects>
 <technologies>
 <technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="MCP9700">
-<description>Analog-output temperature sensor</description>
-<gates>
-<gate name="G$1" symbol="MCP9700" x="0" y="-2.54"/>
-</gates>
-<devices>
-<device name="SMD" package="SOT23-3">
-<connects>
-<connect gate="G$1" pin="GND" pad="3"/>
-<connect gate="G$1" pin="VCC" pad="1"/>
-<connect gate="G$1" pin="VO" pad="2"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="IC-08917" constant="no"/>
-</technology>
 </technologies>
 </device>
 </devices>
@@ -9460,9 +9413,6 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <part name="C14" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="12pF"/>
 <part name="C15" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="1uF"/>
 <part name="U$3" library="SparkFun-AnalogIC" deviceset="OPA344" device=""/>
-<part name="U$4" library="SparkFun-Sensors" deviceset="MCP9700" device="SMD"/>
-<part name="SUPPLY24" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="GND23" library="supply1" deviceset="GND" device=""/>
 <part name="T1" library="opto-trans-siemens" deviceset="BPX81" device=""/>
 <part name="GND24" library="supply1" deviceset="GND" device=""/>
 <part name="SUPPLY25" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
@@ -9493,6 +9443,12 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <part name="SUPPLY30" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="SUPPLY1" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="SUPPLY2" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
+<part name="R1" library="adafruit" deviceset="R-US_" device="R0603" value="200k"/>
+<part name="R2" library="adafruit" deviceset="R-US_" device="R0603" value="100k"/>
+<part name="GND1" library="supply1" deviceset="GND" device=""/>
+<part name="R3" library="adafruit" deviceset="R-US_" device="R0603" value="100k"/>
+<part name="R4" library="adafruit" deviceset="R-US_" device="R0603" value="50k"/>
+<part name="GND2" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -9517,7 +9473,6 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <wire x1="170.18" y1="3.937" x2="170.18" y2="88.9" width="0.4064" layer="94"/>
 <text x="157.48" y="96.52" size="2.54" layer="94" font="vector">Electret Microphone</text>
 <text x="210.82" y="96.52" size="2.54" layer="94" font="vector">Visible Light</text>
-<text x="241.3" y="129.54" size="2.54" layer="94" font="vector">Temperature</text>
 <text x="251.46" y="96.52" size="2.54" layer="94" font="vector">Infrared Light</text>
 <text x="200.66" y="35.56" size="2.54" layer="94" font="vector">9dof IMU</text>
 <text x="33.02" y="177.8" size="3.81" layer="94" font="vector">3.3v Voltage Regulation</text>
@@ -9561,9 +9516,9 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <attribute name="NAME" x="59.944" y="123.952" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="57.785" y="123.952" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="USB-CH" gate="G$1" x="35.56" y="139.7" smashed="yes" rot="R180">
-<attribute name="NAME" x="35.56" y="130.175" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="40.64" y="146.05" size="1.778" layer="96" rot="R180"/>
+<instance part="USB-CH" gate="G$1" x="25.4" y="139.7" smashed="yes" rot="R180">
+<attribute name="NAME" x="25.4" y="130.175" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="30.48" y="146.05" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="SUPPLY6" gate="G$1" x="101.6" y="137.16" rot="R270"/>
 <instance part="SUPPLY7" gate="G$1" x="335.28" y="73.66"/>
@@ -9624,9 +9579,6 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <instance part="C14" gate="G$1" x="193.04" y="157.48" rot="R90"/>
 <instance part="C15" gate="G$1" x="170.18" y="116.84"/>
 <instance part="U$3" gate="G$1" x="190.5" y="129.54"/>
-<instance part="U$4" gate="G$1" x="254" y="149.86"/>
-<instance part="SUPPLY24" gate="G$1" x="241.3" y="152.4" rot="R90"/>
-<instance part="GND23" gate="1" x="254" y="139.7"/>
 <instance part="T1" gate="1" x="269.24" y="116.84"/>
 <instance part="GND24" gate="1" x="251.46" y="109.22" rot="R270"/>
 <instance part="SUPPLY25" gate="G$1" x="271.78" y="124.46"/>
@@ -9671,6 +9623,24 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 </instance>
 <instance part="SUPPLY1" gate="G$1" x="58.42" y="76.2"/>
 <instance part="SUPPLY2" gate="G$1" x="106.68" y="35.56" rot="R180"/>
+<instance part="R1" gate="G$1" x="91.44" y="144.78" smashed="yes" rot="R270">
+<attribute name="NAME" x="92.9386" y="148.59" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="88.138" y="148.59" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="R2" gate="G$1" x="99.06" y="152.4" smashed="yes" rot="R180">
+<attribute name="NAME" x="97.282" y="149.3774" size="1.778" layer="95"/>
+<attribute name="VALUE" x="96.52" y="153.924" size="1.778" layer="96"/>
+</instance>
+<instance part="GND1" gate="1" x="106.68" y="152.4" rot="R90"/>
+<instance part="R3" gate="G$1" x="33.02" y="129.54" smashed="yes" rot="R90">
+<attribute name="NAME" x="31.5214" y="125.73" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="31.242" y="130.81" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R4" gate="G$1" x="25.4" y="121.92" smashed="yes">
+<attribute name="NAME" x="21.59" y="123.4186" size="1.778" layer="95"/>
+<attribute name="VALUE" x="25.654" y="123.19" size="1.778" layer="96"/>
+</instance>
+<instance part="GND2" gate="1" x="17.78" y="121.92" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -9760,7 +9730,7 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <segment>
 <pinref part="USB-CH" gate="G$1" pin="GND"/>
 <pinref part="GND10" gate="1" pin="GND"/>
-<wire x1="38.1" y1="139.7" x2="45.72" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="139.7" x2="45.72" y2="139.7" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="139.7" x2="45.72" y2="142.24" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="139.7" x2="53.34" y2="139.7" width="0.1524" layer="91"/>
 <junction x="45.72" y="139.7"/>
@@ -9878,11 +9848,6 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <junction x="177.8" y="111.76"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="GND"/>
-<pinref part="GND23" gate="1" pin="GND"/>
-<wire x1="254" y1="144.78" x2="254" y2="142.24" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="GND24" gate="1" pin="GND"/>
 <wire x1="254" y1="109.22" x2="256.54" y2="109.22" width="0.1524" layer="91"/>
 <pinref part="R20" gate="G$1" pin="1"/>
@@ -9926,6 +9891,14 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <pinref part="Q1" gate="G$1" pin="E"/>
 <pinref part="GND30" gate="1" pin="GND"/>
 <wire x1="248.92" y1="20.32" x2="251.46" y2="20.32" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="R2" gate="G$1" pin="1"/>
+<pinref part="GND1" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="R4" gate="G$1" pin="1"/>
+<pinref part="GND2" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="N$7" class="0">
@@ -9983,8 +9956,9 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <net name="N$12" class="0">
 <segment>
 <pinref part="U3" gate="G$1" pin="VIN"/>
-<wire x1="38.1" y1="137.16" x2="43.18" y2="137.16" width="0.1524" layer="91"/>
 <pinref part="C5" gate="G$1" pin="1"/>
+<wire x1="27.94" y1="137.16" x2="33.02" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="137.16" x2="43.18" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="137.16" x2="50.8" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="50.8" y1="137.16" x2="55.88" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="137.16" x2="58.42" y2="137.16" width="0.1524" layer="91"/>
@@ -9997,21 +9971,28 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <pinref part="JP2" gate="G$1" pin="2"/>
 <wire x1="55.88" y1="144.78" x2="55.88" y2="137.16" width="0.1524" layer="91"/>
 <junction x="55.88" y="137.16"/>
+<pinref part="R3" gate="G$1" pin="2"/>
+<wire x1="33.02" y1="137.16" x2="33.02" y2="134.62" width="0.1524" layer="91"/>
+<junction x="33.02" y="137.16"/>
 </segment>
 </net>
 <net name="V_BATT" class="0">
 <segment>
-<pinref part="U3" gate="G$1" pin="VBAT"/>
 <pinref part="C6" gate="G$1" pin="1"/>
-<wire x1="78.74" y1="137.16" x2="83.82" y2="137.16" width="0.1524" layer="91"/>
-<wire x1="83.82" y1="137.16" x2="96.52" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="137.16" x2="96.52" y2="132.08" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="137.16" x2="101.6" y2="137.16" width="0.1524" layer="91"/>
-<junction x="96.52" y="137.16"/>
 <pinref part="SUPPLY6" gate="G$1" pin="V_BATT"/>
 <pinref part="CN1" gate="G$1" pin="2"/>
 <wire x1="83.82" y1="144.78" x2="83.82" y2="137.16" width="0.1524" layer="91"/>
+<pinref part="U3" gate="G$1" pin="VBAT"/>
+<wire x1="78.74" y1="137.16" x2="83.82" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="137.16" x2="91.44" y2="137.16" width="0.1524" layer="91"/>
 <junction x="83.82" y="137.16"/>
+<junction x="96.52" y="137.16"/>
+<pinref part="R1" gate="G$1" pin="2"/>
+<wire x1="91.44" y1="137.16" x2="96.52" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="137.16" x2="91.44" y2="139.7" width="0.1524" layer="91"/>
+<junction x="91.44" y="137.16"/>
 </segment>
 <segment>
 <pinref part="R5" gate="G$1" pin="2"/>
@@ -10286,11 +10267,6 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <wire x1="177.8" y1="147.32" x2="177.8" y2="144.78" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="SUPPLY24" gate="G$1" pin="3.3V"/>
-<pinref part="U$4" gate="G$1" pin="VCC"/>
-<wire x1="241.3" y1="152.4" x2="243.84" y2="152.4" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="SUPPLY25" gate="G$1" pin="3.3V"/>
 <wire x1="271.78" y1="121.92" x2="271.78" y2="124.46" width="0.1524" layer="91"/>
 <pinref part="T1" gate="1" pin="C"/>
@@ -10380,9 +10356,13 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <label x="25.4" y="50.8" size="1.016" layer="95" font="vector" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="VO"/>
-<wire x1="264.16" y1="152.4" x2="266.7" y2="152.4" width="0.1524" layer="91"/>
-<label x="266.7" y="152.4" size="1.016" layer="95" font="vector" xref="yes"/>
+<pinref part="R1" gate="G$1" pin="1"/>
+<wire x1="91.44" y1="149.86" x2="91.44" y2="152.4" width="0.1524" layer="91"/>
+<pinref part="R2" gate="G$1" pin="2"/>
+<wire x1="91.44" y1="152.4" x2="91.44" y2="154.94" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="152.4" x2="93.98" y2="152.4" width="0.1524" layer="91"/>
+<junction x="91.44" y="152.4"/>
+<label x="91.44" y="154.94" size="1.016" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 <net name="ADC3" class="0">
@@ -10587,6 +10567,22 @@ Spark Fun Electronics SKU : Comp-Buzzer</description>
 <pinref part="Q1" gate="G$1" pin="C"/>
 <wire x1="261.62" y1="20.32" x2="264.16" y2="20.32" width="0.1524" layer="91"/>
 <pinref part="SG1" gate="G$1" pin="1"/>
+</segment>
+</net>
+<net name="IO46" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="GP46"/>
+<wire x1="314.96" y1="177.8" x2="312.42" y2="177.8" width="0.1524" layer="91"/>
+<label x="312.42" y="177.8" size="1.016" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="R3" gate="G$1" pin="1"/>
+<wire x1="33.02" y1="124.46" x2="33.02" y2="121.92" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="121.92" x2="33.02" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="121.92" x2="30.48" y2="121.92" width="0.1524" layer="91"/>
+<junction x="33.02" y="121.92"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<label x="33.02" y="119.38" size="1.016" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 </nets>
