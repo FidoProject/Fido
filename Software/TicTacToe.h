@@ -10,7 +10,7 @@ class TicTacToe
 {
 public:
 	// Get the neural network representing the best performing tic tac toe player from a population that has undergone a specified number of iterations
-	net::NeuralNet* getBestPlayer(int numberOfIterations);
+	static net::NeuralNet* getBestPlayer(int numberOfIterations);
 
 	// Gets the fitness of each neural network in a population of neural networks
 	static std::vector<double> getPopulationFitnesses(std::vector<net::NeuralNet *> players);

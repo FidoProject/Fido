@@ -80,10 +80,10 @@ void GeneticAlgo::createNextGeneration() {
 	std::vector<net::NeuralNet *> nextGeneration;
 
 	int mostFitIndex = 0;
-	for(int b = 1; b < fitnesses.size(); b++) {
-		if(fitnesses[b] > fitnesses[mostFitIndex]) mostFitIndex = b;
+	for(int a = 1; a < fitnesses.size(); a++) {
+		if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
 	}	
-	for(int b = 0; b < numberOfElitismCopies; b++)nextGeneration.push_back(population[mostFitIndex]);
+	for(int a = 0; a < numberOfElitismCopies; a++) nextGeneration.push_back(population[mostFitIndex]);
 	std::cout << "Highest: " << fitnesses[mostFitIndex] << "\n";
 
 	while(nextGeneration.size() < populationSize) {
@@ -105,7 +105,7 @@ void GeneticAlgo::createNextGeneration() {
 net::NeuralNet* GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet *modelNetwork) {
 	population.clear();
 	fitnesses.clear();
-	
+
 	population.push_back(modelNetwork);
 	for(int a = 0; a < populationSize-1; a++) population.push_back(new net::NeuralNet(modelNetwork));
 

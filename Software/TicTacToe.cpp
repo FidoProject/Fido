@@ -3,9 +3,9 @@
 std::vector<net::NeuralNet *> TicTacToe::randomSet = std::vector<net::NeuralNet*>(0);
 
 net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {
-	gen::GeneticAlgo geneticAlgo(50, 0.2, 0.6, 5, getPopulationFitnesses);
+	gen::GeneticAlgo geneticAlgo(8, 0.2, 0.6, 5, getPopulationFitnesses);
 
-	net::NeuralNet *modelNet = new net::NeuralNet(9, 1, 4, 12, net::NeuralNet::sigmoid);
+	net::NeuralNet *modelNet = new net::NeuralNet(9, 1, 4, 9, net::NeuralNet::sigmoid);
 
 	///for(int a = 0; a < 250; a++) randomSet.push_back(new net::NeuralNet(9, 1, 4, 9, net::NeuralNet::sigmoid));
 
@@ -32,18 +32,22 @@ std::vector<double> TicTacToe::getPopulationFitnesses(std::vector<net::NeuralNet
 	std::vector<double> returnVector;
 	for(int a = 0; a < scores.size(); a++) for(int b = 0; b < scores[a]->size(); b++) returnVector.push_back((*scores[a])[b]);
 
+	int mostFitIndex = 0;
+	for(int a = 0; a < returnVector.size(); a++) if(returnVector[a] > returnVector[mostFitIndex]) mostFitIndex = a;
+	players[mostFitIndex]->storeNet("C:/Users/Michael Truell/Documents/Fido/Software/PastNN/TTTcurrentgenerationbest.txt");
+
 	return returnVector;
 }
 
 void TicTacToe::getPlayerFitnessesThread(std::vector<net::NeuralNet *> players, std::vector<double> *fitnesses) {
 	/// Elo Rating System
 	for(int a = 0; a < players.size(); a++) {
-		double score = TicTacToe::getScoreAgainstRandomPlayers(players[a], 1000);
+		double score = TicTacToe::getScoreAgainstRandomPlayers(players[a], 40);
 		std::cout << "Score: " << score << "\n";
 		fitnesses->push_back(score);
 	}
 
-	for(int a = 0; a < fitnesses->size(); a++) (*fitnesses)[a] = pow((*fitnesses)[a], 3);
+	for(int a = 0; a < fitnesses->size(); a++) (*fitnesses)[a] = pow((*fitnesses)[a], 2);
 }
 
 int TicTacToe::getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2) {

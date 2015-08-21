@@ -15,7 +15,9 @@
 int main() {
     srand(time(NULL));
 
-	net::NeuralNet * network = new net::NeuralNet(1, 1, 2, 2, net::NeuralNet::sigmoid);
+	net::NeuralNet *bestPlayer = TicTacToe::getBestPlayer(100);
+
+	/*net::NeuralNet * network = new net::NeuralNet(1, 1, 2, 2, net::NeuralNet::sigmoid);
 	network->outputActivationFunction = net::NeuralNet::simpleLinear;
 
 	net::Backpropagation backprop = net::Backpropagation(0.1, 0.05, 0.01, 100000);
@@ -60,6 +62,7 @@ int main() {
 			state[0] = (int)(state[0] + 1) % 2;
 			learn.applyReinforcementToLastAction(1, state);
 		}
+
 	}
 
 	std::cout << "input plz\n";
@@ -71,6 +74,6 @@ int main() {
 		std::cout << "new state plz\n";
 		std::cin >> state[0];
 		learn.applyReinforcementToLastAction(reward, state);
-	}
+	}*/
 
 } 
