@@ -1,0 +1,268 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B185752A1B87B45700C6945F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B18575291B87B45700C6945F /* main.cpp */; };
+		B18575371B87B4F900C6945F /* Simlink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B18575351B87B4F900C6945F /* Simlink.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B18575261B87B45700C6945F /* FidoSim */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FidoSim; sourceTree = BUILT_PRODUCTS_DIR; };
+		B18575291B87B45700C6945F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B185752C1B87B45700C6945F /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
+		B185752D1B87B45700C6945F /* nice_music.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; path = nice_music.ogg; sourceTree = "<group>"; };
+		B185752E1B87B45700C6945F /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
+		B185752F1B87B45700C6945F /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		B18575351B87B4F900C6945F /* Simlink.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simlink.cpp; sourceTree = "<group>"; };
+		B18575361B87B4F900C6945F /* Simlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Simlink.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B18575241B87B45700C6945F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B185751E1B87B45700C6945F = {
+			isa = PBXGroup;
+			children = (
+				B18575281B87B45700C6945F /* FidoSim */,
+				B18575271B87B45700C6945F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B18575271B87B45700C6945F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B18575261B87B45700C6945F /* FidoSim */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B18575281B87B45700C6945F /* FidoSim */ = {
+			isa = PBXGroup;
+			children = (
+				B18575291B87B45700C6945F /* main.cpp */,
+				B185752B1B87B45700C6945F /* Resources */,
+				B18575351B87B4F900C6945F /* Simlink.cpp */,
+				B18575361B87B4F900C6945F /* Simlink.h */,
+			);
+			path = FidoSim;
+			sourceTree = "<group>";
+		};
+		B185752B1B87B45700C6945F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B185752C1B87B45700C6945F /* cute_image.jpg */,
+				B185752D1B87B45700C6945F /* nice_music.ogg */,
+				B185752E1B87B45700C6945F /* sansation.ttf */,
+				B185752F1B87B45700C6945F /* icon.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B18575251B87B45700C6945F /* FidoSim */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B18575321B87B45700C6945F /* Build configuration list for PBXNativeTarget "FidoSim" */;
+			buildPhases = (
+				B18575231B87B45700C6945F /* Sources */,
+				B18575241B87B45700C6945F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FidoSim;
+			productName = FidoSim;
+			productReference = B18575261B87B45700C6945F /* FidoSim */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B185751F1B87B45700C6945F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = fido;
+				TargetAttributes = {
+					B18575251B87B45700C6945F = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = B18575221B87B45700C6945F /* Build configuration list for PBXProject "FidoSim" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B185751E1B87B45700C6945F;
+			productRefGroup = B18575271B87B45700C6945F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B18575251B87B45700C6945F /* FidoSim */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B18575231B87B45700C6945F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B185752A1B87B45700C6945F /* main.cpp in Sources */,
+				B18575371B87B4F900C6945F /* Simlink.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B18575301B87B45700C6945F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks/,
+					"$(inherited)",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib/,
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
+				SFML_BINARY_TYPE = DYLIBS;
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_SUFFIX)";
+				SFML_NETWORK = "$(SFML_LINK_PREFIX) sfml-network$(SFML_LINK_SUFFIX)";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX) sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX) sfml-window$(SFML_LINK_SUFFIX)";
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Debug;
+		};
+		B18575311B87B45700C6945F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks/,
+					"$(inherited)",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib/,
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
+				SFML_BINARY_TYPE = DYLIBS;
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_SUFFIX)";
+				SFML_NETWORK = "$(SFML_LINK_PREFIX) sfml-network$(SFML_LINK_SUFFIX)";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX) sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX) sfml-window$(SFML_LINK_SUFFIX)";
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Release;
+		};
+		B18575331B87B45700C6945F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B18575341B87B45700C6945F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B18575221B87B45700C6945F /* Build configuration list for PBXProject "FidoSim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B18575301B87B45700C6945F /* Debug */,
+				B18575311B87B45700C6945F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B18575321B87B45700C6945F /* Build configuration list for PBXNativeTarget "FidoSim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B18575331B87B45700C6945F /* Debug */,
+				B18575341B87B45700C6945F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B185751F1B87B45700C6945F /* Project object */;
+}
