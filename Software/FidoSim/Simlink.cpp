@@ -6,18 +6,18 @@ Simlink::Simlink() {
     
     sf::Texture texture;
     if (!texture.loadFromFile("background.png")) {
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     } sf::Sprite background(texture);
     
     sf::Font font;
     if (!font.loadFromFile("sansation.ttf")) {
-        return EXIT_FAILURE;
+		exit(EXIT_FAILURE);
     } sf::Text text("Hello SFML", font, 50);
     text.setColor(sf::Color::Black);
     
     sf::Music music;
     if (!music.openFromFile("nice_music.ogg")) {
-        return EXIT_FAILURE;
+		exit(EXIT_FAILURE);
     } music.play();
     
     while (window.isOpen()) {
