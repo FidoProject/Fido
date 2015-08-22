@@ -44,6 +44,7 @@ NeuralNet::NeuralNet(std::ifstream &input) {
 void NeuralNet::storeNet(std::string filename) {
 	std::ofstream output(filename);
 	storeNetWithStream(output);
+	output.close();
 }
 
 void NeuralNet::storeNetWithStream(std::ofstream &output) {

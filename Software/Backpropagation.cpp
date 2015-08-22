@@ -26,12 +26,20 @@ Backpropagation::Backpropagation(std::ifstream &input) {
 	initWithStream(input);
 }
 
-void storeBackpropagation(std::string filename) {
-
+void Backpropagation::storeBackpropagation(std::string filename) {
+	std::ofstream output(filename);
+	storeBackpropagationWithStream(output);
+	output.close();
 }
 
-void storeBackpropagationWithStream(std::ofstream &output) {
-
+void Backpropagation::storeBackpropagationWithStream(std::ofstream &output) {
+	if(output.is_open()) {
+		output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maxiumumIterations << "\n";
+		output << getDerivedHiddenActivationFunctionName() << " " << getDerivedOutputActivationFunctionName() << "\n";
+	} else {
+		std::cout << "Could not store neural network\n";
+		throw 1;
+	}
 }
 
 void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {

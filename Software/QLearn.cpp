@@ -26,6 +26,7 @@ QLearn::QLearn(std::string filename) {
 	if(input.is_open()) {
 		input >> learningRate >> devaluationFactor >> numberOfActions >> lastAction;
 		backprop = Backpropagation(input);
+		for(int a = 0; a < numberOfActions; a++) networks.push_back(new NeuralNet(input));
 
 		input.close();
 	} else {
@@ -110,6 +111,16 @@ int QLearn::bestAction(std::vector<double> state) {
 	return bestAction;
 }
 
-void storeQLearn(std::string filename) {
+void QLearn::storeQLearn(std::string filename) {
+	std::ofstream output(filename);
+	if(output.is_open()) {
+		output << learningRate << " " << devaluationFactor << " " << numberOfActions << " " << lastAction << "\n";
+		backprop.storeBackpropagationWithStream(output);
+		for(auto a = networks.begin(); a != networks.end(); ++a) (*a)->storeNetWithStream(output);
 
+		output.close();
+	} else {
+		std::cout << "Could not retrieve neural network from file\n";
+		throw 1;
+	}
 }
