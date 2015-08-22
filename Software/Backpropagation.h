@@ -17,6 +17,18 @@ namespace net {
 		// Initialize empty Backpropagation object
 		Backpropagation();
 
+		// Loads a Backpropagation object from a file
+		Backpropagation(std::string filename);
+
+		// Loads a Backpropagation object using an input stream
+		Backpropagation(std::ifstream &input);
+
+		// Stores a Backpropagation object in the specified file
+		void storeBackpropagation(std::string filename);
+
+		// Stores a Backpropagation object using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.
+		void storeBackpropagationWithStream(std::ofstream &output);
+
 		/* Trains a neural network on a training set.
 		 *
 		 * Edits the weights of the neural network until its error in predicting the correctOutput of each input reaches the value of targetErrorLevel
@@ -56,6 +68,8 @@ namespace net {
 	private:
 		ActivationFunction hiddenActivationFunctionDerivative;
 		ActivationFunction outputActivationFunctionDerivative;
+
+		void initWithStream(std::ifstream &input);
 	};
 }
 

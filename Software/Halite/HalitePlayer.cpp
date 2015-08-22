@@ -1,7 +1,7 @@
 #include "HalitePlayer.h"
 
 HalitePlayer::HalitePlayer() {
-	network = new net::NeuralNet(1, 1, 1, 1, net::NeuralNet::sigmoid);
+	network = new net::NeuralNet(1, 1, 1, 1, "sigmoid");
 }
 
 HalitePlayer::HalitePlayer(net::NeuralNet *network_) {

@@ -16,6 +16,24 @@ Backpropagation::Backpropagation() {
 	outputActivationFunctionDerivative = sigmoidDerivative;
 }
 
+Backpropagation::Backpropagation(std::string filename) { 
+	std::ifstream input(filename);
+	initWithStream(input);
+	input.close();
+}
+
+Backpropagation::Backpropagation(std::ifstream &input) {
+	initWithStream(input);
+}
+
+void storeBackpropagation(std::string filename) {
+
+}
+
+void storeBackpropagationWithStream(std::ofstream &output) {
+
+}
+
 void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
@@ -134,4 +152,19 @@ std::string Backpropagation::getDerivedHiddenActivationFunctionName() {
 std::string Backpropagation::getDerivedOutputActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
 	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunctionDerivative) return a->first;
+}
+
+void Backpropagation::initWithStream(std::ifstream &input) {
+	if(input.is_open()) {
+		input >> learningRate >> momentumTerm >> targetErrorLevel >> maxiumumIterations;
+
+		std::string hiddenActivationFunctionDerivativeName, outputActivationFunctionDerivativeName;
+		input >> hiddenActivationFunctionDerivativeName >> outputActivationFunctionDerivativeName;
+		setDerivedHiddenActivationFunction(hiddenActivationFunctionDerivativeName);
+		setDerivedOutputActivationFunction(outputActivationFunctionDerivativeName);
+
+	} else {
+		std::cout << "Could not retrieve neural network from file\n";
+		throw 1;
+	}
 }

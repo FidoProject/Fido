@@ -7,7 +7,7 @@ net::NeuralNet* Halite::getBestPlayer(int numberOfIterations) {
 
 	player.connect();
 
-	net::NeuralNet *modelNet = new net::NeuralNet(18, 1, 4, 18, net::NeuralNet::sigmoid);
+	net::NeuralNet *modelNet = new net::NeuralNet(18, 1, 4, 18, "sigmoid");
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }

@@ -25,7 +25,7 @@ QLearn::QLearn(std::string filename) {
 	std::ifstream input(filename);
 	if(input.is_open()) {
 		input >> learningRate >> devaluationFactor >> numberOfActions >> lastAction;
-		input >> 
+		backprop = Backpropagation(input);
 
 		input.close();
 	} else {

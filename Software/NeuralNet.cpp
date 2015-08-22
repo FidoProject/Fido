@@ -31,29 +31,14 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 	setupNeuronLayers();
 }
 
-NeuralNet::NeuralNet(std::string filename) : NeuralNet(std::ifstream(filename)) { }
+NeuralNet::NeuralNet(std::string filename) { 
+	std::ifstream input(filename);
+	initWithStream(input);
+	input.close();
+}
 
-NeuralNet::NeuralNet(std::ifstream input) {
-	if(input.is_open()) {
-		input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
-
-		std::string hiddenActivationFunctionName, outputActivationFunctionName;
-		input >> hiddenActivationFunctionName >> outputActivationFunctionName;
-		setHiddenActivationFunction(hiddenActivationFunctionName);
-		setOutputActivationFunction(outputActivationFunctionName);
-
-		setupNeuronLayers();
-
-		std::vector<double> newWeights;
-		double middleMan = 0;
-		while(input >> middleMan) newWeights.push_back(middleMan);
-		setWeights(newWeights);
-
-		input.close();
-	} else {
-		std::cout << "Could not retrieve neural network from file\n";
-		throw 1;
-	}
+NeuralNet::NeuralNet(std::ifstream &input) {
+	initWithStream(input);
 }
 
 void NeuralNet::storeNet(std::string filename) {
@@ -194,22 +179,6 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 	return output;
 }
 
-void NeuralNet::setupNeuronLayers() {
-    std::vector<Neuron> firstHiddenLayer;
-    for(int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.push_back(Neuron(numInputs));
-    net.push_back(firstHiddenLayer);
-    
-    for(int a = 0; a < numHiddenLayers-1; a++) {
-        std::vector<Neuron> hiddenLayer;
-        for(int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
-        net.push_back(hiddenLayer);
-    }
-    
-    std::vector<Neuron> outputLayer;
-    for(int a = 0; a < numOutputs; a++) outputLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
-    net.push_back(outputLayer);
-}
-
 std::map<std::string, ActivationFunction> NeuralNet::getActivationFunctionNameMap() {
 	std::map<std::string, ActivationFunction> map;
 	map["sigmoid"] = NeuralNet::sigmoid;
@@ -236,4 +205,41 @@ std::string NeuralNet::getHiddenActivationFunctionName() {
 std::string NeuralNet::getOutputActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
 	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunction) return a->first;
+}
+
+void NeuralNet::setupNeuronLayers() {
+    std::vector<Neuron> firstHiddenLayer;
+    for(int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.push_back(Neuron(numInputs));
+    net.push_back(firstHiddenLayer);
+    
+    for(int a = 0; a < numHiddenLayers-1; a++) {
+        std::vector<Neuron> hiddenLayer;
+        for(int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
+        net.push_back(hiddenLayer);
+    }
+    
+    std::vector<Neuron> outputLayer;
+    for(int a = 0; a < numOutputs; a++) outputLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
+    net.push_back(outputLayer);
+}
+
+void NeuralNet::initWithStream(std::ifstream &input) {
+	if(input.is_open()) {
+		input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
+
+		std::string hiddenActivationFunctionName, outputActivationFunctionName;
+		input >> hiddenActivationFunctionName >> outputActivationFunctionName;
+		setHiddenActivationFunction(hiddenActivationFunctionName);
+		setOutputActivationFunction(outputActivationFunctionName);
+
+		setupNeuronLayers();
+
+		std::vector<double> newWeights;
+		double middleMan = 0;
+		while(input >> middleMan) newWeights.push_back(middleMan);
+		setWeights(newWeights);
+	} else {
+		std::cout << "Could not retrieve neural network from file\n";
+		throw 1;
+	}
 }

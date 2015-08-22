@@ -5,7 +5,7 @@ std::vector<net::NeuralNet *> TicTacToe::randomSet = std::vector<net::NeuralNet*
 net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {
 	gen::GeneticAlgo geneticAlgo(8, 0.2, 0.6, 5, getPopulationFitnesses);
 
-	net::NeuralNet *modelNet = new net::NeuralNet(9, 1, 4, 9, net::NeuralNet::sigmoid);
+	net::NeuralNet *modelNet = new net::NeuralNet(9, 1, 4, 9, "sigmoid");
 
 	///for(int a = 0; a < 250; a++) randomSet.push_back(new net::NeuralNet(9, 1, 4, 9, net::NeuralNet::sigmoid));
 
@@ -260,7 +260,7 @@ std::vector<double> TicTacToe::prepareBoardForPlayerInput(std::vector< std::vect
 double TicTacToe::getScoreAgainstRandomPlayers(net::NeuralNet *player, int numberOfGames) {
 	double score = 0;
 	for(int a = 0; a < numberOfGames; a++) {
-		net::NeuralNet random = net::NeuralNet(9, 1, 4, 12, net::NeuralNet::sigmoid);
+		net::NeuralNet random = net::NeuralNet(9, 1, 4, 12, "sigmoid");
 		if(a < (int)(numberOfGames / 2.0)) {
 			int outcome = getOutcomeOfGame(player, &random);
 			if(outcome == 1) score++;

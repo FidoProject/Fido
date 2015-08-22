@@ -38,7 +38,7 @@ namespace net {
 		NeuralNet(std::string filename);
 
 		// Loads a neural network from a file using a stream
-		NeuralNet(std::ifstream input);
+		NeuralNet(std::ifstream &input);
         
         // Stores a neural network in the specified file
         void storeNet(std::string filename);
@@ -148,7 +148,9 @@ namespace net {
 		ActivationFunction outputActivationFunction;
 
         // Creates layers of neurons with random weights according to the values of numInputs, numOutputs, numHiddenLayers, and numNeuronsPerHiddenLayer
-        void setupNeuronLayers();   
+        void setupNeuronLayers();
+
+		void initWithStream(std::ifstream &input);
 	};
 }
 
