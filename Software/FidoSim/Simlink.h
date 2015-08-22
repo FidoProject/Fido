@@ -1,14 +1,17 @@
 #ifndef __FidoSim__Simlink__
 #define __FidoSim__Simlink__
 
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <functional>
 
 class Simlink {
 public:
     // Initializes the simulator
-    void init();
+    Simlink();
     
     /* Set the RGB LED to a certain color and intensity.
      *
@@ -72,8 +75,10 @@ public:
      * components of TDVect are xyz rad/s.
      */
     TDVect getGyro();
-
+    
 private:
+    void mainLoop(sf::RenderWindow& window,sf::Sprite background);
+    
     // LED with values r, g, and b from 0-255.
     struct LED { int r,g,b; };
     
@@ -86,6 +91,8 @@ private:
     // Sensor values, all ranging from 0-100.
     int irVal, micVal, batVal, visVal;
     
+    bool click;
+    int cx,cy;
     LED led;
     Motors motors;
     IMU imu;
