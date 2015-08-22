@@ -22,6 +22,16 @@ QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, do
 }
 
 QLearn::QLearn(std::string filename) {
+	std::ifstream input(filename);
+	if(input.is_open()) {
+		input >> learningRate >> devaluationFactor >> numberOfActions >> lastAction;
+		input >> 
+
+		input.close();
+	} else {
+		std::cout << "Could not retrieve neural network from file\n";
+		throw 1;
+	}
 }
 
 QLearn::QLearn() { }

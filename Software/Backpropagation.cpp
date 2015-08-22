@@ -109,3 +109,29 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 
 	return networkError;
 }
+
+std::map<std::string, ActivationFunction> Backpropagation::getDerivedActivationFunctionNames() {
+	std::map<std::string, ActivationFunction> map;
+	map["sigmoidDerivative"] = Backpropagation::sigmoidDerivative;
+	map["simpleLinearDerivative"] = Backpropagation::simpleLinearDerivative;
+
+	return map;
+}
+
+void Backpropagation::setDerivedHiddenActivationFunction(std::string name) {
+	hiddenActivationFunctionDerivative = getDerivedActivationFunctionNames()[name];
+}
+
+void Backpropagation::setDerivedOutputActivationFunction(std::string name) {
+	outputActivationFunctionDerivative = getDerivedActivationFunctionNames()[name];
+}
+
+std::string Backpropagation::getDerivedHiddenActivationFunctionName() {
+	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
+	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunctionDerivative) return a->first;
+}
+
+std::string Backpropagation::getDerivedOutputActivationFunctionName() {
+	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
+	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunctionDerivative) return a->first;
+}

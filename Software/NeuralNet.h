@@ -29,7 +29,7 @@ namespace net {
 		 * 
 		 * Uses the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.
 		 */
-		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, ActivationFunction activationFunction);
+		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, std::string activationFunctionName);
 		
 		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
 		NeuralNet(NeuralNet* otherNet);
@@ -45,15 +45,6 @@ namespace net {
 
 		// Stores a neural network using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.
 		void storeNetWithStream(std::ofstream &output);
-
-		// Gets a map with the names of each activation function as its keys and the available activation functions as its values
-		std::map<std::string, ActivationFunction> getActivationFunctionNameMap();
-
-		// Gets the names of the activation functions of the neural net as strings
-		void getActivationFunctionNames(std::string &hiddenActivationFunctionName, std::string &outputActivationFunctionName);
-
-		// Sets the activation functions of the neural net with the functions' names
-		void setActivationFunctionsWithNames(std::string hiddenActivationFunctionName, std::string outputActivationFunctionName);
 
 		/* Get the weights of each neuron in the net.
 		 * 
@@ -96,7 +87,23 @@ namespace net {
 		 * The crowning function of this class.*/
 		std::vector<double> getOutput(std::vector<double> input);
 
+		// Returns the output of each layer of neurons as an input is fed for just as it is fed forward in getOutput
 		std::vector< std::vector<double> > feedForward(std::vector<double> input);
+
+		// Gets a map with the names of each activation function as its keys and the available activation functions as its values
+		std::map<std::string, ActivationFunction> getActivationFunctionNameMap();
+
+		// Sets the activation function for the neurons of the hidden layers with the name of the activation funciton
+		void setHiddenActivationFunction(std::string name);
+
+		// Sets the activation function for the neurons of the output layer with the name of the activation funciton
+		void setOutputActivationFunction(std::string name);
+
+		// Gets the name of the activation function of the nuerons of the hidden layers
+		std::string getHiddenActivationFunctionName();
+
+		// Gets the name of the activation function of the neurons of the output layer
+		std::string getOutputActivationFunctionName();
 		
 		/* An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
 		 *
@@ -126,19 +133,20 @@ namespace net {
 
 		// Variables used to describe Neural Networks.
 		int numInputs, numOutputs, numHiddenLayers, numNeuronsPerHiddenLayer;
-
+		
+    private:
 		/* The activation function for the hidden neurons
-		 *
-		 * An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
-		 */
+		*
+		* An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
+		*/
 		ActivationFunction hiddenActivationFunction;
 
 		/* The activation function for the output neurons
-		 *
-		 * An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
-		 */
+		*
+		* An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
+		*/
 		ActivationFunction outputActivationFunction;
-    private:
+
         // Creates layers of neurons with random weights according to the values of numInputs, numOutputs, numHiddenLayers, and numNeuronsPerHiddenLayer
         void setupNeuronLayers();   
 	};

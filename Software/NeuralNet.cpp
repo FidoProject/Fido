@@ -9,13 +9,13 @@ NeuralNet::NeuralNet() {
 	numNeuronsPerHiddenLayer = 0;
 }
 
-NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, ActivationFunction activationFunction_) {
+NeuralNet::NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, std::string activationFunctionName) {
 	numInputs = numInputs_;
 	numOutputs = numOutputs_;
 	numHiddenLayers = numHiddenLayers_;
 	numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer_;
-	outputActivationFunction = activationFunction_;
-	hiddenActivationFunction = activationFunction_;
+	setHiddenActivationFunction(activationFunctionName);
+	setOutputActivationFunction(activationFunctionName);
 
     setupNeuronLayers();
 }
@@ -39,7 +39,8 @@ NeuralNet::NeuralNet(std::ifstream input) {
 
 		std::string hiddenActivationFunctionName, outputActivationFunctionName;
 		input >> hiddenActivationFunctionName >> outputActivationFunctionName;
-		setActivationFunctionsWithNames(hiddenActivationFunctionName, outputActivationFunctionName);
+		setHiddenActivationFunction(hiddenActivationFunctionName);
+		setOutputActivationFunction(outputActivationFunctionName);
 
 		setupNeuronLayers();
 
@@ -63,10 +64,7 @@ void NeuralNet::storeNet(std::string filename) {
 void NeuralNet::storeNetWithStream(std::ofstream &output) {
 	if(output.is_open()) {
 		output << numInputs << " " << numOutputs << " " << numHiddenLayers << " " << numNeuronsPerHiddenLayer << "\n";
-
-		std::string hiddenActivationFunctionName, outputActivationFunctionName;
-		getActivationFunctionNames(hiddenActivationFunctionName, outputActivationFunctionName);
-		output << hiddenActivationFunctionName << " " << outputActivationFunctionName << "\n";
+		output << getHiddenActivationFunctionName() << " " << getOutputActivationFunctionName() << "\n";
 
 		std::vector<double> weights = getWeights();
 		for(int a = 0; a < weights.size(); a++) output << weights[a] << " ";
@@ -75,29 +73,6 @@ void NeuralNet::storeNetWithStream(std::ofstream &output) {
 		std::cout << "Could not store neural network\n";
 		throw 1;
 	}
-}
-
-std::map<std::string, ActivationFunction> NeuralNet::getActivationFunctionNameMap() {
-	std::map<std::string, ActivationFunction> map;
-	map["sigmoid"] = NeuralNet::sigmoid;
-	map["binary"] = NeuralNet::binary;
-	map["integer"] = NeuralNet::integer;
-	map["simpleLinear"] = NeuralNet::simpleLinear;
-
-	return map;
-}
-
-void NeuralNet::getActivationFunctionNames(std::string &hiddenActivationFunctionName, std::string &outputActivationFunctionName) {
-	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
-
-	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunction) hiddenActivationFunctionName = a->first;
-	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunction) outputActivationFunctionName = a->first;
-}
-
-void NeuralNet::setActivationFunctionsWithNames(std::string hiddenActivationFunctionName, std::string outputActivationFunctionName) {
-	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
-	hiddenActivationFunction = nameMap[hiddenActivationFunctionName];
-	outputActivationFunction = nameMap[outputActivationFunctionName];
 }
 
 std::vector<double> NeuralNet::getWeights() {
@@ -233,4 +208,32 @@ void NeuralNet::setupNeuronLayers() {
     std::vector<Neuron> outputLayer;
     for(int a = 0; a < numOutputs; a++) outputLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
     net.push_back(outputLayer);
+}
+
+std::map<std::string, ActivationFunction> NeuralNet::getActivationFunctionNameMap() {
+	std::map<std::string, ActivationFunction> map;
+	map["sigmoid"] = NeuralNet::sigmoid;
+	map["binary"] = NeuralNet::binary;
+	map["integer"] = NeuralNet::integer;
+	map["simpleLinear"] = NeuralNet::simpleLinear;
+
+	return map;
+}
+
+void NeuralNet::setHiddenActivationFunction(std::string name) {
+	hiddenActivationFunction = getActivationFunctionNameMap()[name];
+}
+
+void NeuralNet::setOutputActivationFunction(std::string name) {
+	outputActivationFunction = getActivationFunctionNameMap()[name];
+}
+
+std::string NeuralNet::getHiddenActivationFunctionName() {
+	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
+	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunction) return a->first;
+}
+
+std::string NeuralNet::getOutputActivationFunctionName() {
+	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
+	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunction) return a->first;
 }

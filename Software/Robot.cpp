@@ -4,15 +4,15 @@ Robot::Robot() {
 	int stateSize = 1;
 	int numberOfHiddenLayers = 1;
 	int numberOfNeuronsPerHiddenLayer = 2;
-	net::NeuralNet * network = new net::NeuralNet(stateSize, 1, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, net::NeuralNet::sigmoid);
-	network->outputActivationFunction = net::NeuralNet::simpleLinear;
+	net::NeuralNet * network = new net::NeuralNet(stateSize, 1, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
+	network->setOutputActivationFunction("simpleLinear");
 	
 	double backpropLearningRate = 0.4;
 	double backpropMomentumTerm = 0.05;
 	double backpropTargetError = 0.01;
 	int backpropMaximumIterations = 10000;
 	net::Backpropagation backprop = net::Backpropagation(backpropLearningRate, backpropMomentumTerm, backpropTargetError, backpropMaximumIterations);
-	backprop.outputActivationFunctionDerivative = net::Backpropagation::simpleLinearDerivative;
+	backprop.setDerivedOutputActivationFunction("simpleLinearDerivative");
 
 	double learningRate = 0.8;
 	double devaluationFactor = 0.5;

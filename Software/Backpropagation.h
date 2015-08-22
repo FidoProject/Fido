@@ -27,6 +27,21 @@ namespace net {
 		// Gets the output of the neural network, calculates the error of each neuron, and edits the weights of the neurons to reduce error
 		double trainOnDataPoint(net::NeuralNet *network, std::vector<double> input, std::vector<double> correctOutput);
 
+		// Gets a map with the names of each activation function derivative as its keys and the available activation function derivatives as its values
+		std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames();
+
+		// Sets the derivative of the activation function for the neurons of the hidden layers with the name of the activation funciton
+		void setDerivedHiddenActivationFunction(std::string name);
+
+		// Sets the derivative of the activation function for the neurons of the output layer with the name of the activation funciton
+		void setDerivedOutputActivationFunction(std::string name);
+
+		// Gets the name of the derivative of the activation function of the nuerons of the hidden layers
+		std::string getDerivedHiddenActivationFunctionName();
+
+		// Gets the name of the derivative of the activation function of the neurons of the output layer
+		std::string getDerivedOutputActivationFunctionName();
+
 		double learningRate, momentumTerm, targetErrorLevel;
 		int maxiumumIterations;
 		std::vector< std::vector< std::vector<double> > > lastChangeInWeight;
@@ -38,8 +53,9 @@ namespace net {
 			return 1;
 		}
 
-		double(*hiddenActivationFunctionDerivative)(double neuronOuput);
-		double(*outputActivationFunctionDerivative)(double neuronOuput);
+	private:
+		ActivationFunction hiddenActivationFunctionDerivative;
+		ActivationFunction outputActivationFunctionDerivative;
 	};
 }
 
