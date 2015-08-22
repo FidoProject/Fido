@@ -5,7 +5,7 @@
 
 #include "NeuralNet.h"
 #include "QLearn.h"
-#include "FidoSim\FidoSim\Simlink.h"
+#include "FidoSim\Simlink.h"
 
 class Robot {
 public:
