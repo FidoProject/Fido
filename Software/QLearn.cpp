@@ -12,9 +12,19 @@ QLearn::QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learni
 	for(int a = 0; a < numberOfActions; a++) networks.push_back(new net::NeuralNet(modelNetwork));
 }
 
-QLearn::QLearn() {
-
+QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
+	networks = networks_;
+	backprop = backprop_;
+	learningRate = learningRate_;
+	devaluationFactor = devaluationFactor_;
+	numberOfActions = networks.size();
+	lastAction = -1;
 }
+
+QLearn::QLearn(std::string filename) {
+}
+
+QLearn::QLearn() { }
 
 int QLearn::chooseBestAction(std::vector<double> currentState) {
 	int action = bestAction(currentState);
@@ -88,4 +98,8 @@ int QLearn::bestAction(std::vector<double> state) {
 	getBestActionAndReward(state, bestAction, bestReward);
 
 	return bestAction;
+}
+
+void storeQLearn(std::string filename) {
+
 }

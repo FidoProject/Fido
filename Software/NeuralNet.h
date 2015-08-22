@@ -34,14 +34,17 @@ namespace net {
 		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
 		NeuralNet(NeuralNet* otherNet);
         
-        /* Restores a neural network from the specified file
-         * 
-         * The function for filtering neuron output may not be stored in the file currently, so must be passed in.
-         */
+        // Restores a neural network from the specified file
 		NeuralNet(std::string filename);
+
+		// Loads a neural network from a file using a stream
+		NeuralNet(std::ifstream input);
         
         // Stores a neural network in the specified file
         void storeNet(std::string filename);
+
+		// Stores a neural network using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.
+		void storeNetWithStream(std::ofstream &output);
 
 		// Gets a map with the names of each activation function as its keys and the available activation functions as its values
 		std::map<std::string, ActivationFunction> getActivationFunctionNameMap();

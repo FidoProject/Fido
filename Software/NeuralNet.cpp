@@ -31,31 +31,36 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 	setupNeuronLayers();
 }
 
-NeuralNet::NeuralNet(std::string filename) {
-	std::ifstream input(filename);
-    if(input.is_open()) { 
-        input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
+NeuralNet::NeuralNet(std::string filename) : NeuralNet(std::ifstream(filename)) { }
+
+NeuralNet::NeuralNet(std::ifstream input) {
+	if(input.is_open()) {
+		input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
 
 		std::string hiddenActivationFunctionName, outputActivationFunctionName;
 		input >> hiddenActivationFunctionName >> outputActivationFunctionName;
 		setActivationFunctionsWithNames(hiddenActivationFunctionName, outputActivationFunctionName);
-        
-        setupNeuronLayers();
-        
-        std::vector<double> newWeights;
-        double middleMan = 0;
-        while(input >> middleMan) newWeights.push_back(middleMan);
-        setWeights(newWeights);
-        
-        input.close();
-    } else {
-        std::cout << "Could not retrieve neural network from file\n";
-        throw 1;
-    }
+
+		setupNeuronLayers();
+
+		std::vector<double> newWeights;
+		double middleMan = 0;
+		while(input >> middleMan) newWeights.push_back(middleMan);
+		setWeights(newWeights);
+
+		input.close();
+	} else {
+		std::cout << "Could not retrieve neural network from file\n";
+		throw 1;
+	}
 }
 
 void NeuralNet::storeNet(std::string filename) {
 	std::ofstream output(filename);
+	storeNetWithStream(output);
+}
+
+void NeuralNet::storeNetWithStream(std::ofstream &output) {
 	if(output.is_open()) {
 		output << numInputs << " " << numOutputs << " " << numHiddenLayers << " " << numNeuronsPerHiddenLayer << "\n";
 
@@ -65,8 +70,7 @@ void NeuralNet::storeNet(std::string filename) {
 
 		std::vector<double> weights = getWeights();
 		for(int a = 0; a < weights.size(); a++) output << weights[a] << " ";
-
-		output.close();
+		std::cout << "\n";
 	} else {
 		std::cout << "Could not store neural network\n";
 		throw 1;
