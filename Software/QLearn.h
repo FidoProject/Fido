@@ -25,6 +25,9 @@ namespace net {
 		 */
 		QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_);
 
+		// Initialize empty QLearn object
+		QLearn();
+
 		// Gets the action that the network deems most benificial for the currentState
 		int chooseBestAction(std::vector<double> currentState);
 

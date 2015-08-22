@@ -8,8 +8,12 @@
 #include <vector>
 #include <math.h>
 #include <string>
+#include <map>
 
 namespace net {
+
+	// Defines the type for an activation function for the neurons of a neural net
+	typedef double(*ActivationFunction)(double);
 
 	/* Class representing a neural network.
 	 *
@@ -25,7 +29,7 @@ namespace net {
 		 * 
 		 * Uses the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.
 		 */
-		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, double(*activationFunction_)(double initialOutput));
+		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, ActivationFunction activationFunction);
 		
 		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
 		NeuralNet(NeuralNet* otherNet);
@@ -34,10 +38,19 @@ namespace net {
          * 
          * The function for filtering neuron output may not be stored in the file currently, so must be passed in.
          */
-		NeuralNet(std::string filename, double(*activationFunction_)(double initialOutput));
+		NeuralNet(std::string filename);
         
         // Stores a neural network in the specified file
         void storeNet(std::string filename);
+
+		// Gets a map with the names of each activation function as its keys and the available activation functions as its values
+		std::map<std::string, ActivationFunction> getActivationFunctionNameMap();
+
+		// Gets the names of the activation functions of the neural net as strings
+		void getActivationFunctionNames(std::string &hiddenActivationFunctionName, std::string &outputActivationFunctionName);
+
+		// Sets the activation functions of the neural net with the functions' names
+		void setActivationFunctionsWithNames(std::string hiddenActivationFunctionName, std::string outputActivationFunctionName);
 
 		/* Get the weights of each neuron in the net.
 		 * 
@@ -115,13 +128,13 @@ namespace net {
 		 *
 		 * An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
 		 */
-		double(*hiddenActivationFunction)(double initialOutput);
+		ActivationFunction hiddenActivationFunction;
 
 		/* The activation function for the output neurons
 		 *
 		 * An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
 		 */
-		double(*outputActivationFunction)(double initialOutput);
+		ActivationFunction outputActivationFunction;
     private:
         // Creates layers of neurons with random weights according to the values of numInputs, numOutputs, numHiddenLayers, and numNeuronsPerHiddenLayer
         void setupNeuronLayers();   
