@@ -1,3 +1,11 @@
+//
+//  Simlink.h
+//  FidoSim
+//
+//  Created by Joshua Gruenstein on 8/21/15.
+//  Copyright (c) 2015 fido. All rights reserved.
+//
+
 #ifndef __FidoSim__Simlink__
 #define __FidoSim__Simlink__
 
