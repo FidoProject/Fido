@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <iostream>
 #include <functional>
 
 class Simlink {
@@ -77,6 +78,9 @@ public:
     TDVect getGyro();
     
 private:
+    // Main window.
+    sf::RenderWindow window;
+    
     void mainLoop(sf::RenderWindow& window,sf::Sprite background);
     
     // LED with values r, g, and b from 0-255.
