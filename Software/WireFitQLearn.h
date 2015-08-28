@@ -45,7 +45,11 @@ namespace net {
         
         std::vector<double> bestAction(std::vector<double> state);
         
-        double wireFitting(std::vector<double> state, );
+        double wireFitting(std::vector<double> state, std::vector<Wire> wires, std::vector<double> action);
+        
+        double distance(std::vector<double> &state, Wire &wire, std::vector<double> &action, double maxRewardFromWires);
+        double weightedsum(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action);
+        double normalize(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action);
     };
 };
 
