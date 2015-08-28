@@ -127,6 +127,11 @@ namespace net {
 		static double simpleLinear(double initialOutput) {
 			return initialOutput;
 		}
+        
+        // Hyperbolic tangent (tanh) activation function
+        static double tansigmoid(double initialOutput) {
+            return (1 - exp(-2*initialOutput)) / (1 + exp(-2*initialOutput));
+        }
 
 		// A two dimensional network of neurons.
 		std::vector< std::vector<Neuron> > net;

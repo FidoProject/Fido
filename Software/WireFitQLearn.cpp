@@ -165,12 +165,12 @@ double WireFitQLearn::wireFitting(std::vector<double> state, std::vector<Wire> w
 }
 
 double WireFitQLearn::distance(std::vector<double> &state, Wire &wire, std::vector<double> &action, double maxRewardFromWires) {
-    double c = 1;
+    double smoothness = 0.5;
     
     double euclideanNorm = 0;
     for(int a = 0; a < action.size(); a++) euclideanNorm += pow(action[a] - wire.action[a], 2);
     
-    return (euclideanNorm * euclideanNorm) + c*(maxRewardFromWires - wire.reward) + M_E;
+    return (euclideanNorm * euclideanNorm) + smoothness*(maxRewardFromWires - wire.reward) + M_E;
 }
 double WireFitQLearn::weightedsum(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action) {
     double maxRewardFromWires = -9999999;
