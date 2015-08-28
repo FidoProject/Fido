@@ -73,6 +73,14 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
 }
 
 void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis) {
+    std::vector<Wire> wires = getWires(lastState);
+    double scalingFactor = scalingFactorToMillis * elapsedTimeMillis;
+    
+    /// Update Q value according to adaptive learning
+    double oldValue = wireFitting(lastState, wires, lastAction);
+    double feedback = ((1/scalingFactor)*(reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)))) + (1 - 1/scalingFactor) * highestReward(lastState);
+    double newQ = ((1 - learningRate) * oldValue) + (learningRate*feedback);
+    
     
 }
 
