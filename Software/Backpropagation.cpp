@@ -155,11 +155,15 @@ void Backpropagation::setDerivedOutputActivationFunction(std::string name) {
 std::string Backpropagation::getDerivedHiddenActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
 	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunctionDerivative) return a->first;
+    
+    throw 1;
 }
 
 std::string Backpropagation::getDerivedOutputActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
 	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunctionDerivative) return a->first;
+    
+    throw 1;
 }
 
 void Backpropagation::initWithStream(std::ifstream &input) {

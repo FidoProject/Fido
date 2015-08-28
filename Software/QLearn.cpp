@@ -87,7 +87,6 @@ void QLearn::getBestActionAndReward(std::vector<double> state, int &bestAction, 
 
 	for(int a = 0; a < networks.size(); a++) {
 		double reward = networks[a]->getOutput(state)[0];
-		std::cout << "State:  " << state[0] << "; Reward for " << a << ": " << reward << "\n";
 		if(reward > bestReward) {
 			bestAction = a;
 			bestReward = reward;
