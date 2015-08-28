@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
+#include <ctime>
 #include <functional>
 
 class Simlink {
@@ -92,6 +93,8 @@ private:
     // Motor container with two motor values from -255 to +255.
     struct Motors { int motorOne, motorTwo; };
     
+    struct Piezo { int volume, frequency; };
+    
     // Sensor values, all ranging from 0-100.
     int irVal, micVal, batVal, visVal;
     
@@ -100,6 +103,7 @@ private:
     LED led;
     Motors motors;
     IMU imu;
+    Piezo piezo;
 };
 
 #endif /* defined(__FidoSim__Simlink__) */
