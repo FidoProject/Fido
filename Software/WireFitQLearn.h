@@ -48,7 +48,7 @@ namespace net {
         std::vector<Wire> newControlWires(double newReward, const std::vector<double> &action, std::vector<Wire> controlWires);
         
         double rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);
-        std::vector<double> actionDerivative(const std::vector<double> &action, Wire wire, const std::vector<Wire> controlWires);
+        double actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);
         
         double getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action);
         
