@@ -3,6 +3,9 @@
 ### Task examples
  * Learn to always keep an LED on
  * Learn to keep an LED on when a red light is shone on the system
+ * Learn to display only red with the LED
+ * Learn to drive straight
+ * Learn to seek a magnetic field
  
 
 ### Black Box Model Specifications
