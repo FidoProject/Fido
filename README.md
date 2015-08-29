@@ -1,5 +1,10 @@
 # Fido
 
+### Task examples
+ * Learn to always keep an LED on
+ * Learn to keep an LED on when a sound is made
+ 
+
 ### Black Box Model Specifications
 
 #### Inputs and Outputs
