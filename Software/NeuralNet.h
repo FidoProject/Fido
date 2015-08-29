@@ -1,7 +1,6 @@
 #ifndef NEURALNET_H
 #define NEURALNET_H
 
-#include "Neuron.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -10,10 +9,10 @@
 #include <string>
 #include <map>
 
-namespace net {
+#include "Neuron.h"
+#include "ActivationFunctions.h"
 
-	// Defines the type for an activation function for the neurons of a neural net
-	typedef double(*ActivationFunction)(double);
+namespace net {
 
 	/* Class representing a neural network.
 	 *
@@ -104,34 +103,6 @@ namespace net {
 
 		// Gets the name of the activation function of the neurons of the output layer
 		std::string getOutputActivationFunctionName();
-		
-		/* An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
-		 *
-		 *
-		 */
-		static double sigmoid(double initialOutput) {
-			return ( 1 / ( 1 + exp(-initialOutput / 1)));
-		}
-
-		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
-		static double binary(double initialOutput) {
-			return (initialOutput > 0 ? 1 : 0);
-		}
-
-		// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
-		static double integer(double initialOutput) {
-            return floor(initialOutput);
-		}
-
-		// Takes the initial output of a neuron and returns it unchanged
-		static double simpleLinear(double initialOutput) {
-			return initialOutput;
-		}
-        
-        // Hyperbolic tangent (tanh) activation function
-        static double tansigmoid(double initialOutput) {
-            return (1 - exp(-2*initialOutput)) / (1 + exp(-2*initialOutput));
-        }
 
 		// A two dimensional network of neurons.
 		std::vector< std::vector<Neuron> > net;

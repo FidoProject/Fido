@@ -45,19 +45,7 @@ void Backpropagation::storeBackpropagationWithStream(std::ofstream &output) {
 void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
-	lastChangeInWeight.clear();
-	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
-	for(int a = 0; a < weights.size(); a++) {
-		std::vector< std::vector<double> > layer;
-		for(int b = 0; b < weights[a].size(); b++) {
-			std::vector<double> neuron;
-			for(int c = 0; c < weights[a][b].size(); c++) {
-				neuron.push_back(0);
-			}
-			layer.push_back(neuron);
-		}
-		lastChangeInWeight.push_back(layer);
-	}
+    resetLastChangeInWeight(network);
 
 	do {
 		totalError = 0;
@@ -72,7 +60,7 @@ void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vec
 
 
 /// Assumes sigmoid
-double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<double> input, std::vector<double> correctOutput) {
+double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<double> &input, std::vector<double> &correctOutput) {
 	std::vector< std::vector<double> > outputs = network->feedForward(input);
 	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
 	std::vector< std::vector<double> > errors;
@@ -179,4 +167,20 @@ void Backpropagation::initWithStream(std::ifstream &input) {
 		std::cout << "Could not retrieve neural network from file\n";
 		throw 1;
 	}
+}
+
+void Backpropagation::resetLastChangeInWeight(net::NeuralNet *network) {
+    lastChangeInWeight.clear();
+    std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
+    for(int a = 0; a < weights.size(); a++) {
+        std::vector< std::vector<double> > layer;
+        for(int b = 0; b < weights[a].size(); b++) {
+            std::vector<double> neuron;
+            for(int c = 0; c < weights[a][b].size(); c++) {
+                neuron.push_back(0);
+            }
+            layer.push_back(neuron);
+        }
+        lastChangeInWeight.push_back(layer);
+    }
 }

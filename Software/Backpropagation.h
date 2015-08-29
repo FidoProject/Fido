@@ -37,7 +37,7 @@ namespace net {
 		void trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput);
 
 		// Gets the output of the neural network, calculates the error of each neuron, and edits the weights of the neurons to reduce error
-		double trainOnDataPoint(net::NeuralNet *network, std::vector<double> input, std::vector<double> correctOutput);
+		double trainOnDataPoint(net::NeuralNet *network, std::vector<double> &input, std::vector<double> &correctOutput);
 
 		// Gets a map with the names of each activation function derivative as its keys and the available activation function derivatives as its values
 		std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames();
@@ -58,18 +58,15 @@ namespace net {
 		int maxiumumIterations;
 		std::vector< std::vector< std::vector<double> > > lastChangeInWeight;
 
-		static double sigmoidDerivative(double neuronOuput) {
-			return neuronOuput * (1 - neuronOuput);
-		}
-		static double simpleLinearDerivative(double neuronOutput) {
-			return 1;
-		}
-
 	private:
 		ActivationFunction hiddenActivationFunctionDerivative;
 		ActivationFunction outputActivationFunctionDerivative;
 
 		void initWithStream(std::ifstream &input);
+        
+        void resetLastChangeInWeight(net::NeuralNet *network);
+        
+        std::vector< std::vector<double> > computeNNError(net::NeuralNet *network);
 	};
 }
 
