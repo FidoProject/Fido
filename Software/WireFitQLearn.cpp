@@ -2,6 +2,8 @@
 
 using namespace net;
 
+static const double smoothingFactor = 0.2;
+
 WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_) {
     backprop = backprop_;
     learningRate = learningRate_;
@@ -77,7 +79,7 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     double scalingFactor = scalingFactorToMillis * elapsedTimeMillis;
     
     /// Update Q value according to adaptive learning
-    double oldRewardForLastAction = getRewardUsingInterpolator(lastState, controlWires, lastAction);
+    double oldRewardForLastAction = getRewardUsingInterpolator(controlWires, lastAction);
     double feedback = ((1/scalingFactor)*(reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)))) + (1 - 1/scalingFactor) * highestReward(lastState);
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
     
@@ -163,43 +165,83 @@ std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
     return bestAction;
 }
 
-std::vector<Wire> newControlWires(double newReward, std::vector<Wire> oldControlWires) {
+std::vector<Wire> WireFitQLearn::newControlWires(double newReward, const std::vector<double> &action, std::vector<Wire> controlWires) {
+    double errorTarget = 0.00001;
+    int maxIterations = 10000;
     
+    double error = 0;
+    int iterations = 0;
+    
+    do {
+        // do stuffs
+        
+        
+        error = pow(newReward - getRewardUsingInterpolator(controlWires, action), 2);
+        iterations++;
+    } while(error > errorTarget && iterations < maxIterations);
+    
+    return controlWires;
 }
 
-double WireFitQLearn::getRewardUsingInterpolator(std::vector<double> state, std::vector<Wire> controlWires, std::vector<double> action) {
-    return weightedSum(state, controlWires, action) / normalize(state, controlWires, action);
+double WireFitQLearn::rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires) {
+    double norm = normalize(controlWires, action);
+    double wsum = weightedSum(controlWires, action);
+    
+    double maxRewardFromWires = -9999999;
+    for(auto a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;
+    double distance = distanceBetweenWireAndAction(wire, action, maxRewardFromWires);
+    
+    return (norm * (distance + wire.reward*smoothingFactor) - wsum*smoothingFactor) / pow(norm * distance, 2);
 }
 
-double WireFitQLearn::distanceBetweenWireAndAction(const std::vector<double> &state, const Wire &wire, const std::vector<double> &action, double maxReward) {
-    double smoothness = 0.2;
+std::vector<double> WireFitQLearn::actionDerivative(const std::vector<double> &action, Wire wire, const std::vector<Wire> controlWires) {
+    double norm = normalize(controlWires, action);
+    double wsum = weightedSum(controlWires, action);
+    double maxRewardFromWires = -9999999;
+    for(auto a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;
+    double distance = distanceBetweenWireAndAction(wire, action, maxRewardFromWires);
+    
+    /// Multiply the wire's action by a scalar term
+    std::transform(wire.action.begin(), wire.action.end(), wire.action.begin(), std::bind1st( std::multiplies<double>(), (wsum - norm*wire.reward)*2 ));
+    
+    /// Divide the wire's action by a scalar term
+    std::transform(wire.action.begin(), wire.action.end(), wire.action.begin(), std::bind1st( std::divides<double>(), pow(norm*distance, 2) ));
+    
+    return wire.action;
+}
+
+double WireFitQLearn::getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action) {
+    return weightedSum(controlWires, action) / normalize(controlWires, action);
+}
+
+double WireFitQLearn::distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward) {
     double e = 0.01;
     
     double euclideanNorm = 0;
     for(int a = 0; a < action.size(); a++) euclideanNorm += pow(action[a] - wire.action[a], 2);
     
-    return (euclideanNorm * euclideanNorm) + smoothness*(maxReward - wire.reward) + e;
+    return (euclideanNorm * euclideanNorm) + smoothingFactor*(maxReward - wire.reward) + e;
 }
 
-double WireFitQLearn::weightedSum(const std::vector<double> &state, const std::vector<Wire> &wires, const std::vector<double> &action) {
+double WireFitQLearn::weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action) {
     double maxRewardFromWires = -9999999;
     for(auto a = wires.begin(); a != wires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;
     
     double answer = 0;
     for(auto a = wires.begin(); a != wires.end(); ++a) {
-        answer += a->reward / distanceBetweenWireAndAction(state, *a, action, maxRewardFromWires);
+        answer += a->reward / distanceBetweenWireAndAction(*a, action, maxRewardFromWires);
     }
     
     return answer;
 }
 
-double WireFitQLearn::normalize(const std::vector<double> &state, const std::vector<Wire> &wires, const std::vector<double> &action) {
+double WireFitQLearn::normalize(const std::vector<Wire> &wires, const std::vector<double> &action) {
     double maxRewardFromWires = -9999999;
     for(auto a = wires.begin(); a != wires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;
     
     double answer = 0;
     for(auto a = wires.begin(); a != wires.end(); ++a) {
-        answer += 1.0 / distanceBetweenWireAndAction(state, *a, action, maxRewardFromWires);
+        answer += 1.0 / distanceBetweenWireAndAction(*a, action, maxRewardFromWires);
     }
     
     return answer;

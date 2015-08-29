@@ -53,7 +53,7 @@ void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vec
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
-		///std::cout << "Iterations: " << iterations << "\n";
+        
 		std::cout << "Error: " << totalError << "\n";
 	} while(totalError > targetErrorLevel && iterations < maxiumumIterations);
 }

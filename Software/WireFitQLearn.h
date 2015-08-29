@@ -45,13 +45,16 @@ namespace net {
         
         std::vector<double> bestAction(std::vector<double> state);
         
-        std::vector<Wire> newControlWires(double newReward, std::vector<Wire> oldControlWires);
+        std::vector<Wire> newControlWires(double newReward, const std::vector<double> &action, std::vector<Wire> controlWires);
         
-        double getRewardUsingInterpolator(std::vector<double> state, std::vector<Wire> controlWires, std::vector<double> action);
+        double rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);
+        std::vector<double> actionDerivative(const std::vector<double> &action, Wire wire, const std::vector<Wire> controlWires);
         
-        double distanceBetweenWireAndAction(const std::vector<double> &state, const Wire &wire, const std::vector<double> &action, double maxReward);
-        double weightedSum(const std::vector<double> &state, const std::vector<Wire> &wires, const std::vector<double> &action);
-        double normalize(const std::vector<double> &state, const std::vector<Wire> &wires, const std::vector<double> &action);
+        double getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action);
+        
+        double distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward);
+        double weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action);
+        double normalize(const std::vector<Wire> &wires, const std::vector<double> &action);
     };
 };
 
