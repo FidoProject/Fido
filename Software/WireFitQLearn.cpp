@@ -73,14 +73,21 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
 }
 
 void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis) {
-    std::vector<Wire> wires = getWires(lastState);
+    std::vector<Wire> controlWires = getWires(lastState);
     double scalingFactor = scalingFactorToMillis * elapsedTimeMillis;
     
     /// Update Q value according to adaptive learning
-    double oldValue = wireFitting(lastState, wires, lastAction);
+    double oldRewardForLastAction = getRewardUsingInterpolator(lastState, controlWires, lastAction);
     double feedback = ((1/scalingFactor)*(reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)))) + (1 - 1/scalingFactor) * highestReward(lastState);
-    double newQ = ((1 - learningRate) * oldValue) + (learningRate*feedback);
+    double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
     
+    /// Generate new control wires using newReward and lastAction
+    
+    /// Train network using new control wires
+    
+}
+
+std::vector<Wire> newControlWires(double newReward, std::vector<Wire> oldControlWires) {
     
 }
 
@@ -160,25 +167,25 @@ std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
     return bestAction;
 }
 
-double WireFitQLearn::wireFitting(std::vector<double> state, std::vector<Wire> wires, std::vector<double> action) {
-    return weightedsum(state, wires, action) / normalize(state, wires, action);
+double WireFitQLearn::getRewardUsingInterpolator(std::vector<double> state, std::vector<Wire> controlWires, std::vector<double> action) {
+    return weightedSum(state, controlWires, action) / normalize(state, controlWires, action);
 }
 
-double WireFitQLearn::distance(std::vector<double> &state, Wire &wire, std::vector<double> &action, double maxRewardFromWires) {
+double WireFitQLearn::distanceBetweenWireAndAction(std::vector<double> &state, Wire &wire, std::vector<double> &action, double maxReward) {
     double smoothness = 0.5;
     
     double euclideanNorm = 0;
     for(int a = 0; a < action.size(); a++) euclideanNorm += pow(action[a] - wire.action[a], 2);
     
-    return (euclideanNorm * euclideanNorm) + smoothness*(maxRewardFromWires - wire.reward) + M_E;
+    return (euclideanNorm * euclideanNorm) + smoothness*(maxReward - wire.reward) + M_E;
 }
-double WireFitQLearn::weightedsum(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action) {
+double WireFitQLearn::weightedSum(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action) {
     double maxRewardFromWires = -9999999;
     for(auto a = wires.begin(); a != wires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;
     
     double answer = 0;
     for(auto a = wires.begin(); a != wires.end(); ++a) {
-        answer += a->reward / distance(state, *a, action, maxRewardFromWires);
+        answer += a->reward / distanceBetweenWireAndAction(state, *a, action, maxRewardFromWires);
     }
     
     return answer;
@@ -189,7 +196,7 @@ double WireFitQLearn::normalize(std::vector<double> &state, std::vector<Wire> &w
     
     double answer = 0;
     for(auto a = wires.begin(); a != wires.end(); ++a) {
-        answer += 1.0 / distance(state, *a, action, maxRewardFromWires);
+        answer += 1.0 / distanceBetweenWireAndAction(state, *a, action, maxRewardFromWires);
     }
     
     return answer;
