@@ -2,7 +2,7 @@
 
 ### Task examples
  * Learn to always keep an LED on
- * Learn to keep an LED on when a sound is made
+ * Learn to keep an LED on when a red light is shone on the system
  
 
 ### Black Box Model Specifications
