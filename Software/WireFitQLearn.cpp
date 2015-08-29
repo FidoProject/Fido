@@ -87,10 +87,6 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     
 }
 
-std::vector<Wire> newControlWires(double newReward, std::vector<Wire> oldControlWires) {
-    
-}
-
 void WireFitQLearn::storeWireFitQLearn(std::string filename) {
     std::ofstream output(filename);
     if(output.is_open()) {
@@ -167,18 +163,24 @@ std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
     return bestAction;
 }
 
+std::vector<Wire> newControlWires(double newReward, std::vector<Wire> oldControlWires) {
+    
+}
+
 double WireFitQLearn::getRewardUsingInterpolator(std::vector<double> state, std::vector<Wire> controlWires, std::vector<double> action) {
     return weightedSum(state, controlWires, action) / normalize(state, controlWires, action);
 }
 
 double WireFitQLearn::distanceBetweenWireAndAction(std::vector<double> &state, Wire &wire, std::vector<double> &action, double maxReward) {
-    double smoothness = 0.5;
+    double smoothness = 0.2;
+    double e = 0.01;
     
     double euclideanNorm = 0;
     for(int a = 0; a < action.size(); a++) euclideanNorm += pow(action[a] - wire.action[a], 2);
     
-    return (euclideanNorm * euclideanNorm) + smoothness*(maxReward - wire.reward) + M_E;
+    return (euclideanNorm * euclideanNorm) + smoothness*(maxReward - wire.reward) + e;
 }
+
 double WireFitQLearn::weightedSum(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action) {
     double maxRewardFromWires = -9999999;
     for(auto a = wires.begin(); a != wires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;
@@ -190,6 +192,7 @@ double WireFitQLearn::weightedSum(std::vector<double> &state, std::vector<Wire> 
     
     return answer;
 }
+
 double WireFitQLearn::normalize(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action) {
     double maxRewardFromWires = -9999999;
     for(auto a = wires.begin(); a != wires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;

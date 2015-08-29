@@ -45,9 +45,9 @@ namespace net {
         
         std::vector<double> bestAction(std::vector<double> state);
         
-        double getRewardUsingInterpolator(std::vector<double> state, std::vector<Wire> controlWires, std::vector<double> action);
-        
         std::vector<Wire> newControlWires(double newReward, std::vector<Wire> oldControlWires);
+        
+        double getRewardUsingInterpolator(std::vector<double> state, std::vector<Wire> controlWires, std::vector<double> action);
         
         double distanceBetweenWireAndAction(std::vector<double> &state, Wire &wire, std::vector<double> &action, double maxReward);
         double weightedSum(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action);

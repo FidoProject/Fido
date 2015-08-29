@@ -15,6 +15,7 @@ namespace net {
 		Backpropagation backprop;
 		int lastAction, numberOfActions;
 		double learningRate, devaluationFactor;
+        double lastReward;
 		std::vector<double> lastState;
 
 		/* Initializes a QLearn object with a model network and the values of learning rate and devaluationFactor.
