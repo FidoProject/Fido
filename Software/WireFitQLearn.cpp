@@ -83,10 +83,8 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     double feedback = ((1/scalingFactor)*(reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)))) + (1 - 1/scalingFactor) * highestReward(lastState);
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
     
-    /// Generate new control wires using newReward and lastAction
-    
-    /// Train network using new control wires
-    
+    std::vector<Wire> newContolWires = newControlWires(newRewardForLastAction, lastAction, controlWires);
+    backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
 }
 
 void WireFitQLearn::storeWireFitQLearn(std::string filename) {
