@@ -126,8 +126,8 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<do
 
 std::map<std::string, ActivationFunction> Backpropagation::getDerivedActivationFunctionNames() {
 	std::map<std::string, ActivationFunction> map;
-	map["sigmoidDerivative"] = Backpropagation::sigmoidDerivative;
-	map["simpleLinearDerivative"] = Backpropagation::simpleLinearDerivative;
+	map["sigmoidDerivative"] = sigmoidDerivative;
+	map["simpleLinearDerivative"] = simpleLinearDerivative;
 
 	return map;
 }

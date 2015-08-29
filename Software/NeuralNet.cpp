@@ -182,10 +182,10 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 
 std::map<std::string, ActivationFunction> NeuralNet::getActivationFunctionNameMap() {
 	std::map<std::string, ActivationFunction> map;
-	map["sigmoid"] = NeuralNet::sigmoid;
-	map["binary"] = NeuralNet::binary;
-	map["integer"] = NeuralNet::integer;
-	map["simpleLinear"] = NeuralNet::simpleLinear;
+	map["sigmoid"] = sigmoid;
+	map["binary"] = binary;
+	map["integer"] = integer;
+	map["simpleLinear"] = simpleLinear;
 
 	return map;
 }
@@ -201,11 +201,15 @@ void NeuralNet::setOutputActivationFunction(std::string name) {
 std::string NeuralNet::getHiddenActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
 	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunction) return a->first;
+    
+    throw 1;
 }
 
 std::string NeuralNet::getOutputActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
 	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunction) return a->first;
+    
+    throw 1;
 }
 
 void NeuralNet::setupNeuronLayers() {

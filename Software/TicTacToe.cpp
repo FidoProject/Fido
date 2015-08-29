@@ -7,7 +7,7 @@ net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {
 
 	net::NeuralNet *modelNet = new net::NeuralNet(9, 1, 4, 9, "sigmoid");
 
-	///for(int a = 0; a < 250; a++) randomSet.push_back(new net::NeuralNet(9, 1, 4, 9, net::NeuralNet::sigmoid));
+	///for(int a = 0; a < 250; a++) randomSet.push_back(new net::NeuralNet(9, 1, 4, 9, "sigmoid"));
 
 	return geneticAlgo.getBestNeuralNetwork(numberOfIterations, modelNet);
 }

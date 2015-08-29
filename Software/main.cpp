@@ -17,11 +17,11 @@ int main() {
 
 	net::NeuralNet *bestPlayer = TicTacToe::getBestPlayer(100);
 
-	/*net::NeuralNet * network = new net::NeuralNet(1, 1, 2, 2, net::NeuralNet::sigmoid);
+	/*net::NeuralNet * network = new net::NeuralNet(1, 1, 2, 2, "sigmoid");
 	network->outputActivationFunction = net::NeuralNet::simpleLinear;
 
 	net::Backpropagation backprop = net::Backpropagation(0.1, 0.05, 0.01, 100000);
-	backprop.outputActivationFunctionDerivative = net::Backpropagation::simpleLinearDerivative;
+	backprop.setDerivedHiddenActivationFunction("simpleLinearDerivative");
 
 	net::QLearn learn = net::QLearn(network, backprop, 0.3, 0.5, 2);
 
