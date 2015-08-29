@@ -60,7 +60,7 @@ void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vec
 
 
 /// Assumes sigmoid
-double Backpropagation::trainOnDataPoint(net::NeuralNet *network, std::vector<double> &input, std::vector<double> &correctOutput) {
+double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput) {
 	std::vector< std::vector<double> > outputs = network->feedForward(input);
 	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
 	std::vector< std::vector<double> > errors;

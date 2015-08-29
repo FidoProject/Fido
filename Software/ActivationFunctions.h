@@ -5,7 +5,7 @@ namespace net {
     // Defines the type for an activation function for the neurons of a neural net
     typedef double(*ActivationFunction)(double);
 
-    /// FUNCTIONS
+    /// ACTIVATION FUNCTIONS
     // An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
     static double sigmoid(double initialOutput) {
         return ( 1 / ( 1 + exp(-initialOutput / 1)));
@@ -31,7 +31,7 @@ namespace net {
         return (1 - exp(-2*initialOutput)) / (1 + exp(-2*initialOutput));
     }
 
-    /// DERIVATIVES
+    /// DERIVATIVES OF ACTIVATION FUNCTIONS
     // Derivative of the sigmoid activation function
     static double sigmoidDerivative(double neuronOuput) {
         return neuronOuput * (1 - neuronOuput);

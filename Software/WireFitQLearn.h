@@ -49,9 +49,9 @@ namespace net {
         
         double getRewardUsingInterpolator(std::vector<double> state, std::vector<Wire> controlWires, std::vector<double> action);
         
-        double distanceBetweenWireAndAction(std::vector<double> &state, Wire &wire, std::vector<double> &action, double maxReward);
-        double weightedSum(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action);
-        double normalize(std::vector<double> &state, std::vector<Wire> &wires, std::vector<double> &action);
+        double distanceBetweenWireAndAction(const std::vector<double> &state, const Wire &wire, const std::vector<double> &action, double maxReward);
+        double weightedSum(const std::vector<double> &state, const std::vector<Wire> &wires, const std::vector<double> &action);
+        double normalize(const std::vector<double> &state, const std::vector<Wire> &wires, const std::vector<double> &action);
     };
 };
 
