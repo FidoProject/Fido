@@ -170,7 +170,7 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 
 		for(int b = 0; b < net[a].size(); b++) {
 			double out;
-			if(b == net[a].size() - 1) out = outputActivationFunction(net[a][b].getOutput(input));
+			if(a == net.size() - 1) out = outputActivationFunction(net[a][b].getOutput(input));
 			else out = hiddenActivationFunction(net[a][b].getOutput(input));
 			outputLayer.push_back(out);
 		}
@@ -186,6 +186,7 @@ std::map<std::string, ActivationFunction> NeuralNet::getActivationFunctionNameMa
 	map["binary"] = binary;
 	map["integer"] = integer;
 	map["simpleLinear"] = simpleLinear;
+    map["tanSigmoid"] = tanSigmoid;
 
 	return map;
 }
@@ -247,4 +248,18 @@ void NeuralNet::initWithStream(std::ifstream &input) {
 		std::cout << "Could not retrieve neural network from file\n";
 		throw 1;
 	}
+}
+
+void NeuralNet::printWeights() {
+    std::cout << "Neuron weights: \n";
+    for(int a = 0; a < net.size(); a++) {
+        std::cout << "  Layer " << a << ":\n";
+        for(int b = 0; b < net[a].size(); b++) {
+            std::cout << "      Neuron " << b << ": ";
+            for(int c = 0; c < net[a][b].weights.size(); c++) {
+                std::cout << net[a][b].weights[c] << " ";
+            }
+            std::cout << "\n";
+        }
+    }
 }

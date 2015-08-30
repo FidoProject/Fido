@@ -17,7 +17,7 @@ std::vector<double> TicTacToe::getPopulationFitnesses(std::vector<net::NeuralNet
 	std::vector<std::thread> threads;
 	int numThreads = 4;
 
-	int sizePerSubgroup = players.size() / numThreads;
+	int sizePerSubgroup = (int)players.size() / numThreads;
 
 	for(int a = 0; a < numThreads; a++) {
 		scores.push_back(new std::vector<double>(0));

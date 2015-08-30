@@ -103,6 +103,9 @@ namespace net {
 
 		// Gets the name of the activation function of the neurons of the output layer
 		std::string getOutputActivationFunctionName();
+        
+        // Prints the weights of the neurons of the layers of the net
+        void printWeights();
 
 		// A two dimensional network of neurons.
 		std::vector< std::vector<Neuron> > net;

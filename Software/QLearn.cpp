@@ -18,7 +18,7 @@ QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, do
 	backprop = backprop_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
-	numberOfActions = networks.size();
+	numberOfActions = (int)networks.size();
 	lastAction = -1;
     lastReward = -1;
 }
@@ -123,7 +123,7 @@ void QLearn::storeQLearn(std::string filename) {
 
 		output.close();
 	} else {
-		std::cout << "Could not retrieve neural network from file\n";
+		std::cout << "Could not store neural network in file\n";
 		throw 1;
 	}
 }
