@@ -21,6 +21,9 @@ namespace net {
         int numberOfWires, actionDimensions;
         double learningRate, devaluationFactor;
         double scalingFactorToMillis;
+        double smoothingFactor, e;
+        double gradientDescentErrorTarget, gradientDescentLearningRate;
+        int gradientDescentMaxIterations;
         std::vector<double> lastState, lastAction;
         
         WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_);
