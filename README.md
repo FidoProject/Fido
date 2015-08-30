@@ -25,3 +25,9 @@
 |:------------:|:------------:|
 | IR Intensity | Low battery  |
 | Charging     | Hit/Knocking |
+
+### Papers used for References
+ * Q Learning for Continous State Action Spaces - http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf
+ * Backpropagation - https://www4.rgu.ac.uk/files/chapter3%20-%20bp.pdf
+ * Backpropagation - http://www.cse.unsw.edu.au/~cs9417ml/MLP2/
+ * Q Learning - http://web.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
