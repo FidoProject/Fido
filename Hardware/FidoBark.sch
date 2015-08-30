@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.05" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -11552,61 +11552,6 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 </deviceset>
 </devicesets>
 </library>
-<library name="SparkFun-Resistors">
-<description>&lt;h3&gt;SparkFun Electronics' preferred foot prints&lt;/h3&gt;
-In this library you'll find resistors, capacitors, inductors, test points, jumper pads, etc.&lt;br&gt;&lt;br&gt;
-We've spent an enormous amount of time creating and checking these footprints and parts, but it is the end user's responsibility to ensure correctness and suitablity for a given componet or application. If you enjoy using this library, please buy one of our products at www.sparkfun.com.
-&lt;br&gt;&lt;br&gt;
-&lt;b&gt;Licensing:&lt;/b&gt; CC v3.0 Share-Alike You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
-<packages>
-<package name="0805">
-<wire x1="-0.3" y1="0.6" x2="0.3" y2="0.6" width="0.1524" layer="21"/>
-<wire x1="-0.3" y1="-0.6" x2="0.3" y2="-0.6" width="0.1524" layer="21"/>
-<smd name="1" x="-0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="2" x="0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
-<text x="-0.762" y="0.8255" size="0.4064" layer="25">&gt;NAME</text>
-<text x="-1.016" y="-1.397" size="0.4064" layer="27">&gt;VALUE</text>
-</package>
-</packages>
-<symbols>
-<symbol name="RESISTOR">
-<wire x1="-2.54" y1="0" x2="-2.159" y2="1.016" width="0.1524" layer="94"/>
-<wire x1="-2.159" y1="1.016" x2="-1.524" y2="-1.016" width="0.1524" layer="94"/>
-<wire x1="-1.524" y1="-1.016" x2="-0.889" y2="1.016" width="0.1524" layer="94"/>
-<wire x1="-0.889" y1="1.016" x2="-0.254" y2="-1.016" width="0.1524" layer="94"/>
-<wire x1="-0.254" y1="-1.016" x2="0.381" y2="1.016" width="0.1524" layer="94"/>
-<wire x1="0.381" y1="1.016" x2="1.016" y2="-1.016" width="0.1524" layer="94"/>
-<wire x1="1.016" y1="-1.016" x2="1.651" y2="1.016" width="0.1524" layer="94"/>
-<wire x1="1.651" y1="1.016" x2="2.286" y2="-1.016" width="0.1524" layer="94"/>
-<wire x1="2.286" y1="-1.016" x2="2.54" y2="0" width="0.1524" layer="94"/>
-<text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
-<text x="-3.81" y="-3.302" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="0.3OHM-1/8W-1%(0805)" prefix="R" uservalue="yes">
-<gates>
-<gate name="G$1" symbol="RESISTOR" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="0805">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="RES-11622"/>
-<attribute name="VALUE" value="0.3"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="SparkFun-Connectors">
 <description>&lt;h3&gt;SparkFun Electronics' preferred foot prints&lt;/h3&gt;
 In this library you'll find connectors and sockets- basically anything that can be plugged into or onto.&lt;br&gt;&lt;br&gt;
@@ -11767,8 +11712,6 @@ Now with smashable polarity marks!</description>
 <part name="SUPPLY7" library="SparkFun-Aesthetics" deviceset="V_BATT" device=""/>
 <part name="GND11" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="U3" library="HM-10_BLE" deviceset="HM-10" device=""/>
-<part name="R8" library="SparkFun-Resistors" deviceset="0.3OHM-1/8W-1%(0805)" device="" value="470R"/>
-<part name="R9" library="SparkFun-Resistors" deviceset="0.3OHM-1/8W-1%(0805)" device="" value="470R"/>
 <part name="CONNECT" library="adafruit" deviceset="LED" device="CHIPLED_0805" value="BLU"/>
 <part name="GND17" library="supply1" deviceset="GND" device=""/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
@@ -11777,6 +11720,8 @@ Now with smashable polarity marks!</description>
 <part name="SUPPLY9" library="SparkFun-Aesthetics" deviceset="V_BATT" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="J1" library="SparkFun-Connectors" deviceset="JST_2MM_MALE" device=""/>
+<part name="R8" library="adafruit" deviceset="R-US_" device="R0603" value="470"/>
+<part name="R9" library="adafruit" deviceset="R-US_" device="R0603" value="470"/>
 </parts>
 <sheets>
 <sheet>
@@ -11888,8 +11833,6 @@ Now with smashable polarity marks!</description>
 </instance>
 <instance part="GND11" gate="1" x="154.94" y="55.88" rot="R90"/>
 <instance part="U3" gate="G$1" x="36.83" y="44.45"/>
-<instance part="R8" gate="G$1" x="63.5" y="31.75" rot="R270"/>
-<instance part="R9" gate="G$1" x="63.5" y="49.53" rot="R90"/>
 <instance part="CONNECT" gate="G$1" x="63.5" y="59.69" rot="R180"/>
 <instance part="GND17" gate="1" x="36.83" y="13.97"/>
 <instance part="GND18" gate="1" x="63.5" y="69.85" rot="R180"/>
@@ -11902,6 +11845,8 @@ Now with smashable polarity marks!</description>
 <instance part="SUPPLY9" gate="G$1" x="175.26" y="165.1"/>
 <instance part="GND12" gate="1" x="175.26" y="154.94"/>
 <instance part="J1" gate="G$1" x="167.64" y="160.02" rot="R90"/>
+<instance part="R8" gate="G$1" x="63.5" y="49.53" rot="R90"/>
+<instance part="R9" gate="G$1" x="63.5" y="31.75" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -11979,9 +11924,9 @@ Now with smashable polarity marks!</description>
 <pinref part="T1" gate="1" pin="C"/>
 </segment>
 <segment>
-<pinref part="R8" gate="G$1" pin="2"/>
 <pinref part="SUPPLY11" gate="G$1" pin="3.3V"/>
 <wire x1="63.5" y1="24.13" x2="63.5" y2="26.67" width="0.1524" layer="91"/>
+<pinref part="R9" gate="G$1" pin="1"/>
 </segment>
 <segment>
 <pinref part="U3" gate="G$1" pin="3.3V"/>
@@ -12560,9 +12505,9 @@ Now with smashable polarity marks!</description>
 </net>
 <net name="N$16" class="0">
 <segment>
-<pinref part="R9" gate="G$1" pin="2"/>
 <pinref part="CONNECT" gate="G$1" pin="A"/>
 <wire x1="63.5" y1="54.61" x2="63.5" y2="57.15" width="0.1524" layer="91"/>
+<pinref part="R8" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="RX" class="0">
@@ -12591,18 +12536,18 @@ Now with smashable polarity marks!</description>
 </net>
 <net name="N$10" class="0">
 <segment>
-<pinref part="R9" gate="G$1" pin="1"/>
 <wire x1="63.5" y1="44.45" x2="63.5" y2="41.91" width="0.1524" layer="91"/>
 <pinref part="U3" gate="G$1" pin="P1_2"/>
 <wire x1="63.5" y1="41.91" x2="57.15" y2="41.91" width="0.1524" layer="91"/>
+<pinref part="R8" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="N$11" class="0">
 <segment>
 <pinref part="U3" gate="G$1" pin="P1_3"/>
 <wire x1="57.15" y1="39.37" x2="63.5" y2="39.37" width="0.1524" layer="91"/>
-<pinref part="R8" gate="G$1" pin="1"/>
 <wire x1="63.5" y1="39.37" x2="63.5" y2="36.83" width="0.1524" layer="91"/>
+<pinref part="R9" gate="G$1" pin="2"/>
 </segment>
 </net>
 </nets>
