@@ -28,6 +28,7 @@
 
 ### Papers used for References
  * Q Learning for Continous State Action Spaces - http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf
- * Backpropagation - https://www4.rgu.ac.uk/files/chapter3%20-%20bp.pdf
- * Backpropagation - http://www.cse.unsw.edu.au/~cs9417ml/MLP2/
- * Q Learning - http://web.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
+ * First Description of Backpropagation - Beyond Regression: New Tools for Prediction and Analysis in the Behavioral Sciences by Paul Werbos
+ * Backpropagation Tutorial - https://www4.rgu.ac.uk/files/chapter3%20-%20bp.pdf
+ * Backpropagation Tutorial - http://www.cse.unsw.edu.au/~cs9417ml/MLP2/
+ * Q Learning Implementation - http://web.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
