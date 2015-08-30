@@ -373,6 +373,11 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="-1.016" y="3.556" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="V_BATT" x="0" y="0" visible="off" length="short" direction="sup" rot="R90"/>
 </symbol>
+<symbol name="DGND">
+<wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
+<text x="-2.54" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="GND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="3.3V" prefix="SUPPLY">
@@ -393,6 +398,19 @@ You are welcome to use this library for commercial purposes. For attribution, we
 Generic symbol for the battery input to a system.</description>
 <gates>
 <gate name="G$1" symbol="V_BATT" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="GND" prefix="GND">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="DGND" x="0" y="0"/>
 </gates>
 <devices>
 <device name="">
@@ -10230,6 +10248,10 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <part name="GND24" library="supply1" deviceset="GND" device=""/>
 <part name="SUPPLY25" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="R20" library="adafruit" deviceset="R-US_" device="R0603" value="2k"/>
+<part name="R4" library="rcl" deviceset="R-US_" device="R0603" value="10k"/>
+<part name="R7" library="rcl" deviceset="R-US_" device="R0603" value="4.7k"/>
+<part name="SUPPLY7" library="SparkFun-Aesthetics" deviceset="V_BATT" device=""/>
+<part name="GND11" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10324,6 +10346,12 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <instance part="GND24" gate="1" x="142.24" y="53.34" rot="R270"/>
 <instance part="SUPPLY25" gate="G$1" x="162.56" y="68.58"/>
 <instance part="R20" gate="G$1" x="152.4" y="53.34"/>
+<instance part="R4" gate="G$1" x="48.26" y="50.8"/>
+<instance part="R7" gate="G$1" x="63.5" y="50.8"/>
+<instance part="SUPPLY7" gate="G$1" x="38.1" y="50.8" smashed="yes" rot="R90">
+<attribute name="VALUE" x="42.164" y="54.864" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="GND11" gate="1" x="73.66" y="50.8" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -10508,6 +10536,11 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <pinref part="GND24" gate="1" pin="GND"/>
 <wire x1="144.78" y1="53.34" x2="147.32" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="R20" gate="G$1" pin="1"/>
+</segment>
+<segment>
+<pinref part="R7" gate="G$1" pin="2"/>
+<pinref part="GND11" gate="1" pin="GND"/>
+<wire x1="68.58" y1="50.8" x2="71.12" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="MOSI" class="0">
@@ -10700,6 +10733,11 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <wire x1="63.5" y1="205.74" x2="65.024" y2="205.74" width="0.1524" layer="91"/>
 <junction x="63.5" y="205.74"/>
 </segment>
+<segment>
+<pinref part="SUPPLY7" gate="G$1" pin="V_BATT"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="38.1" y1="50.8" x2="43.18" y2="50.8" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="N$2" class="0">
 <segment>
@@ -10808,7 +10846,7 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <label x="116.84" y="182.88" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="ADC0" class="0">
+<net name="ADC_VIS" class="0">
 <segment>
 <pinref part="R12" gate="G$1" pin="P$2"/>
 <pinref part="R13" gate="G$1" pin="1"/>
@@ -10819,7 +10857,7 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <label x="124.46" y="53.34" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="ADC1" class="0">
+<net name="ADC_MIC" class="0">
 <segment>
 <pinref part="U$6" gate="G$1" pin="OUT"/>
 <wire x1="160.02" y1="111.76" x2="162.56" y2="111.76" width="0.1524" layer="91"/>
@@ -10834,7 +10872,7 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <label x="162.56" y="111.76" size="1.016" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="ADC3" class="0">
+<net name="ADC_IR" class="0">
 <segment>
 <wire x1="157.48" y1="53.34" x2="162.56" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="162.56" y1="53.34" x2="162.56" y2="55.88" width="0.1524" layer="91"/>
@@ -10891,6 +10929,17 @@ Through-hole photocell (http://www.sparkfun.com/products/9088)&lt;br&gt;
 <junction x="137.16" y="109.22"/>
 <pinref part="R16" gate="G$1" pin="1"/>
 <wire x1="137.16" y1="116.84" x2="137.16" y2="109.22" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="ADC_BAT" class="0">
+<segment>
+<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="R7" gate="G$1" pin="1"/>
+<wire x1="53.34" y1="50.8" x2="55.88" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="50.8" x2="58.42" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="50.8" x2="55.88" y2="55.88" width="0.1524" layer="91"/>
+<junction x="55.88" y="50.8"/>
+<label x="55.88" y="55.88" size="1.016" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>
