@@ -16,4 +16,12 @@ Outputs were similarly chosen: motors allowed Fido to learn movement, a piezoele
 
 \subsection{Electrical Implementation}
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=5cm]{Figures/micDiagram.png}
+	\caption{Schematic of Microphone Circuit}
+\end{figure}
+
+An electret microphone was chosen as the base sensor to reduce much of complexity traditionally associated with microphones (mainly a polarizing power supply).  A simple amplifier circuit uses an OPA344 operational amplifier to increase voltages to 3.3 volt levels readable by the Teensy ADC (analog to digital converter).  Multiple decoupling capacitors are used to reduce noise and interference.
+
 \subsection{Mechanical Implementation}
