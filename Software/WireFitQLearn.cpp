@@ -17,6 +17,11 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_,
     gradientDescentErrorTarget = 0.00001;
     gradientDescentLearningRate = 0.5;
     gradientDescentMaxIterations = 10000;
+
+    if(network->numOutputs != numberOfWires * (actionDimensions+1)) {
+        std::cout << "Neural network incorrectly formatted!\n";
+        throw 1;
+    }
 }
 
 WireFitQLearn::WireFitQLearn(std::string filename) {
@@ -38,6 +43,11 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
         network = new NeuralNet(input);
         
         input.close();
+
+        if(network->numOutputs != numberOfWires * (actionDimensions+1)) {
+            std::cout << "Neural network incorrectly formatted!\n";
+            throw 1;
+        }
     } else {
         std::cout << "Could not retrieve neural network from file\n";
         throw 1;
@@ -89,6 +99,26 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
     
     std::vector<Wire> newContolWires = newControlWires(newRewardForLastAction, lastAction, controlWires);
+	std::cout << oldRewardForLastAction << " " << newRewardForLastAction << "\n";
+
+	std::cout << "old wires\n";
+	for (int a = 0; a < controlWires.size(); a++) {
+		std::cout << "	Wire: r: " << controlWires[a].reward << "; a: ";
+		for (int b = 0; b < controlWires[a].action.size(); b++) {
+			std::cout << controlWires[a].action[b] << " ";
+		}
+		std::cout << "\n";
+	}
+
+	std::cout << "new wires\n";
+	for (int a = 0; a < newContolWires.size(); a++) {
+		std::cout << "	Wire: r: " << newContolWires[a].reward << "; a: ";
+		for (int b = 0; b < newContolWires[a].action.size(); b++) {
+			std::cout << newContolWires[a].action[b] << " ";
+		}
+		std::cout << "\n";
+	}
+	
     backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
 }
 
@@ -120,7 +150,7 @@ std::vector<Wire> WireFitQLearn::getWires(std::vector<double> state) {
         int currentIndex = a * (actionDimensions + 1);
         Wire wire;
         wire.action = std::vector<double>(actionDimensions);
-        for(int b = 0; b < actionDimensions; b++) wire.action[a] = rawOutput[currentIndex + b];
+        for(int b = 0; b < actionDimensions; b++) wire.action[b] = rawOutput[currentIndex + b];
         
         wire.reward = rawOutput[currentIndex + actionDimensions];
         
