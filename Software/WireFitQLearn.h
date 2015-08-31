@@ -14,9 +14,11 @@ namespace net {
         double reward;
     };
 
-    /* An implementation of QLearn that works with continous state action spaces, as detailed in 
-     *
-     *
+    /* An implementation of QLearn that works with continous state action spaces, 
+     * as detailed in http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf.
+     * A wire fitted interpolator function is used in conjunction with a neural network
+     * to turn descrete action vectors paired with rewards, 
+     * to a continuous function that pair an action vector with a reward.
      */
     class WireFitQLearn {
     public:
@@ -86,8 +88,13 @@ namespace net {
         // Uses the wire interpolator function to compute the reward of an action vector given a set of control wires
         double getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action);
         
+        // Computes a weighted distance between the action vector of the wire and an action vector
         double distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward);
+
+        // Computes the weighted sum of all the distances between the wires and the action vector 
         double weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action);
+
+        // Used in the wire interpolator function and its derivatives for normalization
         double normalize(const std::vector<Wire> &wires, const std::vector<double> &action);
     };
 };
