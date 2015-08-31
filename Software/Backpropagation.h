@@ -62,8 +62,10 @@ namespace net {
 		ActivationFunction hiddenActivationFunctionDerivative;
 		ActivationFunction outputActivationFunctionDerivative;
 
+		// Uses a ifstream to initialize a backpropagation object
 		void initWithStream(std::ifstream &input);
         
+        // Resets the lastchanginweight vector using a neural network is needed (NN is needed cause the number of layers, neurons, and weights are needed). 
         void resetLastChangeInWeight(net::NeuralNet *network);
 	};
 }

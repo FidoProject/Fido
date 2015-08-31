@@ -213,7 +213,8 @@ double WireFitQLearn::getRewardUsingInterpolator(const std::vector<Wire> &contro
 double WireFitQLearn::distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward) {
     double euclideanNorm = 0;
     for(int a = 0; a < action.size(); a++) euclideanNorm += pow(action[a] - wire.action[a], 2);
-    
+    euclideanNorm = sqrt(euclideanNorm);
+
     return pow(euclideanNorm, 2) + smoothingFactor*(maxReward - wire.reward) + e;
 }
 
