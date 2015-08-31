@@ -11806,7 +11806,7 @@ Now with smashable polarity marks!</description>
 <instance part="R13" gate="G$1" x="119.38" y="81.28" rot="R90"/>
 <instance part="GND21" gate="1" x="96.52" y="73.66" rot="R270"/>
 <instance part="SUPPLY20" gate="G$1" x="119.38" y="88.9"/>
-<instance part="U$5" gate="G$1" x="106.68" y="111.76" rot="R90"/>
+<instance part="U$5" gate="G$1" x="106.68" y="114.3" rot="MR270"/>
 <instance part="GND28" gate="1" x="149.86" y="99.06"/>
 <instance part="GND34" gate="1" x="137.16" y="88.9"/>
 <instance part="GND35" gate="1" x="111.76" y="106.68"/>
@@ -12017,10 +12017,10 @@ Now with smashable polarity marks!</description>
 <wire x1="99.06" y1="73.66" x2="101.6" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$5" gate="G$1" pin="1"/>
 <pinref part="GND35" gate="1" pin="GND"/>
-<wire x1="109.22" y1="111.76" x2="111.76" y2="111.76" width="0.1524" layer="91"/>
 <wire x1="111.76" y1="111.76" x2="111.76" y2="109.22" width="0.1524" layer="91"/>
+<pinref part="U$5" gate="G$1" pin="2"/>
+<wire x1="109.22" y1="111.76" x2="111.76" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND28" gate="1" pin="GND"/>
@@ -12451,12 +12451,12 @@ Now with smashable polarity marks!</description>
 </net>
 <net name="N$28" class="0">
 <segment>
-<pinref part="U$5" gate="G$1" pin="2"/>
 <pinref part="C13" gate="G$1" pin="1"/>
-<wire x1="109.22" y1="114.3" x2="111.76" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="R14" gate="G$1" pin="1"/>
 <wire x1="111.76" y1="114.3" x2="114.3" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="111.76" y1="114.3" x2="111.76" y2="116.84" width="0.1524" layer="91"/>
+<pinref part="U$5" gate="G$1" pin="1"/>
+<wire x1="111.76" y1="114.3" x2="109.22" y2="114.3" width="0.1524" layer="91"/>
 <junction x="111.76" y="114.3"/>
 </segment>
 </net>
