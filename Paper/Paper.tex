@@ -2,6 +2,7 @@
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[final]{pdfpages}
 \usepackage{amsmath}
 \usepackage{graphicx,tikz}
 \usetikzlibrary{3d,calc}
@@ -36,6 +37,13 @@
 \section{Conclusion}
 
 \input{Sections/Conclusion.tex}
+
+\pagebreak
+\section{Appendix}
+
+\subsection{Electrical Schematic}
+
+\includepdf[pages=-]{Figures/FidoBark.pdf}
 
 \pagebreak
 \input{Sections/Bibliography.tex}
