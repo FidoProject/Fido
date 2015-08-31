@@ -13,7 +13,11 @@ namespace net {
         std::vector<double> action;
         double reward;
     };
-    
+
+    /* An implementation of QLearn that works with continous state action spaces, as detailed in 
+     *
+     *
+     */
     class WireFitQLearn {
     public:
         NeuralNet *network;
@@ -26,33 +30,60 @@ namespace net {
         int gradientDescentMaxIterations;
         std::vector<double> lastState, lastAction;
         
+        /* Initializes a WireFitQLearn object with a model NN (network is copied from this), a Backpropagation object (used to train network),
+         * a learning rate (dictates how fast the reward values for actions change), a devaluation factor (dictates how much future rewards are valued),
+         * the dimensions of the action vectors, and how many wires the network outputs.
+         */
         WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_);
         
+        // Initializes a WireFitQLearn object from a file
         WireFitQLearn(std::string filename);
         
+        // Initializes and empty WireFitQLearn object
         WireFitQLearn();
         
+        // Outputs the action vector that the model thinks will give the most reward
         std::vector<double> chooseBestAction(std::vector<double> currentState);
         
+        /* Gets an action using the Boltzman softmax probability distribution
+         *
+         * Non-random search heuristic used so that the neural network explores actions despite their reward value. 
+         * The lower the exploration constanstant, the more likely it is to pick the best action for the current state.
+         */
         std::vector<double> chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant);
         
+        /* Given the immediate reward from the last action taken and the new state, 
+         * this function updates the correct value for the longterm reward of the last action taken,
+         * devises new control wires for the interpolator using gradient descent
+         * and trains the network to output the new control wires.
+         */
         void applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis);
         
+        // Stores the WireFitQLearn object in a file
         void storeWireFitQLearn(std::string filename);
     private:
+        // Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
         std::vector<Wire> getWires(std::vector<double> state);
         
+        // Given a set of wires converts them to the raw output of the NN
         std::vector<double> getRawOutput(std::vector<Wire> wires);
         
+        // Gets the highest reward value possible for a given state
         double highestReward(std::vector<double> state);
         
+        // Gets the action with the highest reward value for a given state
         std::vector<double> bestAction(std::vector<double> state);
         
-        std::vector<Wire> newControlWires(double newReward, const std::vector<double> &action, std::vector<Wire> controlWires);
+        // Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires  
+        std::vector<Wire> newControlWires(const Wire &correctWire, const std::vector<Wire> &controlWires);
         
+        // The partial derivative of the wire interpolator function with respect to the reward of a control wire
         double rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);
+
+        // The partial derivative of the wire interpolator function with respect to the value of one term of the action vector of a control wire
         double actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);
         
+        // Uses the wire interpolator function to compute the reward of an action vector given a set of control wires
         double getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action);
         
         double distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward);
