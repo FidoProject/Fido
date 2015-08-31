@@ -150,8 +150,8 @@
 <text x="29.591" y="2.159" size="1.016" layer="25" font="vector">M2</text>
 <hole x="2.54" y="55.88" drill="3.048"/>
 <hole x="55.88" y="55.88" drill="3.048"/>
-<text x="39.878" y="52.07" size="5.08" layer="25">Fido</text>
-<text x="42.418" y="48.006" size="1.27" layer="25">Joshua Gruenstein
+<text x="40.132" y="52.705" size="3.81" layer="25">Fido</text>
+<text x="42.418" y="48.006" size="1.27" layer="25">Josh Gruenstein
 Michael Truell</text>
 </plain>
 <libraries>
@@ -1836,7 +1836,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <class number="0" name="default" width="0" drill="0">
 </class>
 </classes>
-<designrules name="SparkFun">
+<designrules name="SparkFun *">
 <description language="en">&lt;b&gt;EAGLE Design Rules&lt;/b&gt;
 &lt;p&gt;
 The default Design Rules have been set to cover
@@ -1865,18 +1865,18 @@ design rules under a new name.</description>
 <param name="msDrill" value="20mil"/>
 <param name="msMicroVia" value="9.99mm"/>
 <param name="msBlindViaRatio" value="0.5"/>
-<param name="rvPadTop" value="0.25"/>
-<param name="rvPadInner" value="0.25"/>
-<param name="rvPadBottom" value="0.25"/>
+<param name="rvPadTop" value="0.15"/>
+<param name="rvPadInner" value="0.15"/>
+<param name="rvPadBottom" value="0.15"/>
 <param name="rvViaOuter" value="0.25"/>
 <param name="rvViaInner" value="0.25"/>
 <param name="rvMicroViaOuter" value="0.25"/>
 <param name="rvMicroViaInner" value="0.25"/>
-<param name="rlMinPadTop" value="12mil"/>
+<param name="rlMinPadTop" value="0mil"/>
 <param name="rlMaxPadTop" value="20mil"/>
-<param name="rlMinPadInner" value="10mil"/>
+<param name="rlMinPadInner" value="0mil"/>
 <param name="rlMaxPadInner" value="20mil"/>
-<param name="rlMinPadBottom" value="12mil"/>
+<param name="rlMinPadBottom" value="0mil"/>
 <param name="rlMaxPadBottom" value="20mil"/>
 <param name="rlMinViaOuter" value="10mil"/>
 <param name="rlMaxViaOuter" value="20mil"/>
