@@ -1,9 +1,27 @@
-Hardware goes here.
+The hardware for the Fido artificial intelligence was chosen using three main parameters.  Firstly, the electrical components had to support and compliment the software library; it would be impractical to refactor the entire code-base.  Secondly, the hardware had to be easily trainable and debuggable.  Lastly the sensors and design chosen had to facilitate the concept of natural learning, modeling after nature to some degree.
 
-\subsection{Input/Output Selection}
+\subsection{Preliminary Decisions}
 
-\subsection{Platform and Benchmarking}
+The Teensy 3.1 microcontroller development system was chosen as the host platform for Fido's hardware implementation.  As the board already has a USB bootloader and an open source software toolchain, it allowed for rapid prototyping of the hardware and software.  The core microcontroller of the Teensy sports an ARM 32 bit, 72 MHz Cortex-M4 architecture, giving Fido necessary computational power.  While a microcontroller with an integrated floating point unit may have sped up the numerous floating point multiplication operations involved in neural network propagation, it was decided unnecessary for this prototype due to time and cost considerations.
 
-\subsection{Final Design}
+As Fido relies on inputs and outputs in order to learn and advance its neural networks, the selection of sensors and other peripherals was considered carefully.  The sensor outputs needed to be easily modified by a human for training to be feasible: an example is a light sensor being easier to control than a radiation or temperature sensor.  An obvious sensor choice was a microphone, allowing Fido to respond differently to sounds of various magnitude and frequency by passing in a sound wave.  Another sensor choice was infrared and visible light sensors.  While the choice of visible light may seem clear, infrared light was chosen as a one dimensional gradient input (the magnitude of the light) as something that could easily be applied and denied in a training environment.  Three dimensional acceleration, rotational velocity, and magnetic field sensors were also chosen to give Fido a sense of spatial awareness: through the accelerometer we could detect forces, through the gyroscope (measures rotational velocity) we could detect orientation, and through the magnetometer we could detect magnets (and the Earth's natural magnetic field).  Fido was also given the ability to detect it's own battery voltage to detect states of low and high charge, mimicking nature's state of tiredness.
+
+Outputs were similarly chosen: motors allowed Fido to learn movement, a piezoelectric buzzer served as Fido's voice, and an RGB LED gave yet another output for easy training and debugging.  The drive system used by Fido for locomotion is a differential-drive arrangement placed inside of a large, hollow sphere.  Differential drive was chosen as a simple to understand kinematic model, while the reasoning for the exosphere was somewhat psychological: a ``hidden'' drive system gives a greater appearance of Fido learning how to move, as the potential for movement is obfuscated.  Additionally the exosphere provides protection against high bursts of acceleration used for training.
+
+\begin{figure}
+	\centering
+	\input{Figures/Exosphere.tex}
+	\caption{Differential Drive Robot in Exosphere}
+\end{figure}
+
+\subsection{Electrical Implementation}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=5cm]{Figures/micDiagram.png}
+	\caption{Schematic of Microphone Circuit}
+\end{figure}
+
+An electret microphone was chosen as the base sensor to reduce much of complexity traditionally associated with microphones (mainly a polarizing power supply).  A simple amplifier circuit uses an OPA344 operational amplifier to increase voltages to 3.3 volt levels readable by the Teensy ADC (analog to digital converter).  Multiple decoupling capacitors are used to reduce noise and interference.
 
 \subsection{Mechanical Implementation}

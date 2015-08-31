@@ -22,6 +22,15 @@ Robot::Robot() {
 	boltzmanExplorationLevel = 10, explorationDevaluationPerTimestep = 0.9;
 }
 
+void Robot::run(int numberOfTimeSteps) {
+	for(int a = 0; a < numberOfTimeSteps; a++) {
+		int action = learner.chooseBoltzmanAction(getState(), boltzmanExplorationLevel);
+		performAction(action);
+		learner.applyReinforcementToLastAction(getReward(), getState());
+		boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
+	}
+}
+
 std::vector<double> Robot::getState() {
 	std::vector<double> state;
 	state.push_back(simulator.getVis());
@@ -43,14 +52,5 @@ void Robot::performAction(int action) {
 		simulator.setLED(255, 0, 0, 255);
 	} else if(action == 1) {
 		simulator.setLED(0, 0, 0, 0);
-	}
-}
-
-void Robot::run(int numberOfTimeSteps) {
-	for(int a = 0; a < numberOfTimeSteps; a++) {
-		int action = learner.chooseBoltzmanAction(getState(), boltzmanExplorationLevel);
-		performAction(action);
-		learner.applyReinforcementToLastAction(getReward(), getState());
-		boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
 	}
 }

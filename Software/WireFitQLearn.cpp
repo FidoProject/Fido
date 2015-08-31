@@ -98,7 +98,7 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     double feedback = ((1/scalingFactor)*(reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)))) + (1 - 1/scalingFactor) * highestReward(lastState);
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
     
-    std::vector<Wire> newContolWires = newControlWires(newRewardForLastAction, lastAction, controlWires);
+    std::vector<Wire> newContolWires = newControlWires({lastAction, newRewardForLastAction}, controlWires);
 	std::cout << oldRewardForLastAction << " " << newRewardForLastAction << "\n";
 
 	std::cout << "old wires\n";
@@ -199,9 +199,7 @@ std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
     return bestAction;
 }
 
-std::vector<Wire> WireFitQLearn::newControlWires(double newReward, const std::vector<double> &action, std::vector<Wire> controlWires) {
-    
-    
+std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, const std::vector<Wire> &controlWires) {
     double error = 0;
     int iterations = 0;
     
@@ -213,7 +211,7 @@ std::vector<Wire> WireFitQLearn::newControlWires(double newReward, const std::ve
             }
         }
         
-        error = pow(newReward - getRewardUsingInterpolator(controlWires, action), 2);
+        error = pow(correctWire.reward - getRewardUsingInterpolator(controlWires, correctWire.action), 2);
         iterations++;
     } while(error > gradientDescentErrorTarget && iterations < gradientDescentMaxIterations);
     
@@ -245,7 +243,8 @@ double WireFitQLearn::getRewardUsingInterpolator(const std::vector<Wire> &contro
 double WireFitQLearn::distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward) {
     double euclideanNorm = 0;
     for(int a = 0; a < action.size(); a++) euclideanNorm += pow(action[a] - wire.action[a], 2);
-    
+    euclideanNorm = sqrt(euclideanNorm);
+
     return pow(euclideanNorm, 2) + smoothingFactor*(maxReward - wire.reward) + e;
 }
 

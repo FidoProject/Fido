@@ -2,8 +2,10 @@
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[final]{pdfpages}
 \usepackage{amsmath}
-\usepackage{graphicx}
+\usepackage{graphicx,tikz}
+\usetikzlibrary{3d,calc}
 
 \title{Paper Title}
 
@@ -24,7 +26,7 @@
 
 \input{Sections/Software.tex}
 
-\section{Hardware and Electrical}
+\section{Physical Design}
 
 \input{Sections/Hardware.tex}
 
@@ -35,6 +37,13 @@
 \section{Conclusion}
 
 \input{Sections/Conclusion.tex}
+
+\pagebreak
+\section{Appendix}
+
+\subsection{Electrical Schematic}
+
+\includepdf[pages=-]{Figures/FidoBark.pdf}
 
 \pagebreak
 \input{Sections/Bibliography.tex}
