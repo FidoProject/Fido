@@ -8,9 +8,11 @@ As Fido relies on inputs and outputs in order to learn and advance its neural ne
 
 Outputs were similarly chosen: motors allowed Fido to learn movement, a piezoelectric buzzer served as Fido's voice, and an RGB LED gave yet another output for easy training and debugging.  The drive system used by Fido for locomotion is a differential-drive arrangement placed inside of a large, hollow sphere.  Differential drive was chosen as a simple to understand kinematic model, while the reasoning for the exosphere was somewhat psychological: a ``hidden'' drive system gives a greater appearance of Fido learning how to move, as the potential for movement is obfuscated.  Additionally the exosphere provides protection against high bursts of acceleration used for training.
 
-
-%diagram
-
+\begin{figure}
+	\centering
+	\input{Figures/Exosphere.tex}
+	\caption{Differential Drive Robot in Exosphere}
+\end{figure}
 
 \subsection{Electrical Implementation}
 
