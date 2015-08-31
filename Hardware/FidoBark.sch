@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.05" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -11722,6 +11722,7 @@ Now with smashable polarity marks!</description>
 <part name="J1" library="SparkFun-Connectors" deviceset="JST_2MM_MALE" device=""/>
 <part name="R8" library="adafruit" deviceset="R-US_" device="R0603" value="470"/>
 <part name="R9" library="adafruit" deviceset="R-US_" device="R0603" value="470"/>
+<part name="SUPPLY10" library="SparkFun-Aesthetics" deviceset="V_BATT" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -11746,7 +11747,7 @@ Now with smashable polarity marks!</description>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
 <instance part="FRAME1" gate="G$2" x="83.82" y="0"/>
 <instance part="SUPPLY1" gate="G$1" x="170.18" y="231.14" smashed="yes" rot="R270">
-<attribute name="VALUE" x="168.656" y="232.156" size="1.778" layer="96"/>
+<attribute name="VALUE" x="167.386" y="228.092" size="1.778" layer="96"/>
 </instance>
 <instance part="GND1" gate="1" x="172.72" y="220.98"/>
 <instance part="U$2" gate="G$1" x="58.42" y="165.1"/>
@@ -11847,17 +11848,13 @@ Now with smashable polarity marks!</description>
 <instance part="J1" gate="G$1" x="167.64" y="160.02" rot="R90"/>
 <instance part="R8" gate="G$1" x="63.5" y="49.53" rot="R90"/>
 <instance part="R9" gate="G$1" x="63.5" y="31.75" rot="R90"/>
+<instance part="SUPPLY10" gate="G$1" x="170.18" y="233.68" smashed="yes" rot="R270">
+<attribute name="VALUE" x="166.116" y="234.696" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
 <nets>
-<net name="VUSB" class="0">
-<segment>
-<pinref part="U$1" gate="G$1" pin="VUSB"/>
-<wire x1="165.1" y1="236.22" x2="167.64" y2="236.22" width="0.1524" layer="91"/>
-<label x="167.64" y="236.22" size="1.016" layer="95" xref="yes"/>
-</segment>
-</net>
 <net name="3.3V" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="3.3V"/>
@@ -12278,6 +12275,11 @@ Now with smashable polarity marks!</description>
 <wire x1="175.26" y1="162.56" x2="175.26" y2="165.1" width="0.1524" layer="91"/>
 <pinref part="J1" gate="G$1" pin="+"/>
 <wire x1="175.26" y1="162.56" x2="172.72" y2="162.56" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SUPPLY10" gate="G$1" pin="V_BATT"/>
+<pinref part="U$1" gate="G$1" pin="VIN"/>
+<wire x1="170.18" y1="233.68" x2="165.1" y2="233.68" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$2" class="0">
