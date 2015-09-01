@@ -11,7 +11,7 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_,
     lastAction = std::vector<double>(actionDimensions);
     network = modelNetwork;
     
-    scalingFactorToMillis = 0;
+    scalingFactorToMillis = 1;
     smoothingFactor = 0.2;
     e = 0.01;
     gradientDescentErrorTarget = 0.0001;
@@ -95,10 +95,11 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     
     /// Update Q value according to adaptive learning
     double oldRewardForLastAction = getRewardUsingInterpolator(controlWires, lastAction);
-    double feedback = ((1/scalingFactor)*(reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)))) + (1 - 1/scalingFactor) * highestReward(lastState);
+    double feedback = ((1/scalingFactor)*( reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)) )) + (1 - 1/scalingFactor) * highestReward(lastState);
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
    
-    std::vector<Wire> newContolWires = newControlWires({lastAction, newRewardForLastAction}, controlWires);
+	Wire correctWire = {lastAction, newRewardForLastAction};
+    std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
 	std::cout << "Reward received: " << reward << "\n";
 	std::cout << oldRewardForLastAction << " " << newRewardForLastAction << "\n";
@@ -209,7 +210,6 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
         for(int a = 0; a < controlWires.size(); a++) {
             std::cout << "change: " << gradientDescentLearningRate*rewardDerivative(correctWire.action, controlWires[a], controlWires) << "\n";
             controlWires[a].reward = controlWires[a].reward - gradientDescentLearningRate*rewardDerivative(correctWire.action, controlWires[a], controlWires);
-            std::cout << "control: " << controlWires[a].reward << "\n";
             for(int b = 0; b < controlWires[a].action.size(); b++) {
                 controlWires[a].action[b] = controlWires[a].action[b] - gradientDescentLearningRate*actionTermDerivative(correctWire.action[b], controlWires[a].action[b], correctWire.action, controlWires[a], controlWires);
             }
@@ -217,6 +217,15 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
         
         error = pow(correctWire.reward - getRewardUsingInterpolator(controlWires, correctWire.action), 2);
         iterations++;
+
+		std::cout << "new wires\n";
+		for (int a = 0; a < controlWires.size(); a++) {
+			std::cout << "	Wire: r: " << controlWires[a].reward << "; a: ";
+			for (int b = 0; b < controlWires[a].action.size(); b++) {
+				std::cout << controlWires[a].action[b] << " ";
+			}
+			std::cout << "\n";
+		}
     } while(error > gradientDescentErrorTarget && iterations < gradientDescentMaxIterations);
 
 	std::cout << "Iterations: " << iterations << "\n";
@@ -227,15 +236,6 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
 double WireFitQLearn::rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires) {
     double maxRewardFromWires = -9999999;
     for(auto a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxRewardFromWires) maxRewardFromWires = a->reward;
-    
-    std::cout << "new wires\n";
-    for (int a = 0; a < controlWires.size(); a++) {
-        std::cout << "	Wire: r: " << controlWires[a].reward << "; a: ";
-        for (int b = 0; b < controlWires[a].action.size(); b++) {
-            std::cout << controlWires[a].action[b] << " ";
-        }
-        std::cout << "\n";
-    }
     
     double norm = normalize(controlWires, action), wsum = weightedSum(controlWires, action), distance = distanceBetweenWireAndAction(wire, action, maxRewardFromWires);
     
