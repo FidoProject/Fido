@@ -80,10 +80,10 @@ namespace net {
         std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);
         
         // The partial derivative of the wire interpolator function with respect to the reward of a control wire
-        double rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);
+        double rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires);
 
         // The partial derivative of the wire interpolator function with respect to the value of one term of the action vector of a control wire
-        double actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);
+        double actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires);
         
         // Uses the wire interpolator function to compute the reward of an action vector given a set of control wires
         double getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action);
