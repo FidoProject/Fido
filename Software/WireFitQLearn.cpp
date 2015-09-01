@@ -14,7 +14,7 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_,
     scalingFactorToMillis = 0;
     smoothingFactor = 0.2;
     e = 0.01;
-    gradientDescentErrorTarget = 0.00001;
+    gradientDescentErrorTarget = 0.0001;
     gradientDescentLearningRate = 0.5;
     gradientDescentMaxIterations = 10000;
 
