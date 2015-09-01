@@ -152,3 +152,9 @@ executable
 stateOut.txt
 stateIn.txt
 graphics.py
+
+############
+## Teensy ##
+############
+.pioenvs
+*.dblite
