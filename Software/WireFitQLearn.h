@@ -77,7 +77,7 @@ namespace net {
         std::vector<double> bestAction(std::vector<double> state);
         
         // Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires  
-        std::vector<Wire> newControlWires(const Wire &correctWire, const std::vector<Wire> &controlWires);
+        std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);
         
         // The partial derivative of the wire interpolator function with respect to the reward of a control wire
         double rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> controlWires);

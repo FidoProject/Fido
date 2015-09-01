@@ -97,8 +97,10 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     double oldRewardForLastAction = getRewardUsingInterpolator(controlWires, lastAction);
     double feedback = ((1/scalingFactor)*(reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)))) + (1 - 1/scalingFactor) * highestReward(lastState);
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
-    
+   
     std::vector<Wire> newContolWires = newControlWires({lastAction, newRewardForLastAction}, controlWires);
+
+	std::cout << "Reward received: " << reward << "\n";
 	std::cout << oldRewardForLastAction << " " << newRewardForLastAction << "\n";
 
 	std::cout << "old wires\n";
@@ -199,21 +201,23 @@ std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
     return bestAction;
 }
 
-std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, const std::vector<Wire> &controlWires) {
+std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::vector<Wire> controlWires) {
     double error = 0;
     int iterations = 0;
     
     do {
         for(int a = 0; a < controlWires.size(); a++) {
-            controlWires[a].reward = controlWires[a].reward - gradientDescentLearningRate*rewardDerivative(action, controlWires[a], controlWires);
+            controlWires[a].reward = controlWires[a].reward - gradientDescentLearningRate*rewardDerivative(correctWire.action, controlWires[a], controlWires);
             for(int b = 0; b < controlWires[a].action.size(); b++) {
-                controlWires[a].action[b] = controlWires[a].action[b] - gradientDescentLearningRate*actionTermDerivative(action[b], controlWires[a].action[b], action, controlWires[a], controlWires);
+                controlWires[a].action[b] = controlWires[a].action[b] - gradientDescentLearningRate*actionTermDerivative(correctWire.action[b], controlWires[a].action[b], correctWire.action, controlWires[a], controlWires);
             }
         }
         
         error = pow(correctWire.reward - getRewardUsingInterpolator(controlWires, correctWire.action), 2);
         iterations++;
     } while(error > gradientDescentErrorTarget && iterations < gradientDescentMaxIterations);
+
+	std::cout << "Iterations: " << iterations << "\n";
     
     return controlWires;
 }
