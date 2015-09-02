@@ -3,7 +3,7 @@
 
 #include <thread>
 
-#include "NeuralNet.h"
+#include "../NeuralNet.h"
 #include "GeneticAlgo.h"
 
 class TicTacToe

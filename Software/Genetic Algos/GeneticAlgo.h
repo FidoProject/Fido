@@ -8,7 +8,7 @@
 #include <map>
 #include <ctime>
 
-#include "NeuralNet.h"
+#include "../NeuralNet.h"
 
 namespace gen {
 	/* Class representing a genetic algorithm used to prodece fit neural netwokrs.

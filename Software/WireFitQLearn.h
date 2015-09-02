@@ -8,6 +8,8 @@
 #include "NeuralNet.h"
 #include "BackPropagation.h"
 
+#include <SFML/Graphics.hpp>
+
 namespace net {
     struct Wire {
         std::vector<double> action;
@@ -63,6 +65,9 @@ namespace net {
         
         // Stores the WireFitQLearn object in a file
         void storeWireFitQLearn(std::string filename);
+
+		// Graphs the interpolator function given a range of actions
+		void graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction);
     private:
         // Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
         std::vector<Wire> getWires(std::vector<double> state);
@@ -92,10 +97,10 @@ namespace net {
         double distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward);
 
         // Computes the weighted sum of all the distances between the wires and the action vector 
-        double weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action);
+        double weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward);
 
         // Used in the wire interpolator function and its derivatives for normalization
-        double normalize(const std::vector<Wire> &wires, const std::vector<double> &action);
+        double normalize(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward);
     };
 };
 

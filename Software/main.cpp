@@ -6,8 +6,6 @@
 
 #include "Neuron.h"
 #include "NeuralNet.h"
-#include "GeneticAlgo.h"
-#include "TicTacToe.h"
 #include "Backpropagation.h"
 #include "QLearn.h"
 #include "WireFitQLearn.h"
@@ -16,7 +14,7 @@
 int main() {
     srand(time(NULL));
     
-    net::NeuralNet * network = new net::NeuralNet(1, 6, 2, 6, "sigmoid");
+    net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 12, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 	net::Backpropagation backprop = net::Backpropagation(0.4, 0.2, 0.001, 10000);
 	backprop.setDerivedOutputActivationFunction("simpleLinear");
@@ -74,7 +72,6 @@ int main() {
 		std::cout << "new state plz\n";
 		std::cin >> state[0];
 		learn.applyReinforcementToLastAction(reward, state, 1);
-        explorationConstant /= 2;
 	}
 
 } 
