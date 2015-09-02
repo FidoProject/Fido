@@ -16,8 +16,10 @@
 int main() {
     srand(time(NULL));
     
-    net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 6, "sigmoid");
-	net::Backpropagation backprop = net::Backpropagation(0.4, 0.3, 0.01, 10000);
+    net::NeuralNet * network = new net::NeuralNet(1, 6, 2, 6, "sigmoid");
+	network->setOutputActivationFunction("simpleLinear");
+	net::Backpropagation backprop = net::Backpropagation(0.4, 0.2, 0.001, 10000);
+	backprop.setDerivedOutputActivationFunction("simpleLinear");
 	net::WireFitQLearn learn = net::WireFitQLearn(network, backprop, 0.9, 0.5, 1, 3);
 
 	std::vector<double> state(1);
@@ -25,9 +27,9 @@ int main() {
 	double reward;
     double explorationConstant = 2;
 
-	for(int a = 0; a < 2000; a++) {
+	for(int a = 0; a < 1000; a++) {
 		double action = learn.chooseBoltzmanAction(state, explorationConstant)[0];
-		std::cout << "action: " << action << "; state: " << state[0] << "\n";
+		std::cout << "Iter: " << a << "\n";
 		if(state[0] == 1) {
 			state[0] = (int)(state[0]+1) % 2;
 			learn.applyReinforcementToLastAction(action - 0.5, state, 1);

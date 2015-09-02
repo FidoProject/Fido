@@ -72,7 +72,6 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
 		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputActivationFunctionDerivative(outputLayerOutput[neuronIndex]);
 		networkError += pow(correctOutput[neuronIndex] - outputLayerOutput[neuronIndex], 2);
-        std::cout << "output: " << outputLayerOutput[neuronIndex] << "; correct: " << correctOutput[neuronIndex] << "\n";
 		outputNeuronErrors.push_back(outputNeuronError);
 	}
 	errors.push_back(outputNeuronErrors);
@@ -80,9 +79,9 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	/// Compute hidden layer error
 	for(int hiddenLayerIndex = network->numHiddenLayers - 1; hiddenLayerIndex >= 0; hiddenLayerIndex--) {
 		std::vector<double> currentLayerError;
-		std::vector<double> currentHiddenLayerOutput = outputs[hiddenLayerIndex];
-		std::vector<double> lastLayerError = errors[errors.size() - 1];
-		std::vector< std::vector<double> > lastLayerWeights = weights[hiddenLayerIndex + 1];
+		const std::vector<double> &currentHiddenLayerOutput = outputs[hiddenLayerIndex];
+		const std::vector<double> &lastLayerError = errors[errors.size() - 1];
+		const std::vector< std::vector<double> > &lastLayerWeights = weights[hiddenLayerIndex + 1];
 		
 		for(int neuronIndex = 0; neuronIndex < network->numNeuronsPerHiddenLayer; neuronIndex++) {
 			double errorsTimesWeights = 0;
@@ -129,8 +128,8 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 
 std::map<std::string, ActivationFunction> Backpropagation::getDerivedActivationFunctionNames() {
 	std::map<std::string, ActivationFunction> map;
-	map["sigmoidDerivative"] = sigmoidDerivative;
-	map["simpleLinearDerivative"] = simpleLinearDerivative;
+	map["sigmoid"] = sigmoidDerivative;
+	map["simpleLinear"] = simpleLinearDerivative;
 
 	return map;
 }
