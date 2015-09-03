@@ -153,7 +153,7 @@ std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 		output.clear();
 		for(int b = 0; b < net[a].size(); b++) {
 			double out;
-			if(b == net[a].size()-1) out = outputActivationFunction(net[a][b].getOutput(input));
+			if(a == net.size() - 1) out = outputActivationFunction(net[a][b].getOutput(input));
 			else out = hiddenActivationFunction(net[a][b].getOutput(input));
 			output.push_back(out);
 		}

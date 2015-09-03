@@ -12,10 +12,10 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_,
     network = modelNetwork;
     
     scalingFactorToMillis = 1;
-    smoothingFactor = 0.5;
+    smoothingFactor = 0;
     e = 0.01;
     gradientDescentErrorTarget = 0.0001;
-    gradientDescentLearningRate = 0.5;
+    gradientDescentLearningRate = 0.1;
     gradientDescentMaxIterations = 10000;
 
     if(network->numOutputs != numberOfWires * (actionDimensions+1)) {
@@ -100,13 +100,19 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
     //double feedback = ((1/scalingFactor)*( reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)) )) + (1 - 1/scalingFactor) * highestReward(lastState);
 	double feedback = reward + devaluationFactor * highestReward(newState);
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
+
+	//graphInterpolatorFunction(controlWires, -1, 1, 1);
    
 	Wire correctWire = {lastAction, newRewardForLastAction};
-    std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
+	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
-	graphInterpolatorFunction(newContolWires, 0, 1);
+	std::cout << "REWARD: " << getRewardUsingInterpolator(newContolWires, {1.5}) << "\n";
+
+	std::cout << "st: " << lastState[0] << " act: " << lastAction[0] << " r: " << newRewardForLastAction << "\n";
+	//graphInterpolatorFunction(newContolWires, -1, 1, correctWire.action[0]);
 	
     backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
+	controlWires = getWires(lastState);
 }
 
 void WireFitQLearn::storeWireFitQLearn(std::string filename) {
@@ -129,7 +135,7 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
     }
 }
 
-void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction) {
+void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction) {
 	double xSize = 1000, ySize = 800;
 	sf::RenderWindow window(sf::VideoMode(xSize, ySize), "Interpolator Graph");
 	double numberOfDots = 100;
@@ -164,12 +170,22 @@ void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWi
 		window.draw(shape);
 	}
 
+	shape.setFillColor(sf::Color::Blue);
+	for(int a = 0; a < numberOfDots; a++) {
+		shape.setPosition((a*increment - minAction) * xScale + 30, (maxReward - pow(a*increment - 0.5, 2))*yScale + 30);
+		window.draw(shape);
+	}
+
 	shape.setRadius(10.f);
 	shape.setFillColor(sf::Color::Red);
 	for(int a = 0; a < controlWires.size(); a++) {
 		shape.setPosition((controlWires[a].action[0] - minAction) * xScale + 30, (maxReward - controlWires[a].reward)*yScale + 30);
 		window.draw(shape);
 	}
+
+	shape.setFillColor(sf::Color::Magenta);
+	shape.setPosition((targetAction - minAction) * xScale + 30, (maxReward - getRewardUsingInterpolator(controlWires, {targetAction}))*yScale + 30);
+	window.draw(shape);
 
 	window.display();
 	
@@ -259,6 +275,8 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
         error = pow(correctWire.reward - getRewardUsingInterpolator(controlWires, correctWire.action), 2);
         iterations++;
     } while(error > gradientDescentErrorTarget && iterations < gradientDescentMaxIterations);
+
+	std::cout << "REWARD: " << getRewardUsingInterpolator(controlWires, correctWire.action) << "\n";
 
     return controlWires;
 

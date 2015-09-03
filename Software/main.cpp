@@ -14,27 +14,21 @@
 int main() {
     srand(time(NULL));
     
-    net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 12, "sigmoid");
+    net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 6, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
-	net::Backpropagation backprop = net::Backpropagation(0.4, 0.2, 0.001, 10000);
+	net::Backpropagation backprop = net::Backpropagation(0.4, 0.2, 0.0001, 10000);
 	backprop.setDerivedOutputActivationFunction("simpleLinear");
-	net::WireFitQLearn learn = net::WireFitQLearn(network, backprop, 0.9, 0.5, 1, 3);
+	net::WireFitQLearn learn = net::WireFitQLearn(network, backprop, 1, 0, 1, 3);
 
 	std::vector<double> state(1);
 	state[0] = 0;
 	double reward;
     double explorationConstant = 2;
 
-	for(int a = 0; a < 1000; a++) {
+	for(int a = 0; a < 10000; a++) {
 		double action = learn.chooseBoltzmanAction(state, explorationConstant)[0];
 		std::cout << "Iter: " << a << "\n";
-		if(state[0] == 1) {
-			state[0] = (int)(state[0]+1) % 2;
-			learn.applyReinforcementToLastAction(action - 0.5, state, 1);
-		} else  {
-			state[0] = (int)(state[0]+1) % 2;
-			learn.applyReinforcementToLastAction(0.5 - action , state, 1);
-		}
+		learn.applyReinforcementToLastAction(action - 1.5, state, 1);
 	}
     /*int index = 0;
 	bool done = false;

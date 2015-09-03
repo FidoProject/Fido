@@ -67,7 +67,7 @@ namespace net {
         void storeWireFitQLearn(std::string filename);
 
 		// Graphs the interpolator function given a range of actions
-		void graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction);
+		void graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction);
     private:
         // Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
         std::vector<Wire> getWires(std::vector<double> state);
