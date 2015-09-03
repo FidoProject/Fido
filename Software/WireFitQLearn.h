@@ -68,9 +68,11 @@ namespace net {
 
 		// Graphs the interpolator function given a range of actions
 		void graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction);
+
+		// Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
+		std::vector<Wire> getWires(std::vector<double> state);
     private:
-        // Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
-        std::vector<Wire> getWires(std::vector<double> state);
+        
         
         // Given a set of wires converts them to the raw output of the NN
         std::vector<double> getRawOutput(std::vector<Wire> wires);

@@ -1,4 +1,4 @@
-#include "WireFitQLearn.h"s
+#include "WireFitQLearn.h"
 
 using namespace net;
 
@@ -101,15 +101,12 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
 	double feedback = reward + devaluationFactor * highestReward(newState);
     double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
 
-	//graphInterpolatorFunction(controlWires, -1, 1, 1);
-   
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
 	std::cout << "REWARD: " << getRewardUsingInterpolator(newContolWires, {1.5}) << "\n";
 
 	std::cout << "st: " << lastState[0] << " act: " << lastAction[0] << " r: " << newRewardForLastAction << "\n";
-	//graphInterpolatorFunction(newContolWires, -1, 1, correctWire.action[0]);
 	
     backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
 	controlWires = getWires(lastState);
@@ -167,12 +164,6 @@ void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWi
 	shape.setFillColor(sf::Color::Green);
 	for(int a = 0; a < numberOfDots; a++) {
 		shape.setPosition((a*increment - minAction) * xScale + 30, (maxReward - rewards[a])*yScale + 30);
-		window.draw(shape);
-	}
-
-	shape.setFillColor(sf::Color::Blue);
-	for(int a = 0; a < numberOfDots; a++) {
-		shape.setPosition((a*increment - minAction) * xScale + 30, (maxReward - pow(a*increment - 0.5, 2))*yScale + 30);
 		window.draw(shape);
 	}
 

@@ -23,39 +23,16 @@ int main() {
 	std::vector<double> state(1);
 	state[0] = 0;
 	double reward;
-    double explorationConstant = 2;
+    double explorationConstant = 5;
 
-	for(int a = 0; a < 10000; a++) {
+	for(int a = 0; a < 1000; a++) {
 		double action = learn.chooseBoltzmanAction(state, explorationConstant)[0];
 		std::cout << "Iter: " << a << "\n";
-		learn.applyReinforcementToLastAction(action - 1.5, state, 1);
+		if(state[0] == 0) learn.applyReinforcementToLastAction(action - 0.5, state, 1);
+		else learn.applyReinforcementToLastAction(0.5 - action, state, 1);
+
+		state[0] = ((int)state[0] + 1) % 2;
 	}
-    /*int index = 0;
-	bool done = false;
-	while(done == false) {
-        index++;
-		done = true;
-		int action = learn.chooseBoltzmanAction(state, explorationConstant);
-		if(action != (int)state[0]) {
-			learn.applyReinforcementToLastAction(-1, state);
-			done = false;
-		} else  {
-			state[0] = (int)(state[0] + 1) % 2;
-			learn.applyReinforcementToLastAction(1, state);
-		}
-		
-		action = learn.chooseBoltzmanAction(state, explorationConstant);
-		if(action != (int)state[0]) {
-			learn.applyReinforcementToLastAction(-1, state);
-			done = false;
-		} else  {
-			state[0] = (int)(state[0] + 1) % 2;
-			learn.applyReinforcementToLastAction(1, state);
-		}
-        
-        explorationConstant *= 0.8;
-	}
-	std::cout << "Times: " << index << "\n";*/
 
 	std::cout << "input plz\n";
 	std::cin >> state[0];
