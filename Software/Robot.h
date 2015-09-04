@@ -24,6 +24,9 @@ public:
 	// Runs the robot for a specified number of time steps
 	void run(int numberOfTimeSteps);
 private:
+	// Waits until the user says they have finished inputting the state
+	void waitForStateInput();
+
 	// Gets the current state from the simulator
 	std::vector<double> getState();
 

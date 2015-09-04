@@ -19,17 +19,25 @@ Robot::Robot() {
 	double numberOfActions = 2;
 	learner = net::QLearn(network, backprop, learningRate, devaluationFactor, numberOfActions);
 
-	boltzmanExplorationLevel = 10;
-	explorationDevaluationPerTimestep = 0.9;
+	boltzmanExplorationLevel = 8;
+	explorationDevaluationPerTimestep = 0.6;
 }
 
 void Robot::run(int numberOfTimeSteps) {
 	for(int a = 0; a < numberOfTimeSteps; a++) {
-		int action = learner.chooseBoltzmanAction(getState(), boltzmanExplorationLevel);
+		waitForStateInput();
+		std::vector<double> state = getState();
+		int action = learner.chooseBoltzmanAction(state, boltzmanExplorationLevel);
 		performAction(action);
-		learner.applyReinforcementToLastAction(getReward(), getState());
+		learner.applyReinforcementToLastAction(getReward(), state);
 		if(boltzmanExplorationLevel > 0.01) boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
 	}
+}
+
+void Robot::waitForStateInput() {
+	std::string response;
+	std::cout << "Respond when you finish inputing the state\n";
+	std::cin >> response;
 }
 
 std::vector<double> Robot::getState() {
