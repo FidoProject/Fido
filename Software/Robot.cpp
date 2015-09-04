@@ -14,8 +14,8 @@ Robot::Robot() {
 	net::Backpropagation backprop = net::Backpropagation(backpropLearningRate, backpropMomentumTerm, backpropTargetError, backpropMaximumIterations);
 	backprop.setDerivedOutputActivationFunction("simpleLinearDerivative");
 
-	double learningRate = 0.8;
-	double devaluationFactor = 0.5;
+	double learningRate = 0.95;
+	double devaluationFactor = 0.4;
 	double numberOfActions = 2;
 	learner = net::QLearn(network, backprop, learningRate, devaluationFactor, numberOfActions);
 

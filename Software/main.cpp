@@ -8,13 +8,17 @@
 #include "NeuralNet.h"
 #include "Backpropagation.h"
 #include "QLearn.h"
+#include "Robot.h"
 #include "WireFitQLearn.h"
 
 
 int main() {
     srand(time(NULL));
     
-    net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 6, "sigmoid");
+	Robot robot;
+	robot.run(10);
+
+    /*net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 6, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 	net::Backpropagation backprop = net::Backpropagation(0.4, 0.2, 0.0001, 10000);
 	backprop.setDerivedOutputActivationFunction("simpleLinear");
@@ -43,6 +47,6 @@ int main() {
 		std::cout << "new state plz\n";
 		std::cin >> state[0];
 		learn.applyReinforcementToLastAction(reward, state, 1);
-	}
+	}*/
 
 } 

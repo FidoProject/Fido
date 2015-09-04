@@ -8,6 +8,7 @@
 #include <math.h>
 #include <iostream>
 #include <ctime>
+#include <thread>
 #include <functional>
 
 class Simlink {
@@ -77,12 +78,20 @@ public:
      * components of TDVect are xyz rad/s.
      */
     TDVect getGyro();
+
+	void updateLoop();
+
+	// Updates the simulator window
+	void updateWindow();
     
 private:
     // Main window.
     sf::RenderWindow window;
-    
-    void mainLoop(sf::RenderWindow& window,sf::Sprite background);
+
+	sf::Sprite background;
+
+	// Window thread
+	std::thread *windowThread;
     
     // LED with values r, g, and b from 0-255.
     struct LED { int r,g,b; };
