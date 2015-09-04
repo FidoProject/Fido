@@ -2,8 +2,7 @@
 
 
 Simlink::Simlink() {
-	std::thread mainLoop(&Simlink::updateLoop, this);
-	mainLoop.join();
+	windowThread = std::thread(&Simlink::updateLoop, this);
 }
 
 void Simlink::updateLoop() {

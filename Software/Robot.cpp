@@ -12,14 +12,15 @@ Robot::Robot() {
 	double backpropTargetError = 0.01;
 	int backpropMaximumIterations = 10000;
 	net::Backpropagation backprop = net::Backpropagation(backpropLearningRate, backpropMomentumTerm, backpropTargetError, backpropMaximumIterations);
-	backprop.setDerivedOutputActivationFunction("simpleLinearDerivative");
+	backprop.setDerivedOutputActivationFunction("simpleLinear");
 
 	double learningRate = 0.95;
 	double devaluationFactor = 0.4;
 	double numberOfActions = 2;
 	learner = net::QLearn(network, backprop, learningRate, devaluationFactor, numberOfActions);
 
-	boltzmanExplorationLevel = 10, explorationDevaluationPerTimestep = 0.9;
+	boltzmanExplorationLevel = 10;
+	explorationDevaluationPerTimestep = 0.9;
 }
 
 void Robot::run(int numberOfTimeSteps) {
@@ -27,7 +28,7 @@ void Robot::run(int numberOfTimeSteps) {
 		int action = learner.chooseBoltzmanAction(getState(), boltzmanExplorationLevel);
 		performAction(action);
 		learner.applyReinforcementToLastAction(getReward(), getState());
-		boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
+		if(boltzmanExplorationLevel > 0.01) boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
 	}
 }
 

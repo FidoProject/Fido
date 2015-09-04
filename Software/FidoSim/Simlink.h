@@ -91,7 +91,7 @@ private:
 	sf::Sprite background;
 
 	// Window thread
-	std::thread *windowThread;
+	std::thread windowThread;
     
     // LED with values r, g, and b from 0-255.
     struct LED { int r,g,b; };

@@ -53,12 +53,15 @@ int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explor
 
 	for(int a = 0; a < networks.size(); a++) {
 		double reward = networks[a]->getOutput(currentState)[0];
+		std::cout << "re: " << reward << "; exploration: " << explorationConstant << "\n";
 		double exponentTerm = exp(reward / explorationConstant);
         
         rewards[a] = reward;
 		exponentTerms[a] = exponentTerm;
 		sumOfExponentTerms += exponentTerm;
 	}
+
+	std::cout << "sum: " << sumOfExponentTerms << "\n";
 
 	double sumOfProbabilities = 0;
 	for(int a = 0; a < networks.size(); a++) {

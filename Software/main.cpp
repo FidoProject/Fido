@@ -16,7 +16,7 @@ int main() {
     srand(time(NULL));
     
 	Robot robot;
-	robot.run(10);
+	robot.run(100);
 
     /*net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 6, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
