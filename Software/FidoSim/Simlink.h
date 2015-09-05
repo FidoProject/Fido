@@ -78,13 +78,13 @@ public:
      * components of TDVect are xyz rad/s.
      */
     TDVect getGyro();
-
+    
+private:
 	void updateLoop();
 
 	// Updates the simulator window
 	void updateWindow();
-    
-private:
+
     // Main window.
     sf::RenderWindow window;
 
