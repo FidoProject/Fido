@@ -34,7 +34,7 @@ private:
 	double getReward();
 
 	// Performs an action using the simulator
-	void performAction(int action);
+	void performAction(const std::vector<double> &action);
 
 };
 
