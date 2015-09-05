@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WireFitQLearn</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="styles/cldoc.css">
+</head>
+
+<body id="cldoc">
+    <div id="cldoc_sidebar">
+        <div id="cldoc_sidebar_items">
+            <div class="back">
+                <div class="name"><span><span class="keyword">Class</span><span>net::WireFitQLearn</span></span>
+                </div><a href="net.html"><span class="arrow">↵</span> <span>net</span></a></div>
+            <div id="cldoc_sidebar_pagenav"></div>
+            <div class="subtitle">Fields</div>
+            <ul>
+                <li><a href="#net.WireFitQLearn.network">network<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.backprop">backprop<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.numberOfWires">numberOfWires<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.actionDimensions">actionDimensions<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.learningRate">learningRate<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.devaluationFactor">devaluationFactor<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.scalingFactorToMillis">scalingFactorToMillis<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.smoothingFactor">smoothingFactor<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.e">e<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.gradientDescentErrorTarget">gradientDescentErrorTarget<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.gradientDescentLearningRate">gradientDescentLearningRate<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.gradientDescentMaxIterations">gradientDescentMaxIterations<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.lastState">lastState<span class="counter"></span></a></li>
+                <li><a href="#net.WireFitQLearn.lastAction">lastAction<span class="counter"></span></a></li>
+            </ul>
+            <div class="subtitle">Constructors</div>
+            <ul>
+                <li><a href="#net.WireFitQLearn.WireFitQLearn">WireFitQLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Initializes a WireFitQLearn object with a model NN (network is copied from this), a Backpropagation object (used to train network),</p>
+                    </div>
+                </li>
+                <li><a href="#net.WireFitQLearn.WireFitQLearn">WireFitQLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Initializes a WireFitQLearn object from a file</p>
+                    </div>
+                </li>
+                <li><a href="#net.WireFitQLearn.WireFitQLearn">WireFitQLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Initializes and empty WireFitQLearn object</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="subtitle">Member Functions</div>
+            <ul>
+                <li><a href="#net.WireFitQLearn.applyReinforcementToLastAction">applyReinforcementToLastAction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Given the immediate reward from the last action taken and the new state, </p>
+                    </div>
+                </li>
+                <li><a href="#net.WireFitQLearn.chooseBestAction">chooseBestAction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Outputs the action vector that the model thinks will give the most reward</p>
+                    </div>
+                </li>
+                <li><a href="#net.WireFitQLearn.chooseBoltzmanAction">chooseBoltzmanAction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Gets an action using the Boltzman softmax probability distribution</p>
+                    </div>
+                </li>
+                <li><a href="#net.WireFitQLearn.getWires">getWires<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires</p>
+                    </div>
+                </li>
+                <li><a href="#net.WireFitQLearn.graphInterpolatorFunction">graphInterpolatorFunction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Graphs the interpolator function given a range of actions</p>
+                    </div>
+                </li>
+                <li><a href="#net.WireFitQLearn.storeWireFitQLearn">storeWireFitQLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Stores the WireFitQLearn object in a file</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="cldoc_content">
+        <h1 id="net::WireFitQLearn"><span><span class="keyword">Class</span><span>net::WireFitQLearn</span></span></h1>
+        <div class="description">
+            <div class="doc">
+                <p>as detailed in <a href="http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf">http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf</a>. A wire fitted interpolator function is used in conjunction with a neural network
+                    to turn descrete action vectors paired with rewards, to a continuous function that pair an action vector with a reward.</p>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="fields">Fields</h2>
+        <table class="fields">
+            <tbody>
+                <tr id="net::WireFitQLearn::network">
+                    <td class="field_name identifier">network</td>
+                    <td class="field_type"><span class="type"><span class="name "><a href="net.NeuralNet.html#net.NeuralNet">NeuralNet</a></span><span class="qualifier"> *</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::backprop">
+                    <td class="field_name identifier">backprop</td>
+                    <td class="field_type"><span class="type"><span class="name "><a href="net.Backpropagation.html#net.Backpropagation">Backpropagation</a></span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::numberOfWires">
+                    <td class="field_name identifier">numberOfWires</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::actionDimensions">
+                    <td class="field_name identifier">actionDimensions</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::learningRate">
+                    <td class="field_name identifier">learningRate</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::devaluationFactor">
+                    <td class="field_name identifier">devaluationFactor</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::scalingFactorToMillis">
+                    <td class="field_name identifier">scalingFactorToMillis</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::smoothingFactor">
+                    <td class="field_name identifier">smoothingFactor</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::e">
+                    <td class="field_name identifier">e</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::gradientDescentErrorTarget">
+                    <td class="field_name identifier">gradientDescentErrorTarget</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::gradientDescentLearningRate">
+                    <td class="field_name identifier">gradientDescentLearningRate</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::gradientDescentMaxIterations">
+                    <td class="field_name identifier">gradientDescentMaxIterations</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::lastState">
+                    <td class="field_name identifier">lastState</td>
+                    <td class="field_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::WireFitQLearn::lastAction">
+                    <td class="field_name identifier">lastAction</td>
+                    <td class="field_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 data-cldoc-dynamic="1" id="constructors">Constructors</h2>
+        <div class="constructors">
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::WireFitQLearn">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">WireFitQLearn</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name "><a href="net.NeuralNet.html#net.NeuralNet">NeuralNet</a></span><span class="qualifier"> *</span></span>
+                                </td>
+                                <td class="argument_name">modelNetwork,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name "><a href="net.Backpropagation.html#net.Backpropagation">Backpropagation</a></span></span>
+                                </td>
+                                <td class="argument_name">backprop_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">learningRate_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">devaluationFactor_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">actionDimensions_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numberOfWires_</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>a learning rate (dictates how fast the reward values for actions change), a devaluation factor (dictates how much future rewards are valued), the dimensions of the action vectors, and how many wires the network outputs.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::WireFitQLearn::modelNetwork">
+                            <td>modelNetwork</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::WireFitQLearn::backprop_">
+                            <td>backprop_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::WireFitQLearn::learningRate_">
+                            <td>learningRate_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::WireFitQLearn::devaluationFactor_">
+                            <td>devaluationFactor_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::WireFitQLearn::actionDimensions_">
+                            <td>actionDimensions_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::WireFitQLearn::numberOfWires_">
+                            <td>numberOfWires_</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::WireFitQLearn">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">WireFitQLearn</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">filename</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Initializes a WireFitQLearn object from a file</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::WireFitQLearn::filename">
+                            <td>filename</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::WireFitQLearn">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">WireFitQLearn</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Initializes and empty WireFitQLearn object</p>
+                </div>
+                <table class="arguments"></table>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="member functions">Member Functions</h2>
+        <div class="member_functions">
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::applyReinforcementToLastAction">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">applyReinforcementToLastAction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">reward,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">newState,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">elapsedTimeMillis</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>this function updates the correct value for the longterm reward of the last action taken, devises new control wires for the interpolator using gradient descent and trains the network to output the new control wires.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::applyReinforcementToLastAction::reward">
+                            <td>reward</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::applyReinforcementToLastAction::newState">
+                            <td>newState</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::applyReinforcementToLastAction::elapsedTimeMillis">
+                            <td>elapsedTimeMillis</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::chooseBestAction">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">chooseBestAction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">currentState</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Outputs the action vector that the model thinks will give the most reward</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::chooseBestAction::currentState">
+                            <td>currentState</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::chooseBoltzmanAction">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">chooseBoltzmanAction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">currentState,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">explorationConstant</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>Non-random search heuristic used so that the neural network explores actions despite their reward value. The lower the exploration constanstant, the more likely it is to pick the best action for the current state.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::chooseBoltzmanAction::currentState">
+                            <td>currentState</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::chooseBoltzmanAction::explorationConstant">
+                            <td>explorationConstant</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::getWires">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;net::Wire, std::__1::allocator&lt;net::Wire&gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getWires</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">state</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::getWires::state">
+                            <td>state</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::graphInterpolatorFunction">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">graphInterpolatorFunction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;net::Wire, std::__1::allocator&lt;net::Wire&gt; &gt;</span><span class="qualifier">  <span class="keyword">const</span> &amp;</span>
+                                    </span>
+                                </td>
+                                <td class="argument_name">controlWires,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">minAction,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">maxAction,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">targetAction</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Graphs the interpolator function given a range of actions</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::graphInterpolatorFunction::controlWires">
+                            <td>controlWires</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::graphInterpolatorFunction::minAction">
+                            <td>minAction</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::graphInterpolatorFunction::maxAction">
+                            <td>maxAction</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::WireFitQLearn::graphInterpolatorFunction::targetAction">
+                            <td>targetAction</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::WireFitQLearn::storeWireFitQLearn">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">storeWireFitQLearn</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">filename</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Stores the WireFitQLearn object in a file</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::WireFitQLearn::storeWireFitQLearn::filename">
+                            <td>filename</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- vi:ts=2:et -->

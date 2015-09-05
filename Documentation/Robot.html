@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Robot</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="styles/cldoc.css">
+</head>
+
+<body id="cldoc">
+    <div id="cldoc_sidebar">
+        <div id="cldoc_sidebar_items">
+            <div class="back">
+                <div class="name"><span><span class="keyword">Class</span><span>Robot</span></span>
+                </div><a href="index.html"><span class="arrow">↵</span> <span>Index</span></a></div>
+            <div id="cldoc_sidebar_pagenav"></div>
+            <div class="subtitle">Fields</div>
+            <ul>
+                <li><a href="#Robot.learner">learner<span class="counter"></span></a></li>
+                <li><a href="#Robot.simulator">simulator<span class="counter"></span></a></li>
+                <li><a href="#Robot.boltzmanExplorationLevel">boltzmanExplorationLevel<span class="counter"></span></a></li>
+                <li><a href="#Robot.explorationDevaluationPerTimestep">explorationDevaluationPerTimestep<span class="counter"></span></a></li>
+            </ul>
+            <div class="subtitle">Constructors</div>
+            <ul>
+                <li><a href="#Robot.Robot">Robot<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Initializes a robot object</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="subtitle">Member Functions</div>
+            <ul>
+                <li><a href="#Robot.run">run<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Runs the robot for a specified number of time steps</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="cldoc_content">
+        <h1 id="Robot"><span><span class="keyword">Class</span><span>Robot</span></span></h1>
+        <div class="description">
+            <div class="brief">
+                <p> Uses the QLearn object paired with the simulator to progressively learn a task through reinforcement learning.</p>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="fields">Fields</h2>
+        <table class="fields">
+            <tbody>
+                <tr id="Robot::learner">
+                    <td class="field_name identifier">learner</td>
+                    <td class="field_type"><span class="type"><span class="name "><a href="net.QLearn.html#net.QLearn">net::QLearn</a></span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="Robot::simulator">
+                    <td class="field_name identifier">simulator</td>
+                    <td class="field_type"><span class="type"><span class="name ">Simlink</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="Robot::boltzmanExplorationLevel">
+                    <td class="field_name identifier">boltzmanExplorationLevel</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="Robot::explorationDevaluationPerTimestep">
+                    <td class="field_name identifier">explorationDevaluationPerTimestep</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 data-cldoc-dynamic="1" id="constructors">Constructors</h2>
+        <div class="constructors">
+            <div class="function">
+                <div class="declaration" id="Robot::Robot">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">Robot</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Initializes a robot object</p>
+                </div>
+                <table class="arguments"></table>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="member functions">Member Functions</h2>
+        <div class="member_functions">
+            <div class="function">
+                <div class="declaration" id="Robot::run">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">run</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numberOfTimeSteps</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Runs the robot for a specified number of time steps</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="Robot::run::numberOfTimeSteps">
+                            <td>numberOfTimeSteps</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- vi:ts=2:et -->
