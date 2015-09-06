@@ -66,8 +66,6 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	std::vector< std::vector<double> > errors;
 	double networkError = 0;
 
-	network->printWeights();
-
 	/// Compute output layer error
 	std::vector<double> outputNeuronErrors;
 	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];

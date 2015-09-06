@@ -36,8 +36,10 @@ int main() {
 	backprop.setDerivedHiddenActivationFunction("simpleLinear");
 
 	for (int a = 0; a < 1000; a++) {
-		backprop.trainOnData(network, { { 1 } }, { { (double)rand() / RAND_MAX, (double)rand() / RAND_MAX } });
+		network->printWeights();
+		backprop.trainOnData(network, { { 1 } }, { { ((double)rand() / RAND_MAX) * 10 + -5, ((double)rand() / RAND_MAX) * 10 + -5} });
 
+		//std::cout << "a: " << a << "\n";
 		std::cout << "out: " << network->getOutput({ 1 })[0] << "\n";
 
 		if (isnan(network->getOutput({ 1 })[0])) {

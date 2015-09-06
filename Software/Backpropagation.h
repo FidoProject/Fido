@@ -33,6 +33,7 @@ namespace net {
 		 *
 		 * Edits the weights of the neural network until its error in predicting the correctOutput of each input reaches the value of targetErrorLevel
 		 * or the number of training cycles reaches the value of maximumIterations.
+		 * NOTE: If learning rate is not low enough, the weights of the neurl network may got to infinity due to the nature of backpropagation.
 		 */
 		void trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput);
 
