@@ -3,19 +3,19 @@
 WireFitRobot::WireFitRobot() {
 	int stateSize = 1;
 	int numberOfHiddenLayers = 3;
-	int numberOfNeuronsPerHiddenLayer = 4;
-	int numberOfActions = 3, actionDimensions = 1;
+	int numberOfNeuronsPerHiddenLayer = 9;
+	int numberOfActions = 3, actionDimensions = 2;
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
-	network->setHiddenActivationFunction("simpleLinear");
+	//network->setHiddenActivationFunction("simpleLinear");
 
-	double backpropLearningRate = 0.9;
+	double backpropLearningRate = 0.1;
 	double backpropMomentumTerm = 0;
-	double backpropTargetError = 0.001;
+	double backpropTargetError = 0.0001;
 	int backpropMaximumIterations = 10000;
 	net::Backpropagation backprop = net::Backpropagation(backpropLearningRate, backpropMomentumTerm, backpropTargetError, backpropMaximumIterations);
 	backprop.setDerivedOutputActivationFunction("simpleLinear");
-	backprop.setDerivedHiddenActivationFunction("simpleLinear");
+	//backprop.setDerivedHiddenActivationFunction("simpleLinear");
 
 	double learningRate = 0.95;
 	double devaluationFactor = 0.4;
@@ -26,17 +26,25 @@ WireFitRobot::WireFitRobot() {
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {
-	for(int a = 0; a < numberOfTimeSteps; a++) {
-		//waitForStateInput();
-		std::cout << "a: " << a << "\n";
+	
+	int timesInARow = 0;
+	int a;
+	for(a = 0; a < numberOfTimeSteps; a++) {
 		std::vector<double> state = getState();
-		std::vector<double> action = learner.chooseRandomAction(state, { 0 }, { 1 });
+		std::vector<double> action = learner.chooseRandomAction(state, { 0, 0 }, { 1, 1 });
 		performAction(action);
-		learner.applyReinforcementToLastAction(std::max(std::min(action[0], 1.0), 0.0), state, 1);
-		if(boltzmanExplorationLevel > 0.01) boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
+		learner.applyReinforcementToLastAction(std::max(1 - abs(action[0] - action[1]), 0.0), state, 1);
+
+		std::vector<double> bestAction = learner.chooseBestAction(state);
+		if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
+			timesInARow++;
+			if (timesInARow == 5) break;
+		} else {
+			timesInARow = 0;
+		}
 	}
 
-	learner.graphInterpolatorFunction(learner.getWires({ 0 }), 0, 1, 0.5);
+	std::cout << "a: " << a << "\n";
 	
 	while (true) {
 		waitForStateInput();
@@ -44,7 +52,6 @@ void WireFitRobot::run(int numberOfTimeSteps) {
 		std::vector<double> action = learner.chooseBestAction(state);
 		performAction(action);
 		learner.applyReinforcementToLastAction(getReward(), state, 1);
-		if (boltzmanExplorationLevel > 0.01) boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
 	}
 }
 
@@ -71,5 +78,5 @@ double WireFitRobot::getReward() {
 }
 
 void WireFitRobot::performAction(const std::vector<double> &action) {
-	simulator.setMotors(action[0] * 100, 0);
+	simulator.setMotors(action[0] * 100, action[1] * 100);
 }
