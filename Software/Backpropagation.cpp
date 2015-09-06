@@ -66,11 +66,14 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	std::vector< std::vector<double> > errors;
 	double networkError = 0;
 
+	network->printWeights();
+
 	/// Compute output layer error
 	std::vector<double> outputNeuronErrors;
 	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];
 	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
 		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputActivationFunctionDerivative(outputLayerOutput[neuronIndex]);
+		std::cout << "out: " << outputLayerOutput[neuronIndex] << "; corr: " << correctOutput[neuronIndex] << "\n";
 		networkError += pow(correctOutput[neuronIndex] - outputLayerOutput[neuronIndex], 2);
 		outputNeuronErrors.push_back(outputNeuronError);
 	}
@@ -89,6 +92,7 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 				errorsTimesWeights += lastLayerError[previousNeuronIndex] * lastLayerWeights[previousNeuronIndex][neuronIndex];
 			}
 			double hiddenNeuronError = hiddenActivationFunctionDerivative(currentHiddenLayerOutput[neuronIndex]) * errorsTimesWeights;
+			std::cout << "err: " << hiddenNeuronError << "\n";
 			currentLayerError.push_back(hiddenNeuronError);
 		}
 		errors.push_back(currentLayerError);
@@ -102,6 +106,9 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
             if(errorIndex == errors.size() - 1) {
 				for(int inputIndex = 0; inputIndex < input.size(); inputIndex++) {
                     double deltaWeight = learningRate * errors[errorIndex][neuronIndex] * input[inputIndex] + lastChangeInWeight[layerIndex][neuronIndex][inputIndex]*momentumTerm;
+					std::cout << "delta: " << deltaWeight << "\n";
+					std::cout << "err: " << errors[errorIndex][neuronIndex] << "\n";
+					std::cout << "in: " << input[inputIndex] << "\n";
 					weights[layerIndex][neuronIndex][inputIndex] += deltaWeight;
 					lastChangeInWeight[layerIndex][neuronIndex][inputIndex] = deltaWeight;
 				}

@@ -14,7 +14,7 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_,
     scalingFactorToMillis = 1;
     smoothingFactor = 0;
     e = 0.01;
-    gradientDescentErrorTarget = 0.0001;
+    gradientDescentErrorTarget = 0.001;
     gradientDescentLearningRate = 0.1;
     gradientDescentMaxIterations = 10000;
 
@@ -91,6 +91,21 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
     
 }
 
+std::vector<double> WireFitQLearn::chooseRandomAction(const std::vector<double> &state, const std::vector<double> &minAction, const std::vector<double> &maxAction) {
+	if (minAction.size() != maxAction.size()) {
+		std::cout << "Min action and max action sizes don't match\n";
+		throw 1;
+	}
+	
+	std::vector<double> action(minAction.size());
+	for (int a = 0; a < minAction.size(); a++) action[a] = minAction[a] + ((double)rand() / RAND_MAX) * (maxAction[a] - minAction[a]);
+	
+	lastAction = action;
+	lastState = state;
+
+	return action;
+}
+
 void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis) {
     std::vector<Wire> controlWires = getWires(lastState);
     double scalingFactor = scalingFactorToMillis * elapsedTimeMillis;
@@ -107,7 +122,7 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
 	std::cout << "REWARD: " << getRewardUsingInterpolator(newContolWires, {1.5}) << "\n";
 
 	std::cout << "st: " << lastState[0] << " act: " << lastAction[0] << " r: " << newRewardForLastAction << "\n";
-	
+
     backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
 	controlWires = getWires(lastState);
 }

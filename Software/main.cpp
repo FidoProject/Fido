@@ -9,14 +9,37 @@
 #include "Backpropagation.h"
 #include "QLearn.h"
 #include "Robot.h"
+#include "WireFitRobot.h"
 #include "WireFitQLearn.h"
 
 
 int main() {
     srand(time(NULL));
     
-	Robot robot;
-	robot.run(100);
+	//WireFitRobot robot;
+	//robot.run(200);
+
+	int stateSize = 1;
+	int numberOfHiddenLayers = 1;
+	int numberOfNeuronsPerHiddenLayer = 2;
+	int numberOfActions = 1, actionDimensions = 1;
+	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
+	network->setOutputActivationFunction("simpleLinear");
+	network->setHiddenActivationFunction("simpleLinear");
+
+	double backpropLearningRate = 0.9;
+	double backpropMomentumTerm = 0;
+	double backpropTargetError = 0.00001;
+	int backpropMaximumIterations = 10000;
+	net::Backpropagation backprop = net::Backpropagation(backpropLearningRate, backpropMomentumTerm, backpropTargetError, backpropMaximumIterations);
+	backprop.setDerivedOutputActivationFunction("simpleLinear");
+	backprop.setDerivedHiddenActivationFunction("simpleLinear");
+
+	backprop.trainOnData(network, { {1} }, { {0.57, 0.78} });
+
+	/*for (int a = 0; a < 10; a++) {
+		backprop.trainOnData(network, { {0} }, { {(double)rand() / RAND_MAX, (double)rand() / RAND_MAX } });
+	}*/
 
     /*net::NeuralNet * network = new net::NeuralNet(1, 6, 3, 6, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");

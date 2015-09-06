@@ -2,6 +2,7 @@
 #define WIREFITROBOT_H
 
 #include <iostream>
+#include <algorithm>
 
 #include "NeuralNet.h"
 #include "WireFitQLearn.h"

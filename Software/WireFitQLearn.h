@@ -55,6 +55,9 @@ namespace net {
          * The lower the exploration constanstant, the more likely it is to pick the best action for the current state.
          */
         std::vector<double> chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant);
+
+		// Chooses a random action vector between the minmum and maximum vectors given
+		std::vector<double> chooseRandomAction(const std::vector<double> &state, const std::vector<double> &minAction, const std::vector<double> &maxAction);
         
         /* Given the immediate reward from the last action taken and the new state, 
          * this function updates the correct value for the longterm reward of the last action taken,
