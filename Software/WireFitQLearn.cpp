@@ -49,7 +49,7 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
             throw 1;
         }
     } else {
-        std::cout << "Could not retrieve neural network from file\n";
+        std::cout << "Could not retrieve wirefitqlearn from file\n";
         throw 1;
     }
 }
@@ -142,7 +142,7 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
         
         output.close();
     } else {
-        std::cout << "Could not retrieve neural network from file\n";
+        std::cout << "Could not store wirefitqlearn in file\n";
         throw 1;
     }
 }

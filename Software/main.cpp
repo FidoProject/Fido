@@ -27,7 +27,7 @@ int main() {
 	network->setOutputActivationFunction("simpleLinear");
 	network->setHiddenActivationFunction("simpleLinear");
 
-	double backpropLearningRate = 0.9;
+	double backpropLearningRate = 0.1;
 	double backpropMomentumTerm = 0;
 	double backpropTargetError = 0.00001;
 	int backpropMaximumIterations = 10000;
@@ -35,7 +35,16 @@ int main() {
 	backprop.setDerivedOutputActivationFunction("simpleLinear");
 	backprop.setDerivedHiddenActivationFunction("simpleLinear");
 
-	backprop.trainOnData(network, { {1} }, { {0.57, 0.78} });
+	for (int a = 0; a < 1000; a++) {
+		backprop.trainOnData(network, { { 1 } }, { { (double)rand() / RAND_MAX, (double)rand() / RAND_MAX } });
+
+		std::cout << "out: " << network->getOutput({ 1 })[0] << "\n";
+
+		if (isnan(network->getOutput({ 1 })[0])) {
+			std::cout << "isinf\n";
+			return 1;
+		}
+	}
 
 	/*for (int a = 0; a < 10; a++) {
 		backprop.trainOnData(network, { {0} }, { {(double)rand() / RAND_MAX, (double)rand() / RAND_MAX } });

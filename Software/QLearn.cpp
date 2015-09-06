@@ -32,7 +32,7 @@ QLearn::QLearn(std::string filename) {
 
 		input.close();
 	} else {
-		std::cout << "Could not retrieve neural network from file\n";
+		std::cout << "Could not retrieve qlearn from file\n";
 		throw 1;
 	}
 }
@@ -126,7 +126,7 @@ void QLearn::storeQLearn(std::string filename) {
 
 		output.close();
 	} else {
-		std::cout << "Could not store neural network in file\n";
+		std::cout << "Could not store qlearn in file\n";
 		throw 1;
 	}
 }
