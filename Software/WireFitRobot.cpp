@@ -3,8 +3,8 @@
 WireFitRobot::WireFitRobot() {
 	int stateSize = 1;
 	int numberOfHiddenLayers = 3;
-	int numberOfNeuronsPerHiddenLayer = 9;
-	int numberOfActions = 3, actionDimensions = 2;
+	int numberOfNeuronsPerHiddenLayer = 15;
+	int numberOfActions = 5, actionDimensions = 2;
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 	//network->setHiddenActivationFunction("simpleLinear");
@@ -26,16 +26,25 @@ WireFitRobot::WireFitRobot() {
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {
-	
+	std::vector< std::vector<double> > actions;
+	std::vector< std::vector<double> > oldStates;
+	std::vector<double> immediateRewards;
+	std::vector< std::vector<double> > newStates;
+	std::vector<double> elapsedTimes;
+
 	int timesInARow = 0;
 	int a;
 	for(a = 0; a < numberOfTimeSteps; a++) {
-		std::vector<double> state = getState();
-		std::vector<double> action = learner.chooseRandomAction(state, { 0, 0 }, { 1, 1 });
-		performAction(action);
-		learner.applyReinforcementToLastAction(std::max(1 - abs(action[0] - action[1]), 0.0), state, 1);
+		oldStates.push_back(getState());
+		actions.push_back(learner.chooseRandomAction(oldStates[oldStates.size() - 1], { 0, 0 }, { 1, 1 }));
+		performAction(actions[actions.size() -1 ]);
+		immediateRewards.push_back(std::max(1 - abs(actions[actions.size() - 1][0] - actions[actions.size() - 1][1]), 0.0));
+		newStates.push_back(oldStates[oldStates.size() - 1]);
+		elapsedTimes.push_back(1);
 
-		std::vector<double> bestAction = learner.chooseBestAction(state);
+		learner.trainOnHistoricalData(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
+
+		std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
 		if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
 			timesInARow++;
 			if (timesInARow == 5) break;

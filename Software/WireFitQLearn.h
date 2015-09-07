@@ -30,8 +30,8 @@ namespace net {
         double learningRate, devaluationFactor;
         double scalingFactorToMillis;
         double smoothingFactor, e;
-        double gradientDescentErrorTarget, gradientDescentLearningRate;
-        int gradientDescentMaxIterations;
+        double controlPointsGDErrorTarget, controlPointsGDLearningRate;
+        int controlPointsGDMaxIterations;
         std::vector<double> lastState, lastAction;
         
         /* Initializes a WireFitQLearn object with a model NN (network is copied from this), a Backpropagation object (used to train network),
@@ -65,6 +65,14 @@ namespace net {
          * and trains the network to output the new control wires.
          */
         void applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis);
+		
+
+		void trainOnHistoricalData(const std::vector< std::vector<double> > &actions, 
+			const std::vector< std::vector<double> > &oldStates, 
+			const std::vector<double> &immediateRewards, 
+			const std::vector< std::vector<double> > &newStates,
+			const std::vector<double> &elapsedTimes,
+			int numberOfIterations);
         
         // Stores the WireFitQLearn object in a file
         void storeWireFitQLearn(std::string filename);

@@ -14,9 +14,9 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_,
     scalingFactorToMillis = 1;
     smoothingFactor = 0;
     e = 0.01;
-    gradientDescentErrorTarget = 0.001;
-    gradientDescentLearningRate = 0.1;
-    gradientDescentMaxIterations = 10000;
+    controlPointsGDErrorTarget = 0.001;
+    controlPointsGDLearningRate = 0.1;
+    controlPointsGDMaxIterations = 10000;
 
     if(network->numOutputs != numberOfWires * (actionDimensions+1)) {
         std::cout << "Neural network incorrectly formatted!\n";
@@ -29,7 +29,7 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
     if(input.is_open()) {
         input >> learningRate >> devaluationFactor;
         input >> actionDimensions >> numberOfWires;
-        input >> scalingFactorToMillis >> smoothingFactor >> e >> gradientDescentErrorTarget >> gradientDescentLearningRate >> gradientDescentMaxIterations;
+        input >> scalingFactorToMillis >> smoothingFactor >> e >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations;
         
         lastAction = std::vector<double>(actionDimensions);
         for(int a = 0; a < actionDimensions; a++) {
@@ -119,12 +119,32 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
-	std::cout << "REWARD: " << getRewardUsingInterpolator(newContolWires, {1.5}) << "\n";
-
-	std::cout << "st: " << lastState[0] << " act: " << lastAction[0] << " r: " << newRewardForLastAction << "\n";
-
     backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
 	controlWires = getWires(lastState);
+}
+
+void WireFitQLearn::trainOnHistoricalData(const std::vector< std::vector<double> > &actions,
+	const std::vector< std::vector<double> > &oldStates,
+	const std::vector<double> &immediateRewards,
+	const std::vector< std::vector<double> > &newStates,
+	const std::vector<double> &elapsedTimes,
+	int numberOfIterations) {
+
+	if(actions.size() != oldStates.size() || oldStates.size() != immediateRewards.size() || immediateRewards.size() != newStates.size() || newStates.size() != elapsedTimes.size()) {
+		std::cout << "Varying lengths of historical data vectors\n";
+		throw 1;
+	}
+	
+	for(int a = 0; a < numberOfIterations; a++) {
+		for(int b = 0; b < actions.size(); b++) {
+			lastState = oldStates[b];
+			lastAction = actions[b];
+			applyReinforcementToLastAction(immediateRewards[b], newStates[b], elapsedTimes[b]);
+		}
+
+		std::vector<double> bestAction = chooseBestAction(oldStates[oldStates.size() - 1]);
+		std::cout << "a: " << a << "; top: " << std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) << "\n";
+	}
 }
 
 void WireFitQLearn::storeWireFitQLearn(std::string filename) {
@@ -132,7 +152,7 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
     if(output.is_open()) {
         output << learningRate << " " << devaluationFactor << "\n";
         output << actionDimensions << " " << numberOfWires << "\n";
-        output << scalingFactorToMillis << " " << smoothingFactor << " " << e << " " << gradientDescentErrorTarget << " " << gradientDescentLearningRate << " " << gradientDescentMaxIterations << "\n";
+        output << scalingFactorToMillis << " " << smoothingFactor << " " << e << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << "\n";
         
         for(int a = 0; a < lastAction.size(); a++) output << lastAction[a] << " ";
         output << "\n";
@@ -271,18 +291,16 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
     do {
         for(int a = 0; a < controlWires.size(); a++) {
             double deltaReward = -2 * (-getRewardUsingInterpolator(controlWires, correctWire.action) + correctWire.reward)*rewardDerivative(correctWire.action, controlWires[a], controlWires);
-            controlWires[a].reward = controlWires[a].reward - gradientDescentLearningRate*deltaReward;
+            controlWires[a].reward = controlWires[a].reward - controlPointsGDLearningRate*deltaReward;
             for(int b = 0; b < controlWires[a].action.size(); b++) {
 				double deltaActionTerm = -2 * (-getRewardUsingInterpolator(controlWires, correctWire.action) + correctWire.reward)*actionTermDerivative(correctWire.action[b], controlWires[a].action[b], correctWire.action, controlWires[a], controlWires);
-                controlWires[a].action[b] = controlWires[a].action[b] - gradientDescentLearningRate*deltaActionTerm;
+                controlWires[a].action[b] = controlWires[a].action[b] - controlPointsGDLearningRate*deltaActionTerm;
             }
         }
         
         error = pow(correctWire.reward - getRewardUsingInterpolator(controlWires, correctWire.action), 2);
         iterations++;
-    } while(error > gradientDescentErrorTarget && iterations < gradientDescentMaxIterations);
-
-	std::cout << "REWARD: " << getRewardUsingInterpolator(controlWires, correctWire.action) << "\n";
+    } while(error > controlPointsGDErrorTarget && iterations < controlPointsGDMaxIterations);
 
     return controlWires;
 
