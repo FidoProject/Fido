@@ -1,16 +1,12 @@
-#include "Arduino.h"
+#include "mbed.h"
 
-#ifndef LED_PIN
-	#define LED_PIN 13
-#endif
+DigitalOut myled(LED1);
 
-void setup() {
-  pinMode(LED_PIN, OUTPUT);   
-}
-
-void loop() {
-  digitalWrite(LED_PIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_PIN, LOW); 
-  delay(1000);
+int main() {
+    while(1) {
+        myled = 1;
+        wait(1);
+        myled = 0;
+        wait(1);
+    }
 }

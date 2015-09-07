@@ -1,0 +1,192 @@
+/*
+ * lcdostream
+ * Implementation of output stream for the Arduino LiquidCrystal library
+ *
+ *  Created on: 6 Jan 2011
+ *      Author: Andy Brown
+ *
+ *  http://andybrown.me.uk/ws/terms-and-conditions
+ */
+
+
+#ifndef __65B857C4_2BD5_4044_8D08C067F4A032DC
+#define __65B857C4_2BD5_4044_8D08C067F4A032DC
+
+#include <basic_definitions>
+
+#include <stl_config.h>
+#include <iosfwd>
+#include <ios>
+#include <ostream>
+#include <LiquidCrystal.h>
+
+
+namespace std
+{
+/*
+ * basic_lcdbuf implements an unbuffered basic_streambuf as a backing buffer
+ * for the output class.
+ */
+ 
+	template <class charT, class traits>
+		class basic_lcdbuf : public basic_streambuf<charT,traits>
+	{
+	public:
+
+	/*
+	 * Types used here
+	 */
+
+		typedef charT char_type;
+		typedef typename traits::int_type int_type;
+
+	/*
+	 * constructor - wraps an existing LiquidCrystal class instance
+	 */
+
+		explicit basic_lcdbuf(LiquidCrystal& lcd_)
+			: _lcd(lcd_)
+		{
+			basic_streambuf<charT,traits>::openedFor = ios_base::out;
+		}
+
+	/*
+	 * Required to maintain the chain
+	 */
+
+		virtual ~basic_lcdbuf() { }
+
+	/*
+	 * Get a reference to the wrapped object
+	 */
+
+		LiquidCrystal& lcd() { return _lcd; }
+
+	protected:
+		
+	/*
+	 * Write up to n chars
+	 */
+
+		virtual streamsize xsputn(const char_type* s, streamsize n){
+			
+			for(streamsize i=0;i<n;i++)
+				_lcd.print(s[i]);
+
+			return n;
+		}
+
+	/*
+	 * write a single char
+	 */
+
+		virtual int_type overflow (int_type c = traits::eof()) {
+			if(!traits::eq_int_type(c,traits::eof()))
+				_lcd.print((char_type)c);
+
+			return traits::not_eof(c);
+		}
+
+	/*
+	 * Our wrapped arduino class
+	 */
+
+		LiquidCrystal& _lcd;
+	};
+
+
+/*
+ * Output stream
+ */
+
+	template <class charT, class traits> class basic_olcdstream
+		: public basic_ostream<charT,traits>
+	{
+	public:
+
+	/*
+	 * Types used here
+	 */
+
+		typedef charT char_type;
+
+
+	/*
+	 * Constructor
+	 */
+
+		explicit basic_olcdstream(LiquidCrystal& lcd_)
+			: basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb), sb(lcd_)
+		{
+		}
+		
+		/*
+		 * Required to maintain the chain
+		 */
+
+		virtual ~basic_olcdstream() {  }
+
+
+	/*
+	 * Move the LCD cursor
+	 */
+
+		void moveCursor(int x_,int y_) {
+			sb.lcd().setCursor(x_,y_);
+		}
+
+		void clear() {
+			sb.lcd().clear();
+		}
+
+	/*
+	 * The wrapped object
+	 */
+
+	private:
+		basic_lcdbuf<charT,traits> sb;
+	};
+
+
+/*
+ * Move the cursor
+ */
+
+	struct __move{
+		int _x,_y;
+		__move(int x,int y): _x(x),_y(y) {  }
+	};
+
+	inline __move move(int x,int y) {
+		return __move(x,y);
+	}
+
+	template<class Ch, class Tr> basic_olcdstream<Ch, Tr>&
+		operator<<(basic_olcdstream<Ch, Tr>& os, const __move m)
+	{
+		os.moveCursor(m._x,m._y);
+		return os;
+	}
+
+
+/*
+ * Clear screen
+ */
+
+	struct __clear{
+	};
+
+	inline __clear clear() {
+		return __clear();
+	}
+
+	template<class Ch, class Tr> basic_olcdstream<Ch, Tr>&
+		operator<<(basic_olcdstream<Ch, Tr>& os, const __clear c)
+	{
+		os.clear();
+		return os;
+	}
+}
+
+
+#endif
