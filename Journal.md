@@ -1,5 +1,10 @@
 # Fido Research Journal
 
+### Progress made over the summer
+#### Software
+
+#### Hardware
+
 ### September 7, 2015
 #### Michael Truell
 A WireFitRobot class was created that connected our of Wire Fit Q Learn implementation to our simulator. This was taught a number of simple tasks, such as to drive as fast as possible and to drive straight. Learning to drive as fast as possible was defined as choosing a speed above 95% for five iterations of feedback in a row and learning to drive straight was classified as having a difference of motor values of less than 0.05 for five iterations of feedack in a row. However, the number of inputs required by a human subject before the robot learned succesfully is quite high. For a WireFitQLearn object with 3 wires, it was on the order of 50 to learn drive straight and around 15 to drive fast.
