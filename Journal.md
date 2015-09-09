@@ -1,12 +1,18 @@
 # Fido Research Journal
 
-### Progress made over the summer
-#### Software - Michael Truell
+## Progress made over the summer
+### Software - Michael Truell
 We began by familiarizing ourselves with the scientific literature on neural networks and their uses. I began with a fabulous tutorial on using neural networks paired with a genetic algorithm to solve tasks (http://www.ai-junkie.com/ann/evolved/nnt1.html). Then general implementations of a neural network and a genetic algorithm were written. To test these two pieces of software, neural networks were taught to play tic tac toe by playing against one another and by being subject to our genetic algorithm. Once this was done, I familiarized myself with backpropagation, an algorith widely used to train neural networks given a set of training data, by reading a number of introductory papers on the subject. After this, an implentation of backpropagation was written and added to our code base. It was tested by teaching a neural network to perform some simple linear regression. To further test the power of our software, we used our genetic algorithm implemenatation to teach neural networks to play Halite, a game for AIs made by our friend and classmate Benjamin Spector (10th grade), and used our backpropagation implementation to teach neural networks how to perform linear and nonlinear regression.
 
 We then turned our sights on the topic of our project, reinforcement learning. We implemented the popular algorithm Q-learn, for teaching function approximators (a feedforward neural network is just a function approximator) descrete actions. We added in some non-random search heuristics, so that our NNs could learn in large state and action spaces. We tested our implementations on simple tasks, like turning on an LED when prompted with the proper stimuli (like a flash of light), using a simulator that we built. However, though our q-learning implementation can handle continous state spaces, our neural networks will have to carry out continuous actions (like the setting of motor values), and so it was neccessary to extend our Q Learning implementation into one that could handle continuous action spaces. We turned to the use of a wire-fitted least squares interpolator couple with a neural network as described in Gasket et al. (http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf). We are currently testing and modifying this algorithm so that it converges on the correct method for completing a task with less human feedback
 
-#### Hardware - Joshua Gruenstein
+### Hardware - Joshua Gruenstein
+
+Our original idea for Fido's body was a "black box," an object seemingly lacking in potential that could had hidden abilities the neural networks could learn to utilize.  However, due to the practical issues with the locomotion of a cube without wheels we decided to persue our next best option, a sphere.  We decided to have a differential drive robot inside of a sphere, an easy kinematic model to learn: left motor pushes right, right motor pushes left, and combining these vectors pushes straight.  For inputs we chose easy manipulatable sensors for training purposes: light and a microphone were obvious initial choices.  We also decided to add an infrared phototransistor as another form of one dimensional gradient stimulus (the intensity of the IR) that could be used during training.  Battery level also seemed like an easy choice as it mimicks nature in an interesting way.  We also decided to add an IMU, or inertial measurement unit.  This is an all in one package which generally contains three axis of accelerometers, gyroscopes, and magnetometers.
+
+<!--- to be continued, I have to go to class -->
+
+##Post Summer Research
 
 ### September 7, 2015
 #### Michael Truell
