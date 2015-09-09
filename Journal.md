@@ -1,7 +1,8 @@
 # Fido Research Journal
 
 ### Progress made over the summer
-#### Software
+#### Software - Michael Truell
+We began by familiarizing ourselves with the scientific literature on neural networks and their uses. I began with a fabulous tutorial on using neural networks paired with a genetic algorithm to solve tasks (http://www.ai-junkie.com/ann/evolved/nnt1.html). Then general implementations of a neural network and a genetic algorithm were written. To test these two pieces of software, neural networks were taught to play tic tac toe by playing against one another and by being subject to our genetic algorithm. Once this was done, I familiarized myself with backpropagation, an algorith widely used to train neural networks given a set of training data, by reading a number of introductory papers on the subject. After this, an implentation of backpropagation was written and added to our code base. It was tested by teaching a neural network to perform some simple linear regression.
 
 #### Hardware
 
