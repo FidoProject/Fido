@@ -1,1 +1,1 @@
-# Fido
+# Fido Research Journal
