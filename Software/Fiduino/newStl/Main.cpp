@@ -1,6 +1,6 @@
 #include "newVector.h"
 
 int main() {
-	Vector<int> vect;
+	std::Vector<int> vect;
 	vect.resize(10);
 }
