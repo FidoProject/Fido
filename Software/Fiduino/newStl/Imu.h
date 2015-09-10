@@ -28,8 +28,8 @@ namespace io {
 		// Return 3d acceleration vector
 		TDVect getAccel();
 
-		// Get ambient temperature (0-100)
-		int getTemp();
+		// Get ambient temperature (Celsius)
+		double getTemp();
 	private:
 		void setupCompass();
 		int readSensor(int addrL, int addrH);

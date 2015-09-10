@@ -2,6 +2,7 @@
 #include "Wire.h"
 #include "Imu.h"
 
+/// from MPU-9150 Register Map and Descriptions Revision 4.0
 #define MPU9150_SELF_TEST_X        0x0D
 #define MPU9150_SELF_TEST_Y        0x0E
 #define MPU9150_SELF_TEST_X        0x0F
@@ -99,10 +100,40 @@
 #define MPU9150_CMPS_ZOUT_L        0x4E
 #define MPU9150_CMPS_ZOUT_H        0x4F
 
+using namespace io;
+
 Imu::Imu() {
 	Wire.begin();
-	writeSensor(MPU9150_PWR_MGMT_1, 0);
+	writeSensor(MPU9150_PWR_MGMT_1,0); /// clear sleep
 	setupCompass();
+}
+
+Imu::TDVect getCompass() {
+	TDVect cVect;
+	cVect.xComp = (double)readSensor(MPU9150_CMPS_XOUT_L,MPU9150_CMPS_XOUT_H);
+	cVect.yComp = (double)readSensor(MPU9150_CMPS_YOUT_L,MPU9150_CMPS_YOUT_H);
+	cVect.zComp = (double)readSensor(MPU9150_CMPS_ZOUT_L,MPU9150_CMPS_ZOUT_H);
+	return cVect;
+}
+
+Imu::TDVect getGyro() {
+	TDVect gVect;
+	gVect.xComp = (double)readSensor(MPU9150_GYRO_XOUT_L,MPU9150_GYRO_XOUT_H);
+	gVect.yComp = (double)readSensor(MPU9150_GYRO_YOUT_L,MPU9150_GYRO_YOUT_H);
+	gVect.zComp = (double)readSensor(MPU9150_GYRO_ZOUT_L,MPU9150_GYRO_ZOUT_H);
+	return gVect;
+}
+
+Imu::TDVect getAccel() {
+	TDVect aVect;
+	aVect.xComp = readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H);
+	aVect.yComp = readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H);
+	aVect.zComp = readSensor(MPU9150_ACCEL_ZOUT_L,MPU9150_ACCEL_ZOUT_H);
+	return aVect;
+}
+
+Imu::double getTemp() {
+	return ((double)readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)+12412.0)/340.0;
 }
 
 Imu::void setupCompass(){
