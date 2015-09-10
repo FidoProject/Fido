@@ -18,7 +18,11 @@ Multiple computing cores were considered for the project, but we decided to go w
 #### Michael Truell
 A WireFitRobot class was created that connected our of Wire Fit Q Learn implementation to our simulator. This was taught a number of simple tasks, such as to drive as fast as possible and to drive straight. Learning to drive as fast as possible was defined as choosing a speed above 95% for five iterations of feedback in a row and learning to drive straight was classified as having a difference of motor values of less than 0.05 for five iterations of feedack in a row. However, the number of inputs required by a human subject before the robot learned succesfully is quite high. For a WireFitQLearn object with 3 wires, it was on the order of 50 to learn drive straight and around 15 to drive fast. In contrast, for our discrete Q-Learn implementation it took less than 10 feedback iterations for it to learn to only turn on an LED when triggered by the proper stimulus.
 
-This can surely be fixed with modifications to the present Wire Fit Q-learn implementation. Right now, a reward is tagged to an action, which is used to update the Q-value (or long term reward) of the action. Stocastic gradient descent is used to modify the control points outputed by the neural network, so that the control points produce an interpolator function that accurately outputs the reward.
+This can surely be fixed with modifications to the present Wire Fit Q-learn implementation. 
+
+### September 9, 2015
+#### Michael Truell
+Right now, a reward is tagged to the last action taken, which is used to update the Q-value (or long term reward) of the action. Stocastic gradient descent is used to modify the control points outputed by the neural network, so that the control points produce an interpolator function that accurately outputs the Q-value of the last action.
 
 I have a few ideas as to how to modify WireFitQLearn for the better:
  * The loss function for the gradient descent of control points should look to minimize error in matching reward-action pairs from the past. However, reward-action pairs should be devalued based on how old they are by giving them a greater acceptable error value (the distance the output of the function produced from gradient descent is from the correct reward value) as they age. This is neccessary so that the WireFitQLearn object can "forget."
