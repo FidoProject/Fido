@@ -1,9 +1,8 @@
-#include <stdlib.h>
-
+#include "newVector.h"
 
 void setup() {
   pinMode(13,OUTPUT);
-
+  Vector<int> vect;
 }
 
 void loop() {
