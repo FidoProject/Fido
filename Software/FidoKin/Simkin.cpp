@@ -29,8 +29,6 @@ Simkin::Simkin(int robWidth, int robHeight) {
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mRight=-100;
         else mRight = 0;
         
-        std::cout << "mLeft: " << mLeft << " mRight: " << mRight << "\n";
-        
         mToMove(rect,mLeft,mRight);
         
         window.draw(rect);
@@ -39,27 +37,28 @@ Simkin::Simkin(int robWidth, int robHeight) {
 }
 
 // creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
-void Simkin::mToMove(sf::RectangleShape& rect,int mLeft,int mRight) {
+void Simkin::mToMove(sf::RectangleShape& rect,int motLeft,int motRight) {
+    double mLeft = ((double)motLeft)/200;
+    double mRight = ((double)motRight)/200;
+    
     double xprime,yprime,rprime;
     double length = rect.getSize().x;
-    double radius = (length/2)*(mLeft+mRight)/(mRight-mLeft);
-    double omega = (mRight-mLeft)/length;
+    double time = clock.restart().asMilliseconds();
     
     double rX = rect.getPosition().x + length/2;
     double rY = rect.getPosition().y + rect.getSize().y/2;
-    
     double rTheta = rect.getRotation()*0.0174532925;
-    
-    double time = clock.restart().asMilliseconds()/5;
-    
-    double iccX = rX - radius*sin(rTheta);
-    double iccY = rY + radius*cos(rTheta);
-    
+
     if (mLeft == mRight) {
         xprime = rX + mLeft*cos(rTheta)*time;
         yprime = rY + mLeft*sin(rTheta)*time;
         rprime = rTheta;
     } else {
+        double radius = (length/2)*(mLeft+mRight)/(mRight-mLeft);
+        double omega = (mRight-mLeft)/length;
+        double iccX = rX - radius*sin(rTheta);
+        double iccY = rY + radius*cos(rTheta);
+
         xprime = cos(omega*time)*(rX-iccX)+
                 -sin(omega*time)*(rY-iccY)+
                  iccX;
@@ -70,4 +69,5 @@ void Simkin::mToMove(sf::RectangleShape& rect,int mLeft,int mRight) {
     }
     
     rect.setPosition(xprime-50,yprime-50);
+    rect.rotate(rprime*57.2957795);
 }
