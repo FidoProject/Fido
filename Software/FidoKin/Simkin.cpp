@@ -5,8 +5,10 @@ Simkin::Simkin(int robWidth, int robHeight) {
     
     sf::RectangleShape rect(sf::Vector2f(robWidth,robHeight));
     rect.setFillColor(sf::Color(0, 0, 0));
+    rect.setPosition(500,400);
     
     int mLeft, mRight;
+    mLeft = mRight = 0;
     
     while (window.isOpen()) {
         sf::Event event;
@@ -14,22 +16,20 @@ Simkin::Simkin(int robWidth, int robHeight) {
             switch (event.type) {
                 case sf::Event::Closed:
                     window.close();
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Q) mLeft=100;
-                    else if (event.key.code == sf::Keyboard::A) mLeft=-100;
-                    else if (event.key.code == sf::Keyboard::E) mRight=100;
-                    else if (event.key.code == sf::Keyboard::D) mRight=-100;
-                case sf::Event::KeyReleased:
-                    if (event.key.code==sf::Keyboard::Q||event.key.code==sf::Keyboard::A)
-                        mLeft=0;
-                    else if (event.key.code==sf::Keyboard::E||event.key.code==sf::Keyboard::D)
-                        mRight=0;
                 default:
                     break;
             }
         } window.clear(sf::Color(255,255,255));
-
-        int deg,trans;
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) mLeft=100;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) mLeft=-100;
+        else mLeft = 0;
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) mRight=100;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mRight=-100;
+        else mRight = 0;
+        
+        std::cout << "mLeft: " << mLeft << " mRight: " << mRight << "\n";
         
         mToMove(rect,mLeft,mRight);
         
@@ -40,28 +40,34 @@ Simkin::Simkin(int robWidth, int robHeight) {
 
 // creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
 void Simkin::mToMove(sf::RectangleShape& rect,int mLeft,int mRight) {
+    double xprime,yprime,rprime;
     double length = rect.getSize().x;
     double radius = (length/2)*(mLeft+mRight)/(mRight-mLeft);
     double omega = (mRight-mLeft)/length;
     
     double rX = rect.getPosition().x + length/2;
     double rY = rect.getPosition().y + rect.getSize().y/2;
+    
     double rTheta = rect.getRotation()*0.0174532925;
     
-    double delta = 5.32; // placeholder
-    double time = 5.21; // this as well
+    double time = clock.restart().asMilliseconds()/5;
     
     double iccX = rX - radius*sin(rTheta);
     double iccY = rY + radius*cos(rTheta);
     
-    //matrices fun
-    double xprime = cos(omega*delta*time)*(rX-iccX)+
-                   -sin(omega*delta*time)*(rY-iccY)+
-                    iccX;
-    double yprime = sin(omega*delta*time)*(rX-iccX)+
-                    cos(omega*delta*time)*(rY-iccY)+
-                    iccY;
-    double rprime = rTheta + omega*delta*time;
+    if (mLeft == mRight) {
+        xprime = rX + mLeft*cos(rTheta)*time;
+        yprime = rY + mLeft*sin(rTheta)*time;
+        rprime = rTheta;
+    } else {
+        xprime = cos(omega*time)*(rX-iccX)+
+                -sin(omega*time)*(rY-iccY)+
+                 iccX;
+        yprime = sin(omega*time)*(rX-iccX)+
+                 cos(omega*time)*(rY-iccY)+
+                 iccY;
+        rprime = rTheta + omega*time;
+    }
     
-    rect.setPosition(xprime,yprime);
+    rect.setPosition(xprime-50,yprime-50);
 }

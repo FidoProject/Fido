@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include <math.h>
 
 class Simkin {
@@ -15,6 +16,8 @@ private:
     
     // Convert motor values to rotation and translation
     void mToMove(sf::RectangleShape& rect,int mLeft,int mRight);
+    
+    sf::Clock clock;
 };
 
 
