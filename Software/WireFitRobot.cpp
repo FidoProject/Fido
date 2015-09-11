@@ -42,7 +42,7 @@ void WireFitRobot::run(int numberOfTimeSteps) {
 		newStates.push_back(oldStates[oldStates.size() - 1]);
 		elapsedTimes.push_back(1);
 
-		learner.trainOnHistoricalData(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
+		learner.trainOnHistoricalData(actions, oldStates, immediateRewards, newStates, elapsedTimes, 4);
 
 		std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
 		if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {

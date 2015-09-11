@@ -135,16 +135,41 @@ void WireFitQLearn::trainOnHistoricalData(const std::vector< std::vector<double>
 		throw 1;
 	}
 	
+	std::cout << "error: ";
 	for(int a = 0; a < numberOfIterations; a++) {
+		std::vector<double> qValues(actions.size());
 		for(int b = 0; b < actions.size(); b++) {
 			lastState = oldStates[b];
 			lastAction = actions[b];
-			applyReinforcementToLastAction(immediateRewards[b], newStates[b], elapsedTimes[b]);
+
+			std::vector<Wire> controlWires = getWires(lastState);
+			double scalingFactor = scalingFactorToMillis;
+
+			/// Update Q value according to adaptive learning
+			double oldRewardForLastAction = getRewardUsingInterpolator(controlWires, lastAction);
+			//double feedback = ((1/scalingFactor)*( reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)) )) + (1 - 1/scalingFactor) * highestReward(lastState);
+			double feedback = immediateRewards[b] + devaluationFactor * highestReward(newStates[b]);
+			double newRewardForLastAction = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
+
+			qValues[b] = newRewardForLastAction;
+
+			Wire correctWire = { lastAction, newRewardForLastAction };
+			std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
+
+			backprop.trainOnData(network, { lastState }, { getRawOutput(newContolWires) });
+			controlWires = getWires(lastState);
 		}
 
 		std::vector<double> bestAction = chooseBestAction(oldStates[oldStates.size() - 1]);
-		std::cout << "a: " << a << "; top: " << std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) << "\n";
+		///std::cout << "a: " << a << "; top: " << std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) << "\n";
+
+		double totalError = 0;
+		for (int b = 0; b < actions.size(); b++) {
+			totalError += pow(qValues[b] - getRewardUsingInterpolator(getWires(oldStates[b]), actions[b]), 2);
+		}
+		std::cout << totalError << " ";
 	}
+	std::cout << "\n";
 }
 
 void WireFitQLearn::storeWireFitQLearn(std::string filename) {
