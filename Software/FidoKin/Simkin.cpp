@@ -6,6 +6,8 @@ Simkin::Simkin(int robWidth, int robHeight) {
     sf::RectangleShape rect(sf::Vector2f(robWidth,robHeight));
     rect.setFillColor(sf::Color(0, 0, 0));
     rect.setPosition(500,400);
+    rect.setOrigin(robWidth/2,robHeight/2);
+    rect.setRotation(90);
     
     int mLeft, mRight;
     mLeft = mRight = 0;
@@ -33,20 +35,21 @@ Simkin::Simkin(int robWidth, int robHeight) {
         
         window.draw(rect);
         window.display();
+        sf::sleep(sf::milliseconds(25));
     } return EXIT_SUCCESS;
 }
 
 // creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
 void Simkin::mToMove(sf::RectangleShape& rect,int motLeft,int motRight,double speed) {
-    double mLeft = (((double)motLeft)/200)*speed;
-    double mRight = (((double)motRight)/200)*speed;
+    double mLeft = -(((double)motLeft)/200)*speed;
+    double mRight = -(((double)motRight)/200)*speed;
     
     double xprime,yprime,rprime;
     double length = rect.getSize().x;
-    double time = clock.restart().asMilliseconds();
+    double time = moveClock.restart().asMilliseconds();
     
-    double rX = rect.getPosition().x + length/2;
-    double rY = rect.getPosition().y + rect.getSize().y/2;
+    double rX = rect.getPosition().x;
+    double rY = rect.getPosition().y;
     double rTheta = rect.getRotation()*0.0174532925;
 
     if (mLeft == mRight) {
@@ -56,18 +59,17 @@ void Simkin::mToMove(sf::RectangleShape& rect,int motLeft,int motRight,double sp
     } else {
         double radius = (length/2)*(mLeft+mRight)/(mRight-mLeft);
         double omega = (mRight-mLeft)/length;
+
         double iccX = rX - radius*sin(rTheta);
         double iccY = rY + radius*cos(rTheta);
 
-        xprime = cos(omega*time)*(rX-iccX)+
-                -sin(omega*time)*(rY-iccY)+
-                 iccX;
-        yprime = sin(omega*time)*(rX-iccX)+
-                 cos(omega*time)*(rY-iccY)+
-                 iccY;
+        xprime = iccX + (cos(omega*time)*(rX-iccX)+
+                -sin(omega*time)*(rY-iccY));
+        yprime = iccY + (sin(omega*time)*(rX-iccX)+
+                 cos(omega*time)*(rY-iccY));
         rprime = rTheta + omega*time;
     }
     
-    rect.setPosition(xprime-50,yprime-50);
-    rect.rotate(rprime*57.2957795);
+    rect.setPosition(xprime,yprime);
+    rect.setRotation(rprime*57.2957795);
 }

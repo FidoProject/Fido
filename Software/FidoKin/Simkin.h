@@ -21,8 +21,8 @@ private:
      */
     void mToMove(sf::RectangleShape& rect,int mLeft,int mRight,double speed);
     
-    sf::Clock clock;
+    sf::Clock moveClock;
 };
 
 
-#endif /* defined(__FidoKin__Simkin__) */
+#endif
