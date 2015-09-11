@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <math.h>
 
 class Simkin {
 public:
@@ -12,7 +13,8 @@ public:
 private:
     void updateLoop();
     
-    int mLeft, mRight;
+    // Convert motor values to rotation and translation
+    void mToMove(sf::RectangleShape& rect,int mLeft,int mRight);
 };
 
 
