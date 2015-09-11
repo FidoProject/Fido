@@ -29,7 +29,7 @@ Simkin::Simkin(int robWidth, int robHeight) {
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mRight=-100;
         else mRight = 0;
         
-        mToMove(rect,mLeft,mRight);
+        mToMove(rect,mLeft,mRight,1);
         
         window.draw(rect);
         window.display();
@@ -37,9 +37,9 @@ Simkin::Simkin(int robWidth, int robHeight) {
 }
 
 // creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
-void Simkin::mToMove(sf::RectangleShape& rect,int motLeft,int motRight) {
-    double mLeft = ((double)motLeft)/200;
-    double mRight = ((double)motRight)/200;
+void Simkin::mToMove(sf::RectangleShape& rect,int motLeft,int motRight,double speed) {
+    double mLeft = (((double)motLeft)/200)*speed;
+    double mRight = (((double)motRight)/200)*speed;
     
     double xprime,yprime,rprime;
     double length = rect.getSize().x;
