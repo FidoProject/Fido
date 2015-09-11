@@ -78,6 +78,9 @@ public:
      * components of TDVect are xyz rad/s.
      */
     TDVect getGyro();
+
+	// Gets the current temperature value from 0-100
+	int getTemperature();
     
 private:
 	void updateLoop();
@@ -105,7 +108,7 @@ private:
     struct Piezo { int volume, frequency; };
     
     // Sensor values, all ranging from 0-100.
-    int irVal, micVal, batVal, visVal;
+	int irVal, micVal, batVal, visVal, tempVal;
     
     bool click;
     int cx,cy;

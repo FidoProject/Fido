@@ -14,6 +14,7 @@ void Simlink::updateLoop() {
 	irVal = motors.motorOne = motors.motorTwo = 0;
 	micVal = 30;
 	visVal = batVal = 50;
+	tempVal = 50;
 
 	sf::Texture texture;
 	if (!texture.loadFromFile("C:/Users/Michael/Documents/Fido/Software/FidoSim/background.png")) {
@@ -98,6 +99,9 @@ void Simlink::updateWindow() {
 			visVal = (880 - cy) / 2.6;
 		else if (cx > 1110 && cx < 1180 && cy > 620 && cy < 880)
 			micVal = (880 - cy) / 2.6;
+		else if (cx > 476 && cx < 720 && cy > 800 && cy < 880)
+			tempVal = (cx - 476) / 2.6;
+
 	}
 
 	sf::CircleShape ledCirc(40);
@@ -142,6 +146,12 @@ void Simlink::updateWindow() {
 	window.draw(slide);
 	slide.setPosition(1126, 858 - micVal*2.5);
 	window.draw(slide);
+
+	sf::RectangleShape horizontalSlide(sf::Vector2f(30, 40));
+	horizontalSlide.setFillColor(sf::Color(0, 0, 0));
+
+	horizontalSlide.setPosition(476 + tempVal*2.5, 835);
+	window.draw(horizontalSlide);
 
 	sf::RectangleShape mOneLine(sf::Vector2f(20, abs(motors.motorOne) * 2));
 	sf::RectangleShape mTwoLine(sf::Vector2f(20, abs(motors.motorTwo) * 2));
@@ -224,4 +234,8 @@ void Simlink::chirp(int volume, int frequency) {
     int endTime = 200 + clock();
     while(clock() != endTime);
     piezo.volume = 0;
+}
+
+int Simlink::getTemperature() {
+	return tempVal;
 }
