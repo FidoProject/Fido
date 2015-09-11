@@ -46,9 +46,11 @@ After meeting with Dr. Weitz D period today, we've decided to apply to the Sieme
 - Simulator kinematics
 
 #####Paper
+- Siemens paperwork
+- Abstract
 - Introduction
 - Software section
-	- Writing about neural netowkrs
+	- Writing about neural networks
 	- Backpropogation
 	- Q-learn implementation
 	- Modifications to q-learn
