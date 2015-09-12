@@ -99,8 +99,8 @@ void Simlink::updateWindow() {
 			visVal = (880 - cy) / 2.6;
 		else if (cx > 1110 && cx < 1180 && cy > 620 && cy < 880)
 			micVal = (880 - cy) / 2.6;
-		else if (cx > 476 && cx < 720 && cy > 800 && cy < 880)
-			tempVal = (cx - 476) / 2.6;
+		else if (cx > 500 && cx < 700 && cy > 800 && cy < 880)
+			tempVal = (cx - 500) / 2;
 
 	}
 
@@ -150,7 +150,7 @@ void Simlink::updateWindow() {
 	sf::RectangleShape horizontalSlide(sf::Vector2f(30, 40));
 	horizontalSlide.setFillColor(sf::Color(0, 0, 0));
 
-	horizontalSlide.setPosition(476 + tempVal*2.5, 835);
+	horizontalSlide.setPosition(500 + tempVal*2, 835);
 	window.draw(horizontalSlide);
 
 	sf::RectangleShape mOneLine(sf::Vector2f(20, abs(motors.motorOne) * 2));
