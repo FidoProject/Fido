@@ -10,7 +10,7 @@ sf::RectangleShape(sf::Vector2f(width,height)) {
 }
 
 // creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
-void Robby::go(int motLeft,int motRight) {
+TDVect Robby::go(int motLeft,int motRight) {
     double mLeft = -(((double)motLeft)/200)*speed;
     double mRight = -(((double)motRight)/200)*speed;
     
@@ -21,14 +21,14 @@ void Robby::go(int motLeft,int motRight) {
     double rX = getPosition().x;
     double rY = getPosition().y;
     double rTheta = getRotation()*0.0174532925;
-    
+    double omega = (mRight-mLeft)/length;
+
     if (mLeft == mRight) {
         xprime = rX + mLeft*cos(rTheta)*time;
         yprime = rY + mLeft*sin(rTheta)*time;
         rprime = rTheta;
     } else {
         double radius = (length/2)*(mLeft+mRight)/(mRight-mLeft);
-        double omega = (mRight-mLeft)/length;
         
         double iccX = rX - radius*sin(rTheta);
         double iccY = rY + radius*cos(rTheta);
@@ -42,4 +42,9 @@ void Robby::go(int motLeft,int motRight) {
     
     setPosition(xprime,yprime);
     setRotation(rprime*57.2957795);
+    
+    TDVect gyroVect;
+    gyroVect.xComp = omega*10000;
+    gyroVect.yComp = gyroVect.zComp = 0;
+    return gyroVect;
 }
