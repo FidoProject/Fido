@@ -25,7 +25,53 @@ This can surely be fixed with modifications to the present Wire Fit Q-learn impl
 Right now, a reward is tagged to the last action taken, which is used to update the Q-value (or long term reward) of the action. Stocastic gradient descent is used to modify the control points outputed by the neural network, so that the control points produce an interpolator function that accurately outputs the Q-value of the last action.
 
 I have a few ideas as to how to modify WireFitQLearn for the better:
- * The loss function for the gradient descent of control points should look to minimize error in matching reward-action pairs from the past. However, reward-action pairs should be devalued based on how old they are by giving them a greater acceptable error value (the distance the output of the function produced from gradient descent is from the correct reward value) as they age. This is neccessary so that the WireFitQLearn object can "forget."
- * Past reward-action value pairs can be stored, and the control points can be fitted to all historical data points individually every reward iteration. The historical data points will be in order starting from oldest to newest.
- * Past reward-action value pairs can be stored, and the control points can be fitted to all historical data point individually every reward iteration. The historical data points will be shuffled each reward iteration.
- * Past reward-action value pairs can be stored, and the control points can be fitted on historical data points a set number of times. Data points will be chosen using a boltzman soft-max distribution that favors newer data points.
+
+- The loss function for the gradient descent of control points should look to minimize error in matching reward-action pairs from the past. However, reward-action pairs should be devalued based on how old they are by giving them a greater acceptable error value (the distance the output of the function produced from gradient descent is from the correct reward value) as they age. This is neccessary so that the WireFitQLearn object can "forget."
+
+- Past reward-action value pairs can be stored, and the control points can be fitted to all historical data points individually every reward iteration. The historical data points will be in order starting from oldest to newest.
+
+- Past reward-action value pairs can be stored, and the control points can be fitted to all historical data point individually every reward iteration. The historical data points will be shuffled each reward iteration.
+
+- Past reward-action value pairs can be stored, and the control points can be fitted on historical data points a set number of times. Data points will be chosen using a boltzman soft-max distribution that favors newer data points.
+
+### September 11, 2015
+#### Joshua Gruenstein
+
+After meeting with Dr. Weitz D period today, we've decided to apply to the Siemens competition as well.   This modifies our existing plan, as we now have to complete a submittable project in 11 days (the deadline for paper submission is September 22, and you cannot resubmit your paper with more research).  Firstly, we're switching to a fully simulator based paper and upgrading our simulator to be more full featured.  Rather than simply displaying motor value vectors, we will simulate a dynamic model of the robot in 2D space using differential drive kinematics.   We also need to finish adapting our wirefit q-learning method to use less data points.  Below is a todo list for the next 11 days:
+
+#####Technical
+- Make model learn with less datapoints
+	- Modify wirefit q-learn and check effectiveness
+	- Switch to adaptive critic if need be
+- Simulator kinematics
+
+#####Paper
+- Siemens paperwork
+- Abstract
+- Introduction
+- Software section
+	- Writing about neural networks
+	- Backpropogation
+	- Q-learn implementation
+	- Modifications to q-learn
+- Simulator
+ 	- Layout
+ 	- Kinematics 
+ 	- Inputs
+- Test data
+	- How many iterations for learning tasks
+- Conclusion
+	- Summary
+	- Talk about future (hardware/pcb)  
+- Figures
+	- ~~MLP (feedforward neural network)~~
+	- ~~Activation functions~~
+	- Back propogation of error
+	- Diagram of interpolator with NN
+	- Some representation of modifications to Q-learn
+	- Test results graph (bar graph + table)
+	- Psuedocode/algorithms
+		- Q-learn
+		- Wirefit q-learn
+		- Modified wirefit q-learn
+ 
