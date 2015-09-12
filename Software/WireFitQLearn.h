@@ -65,11 +65,35 @@ namespace net {
          * and trains the network to output the new control wires.
          */
         void applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis);
+
+		// Resets the neural network of object so that a random set of control points are outputted
+		void resetControlPoints();
 		
 
-		void trainOnHistoricalData(const std::vector< std::vector<double> > &actions, 
+		void repeated(const std::vector< std::vector<double> > &actions, 
 			const std::vector< std::vector<double> > &oldStates, 
 			const std::vector<double> &immediateRewards, 
+			const std::vector< std::vector<double> > &newStates,
+			const std::vector<double> &elapsedTimes,
+			int numberOfIterations);
+
+		void random(const std::vector< std::vector<double> > &actions,
+			const std::vector< std::vector<double> > &oldStates,
+			const std::vector<double> &immediateRewards,
+			const std::vector< std::vector<double> > &newStates,
+			const std::vector<double> &elapsedTimes,
+			int numberOfIterations);
+
+		void boltzman(const std::vector< std::vector<double> > &actions,
+			const std::vector< std::vector<double> > &oldStates,
+			const std::vector<double> &immediateRewards,
+			const std::vector< std::vector<double> > &newStates,
+			const std::vector<double> &elapsedTimes,
+			int numberOfIterations);
+
+		void fit(const std::vector< std::vector<double> > &actions,
+			const std::vector< std::vector<double> > &oldStates,
+			const std::vector<double> &immediateRewards,
 			const std::vector< std::vector<double> > &newStates,
 			const std::vector<double> &elapsedTimes,
 			int numberOfIterations);
@@ -93,6 +117,14 @@ namespace net {
         
         // Gets the action with the highest reward value for a given state
         std::vector<double> bestAction(std::vector<double> state);
+
+		// Gets the q value of an action
+		double getQValue(double reward, 
+			const std::vector<double> &oldState, 
+			const std::vector<double> &newState, 
+			const std::vector<double> &action, 
+			double elapsedTimeMillis, 
+			const std::vector<Wire> &controlWires);
         
         // Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires  
         std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);

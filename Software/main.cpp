@@ -17,6 +17,6 @@ int main() {
     srand(time(NULL));
     
 	WireFitRobot robot;
-	robot.run(100);
+	robot.test(50, 300);
 
 } 

@@ -15,6 +15,12 @@ class Simlink {
 public:
     // Initializes the simulator
     Simlink();
+
+	// Deinitializes the simulator
+	~Simlink();
+
+	// Closes the window of the simulator
+	void closeWindow();
     
     /* Set the RGB LED to a certain color and intensity.
      *
@@ -116,6 +122,8 @@ private:
     Motors motors;
     IMU imu;
     Piezo piezo;
+	
+	bool keepWindowOpen;
 };
 
 #endif /* defined(__FidoSim__Simlink__) */

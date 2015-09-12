@@ -2,7 +2,19 @@
 
 
 Simlink::Simlink() {
+	keepWindowOpen = true;
 	windowThread = std::thread(&Simlink::updateLoop, this);
+}
+
+Simlink::~Simlink() {
+	closeWindow();
+}
+
+void Simlink::closeWindow() {
+	if(windowThread.joinable() == true) {
+		keepWindowOpen = false;
+		windowThread.join();
+	}
 }
 
 void Simlink::updateLoop() {
@@ -34,7 +46,9 @@ void Simlink::updateLoop() {
 
 	click = false;
 
-	while (true) updateWindow();
+	while (keepWindowOpen == true) updateWindow();
+
+	window.close();
 }
 
 void Simlink::updateWindow() {

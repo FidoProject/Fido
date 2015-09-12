@@ -24,6 +24,8 @@ public:
 
 	// Runs the robot for a specified number of time steps
 	void run(int numberOfTimeSteps);
+
+	void test(int numberOfTimes, int maxIterations);
 private:
 	// Waits until the user says they have finished inputting the state
 	void waitForStateInput();

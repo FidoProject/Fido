@@ -42,7 +42,7 @@ void WireFitRobot::run(int numberOfTimeSteps) {
 		newStates.push_back(oldStates[oldStates.size() - 1]);
 		elapsedTimes.push_back(1);
 
-		learner.trainOnHistoricalData(actions, oldStates, immediateRewards, newStates, elapsedTimes, 4);
+		learner.random(actions, oldStates, immediateRewards, newStates, elapsedTimes, 4);
 
 		std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
 		if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
@@ -62,6 +62,74 @@ void WireFitRobot::run(int numberOfTimeSteps) {
 		performAction(action);
 		learner.applyReinforcementToLastAction(getReward(), state, 1);
 	}
+}
+
+void WireFitRobot::test(int numberOfTimes, int maxIterations) {
+	std::vector< std::vector<double> > actions;
+	std::vector< std::vector<double> > oldStates;
+	std::vector<double> immediateRewards;
+	std::vector< std::vector<double> > newStates;
+	std::vector<double> elapsedTimes;
+
+	std::vector<int> results(numberOfTimes);
+
+	simulator.closeWindow();
+
+	for (int a = 0; a < numberOfTimes; a++) {
+		oldStates.clear();
+		actions.clear();
+		immediateRewards.clear();
+		newStates.clear();
+		elapsedTimes.clear();
+
+		int iter, timesInARow = 0;
+		for (iter = 0; iter < maxIterations; iter++) {
+			oldStates.push_back(getState());
+			actions.push_back(learner.chooseRandomAction(oldStates[oldStates.size() - 1], { 0, 0 }, { 1, 1 }));
+			performAction(actions[actions.size() - 1]);
+			immediateRewards.push_back(std::max(1 - abs(actions[actions.size() - 1][0] - actions[actions.size() - 1][1]), 0.0));
+			newStates.push_back(oldStates[oldStates.size() - 1]);
+			elapsedTimes.push_back(1);
+
+			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
+			//learner.random(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
+
+			if (iter > 1) {
+				actions.erase(actions.begin());
+				oldStates.erase(oldStates.begin());
+				immediateRewards.erase(immediateRewards.begin());
+				newStates.erase(newStates.begin());
+				elapsedTimes.erase(elapsedTimes.begin());
+			}
+
+			std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
+			if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
+				timesInARow++;
+				if (timesInARow == 5) break;
+			}
+			else {
+				timesInARow = 0;
+			}
+		}
+		std::cout << "a: " << a << "; iter: " << iter << "\n";
+		results[a] = iter;
+
+		learner.resetControlPoints();
+	}
+
+	double mean = 0, median = 0, mode = 0;
+	std::vector<int> histogram(maxIterations + 1);
+
+	for (int a = 0; a < numberOfTimes; a++) {
+		mean += (double) results[a] / (double) numberOfTimes;
+		if (a == numberOfTimes / 2) median = results[a];
+		histogram[results[a]]++;
+	}
+
+	int maxInstances = 0;
+	for (int a = 0; a < maxIterations; a++) if (histogram[a] > maxInstances) maxInstances = histogram[a], mode = a;
+
+	std::cout << "Mean: " << mean << "; median: " << median << ";  mode: " << mode << "\n";
 }
 
 void WireFitRobot::waitForStateInput() {

@@ -30,7 +30,7 @@ namespace net {
 		 */
 		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, std::string activationFunctionName);
 		
-		// Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.
+		// Make a neural network with random weights but the same number of inputs, outputs, hidden layers, and neurons per hidden layer as the network given.
 		NeuralNet(NeuralNet* otherNet);
         
         // Restores a neural network from the specified file
