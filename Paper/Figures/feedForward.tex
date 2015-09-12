@@ -20,6 +20,9 @@
     \foreach \source in {1,...,5}
         \path (H-\source) edge (O);
 
+    %\draw[->] (5,-2.9) -- (5,-5) -- (1,-5) -- (1,-4.5);
+    %\node (1,-4.5) {Error back propagation}
+
     \node[annot,above of=H-1, node distance=1cm] (hl) {Hidden layer};
     \node[annot,left of=hl] {Input layer};
     \node[annot,right of=hl] {Output layer};

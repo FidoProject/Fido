@@ -7,25 +7,45 @@
 #include <iostream>
 #include <math.h>
 
+struct TDVect {
+    // Components of 3d vector
+    double xComp,yComp,zComp;
+    
+    // Get 3d vector as radius, xy angle, and z angle.
+    void getRTP(double& r,double& xy,double& z) {
+        r = sqrt(pow(xComp,2)+pow(yComp,2)+pow(zComp,2));
+        xy = atan2(xComp,yComp);
+        z = acos(zComp/r);
+    }
+};
+
 class Robby : public sf::RectangleShape {
 public:
-    /* Construct a robot of a certain width,
-     * height, and speed.
-     *
-     * Speed is ~0-1 range double.
+    /* Construct a robot of a certain width
+     * and height.
      */
-    Robby(int width, int height, double _speed);
+    Robby(int width, int height);
     
-    /* Set robot motor values.
+    /* Set robot motor values and return a
+     * gyro sensor double.
      *
      * Should be called every loop.
+     * Speed is ~1.
      */
-    void go(int motLeft, int motRight);
+    double go(int motLeft, int motRight, double speed);
+    
+    /* In testing method which simulates
+     * acceleration in the kinematic model.
+     *
+     * Usage is identical to Robby::go().
+     */
+    double goAccel(int motLeft, int motRight);
 protected:
     // Clock for velocity->distance aproximation.
     sf::Clock moveClock;
     
-    double speed;
+    int m1Last,m2Last,m1Target,m2Target;
+    double lastSpeed,speed;
 };
 
 #endif

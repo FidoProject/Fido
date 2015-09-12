@@ -8,18 +8,6 @@
 #include <math.h>
 #include "Robby.h"
 
-struct TDVect {
-    // Components of 3d vector
-    double xComp,yComp,zComp;
-    
-    // Get 3d vector as radius, xy angle, and z angle.
-    void getRTP(double& r,double& xy,double& z) {
-        r = sqrt(pow(xComp,2)+pow(yComp,2)+pow(zComp,2));
-        xy = atan2(xComp,yComp);
-        z = acos(zComp/r);
-    }
-};
-
 class Emitter : public sf::CircleShape {
 public:
     // Construct an emitter of a given strength (~50)

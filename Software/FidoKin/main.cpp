@@ -18,7 +18,7 @@
 int main(int argc, char const** argv) {
     sf::RenderWindow window(sf::VideoMode(1000, 800), "Fido Kinematic Simulator");
     
-    Robby robot(100,80,1);
+    Robby robot(100,80);
     Emitter emitter(50);
     
     int mLeft, mRight;
@@ -46,7 +46,7 @@ int main(int argc, char const** argv) {
         TDVect emitSense = emitter.sense(robot);
         std::cout << "x:" << emitSense.xComp << ",y:" << emitSense.yComp << "\n";
         
-        robot.go(mLeft,mRight);
+        robot.goAccel(mLeft,mRight);
     
         window.clear(sf::Color(255,255,255));
         window.draw(robot);
