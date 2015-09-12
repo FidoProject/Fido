@@ -1,16 +1,16 @@
 #include "Robby.h"
 
-Robby::Robby(int width, int height, double _speed):
+Robby::Robby(int width, int height):
 sf::RectangleShape(sf::Vector2f(width,height)) {
     setFillColor(sf::Color(0, 0, 0));
     setPosition(500,400);
     setOrigin(width/2,height/2);
     setRotation(90);
-    speed = _speed;
+    lastSpeed=0;
 }
 
 // creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
-TDVect Robby::go(int motLeft,int motRight) {
+TDVect Robby::go(int motLeft,int motRight,double speed) {
     double mLeft = -(((double)motLeft)/200)*speed;
     double mRight = -(((double)motRight)/200)*speed;
     
@@ -46,5 +46,18 @@ TDVect Robby::go(int motLeft,int motRight) {
     TDVect gyroVect;
     gyroVect.xComp = omega*10000;
     gyroVect.yComp = gyroVect.zComp = 0;
+    
+    m1Last = motLeft;
+    m2Last = motRight;
+    
     return gyroVect;
+}
+
+TDVect Robby::goAccel(int motLeft,int motRight) {
+    double aChange = abs(m1Last-motLeft)+abs(m2Last-motRight);
+    lastSpeed -= .001*aChange;
+    if (motLeft==0 && motRight==0) lastSpeed=0;
+    if (lastSpeed < 1) lastSpeed += .05;
+    go(motLeft,motRight,lastSpeed);
+    m1Last = motLeft; m2Last = motRight;
 }
