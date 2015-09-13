@@ -15,6 +15,10 @@ namespace net {
 
         // The partial derivative of the interpolator function with respect to the value of one term of the action vector of a control wire
         double actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires);
+
+        std::string getName() {
+        	return "wirefit";
+        }
 	private:
 		// Computes a weighted distance between the action vector of the wire and an action vector
         double distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward);

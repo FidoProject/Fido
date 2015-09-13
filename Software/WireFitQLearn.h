@@ -22,6 +22,7 @@ namespace net {
     class WireFitQLearn {
     public:
         NeuralNet *network;
+        Interpolator *interpolator;
         Backpropagation backprop;
         int numberOfWires, actionDimensions;
         double learningRate, devaluationFactor;
@@ -35,7 +36,7 @@ namespace net {
          * a learning rate (dictates how fast the reward values for actions change), a devaluation factor (dictates how much future rewards are valued),
          * the dimensions of the action vectors, and how many wires the network outputs.
          */
-        WireFitQLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_);
+        WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator_, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_);
         
         // Initializes a WireFitQLearn object from a file
         WireFitQLearn(std::string filename);
