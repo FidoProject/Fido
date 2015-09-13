@@ -194,8 +194,15 @@ void WireFitQLearn::boltzman(const std::vector< std::vector<double> > &actions,
 	const std::vector< std::vector<double> > &oldStates,
 	const std::vector<double> &immediateRewards,
 	const std::vector< std::vector<double> > &newStates,
-	const std::vector<double> &elapsedTimes,
-	int numberOfIterations) {
+	const std::vector<double> &elapsedTimes) {
+
+	/// Compute Q Values
+	std::vector<double> qValues(actions.size());
+	for (int a = 0; a < actions.size(); a++) {
+		std::vector<Wire> controlWires = getWires(oldStates[a]);
+		qValues[a] = getQValue(immediateRewards[a], oldStates[a], newStates[a], actions[a], elapsedTimes[a], controlWires);
+	}
+
 
 }
 
@@ -205,6 +212,8 @@ void WireFitQLearn::fit(const std::vector< std::vector<double> > &actions,
 	const std::vector< std::vector<double> > &newStates,
 	const std::vector<double> &elapsedTimes,
 	int numberOfIterations) {
+
+
 
 }
 
