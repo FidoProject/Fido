@@ -20,7 +20,7 @@ A WireFitRobot class was created that connected our of Wire Fit Q Learn implemen
 
 This can surely be fixed with modifications to the present Wire Fit Q-learn implementation. 
 
-### September 9, 2015
+### September 10, 2015
 #### Michael Truell
 Right now, a reward is tagged to the last action taken, which is used to update the Q-value (or long term reward) of the action. Stocastic gradient descent is used to modify the control points outputed by the neural network, so that the control points produce an interpolator function that accurately outputs the Q-value of the last action.
 
@@ -88,3 +88,14 @@ I then realized that as the robot is accelerating and turning, the simulated mov
 As I've completed the technical side of my part of the work for the fast approaching Siemens deadline, I'm currently working on writing about and making figures for our Neural Network implementation in our paper.
 
 #### Michael Truell
+
+These past 2 days I have set about implementing the four modifications to our Wire fitted Q-learning implementation as specified in my last journal entry. I began by trying to implement my first idea of fitting the control points to many data points simultaneously. However, this modification would become useless on any task with a large state space, such as following the origin of an electromagnetic emmiter, and as such, is of no use to us.
+
+I then implemented my other three proposed modifications and tested them by recording the number of reward iterations it took for Fido to learn to drive straight when each was in place. Learning to drive straight was defined as having a difference in 5 between Fido's motor values for 5 reward iterations in a row. However, none of the three seemed to improve the performance of our implementation at learning to drive straight. Convergence still took 160 reward iterations on average.
+
+The problem lay with the task that I chose for Fido to learn. The graph that represents that task [ ex. ([right motor, left motor], reward values) ] is linear. Our implementation was using a least squares interpolator, which cannot form a straight line. As such, I though that we would need to have a way to pick and chose the interpolator that we would want WireFitQLearn (our contiuous state-action space implementation of Q-Learning) to use for each task. I wrote a base class for all interpolators called Interpolator that defined virtual functions that needed to be implemented by each interpolator. I then detached the least squares interpolator functionality from WireFitQLearn and made it into its own class called LSInterpolator.
+
+My next tasks are:
+
+- Implementing a linear interpolator and measuring its performance at learning to drive straight
+- Testing my modifications to WireFitQLearn while using a suitable interpolator

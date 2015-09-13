@@ -5,8 +5,8 @@ using namespace net;
 /// PUBLIC METHODS
 
 WireFitInterpolator::WireFitInterpolator() {
-	smoothingFactor = 0.1;
-	e = 0.001;
+	smoothingFactor = 0;
+	e = 0.01;
 }
 
 WireFitInterpolator::WireFitInterpolator(double smoothingFactor_, double e_) {
