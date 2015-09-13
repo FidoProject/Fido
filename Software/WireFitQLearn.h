@@ -7,14 +7,11 @@
 
 #include "NeuralNet.h"
 #include "BackPropagation.h"
+#include "Interpolator.h"
 
 #include <SFML/Graphics.hpp>
 
 namespace net {
-    struct Wire {
-        std::vector<double> action;
-        double reward;
-    };
 
     /* An implementation of QLearn that works with continous state action spaces, 
      * as detailed in http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf.
