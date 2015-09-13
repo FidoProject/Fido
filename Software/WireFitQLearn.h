@@ -27,7 +27,6 @@ namespace net {
         int numberOfWires, actionDimensions;
         double learningRate, devaluationFactor;
         double scalingFactorToMillis;
-        double smoothingFactor, e;
         double controlPointsGDErrorTarget, controlPointsGDLearningRate;
         int controlPointsGDMaxIterations;
         std::vector<double> lastState, lastAction;
@@ -125,24 +124,6 @@ namespace net {
         
         // Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires  
         std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);
-        
-        // The partial derivative of the wire interpolator function with respect to the reward of a control wire
-        double rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires);
-
-        // The partial derivative of the wire interpolator function with respect to the value of one term of the action vector of a control wire
-        double actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires);
-        
-        // Uses the wire interpolator function to compute the reward of an action vector given a set of control wires
-        double getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action);
-        
-        // Computes a weighted distance between the action vector of the wire and an action vector
-        double distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward);
-
-        // Computes the weighted sum of all the distances between the wires and the action vector 
-        double weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward);
-
-        // Used in the wire interpolator function and its derivatives for normalization
-        double normalize(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward);
     };
 };
 

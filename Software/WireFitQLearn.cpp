@@ -13,8 +13,7 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator
     network = modelNetwork;
     
     scalingFactorToMillis = 1;
-    smoothingFactor = 0;
-    e = 0.01;
+
     controlPointsGDErrorTarget = 0.001;
     controlPointsGDLearningRate = 0.1;
     controlPointsGDMaxIterations = 10000;
@@ -30,7 +29,7 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
     if(input.is_open()) {
         input >> learningRate >> devaluationFactor;
         input >> actionDimensions >> numberOfWires;
-        input >> scalingFactorToMillis >> smoothingFactor >> e >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations;
+        input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations;
         
         lastAction = std::vector<double>(actionDimensions);
         for(int a = 0; a < actionDimensions; a++) {
@@ -41,6 +40,7 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
         }
         
         backprop = Backpropagation(input);
+		interpolator = Interpolator::getAnyInterpolatorFromFile(&input);
         network = new NeuralNet(input);
         
         input.close();
@@ -222,12 +222,13 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
     if(output.is_open()) {
         output << learningRate << " " << devaluationFactor << "\n";
         output << actionDimensions << " " << numberOfWires << "\n";
-        output << scalingFactorToMillis << " " << smoothingFactor << " " << e << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << "\n";
+        output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << "\n";
         
         for(int a = 0; a < lastAction.size(); a++) output << lastAction[a] << " ";
         output << "\n";
         
         backprop.storeBackpropagationWithStream(output);
+		interpolator->storeInterpolator(&output);
         network->storeNetWithStream(output);
         
         output.close();
@@ -305,7 +306,7 @@ double WireFitQLearn::getQValue(double reward,
 	double scalingFactor = scalingFactorToMillis * elapsedTimeMillis;
 
 	/// Update Q value according to adaptive learning
-	double oldRewardForLastAction = getRewardUsingInterpolator(controlWires, action);
+	double oldRewardForLastAction = interpolator->getReward(controlWires, action);
 	//double feedback = ((1/scalingFactor)*( reward + (pow(devaluationFactor, scalingFactor)*highestReward(newState)) )) + (1 - 1/scalingFactor) * highestReward(oldState);
 	double feedback = reward + devaluationFactor * highestReward(newState);
 	double qValue = ((1 - learningRate) * oldRewardForLastAction) + (learningRate*feedback);
@@ -319,71 +320,20 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
     
     do {
         for(int a = 0; a < controlWires.size(); a++) {
-            double deltaReward = -2 * (-getRewardUsingInterpolator(controlWires, correctWire.action) + correctWire.reward)*rewardDerivative(correctWire.action, controlWires[a], controlWires);
+            double deltaReward = -2 * (-interpolator->getReward(controlWires, correctWire.action) + correctWire.reward)*interpolator->rewardDerivative(correctWire.action, controlWires[a], controlWires);
             controlWires[a].reward = controlWires[a].reward - controlPointsGDLearningRate*deltaReward;
             for(int b = 0; b < controlWires[a].action.size(); b++) {
-				double deltaActionTerm = -2 * (-getRewardUsingInterpolator(controlWires, correctWire.action) + correctWire.reward)*actionTermDerivative(correctWire.action[b], controlWires[a].action[b], correctWire.action, controlWires[a], controlWires);
+				double deltaActionTerm = -2 * (-interpolator->getReward(controlWires, correctWire.action) + correctWire.reward)*interpolator->actionTermDerivative(correctWire.action[b], controlWires[a].action[b], correctWire.action, controlWires[a], controlWires);
                 controlWires[a].action[b] = controlWires[a].action[b] - controlPointsGDLearningRate*deltaActionTerm;
             }
         }
         
-        error = pow(correctWire.reward - getRewardUsingInterpolator(controlWires, correctWire.action), 2);
+        error = pow(correctWire.reward - interpolator->getReward(controlWires, correctWire.action), 2);
         iterations++;
     } while(error > controlPointsGDErrorTarget && iterations < controlPointsGDMaxIterations);
 
     return controlWires;
 
-}
-
-double WireFitQLearn::rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires) {
-    double maxReward = -9999999;
-    for(auto a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxReward) maxReward = a->reward;
-    
-    double norm = normalize(controlWires, action, maxReward), wsum = weightedSum(controlWires, action, maxReward), distance = distanceBetweenWireAndAction(wire, action, maxReward);
-    
-    return (norm * (distance + wire.reward*smoothingFactor) - wsum*smoothingFactor) / pow(norm * distance, 2);
-}
-
-double WireFitQLearn::actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires) {
-    double maxReward = -9999999;
-    for(auto a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxReward) maxReward = a->reward;
-    
-    double norm = normalize(controlWires, action, maxReward), wsum = weightedSum(controlWires, action, maxReward), distance = distanceBetweenWireAndAction(wire, action, maxReward);
-    
-    return ((wsum - norm*wire.reward) * 2 * (wireActionTerm - actionTerm)) / pow(norm*distance, 2);
-}
-
-double WireFitQLearn::getRewardUsingInterpolator(const std::vector<Wire> &controlWires, const std::vector<double> &action) {
-	double maxReward = -9999999;
-	for (auto a = controlWires.begin(); a != controlWires.end(); ++a) if (a->reward > maxReward) maxReward = a->reward;
-
-    return weightedSum(controlWires, action, maxReward) / normalize(controlWires, action, maxReward);
-}
-
-double WireFitQLearn::distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward) {
-    double euclideanNorm = 0;
-    for(int a = 0; a < action.size(); a++) euclideanNorm += pow(action[a] - wire.action[a], 2);
-    euclideanNorm = sqrt(euclideanNorm);
-
-    return pow(euclideanNorm, 2) + smoothingFactor*(maxReward - wire.reward) + e;
-}
-
-double WireFitQLearn::weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward) {
-    double answer = 0;
-    for(auto a = wires.begin(); a != wires.end(); ++a) {
-        answer += a->reward / distanceBetweenWireAndAction(*a, action, maxReward);
-    }
-    
-    return answer;
-}
-
-double WireFitQLearn::normalize(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward) {
-    double answer = 0;
-    for(auto a = wires.begin(); a != wires.end(); ++a) {
-        answer += 1.0 / distanceBetweenWireAndAction(*a, action, maxReward);
-    }
-    
-    return answer;
 }
 
 
@@ -403,7 +353,7 @@ void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWi
 	double maxReward = -99999999, minReward = 99999999;
 	std::vector<double> rewards(numberOfDots);
 	for (int a = 0; a < numberOfDots; a++) {
-		rewards[a] = getRewardUsingInterpolator(controlWires, { a*increment });
+		rewards[a] = interpolator->getReward(controlWires, { a*increment });
 		if (rewards[a] > maxReward) maxReward = rewards[a];
 		if (rewards[a] < minReward) minReward = rewards[a];
 	}
@@ -430,7 +380,7 @@ void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWi
 	}
 
 	shape.setFillColor(sf::Color::Magenta);
-	shape.setPosition((targetAction - minAction) * xScale + 30, (maxReward - getRewardUsingInterpolator(controlWires, { targetAction }))*yScale + 30);
+	shape.setPosition((targetAction - minAction) * xScale + 30, (maxReward - interpolator->getReward(controlWires, { targetAction }))*yScale + 30);
 	window.draw(shape);
 
 	window.display();
