@@ -3,7 +3,7 @@
 
 #include <string>
 
-class Interpolator;
+#include "Interpolator.h"
 
 namespace net {
 
@@ -17,8 +17,8 @@ namespace net {
 		// Initializes a WireFitInterpolator with custom parameters
 		WireFitInterpolator(double smoothingFactor_, double e_);
 
-		// Initializes a WireFitInterpolator using the information from a file. Throws an exception if the interpolator stored in the file is not a WireFitInterpolator
-		void initFromFile(std::ifstream *in);
+		// Initializes a WireFitInterpolator using the information from a file. Returns false if the interpolator stored in the file is not a WireFitInterpolator
+		bool initFromFile(std::ifstream *in);
 
 		// Stores the interpolator object in a file
 		void storeInterpolator(std::ofstream *out);

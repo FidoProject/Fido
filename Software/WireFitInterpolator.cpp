@@ -1,7 +1,5 @@
 #include "WireFitInterpolator.h"
 
-#include "Interpolator.h"
-
 using namespace net;
 
 /// PUBLIC METHODS
@@ -16,22 +14,23 @@ WireFitInterpolator::WireFitInterpolator(double smoothingFactor_, double e_) {
 	e = e_;
 }
 
-void WireFitInterpolator::initFromFile(std::ifstream *in) {
+bool WireFitInterpolator::initFromFile(std::ifstream *in) {
 	std::string name;
 	if (!(*in >> name)) {
 		std::cout << "Interpolator could not read ifstrem\n";
-		exit(EXIT_FAILURE);
-	}
-
-	if (name != "WireFit") {
 		throw 1;
 	}
 
+	if (name != "WireFit") {
+		return false;
+	}
+
 	*in >> smoothingFactor >> e;
+	return true;
 }
 
 void WireFitInterpolator::storeInterpolator(std::ofstream *out) {
-	out << " WireFit " << smoothingFactor << " " << e << " ";
+	*out << " WireFit " << smoothingFactor << " " << e << " ";
 }
 
 double WireFitInterpolator::getReward(const std::vector<Wire> &controlWires, const std::vector<double> &action) {
