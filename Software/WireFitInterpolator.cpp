@@ -1,5 +1,39 @@
 #include "WireFitInterpolator.h"
 
+#include "Interpolator.h"
+
+using namespace net;
+
+/// PUBLIC METHODS
+
+WireFitInterpolator::WireFitInterpolator() {
+	smoothingFactor = 0.1;
+	e = 0.001;
+}
+
+WireFitInterpolator::WireFitInterpolator(double smoothingFactor_, double e_) {
+	smoothingFactor = smoothingFactor_;
+	e = e_;
+}
+
+void WireFitInterpolator::initFromFile(std::ifstream *in) {
+	std::string name;
+	if (!(*in >> name)) {
+		std::cout << "Interpolator could not read ifstrem\n";
+		exit(EXIT_FAILURE);
+	}
+
+	if (name != "WireFit") {
+		throw 1;
+	}
+
+	*in >> smoothingFactor >> e;
+}
+
+void WireFitInterpolator::storeInterpolator(std::ofstream *out) {
+	out << " WireFit " << smoothingFactor << " " << e << " ";
+}
+
 double WireFitInterpolator::getReward(const std::vector<Wire> &controlWires, const std::vector<double> &action) {
 	double maxReward = -9999999;
 	for (auto a = controlWires.begin(); a != controlWires.end(); ++a) if (a->reward > maxReward) maxReward = a->reward;
@@ -24,6 +58,8 @@ double WireFitInterpolator::actionTermDerivative(double actionTerm, double wireA
     
     return ((wsum - norm*wire.reward) * 2 * (wireActionTerm - actionTerm)) / pow(norm*distance, 2);
 }
+
+/// PRIVATE METHODS
 
 double WireFitInterpolator::distanceBetweenWireAndAction(const Wire &wire, const std::vector<double> &action, double maxReward) {
 	double euclideanNorm = 0;
