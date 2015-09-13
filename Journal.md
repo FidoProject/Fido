@@ -43,7 +43,7 @@ After meeting with Dr. Weitz D period today, we've decided to apply to the Sieme
 - Make model learn with less datapoints
 	- Modify wirefit q-learn and check effectiveness
 	- Switch to adaptive critic if need be
-- Simulator kinematics
+- ~~Simulator kinematics~~
 
 #####Paper
 - Siemens paperwork
@@ -86,3 +86,5 @@ In addition to the sensors already implemented in our simulator, we also wanted 
 I then realized that as the robot is accelerating and turning, the simulated movement should affect accelerometer and gyroscopic sensor readings.  I attempted to implement acceleration to the kinematic model for numerous hours (it's quite complex, considering each motor accelerates independently and differently according to load, position, etc).  However after realizing that we would probably compensate for this regardless in a real robot, I decided to abandon this venture.
 
 As I've completed the technical side of my part of the work for the fast approaching Siemens deadline, I'm currently working on writing about and making figures for our Neural Network implementation in our paper.
+
+#### Michael Truell
