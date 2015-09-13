@@ -1,20 +1,13 @@
 \documentclass[a4paper,12pt]{article}
-\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[nottoc]{tocbibind}
-\usepackage[final]{pdfpages}
-\usepackage{amsmath,apacite}
-\usepackage{graphicx,wrapfig}
-\usepackage{tikz,pgfplots}
-\usepackage{algorithm,algpseudocode}
-\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows,calc,3d}
+\usepackage{amsmath,apacite,graphicx,wrapfig}
+\usepackage{tikz,pgfplots,algorithm,algpseudocode}
+\usepackage[justification=centering]{caption}
+\usetikzlibrary{matrix,arrows,calc,3d,fit}
 
 \title{Paper Title}
-
-\author{Joshua Gruenstein and Michael Truell}
-
-\date{\today}
 
 \begin{document}
 \maketitle
@@ -25,10 +18,17 @@
 
 \input{Sections/Introduction.tex}
 
-\input{Sections/Software.tex}
+\section{Neural Network Background}
 
-%\section{Physical Design}
-%\input{Sections/Hardware.tex}
+\input{Sections/Background.tex}
+
+\section{Learning Implementation}
+
+\input{Sections/QLearn.tex}
+
+\section{Simulation}
+
+\input{Sections/Simulation.tex}
 
 \section{Results}
 
@@ -37,13 +37,6 @@
 \section{Conclusion}
 
 \input{Sections/Conclusion.tex}
-
-\pagebreak
-\section{Appendix}
-
-\subsection{Electrical Schematic}
-
-\includepdf[pages=-]{Figures/FidoBark.pdf}
 
 \nocite{wirefit,qlearn,backprop,practical,tutorial,kinematics}
 

@@ -74,4 +74,15 @@ After meeting with Dr. Weitz D period today, we've decided to apply to the Sieme
 		- Q-learn
 		- Wirefit q-learn
 		- Modified wirefit q-learn
- 
+
+### September 13, 2015
+#### Joshua Gruenstein
+
+On Friday I began the implementation of the kinematic simulation of a differential drive robot.  As reference I used UC Berkeley class notes compiled from "Dudek and Jenkin, Computational Principles of Mobile
+Robotics."  I later had to use the book itself and found a copy on Google books.  The implementation was fairly simple,  and can simply be described as such: determine the circle around which's circumference the robot will turn, find the center of the robot on said circumference, rotate around the origin by the curve at that point around circle, make the linear transformation, than transform back to standard space.  A robot class was created with a go(motorLeft,motorRight) method to input motor values in a traditional fashion.  While I initially encountered issues regarding the origin of the robot shape, after compensating for this I was able to get the kinematic model to respond beautifully.  I hooked it up to some keys on my keyboard and could drive it around like a slightly less exciting racing game.
+
+In addition to the sensors already implemented in our simulator, we also wanted the ability to train a robot to follow an object, such as an emitter of electromagnetic radiation on some part of the spectrum.  However doing a "hot and cold" type adjustment on sliders seemed impractical, and instead the ability to graphically add a radio beacon to the simulation environment was added instead.  Right clicking added/moved the beacon, giving off some sort of field.  As this is a simulation the type of radiation is purposefully vague, but readings from the robot are separated into an X component and a Y component and follow an inverse square law.  The hope is to use this tool to train Fido to follow this beacon by associating larger sensor readings with positive reinforcement.
+
+I then realized that as the robot is accelerating and turning, the simulated movement should affect accelerometer and gyroscopic sensor readings.  I attempted to implement acceleration to the kinematic model for numerous hours (it's quite complex, considering each motor accelerates independently and differently according to load, position, etc).  However after realizing that we would probably compensate for this regardless in a real robot, I decided to abandon this venture.
+
+As I've completed the technical side of my part of the work for the fast approaching Siemens deadline, I'm currently working on writing about and making figures for our Neural Network implementation in our paper.
