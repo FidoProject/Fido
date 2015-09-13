@@ -1,4 +1,5 @@
 #include "WireFitQLearn.h"
+#include <random>
 
 using namespace net;
 
@@ -158,18 +159,33 @@ void WireFitQLearn::shuffle(const std::vector< std::vector<double> > &actions,
 		std::cout << "Varying lengths of historical data vectors\n";
 		throw 1;
 	}
-	std::vector<int> indicies(actions.size());
-	for (int a = 0; a < actions.size(); a++) indicies[a] = a;
+
+	/// Struct for holding a historical data point
+	struct DataPoint {
+		std::vector<double> action;
+		std::vector<double> oldState;
+		double immediateReward;
+		std::vector<double> newState;
+		double elapsedTime;
+	};
+
+	/// Organize the vectors given as parameters into a vector of DataPoints so the data can be shuffled
+	std::vector<DataPoint> dataPoints(actions.size());
+	for (int a = 0; a < actions.size(); a++) dataPoints[a] = {actions[a], oldStates[a], immediateRewards[a], newStates[a], elapsedTimes[a]};
 
 	for (int a = 0; a < numberOfIterations; a++) {
-		for (int b = 0; b < actions.size(); b++) {
-			std::vector<Wire> controlWires = getWires(oldStates[b]);
-			double qValue = getQValue(immediateRewards[b], oldStates[b], newStates[b], actions[b], elapsedTimes[b], controlWires);
+		// obtain a time-based seed:
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::shuffle(dataPoints.begin(), dataPoints.end(), std::default_random_engine(seed));
 
-			Wire correctWire = { actions[b], qValue };
+		for (int b = 0; b < dataPoints.size(); b++) {
+			std::vector<Wire> controlWires = getWires(dataPoints[b].oldState);
+			double qValue = getQValue(dataPoints[b].immediateReward, dataPoints[b].oldState, dataPoints[b].newState, dataPoints[b].action, dataPoints[b].elapsedTime, controlWires);
+
+			Wire correctWire = { dataPoints[b].action, qValue };
 			std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
-			backprop.trainOnData(network, { oldStates[b] }, { getRawOutput(newContolWires) });
+			backprop.trainOnData(network, { dataPoints[b].oldState }, { getRawOutput(newContolWires) });
 		}
 	}
 }
