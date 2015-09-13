@@ -10563,9 +10563,6 @@ Proven layout and schematic for triple color LED in SMD package - common anode. 
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="U$4" library="invensense" deviceset="MPU-9150" device=".QFN"/>
 <part name="SUPPLY3" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="R5" library="rcl" deviceset="R-US_" device="R0603" value="10k"/>
-<part name="R6" library="rcl" deviceset="R-US_" device="R0603" value="10k"/>
-<part name="SUPPLY4" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
 <part name="C2" library="rcl" deviceset="C-EU" device="C0603" value="2.2nF"/>
 <part name="C3" library="rcl" deviceset="C-EU" device="C0603" value="0.1uF"/>
@@ -10659,17 +10656,6 @@ Proven layout and schematic for triple color LED in SMD package - common anode. 
 <instance part="GND5" gate="1" x="76.2" y="210.82" rot="R90"/>
 <instance part="U$4" gate="G$1" x="48.26" y="101.6"/>
 <instance part="SUPPLY3" gate="G$1" x="35.56" y="114.3"/>
-<instance part="R5" gate="G$1" x="66.04" y="101.6" smashed="yes" rot="R270">
-<attribute name="NAME" x="67.5386" y="105.41" size="1.778" layer="95" rot="R270"/>
-<attribute name="VALUE" x="67.818" y="100.33" size="1.778" layer="96" rot="R270"/>
-</instance>
-<instance part="R6" gate="G$1" x="60.96" y="101.6" smashed="yes" rot="R270">
-<attribute name="NAME" x="62.4586" y="105.41" size="1.778" layer="95" rot="R270"/>
-<attribute name="VALUE" x="62.738" y="100.33" size="1.778" layer="96" rot="R270"/>
-</instance>
-<instance part="SUPPLY4" gate="G$1" x="63.5" y="93.98" smashed="yes" rot="R180">
-<attribute name="VALUE" x="69.596" y="92.964" size="1.778" layer="96" rot="R180"/>
-</instance>
 <instance part="GND8" gate="1" x="60.96" y="81.28"/>
 <instance part="C2" gate="G$1" x="27.94" y="101.6"/>
 <instance part="C3" gate="G$1" x="33.02" y="88.9"/>
@@ -10760,14 +10746,6 @@ Proven layout and schematic for triple color LED in SMD package - common anode. 
 <wire x1="35.56" y1="111.76" x2="35.56" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="38.1" y1="111.76" x2="35.56" y2="111.76" width="0.1524" layer="91"/>
 <junction x="35.56" y="111.76"/>
-</segment>
-<segment>
-<pinref part="R6" gate="G$1" pin="2"/>
-<pinref part="SUPPLY4" gate="G$1" pin="3.3V"/>
-<wire x1="60.96" y1="96.52" x2="63.5" y2="93.98" width="0.1524" layer="91"/>
-<pinref part="R5" gate="G$1" pin="2"/>
-<wire x1="66.04" y1="96.52" x2="63.5" y2="93.98" width="0.1524" layer="91"/>
-<junction x="63.5" y="93.98"/>
 </segment>
 <segment>
 <pinref part="R13" gate="G$1" pin="2"/>
@@ -11127,11 +11105,7 @@ Proven layout and schematic for triple color LED in SMD package - common anode. 
 <net name="SDA" class="0">
 <segment>
 <pinref part="U$4" gate="G$1" pin="SDA"/>
-<wire x1="58.42" y1="111.76" x2="60.96" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="R6" gate="G$1" pin="1"/>
-<wire x1="60.96" y1="111.76" x2="68.58" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="106.68" x2="60.96" y2="111.76" width="0.1524" layer="91"/>
-<junction x="60.96" y="111.76"/>
+<wire x1="58.42" y1="111.76" x2="68.58" y2="111.76" width="0.1524" layer="91"/>
 <label x="68.58" y="111.76" size="1.016" layer="95" xref="yes"/>
 </segment>
 <segment>
@@ -11152,11 +11126,7 @@ Proven layout and schematic for triple color LED in SMD package - common anode. 
 <net name="SCL" class="0">
 <segment>
 <pinref part="U$4" gate="G$1" pin="SCL"/>
-<wire x1="58.42" y1="109.22" x2="66.04" y2="109.22" width="0.1524" layer="91"/>
-<pinref part="R5" gate="G$1" pin="1"/>
-<wire x1="66.04" y1="106.68" x2="66.04" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="109.22" x2="68.58" y2="109.22" width="0.1524" layer="91"/>
-<junction x="66.04" y="109.22"/>
+<wire x1="58.42" y1="109.22" x2="68.58" y2="109.22" width="0.1524" layer="91"/>
 <label x="68.58" y="109.22" size="1.016" layer="95" xref="yes"/>
 </segment>
 <segment>
