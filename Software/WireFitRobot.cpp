@@ -1,5 +1,7 @@
 #include "WireFitRobot.h"
 
+#include "WireFitInterpolator.h"
+
 WireFitRobot::WireFitRobot() {
 	int stateSize = 1;
 	int numberOfHiddenLayers = 4;
@@ -17,7 +19,7 @@ WireFitRobot::WireFitRobot() {
 
 	double learningRate = 0.95;
 	double devaluationFactor = 0.4;
-	learner = net::WireFitQLearn(network, backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
+	learner = net::WireFitQLearn(network, new net::WireFitInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
 	boltzmanExplorationLevel = 8;
 	explorationDevaluationPerTimestep = 0.6;
@@ -90,9 +92,8 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			newStates.push_back(oldStates[oldStates.size() - 1]);
 			elapsedTimes.push_back(1);
 
-			//learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
-			learner.shuffle(actions, oldStates, immediateRewards, newStates, elapsedTimes, 10);
-			std::cout << "i: " << iter << "\n";
+			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
+			//learner.shuffle(actions, oldStates, immediateRewards, newStates, elapsedTimes, 10);
 			if (iter > 10) {
 				actions.erase(actions.begin());
 				oldStates.erase(oldStates.begin());

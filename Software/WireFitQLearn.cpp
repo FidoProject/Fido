@@ -3,7 +3,7 @@
 
 using namespace net;
 
-WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_) {
+WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator_, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_) {
     backprop = backprop_;
     learningRate = learningRate_;
     devaluationFactor = devaluationFactor_;
@@ -11,6 +11,7 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator
     numberOfWires = numberOfWires_;
     lastAction = std::vector<double>(actionDimensions);
     network = modelNetwork;
+	interpolator = interpolator_;
     
     scalingFactorToMillis = 1;
 
