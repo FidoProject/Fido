@@ -77,7 +77,7 @@ namespace net {
 			const std::vector<double> &elapsedTimes,
 			int numberOfIterations);
 
-		void random(const std::vector< std::vector<double> > &actions,
+		void shuffle(const std::vector< std::vector<double> > &actions,
 			const std::vector< std::vector<double> > &oldStates,
 			const std::vector<double> &immediateRewards,
 			const std::vector< std::vector<double> > &newStates,

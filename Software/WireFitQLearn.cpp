@@ -122,7 +122,7 @@ void WireFitQLearn::resetControlPoints() {
 	network = temp;
 }
 
-void WireFitQLearn::random(const std::vector< std::vector<double> > &actions,
+void WireFitQLearn::repeated(const std::vector< std::vector<double> > &actions,
 	const std::vector< std::vector<double> > &oldStates,
 	const std::vector<double> &immediateRewards,
 	const std::vector< std::vector<double> > &newStates,
@@ -136,24 +136,42 @@ void WireFitQLearn::random(const std::vector< std::vector<double> > &actions,
 
 	for(int a = 0; a < numberOfIterations; a++) {
 		for(int b = 0; b < actions.size(); b++) {
-			std::vector<Wire> controlWires = getWires(lastState);
-			double newRewardForLastAction = getQValue(immediateRewards[b], oldStates[b], newStates[b], actions[b], elapsedTimes[b], controlWires);
+			std::vector<Wire> controlWires = getWires(oldStates[b]);
+			double qValue = getQValue(immediateRewards[b], oldStates[b], newStates[b], actions[b], elapsedTimes[b], controlWires);
 
-			Wire correctWire = { lastAction, newRewardForLastAction };
+			Wire correctWire = { actions[b], qValue };
 			std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
-			backprop.trainOnData(network, { lastState }, { getRawOutput(newContolWires) });
+			backprop.trainOnData(network, { oldStates[b] }, { getRawOutput(newContolWires) });
 		}
 	}
 }
 
-void WireFitQLearn::repeated(const std::vector< std::vector<double> > &actions,
-	const std::vector< std::vector<double> > &oldStates,
-	const std::vector<double> &immediateRewards,
-	const std::vector< std::vector<double> > &newStates,
-	const std::vector<double> &elapsedTimes,
-	int numberOfIterations) {
+void WireFitQLearn::shuffle(const std::vector< std::vector<double> > &actions,
+		const std::vector< std::vector<double> > &oldStates,
+		const std::vector<double> &immediateRewards,
+		const std::vector< std::vector<double> > &newStates,
+		const std::vector<double> &elapsedTimes,
+		int numberOfIterations) {
+	
+	if (actions.size() != oldStates.size() || oldStates.size() != immediateRewards.size() || immediateRewards.size() != newStates.size() || newStates.size() != elapsedTimes.size()) {
+		std::cout << "Varying lengths of historical data vectors\n";
+		throw 1;
+	}
+	std::vector<int> indicies(actions.size());
+	for (int a = 0; a < actions.size(); a++) indicies[a] = a;
 
+	for (int a = 0; a < numberOfIterations; a++) {
+		for (int b = 0; b < actions.size(); b++) {
+			std::vector<Wire> controlWires = getWires(oldStates[b]);
+			double qValue = getQValue(immediateRewards[b], oldStates[b], newStates[b], actions[b], elapsedTimes[b], controlWires);
+
+			Wire correctWire = { actions[b], qValue };
+			std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
+
+			backprop.trainOnData(network, { oldStates[b] }, { getRawOutput(newContolWires) });
+		}
+	}
 }
 
 void WireFitQLearn::boltzman(const std::vector< std::vector<double> > &actions,
@@ -192,66 +210,6 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
         std::cout << "Could not store wirefitqlearn in file\n";
         throw 1;
     }
-}
-
-void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction) {
-	double xSize = 1000, ySize = 800;
-	sf::RenderWindow window(sf::VideoMode(xSize, ySize), "Interpolator Graph");
-	double numberOfDots = 100;
-
-	for(int a = 0; a < controlWires.size(); a++) {
-		if(controlWires[a].action[0] > maxAction) maxAction = controlWires[a].action[0];
-		if(controlWires[a].action[0] < minAction) minAction = controlWires[a].action[0];
-	}
-	
-	double increment = (maxAction - minAction) / numberOfDots;
-	double xScale = (xSize - 60) / (maxAction - minAction);
-
-	double maxReward = -99999999, minReward = 99999999;
-	std::vector<double> rewards(numberOfDots);
-	for(int a = 0; a < numberOfDots; a++) {
-		rewards[a] = getRewardUsingInterpolator(controlWires, {a*increment});
-		if(rewards[a] > maxReward) maxReward = rewards[a];
-		if(rewards[a] < minReward) minReward = rewards[a];
-	}
-	for(int a = 0; a < controlWires.size(); a++) {
-		if(controlWires[a].reward > maxReward) maxReward = controlWires[a].reward;
-		if(controlWires[a].reward < minReward) minReward = controlWires[a].reward;
-	}
-
-	double yScale = (ySize - 60) / (maxReward - minReward);
-
-	window.clear();
-	sf::CircleShape shape(5.f);
-	shape.setFillColor(sf::Color::Green);
-	for(int a = 0; a < numberOfDots; a++) {
-		shape.setPosition((a*increment - minAction) * xScale + 30, (maxReward - rewards[a])*yScale + 30);
-		window.draw(shape);
-	}
-
-	shape.setRadius(10.f);
-	shape.setFillColor(sf::Color::Red);
-	for(int a = 0; a < controlWires.size(); a++) {
-		shape.setPosition((controlWires[a].action[0] - minAction) * xScale + 30, (maxReward - controlWires[a].reward)*yScale + 30);
-		window.draw(shape);
-	}
-
-	shape.setFillColor(sf::Color::Magenta);
-	shape.setPosition((targetAction - minAction) * xScale + 30, (maxReward - getRewardUsingInterpolator(controlWires, {targetAction}))*yScale + 30);
-	window.draw(shape);
-
-	window.display();
-	
-
-	while(window.isOpen())
-	{
-		sf::Event event;
-		while(window.pollEvent(event))
-		{
-			if(event.type == sf::Event::Closed)
-				window.close();
-		}
-	}
 }
 
 std::vector<Wire> WireFitQLearn::getWires(std::vector<double> state) {
@@ -401,4 +359,65 @@ double WireFitQLearn::normalize(const std::vector<Wire> &wires, const std::vecto
     }
     
     return answer;
+}
+
+
+void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction) {
+	double xSize = 1000, ySize = 800;
+	sf::RenderWindow window(sf::VideoMode(xSize, ySize), "Interpolator Graph");
+	double numberOfDots = 100;
+
+	for (int a = 0; a < controlWires.size(); a++) {
+		if (controlWires[a].action[0] > maxAction) maxAction = controlWires[a].action[0];
+		if (controlWires[a].action[0] < minAction) minAction = controlWires[a].action[0];
+	}
+
+	double increment = (maxAction - minAction) / numberOfDots;
+	double xScale = (xSize - 60) / (maxAction - minAction);
+
+	double maxReward = -99999999, minReward = 99999999;
+	std::vector<double> rewards(numberOfDots);
+	for (int a = 0; a < numberOfDots; a++) {
+		rewards[a] = getRewardUsingInterpolator(controlWires, { a*increment });
+		if (rewards[a] > maxReward) maxReward = rewards[a];
+		if (rewards[a] < minReward) minReward = rewards[a];
+	}
+	for (int a = 0; a < controlWires.size(); a++) {
+		if (controlWires[a].reward > maxReward) maxReward = controlWires[a].reward;
+		if (controlWires[a].reward < minReward) minReward = controlWires[a].reward;
+	}
+
+	double yScale = (ySize - 60) / (maxReward - minReward);
+
+	window.clear();
+	sf::CircleShape shape(5.f);
+	shape.setFillColor(sf::Color::Green);
+	for (int a = 0; a < numberOfDots; a++) {
+		shape.setPosition((a*increment - minAction) * xScale + 30, (maxReward - rewards[a])*yScale + 30);
+		window.draw(shape);
+	}
+
+	shape.setRadius(10.f);
+	shape.setFillColor(sf::Color::Red);
+	for (int a = 0; a < controlWires.size(); a++) {
+		shape.setPosition((controlWires[a].action[0] - minAction) * xScale + 30, (maxReward - controlWires[a].reward)*yScale + 30);
+		window.draw(shape);
+	}
+
+	shape.setFillColor(sf::Color::Magenta);
+	shape.setPosition((targetAction - minAction) * xScale + 30, (maxReward - getRewardUsingInterpolator(controlWires, { targetAction }))*yScale + 30);
+	window.draw(shape);
+
+	window.display();
+
+
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+	}
 }

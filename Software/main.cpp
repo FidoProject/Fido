@@ -19,4 +19,8 @@ int main() {
 	WireFitRobot robot;
 	robot.test(50, 300);
 
+	while (true) {
+
+	}
+
 } 

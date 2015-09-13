@@ -7,7 +7,6 @@ WireFitRobot::WireFitRobot() {
 	int numberOfActions = 5, actionDimensions = 2;
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
-	//network->setHiddenActivationFunction("simpleLinear");
 
 	double backpropLearningRate = 0.1;
 	double backpropMomentumTerm = 0;
@@ -15,7 +14,6 @@ WireFitRobot::WireFitRobot() {
 	int backpropMaximumIterations = 10000;
 	net::Backpropagation backprop = net::Backpropagation(backpropLearningRate, backpropMomentumTerm, backpropTargetError, backpropMaximumIterations);
 	backprop.setDerivedOutputActivationFunction("simpleLinear");
-	//backprop.setDerivedHiddenActivationFunction("simpleLinear");
 
 	double learningRate = 0.95;
 	double devaluationFactor = 0.4;
@@ -42,7 +40,7 @@ void WireFitRobot::run(int numberOfTimeSteps) {
 		newStates.push_back(oldStates[oldStates.size() - 1]);
 		elapsedTimes.push_back(1);
 
-		learner.random(actions, oldStates, immediateRewards, newStates, elapsedTimes, 4);
+		learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 4);
 
 		std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
 		if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
@@ -75,6 +73,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 	simulator.closeWindow();
 
+	/// Test a modification to the WireFitQlearn algorithm
 	for (int a = 0; a < numberOfTimes; a++) {
 		oldStates.clear();
 		actions.clear();
@@ -91,10 +90,10 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			newStates.push_back(oldStates[oldStates.size() - 1]);
 			elapsedTimes.push_back(1);
 
-			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
-			//learner.random(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
+			//learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
+			learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
 
-			if (iter > 1) {
+			if (iter > 0) {
 				actions.erase(actions.begin());
 				oldStates.erase(oldStates.begin());
 				immediateRewards.erase(immediateRewards.begin());
@@ -117,24 +116,39 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		learner.resetControlPoints();
 	}
 
+	/// Compute stats about the modifications performance
 	double mean = 0, median = 0, mode = 0;
 	std::vector<int> histogram(maxIterations + 1);
 
 	for (int a = 0; a < numberOfTimes; a++) {
 		mean += (double) results[a] / (double) numberOfTimes;
-		if (a == numberOfTimes / 2) median = results[a];
 		histogram[results[a]]++;
 	}
 
-	int maxInstances = 0;
-	for (int a = 0; a < maxIterations; a++) if (histogram[a] > maxInstances) maxInstances = histogram[a], mode = a;
+	int iterator = 0;
+	for (int a = 0; a <= maxIterations; a++) {
+		iterator += histogram[a];
+		if (iterator > numberOfTimes / 2) {
+			median = a;
+			break;
+		}
+	}
 
-	std::cout << "Mean: " << mean << "; median: " << median << ";  mode: " << mode << "\n";
+	int maxInstances = 0;
+	for (int a = 0; a <= maxIterations; a++) {
+		if (histogram[a] > maxInstances) {
+			maxInstances = histogram[a], mode = a;
+		}
+		iterator += histogram[a];
+	}
+
+	std::cout << "Mean: " << mean << "; median: " << median << ";  mode: " << mode << ";  maxinstances: " << maxInstances << "\n";
 }
 
 void WireFitRobot::waitForStateInput() {
 	std::string response;
 	std::cout << "Respond when you finish inputing the state\n";
+
 	std::cin >> response;
 }
 
