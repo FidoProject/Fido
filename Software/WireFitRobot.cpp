@@ -92,9 +92,10 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			newStates.push_back(oldStates[oldStates.size() - 1]);
 			elapsedTimes.push_back(1);
 
-			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
-			//learner.shuffle(actions, oldStates, immediateRewards, newStates, elapsedTimes, 10);
-			if (iter > 10) {
+			//learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
+			learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
+
+			if (iter > 0) {
 				actions.erase(actions.begin());
 				oldStates.erase(oldStates.begin());
 				immediateRewards.erase(immediateRewards.begin());
@@ -103,7 +104,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			}
 
 			std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
-			if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.90) {
+			if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
 				timesInARow++;
 				if (timesInARow == 5) break;
 			}
@@ -122,7 +123,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	std::vector<int> histogram(maxIterations + 1);
 
 	for (int a = 0; a < numberOfTimes; a++) {
-		mean += (double) results[a] / (double) numberOfTimes;
+		mean += (double)results[a] / (double)numberOfTimes;
 		histogram[results[a]]++;
 	}
 
