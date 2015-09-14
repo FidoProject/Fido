@@ -1,6 +1,9 @@
 #ifndef __FidoSim__Simlink__
 #define __FidoSim__Simlink__
 
+#include "FidoKin/Robby.h"
+#include "FidoKin/Emitter.h"
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
@@ -10,6 +13,19 @@
 #include <ctime>
 #include <thread>
 #include <functional>
+
+// Three dimensional vector (used with IMU).
+struct TDVect {
+	// Components of 3d vector
+	double xComp, yComp, zComp;
+
+	// Get 3d vector as radius, xy angle, and z angle.
+	void getRTP(double& r, double& xy, double& z) {
+		r = sqrt(pow(xComp, 2) + pow(yComp, 2) + pow(zComp, 2));
+		xy = atan2(xComp, yComp);
+		z = acos(zComp / r);
+	}
+};
 
 class Simlink {
 public:
@@ -58,19 +74,6 @@ public:
     // Get the current battery level (0-100).
     int getBattery();
     
-    // Three dimensional vector (used with IMU).
-    struct TDVect {
-        // Components of 3d vector
-        double xComp,yComp,zComp;
-        
-        // Get 3d vector as radius, xy angle, and z angle.
-        void getRTP(double& r,double& xy,double& z) {
-            r = sqrt(pow(xComp,2)+pow(yComp,2)+pow(zComp,2));
-            xy = atan2(xComp,yComp);
-            z = acos(zComp/r);
-        }
-    };
-    
     // Returns the 3D acceleration vector in m/s^2.
     TDVect getAccel();
     
@@ -89,18 +92,19 @@ public:
 	int getTemperature();
     
 private:
-	void updateLoop();
+	void mainWindowHandler();
 
-	// Updates the simulator window
-	void updateWindow();
+	// Updates the main simulator window
+	void updateMainWindow();
 
     // Main window.
-    sf::RenderWindow window;
+    sf::RenderWindow mainWindow;
 
+	// Background of main window
 	sf::Sprite background;
 
 	// Window thread
-	std::thread windowThread;
+	std::thread mainWindowThread;
     
     // LED with values r, g, and b from 0-255.
     struct LED { int r,g,b; };
@@ -122,8 +126,22 @@ private:
     Motors motors;
     IMU imu;
     Piezo piezo;
+
+	void kinematicWindowHandler();
+
+	// Updates the main simulator window
+	void updateKinematicWindow();
+
+	// Kinematic window.
+	sf::RenderWindow kinematicWindow;
+
+	std::thread kinematicWindowThread;
+
+	Robby robot;
+	Emitter emitter;
+
 	
-	bool keepWindowOpen;
+	bool keepWindowsOpen;
 };
 
 #endif /* defined(__FidoSim__Simlink__) */

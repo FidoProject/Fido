@@ -1,5 +1,7 @@
 #include "Robby.h"
 
+#include "Simlink.h"
+
 Robby::Robby(int width, int height):
 sf::RectangleShape(sf::Vector2f(width,height)) {
     setFillColor(sf::Color(0, 0, 0));

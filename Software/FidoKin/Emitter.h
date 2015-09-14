@@ -6,7 +6,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
-#include "Robby.h"
+
+struct TDVect;
+class Robby;
 
 class Emitter : public sf::CircleShape {
 public:

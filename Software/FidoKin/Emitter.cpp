@@ -1,5 +1,8 @@
 #include "Emitter.h"
 
+#include "Robby.h"
+#include "Simlink.h"
+
 Emitter::Emitter(int str):sf::CircleShape(0) {
     setFillColor(sf::Color(255,0,0));
     setOutlineThickness(-3);

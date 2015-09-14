@@ -1,9 +1,21 @@
 #include "Simlink.h"
 
 
-Simlink::Simlink() {
-	keepWindowOpen = true;
-	windowThread = std::thread(&Simlink::updateLoop, this);
+Simlink::Simlink() : emitter(50), robot(100, 80) {
+	irVal = motors.motorOne = motors.motorTwo = 0;
+	micVal = 30;
+	visVal = batVal = 50;
+	tempVal = 50;
+
+	imu.accel.xComp = imu.accel.yComp = imu.accel.zComp = 0;
+	imu.compass.xComp = imu.compass.yComp = imu.compass.zComp = 0;
+	imu.gyro.xComp = imu.gyro.yComp = imu.gyro.zComp = 0;
+
+	click = false;
+	keepWindowsOpen = true;
+
+	mainWindowThread = std::thread(&Simlink::mainWindowHandler, this);
+	kinematicWindowThread = std::thread(&Simlink::kinematicWindowHandler, this);
 }
 
 Simlink::~Simlink() {
@@ -11,22 +23,18 @@ Simlink::~Simlink() {
 }
 
 void Simlink::closeWindow() {
-	if(windowThread.joinable() == true) {
-		keepWindowOpen = false;
-		windowThread.join();
-	}
+	keepWindowsOpen = false;
+
+	if(mainWindowThread.joinable() == true) mainWindowThread.join();
+	if(kinematicWindowThread.joinable() == true) kinematicWindowThread.join();
 }
 
-void Simlink::updateLoop() {
+void Simlink::mainWindowHandler() {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
 
-	window.create(sf::VideoMode(1200, 900), "Fido Simulator", sf::Style::Default, settings);
-
-	irVal = motors.motorOne = motors.motorTwo = 0;
-	micVal = 30;
-	visVal = batVal = 50;
-	tempVal = 50;
+	// Initialize main window
+	mainWindow.create(sf::VideoMode(1200, 900), "Fido Simulator", sf::Style::Default, settings);
 
 	sf::Texture texture;
 	if (!texture.loadFromFile("C:/Users/Michael/Documents/Fido/Software/FidoSim/background.png")) {
@@ -44,24 +52,24 @@ void Simlink::updateLoop() {
 		exit(EXIT_FAILURE);
 	} music.play();
 
-	click = false;
+	while (keepWindowsOpen == true) {
+		updateMainWindow();
+	}
 
-	while (keepWindowOpen == true) updateWindow();
-
-	window.close();
+	mainWindow.close();
 }
 
-void Simlink::updateWindow() {
-	if (window.isOpen() == false) return;
+void Simlink::updateMainWindow() {
+	if (mainWindow.isOpen() == false) return;
 
 	sf::Event event;
-	while (window.pollEvent(event)) {
+	while (mainWindow.pollEvent(event)) {
 		switch (event.type) {
 		case sf::Event::Closed:
-			window.close();
+			mainWindow.close();
 			break;
 		case sf::Event::KeyPressed:
-			if (event.key.code == sf::Keyboard::Escape) window.close();
+			if (event.key.code == sf::Keyboard::Escape) mainWindow.close();
 			break;
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == sf::Mouse::Left) {
@@ -127,45 +135,45 @@ void Simlink::updateWindow() {
 	sf::RectangleShape slide(sf::Vector2f(40, 30));
 	slide.setFillColor(sf::Color(0, 0, 0));
 
-	window.clear();
-	window.draw(background);
-	window.draw(ledCirc);
+	mainWindow.clear();
+	mainWindow.draw(background);
+	mainWindow.draw(ledCirc);
 
 	slide.setPosition(170, 133 - imu.accel.xComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(280, 133 - imu.accel.yComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(390, 133 - imu.accel.zComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 
 	slide.setPosition(168, 435 - imu.gyro.xComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(278, 435 - imu.gyro.yComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(388, 435 - imu.gyro.zComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 
 	slide.setPosition(166, 732 - imu.compass.xComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(276, 732 - imu.compass.yComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(386, 732 - imu.compass.zComp*1.2);
-	window.draw(slide);
+	mainWindow.draw(slide);
 
 	slide.setPosition(797, 858 - batVal*2.5);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(906, 858 - irVal*2.5);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(1016, 858 - visVal*2.5);
-	window.draw(slide);
+	mainWindow.draw(slide);
 	slide.setPosition(1126, 858 - micVal*2.5);
-	window.draw(slide);
+	mainWindow.draw(slide);
 
 	sf::RectangleShape horizontalSlide(sf::Vector2f(30, 40));
 	horizontalSlide.setFillColor(sf::Color(0, 0, 0));
 
 	horizontalSlide.setPosition(500 + tempVal*2, 835);
-	window.draw(horizontalSlide);
+	mainWindow.draw(horizontalSlide);
 
 	sf::RectangleShape mOneLine(sf::Vector2f(20, abs(motors.motorOne) * 2));
 	sf::RectangleShape mTwoLine(sf::Vector2f(20, abs(motors.motorTwo) * 2));
@@ -174,18 +182,18 @@ void Simlink::updateWindow() {
 
 	if (motors.motorOne > 0) {
 		mOneLine.setPosition(680, 230 - motors.motorOne * 2);
-		window.draw(mOneLine);
+		mainWindow.draw(mOneLine);
 	}
 	else if (motors.motorOne < 0) {
 		mOneLine.setPosition(680, 370);
-		window.draw(mOneLine);
+		mainWindow.draw(mOneLine);
 	} if (motors.motorTwo > 0) {
 		mTwoLine.setPosition(980, 230 - motors.motorTwo * 2);
-		window.draw(mTwoLine);
+		mainWindow.draw(mTwoLine);
 	}
 	else if (motors.motorTwo < 0) {
 		mTwoLine.setPosition(980, 370);
-		window.draw(mTwoLine);
+		mainWindow.draw(mTwoLine);
 	}
 
 	std::string pText = "Vol: " + std::to_string(piezo.volume)
@@ -197,21 +205,68 @@ void Simlink::updateWindow() {
 	sf::Text piezoText("Hello guyz",font);
 	piezoText.setCharacterSize(50);
 	piezoText.setPosition(1000,500);
-	window.draw(piezoText);
+	mainWindow.draw(piezoText);
 	**/
 
-	window.display();
+	mainWindow.display();
 }
 
-Simlink::TDVect Simlink::getAccel() {
+void Simlink::kinematicWindowHandler() {
+	// Initialize kinematic window
+	kinematicWindow.create(sf::VideoMode(1000, 800), "Fido Kinematic Simulator");
+
+	while (keepWindowsOpen == true) {
+		updateKinematicWindow();
+	}
+
+	kinematicWindow.close();
+}
+
+void Simlink::updateKinematicWindow() {
+	while (kinematicWindow.isOpen()) {
+		sf::Event event;
+		while (kinematicWindow.pollEvent(event))
+			if (event.type == sf::Event::Closed) kinematicWindow.close();
+
+		/// emitter mouse stuff (copy this)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+			emitter.set(sf::Mouse::getPosition(kinematicWindow));
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+			emitter.bye();
+
+		int mLeft, mRight;
+
+		/// testing of kinematic model
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) mLeft = 100;
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) mLeft = -100;
+		else mLeft = 0;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) mRight = 100;
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mRight = -100;
+		else mRight = 0;
+
+		TDVect emitSense = emitter.sense(robot);
+		std::cout << "x:" << emitSense.xComp << ",y:" << emitSense.yComp << "\n";
+		imu.compass = emitSense;
+
+		robot.goAccel(mLeft, mRight);
+
+		kinematicWindow.clear(sf::Color(255, 255, 255));
+		kinematicWindow.draw(robot);
+		kinematicWindow.draw(emitter);
+		kinematicWindow.display();
+		sf::sleep(sf::milliseconds(25));
+	}
+}
+
+TDVect Simlink::getAccel() {
     return imu.accel;
 }
 
-Simlink::TDVect Simlink::getGyro() {
+TDVect Simlink::getGyro() {
     return imu.gyro;
 }
 
-Simlink::TDVect Simlink::getCompass() {
+TDVect Simlink::getCompass() {
     return imu.compass;
 }
 

@@ -5,6 +5,7 @@
 #include <math.h>
 #include "Emitter.h"
 #include "Robby.h"
+#include "Simlink.h"
 
 /* SIMULATOR GAME THINGY
  *
