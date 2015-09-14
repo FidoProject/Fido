@@ -1,6 +1,6 @@
 #include "WireFitRobot.h"
 
-#include "WireFitInterpolator.h"
+#include "LSInterpolator.h"
 
 WireFitRobot::WireFitRobot() {
 	int stateSize = 1;
@@ -19,7 +19,7 @@ WireFitRobot::WireFitRobot() {
 
 	double learningRate = 0.95;
 	double devaluationFactor = 0.4;
-	learner = net::WireFitQLearn(network, new net::WireFitInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
+	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
 	boltzmanExplorationLevel = 8;
 	explorationDevaluationPerTimestep = 0.6;

@@ -1,6 +1,6 @@
 #include "Interpolator.h"
 
-#include "WireFitInterpolator.h"
+#include "LSInterpolator.h"
 
 using namespace net;
 
@@ -8,7 +8,7 @@ Interpolator * Interpolator::getAnyInterpolatorFromFile(std::ifstream *in) {
 	int placeInFile = in->tellg();
 	Interpolator *interpolator;
 
-	interpolator = (Interpolator *)new WireFitInterpolator();
+	interpolator = (Interpolator *)new LSInterpolator();
 	if(interpolator->initFromFile(in)) {
 		return interpolator;
 	}
