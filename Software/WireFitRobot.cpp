@@ -4,9 +4,9 @@
 
 WireFitRobot::WireFitRobot() {
 	int stateSize = 1;
-	int numberOfHiddenLayers = 4;
-	int numberOfNeuronsPerHiddenLayer = 36;
-	int numberOfActions = 12, actionDimensions = 2;
+	int numberOfHiddenLayers = 3;
+	int numberOfNeuronsPerHiddenLayer = 15;
+	int numberOfActions = 5, actionDimensions = 2;
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 
@@ -95,14 +95,6 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			//learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
 			learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
 
-			if (iter > 0) {
-				actions.erase(actions.begin());
-				oldStates.erase(oldStates.begin());
-				immediateRewards.erase(immediateRewards.begin());
-				newStates.erase(newStates.begin());
-				elapsedTimes.erase(elapsedTimes.begin());
-			}
-
 			std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
 			if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
 				timesInARow++;
@@ -110,6 +102,14 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			}
 			else {
 				timesInARow = 0;
+			}
+
+			if (iter >= 0) {
+				actions.erase(actions.begin());
+				oldStates.erase(oldStates.begin());
+				immediateRewards.erase(immediateRewards.begin());
+				newStates.erase(newStates.begin());
+				elapsedTimes.erase(elapsedTimes.begin());
 			}
 		}
 		std::cout << "a: " << a << "; iter: " << iter << "\n";
