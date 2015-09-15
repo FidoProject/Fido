@@ -22,7 +22,10 @@ public:
     void bye();
     
     // Get a simulated TDVect sensor reading.
-    TDVect sense(Robby robot);
+    //
+    // Thresh denotes the distance at which readings
+    // level off.
+    TDVect sense(Robby robot,int thresh);
 protected:
     // Strength of the constructed emitter.
     int masterStrength;

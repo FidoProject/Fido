@@ -47,7 +47,7 @@ int main(int argc, char const** argv) {
         TDVect emitSense = emitter.sense(robot);
         std::cout << "x:" << emitSense.xComp << ",y:" << emitSense.yComp << "\n";
         
-        robot.goAccel(mLeft,mRight);
+        robot.go(mLeft,mRight,50);
     
         window.clear(sf::Color(255,255,255));
         window.draw(robot);
