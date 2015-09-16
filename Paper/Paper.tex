@@ -2,18 +2,27 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[nottoc]{tocbibind}
+\usepackage[margin=1in]{geometry}
 %\usepackage{mathptmx}
-\usepackage{amsmath,apacite,graphicx,wrapfig}
+
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+
+\usepackage{amsmath,apacite,graphicx,wrapfig,setspace}
 \usepackage{tikz,pgfplots,algorithm,algpseudocode}
 \usepackage[justification=centering]{caption}
 \usetikzlibrary{matrix,arrows,calc,3d,fit}
-
-\title{Paper Title}
+\doublespacing
 
 \begin{document}
-\maketitle
 
-\input{Sections/Abstract.tex}
+\begin{titlepage}
+	\begin{center}
+		{\LARGE Paper Title}
+	\end{center}
+	\input{Sections/Abstract.tex}
+\end{titlepage}
+
+\pagebreak
 
 \section{Introduction}
 

@@ -4,7 +4,7 @@
 
 The human brain is composed of billions of neurons: interconnected electrically excitable cells that form the basis of our intelligence.  Each neuron has synapses that receive electrical signals from multiple other neurons.  If the sum of these inputs is greater than a certain value, the neuron fires, generating a voltage at its axon.  The axon, or the output of the neuron cell, is itself connected to a synapse of another neuron.  The interconnections of these neurons form a massive network, where a huge number of inputs are processed in parallel to a set of outputs.  The basis of artificial neural networks is to simulate the mathematical properties of these neurons in order to perform similar tasks of mass parallel computation.
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\input{Figures/Neuron.tex}
 	\caption{Single Neuron Diagram}
@@ -17,14 +17,14 @@ An artificial neuron simply a mathematical model of a biological neuron, and the
 	\,.
 \end{equation}
 
-If this activation value is less than a certain threshold, the output is zero.  If it is greater than the threshold, the output is one.  This activation function most closely resembles the biological model of a neuron, a binary step function.  However, a binary output can be somewhat limiting for many applications of neural networks.  For example, many of Fido's outputs are gradient rather than linear; as an example, the brightness of an LED can be set rather than just whether it is on or off.  For this purpose alternate activation functions can be used with gradient outputs.  One such function is a sigmoid function, expressed as
+If this activation value is less than a certain threshold, the output is zero.  If it is greater than the threshold, the output is one.  This activation function most closely resembles the biological model of a neuron, a binary step function.  However, a binary output can be somewhat limiting for many applications of neural networks.  For example, many of Fido's outputs are gradient rather than linear; as an example, an LED can be given a brightness.  For this purpose alternate activation functions can be used with gradient outputs.  One such function is a sigmoid function, expressed as such:
 
 \begin{equation}
 	O(a) = \cfrac{1}{1+e^{-\frac{a}{p}}}
 	\,,
 \end{equation}
 
-for each output $O$, activation $a$, and constant $p$.  The sigmoid activation function can also be graphed as below.
+\noindent for each output $O$, activation $a$, and constant $p$.  The sigmoid activation function can also be graphed as below.
 
 \begin{figure}[ht]
 	\centering
