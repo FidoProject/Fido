@@ -1,3 +1,8 @@
-\subsection{Sensor Choice and Layout}
+The robot model chosen for simulation was modeled after easily producible robots on the same scale.  The software driving the simulation was intended to be portable enough to work on a hardware implementation, and the model facilitates this goal as well.  Additionally, the robot model would have to be easily trainable and debuggable when implemented in hardware; use of a Geiger counter as an input would be unfavorable.  Lastly the sensors and design chosen had to facilitate the concept of natural learning, modeling after nature to some degree.
 
-\subsection{Kinematics}
+\subsection{Robot Inputs and Outputs}
+
+Multiple inputs were modeled for simulation with outlets for control both by a human operator using sliders and by programmed handlers using a bridge class.  A microphone and light sensor were chosen as clear, human modifiable inputs that model after nature and could easily be used for reinforcement training.  An infrared light sensor was added as another easily controller variable in a testing setup: a human operator could easily bring closer and farther an IR LED for purposes of training.   Additionally sensors for battery level, three axes of accelerometers, and three axes of gyroscopes were added as more complex inputs for Fido to master.  
+
+
+\subsection{Implementation and Kinematics}
