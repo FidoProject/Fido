@@ -259,6 +259,10 @@ std::vector<Wire> WireFitQLearn::getWires(std::vector<double> state) {
     return wires;
 }
 
+std::vector<Wire> WireFitQLearn::getSetOfWires(std::vector<double> state, std::vector<double> minAction, std::vector<double> maxAction, int numberOfWires) {
+
+}
+
 std::vector<double> WireFitQLearn::getRawOutput(std::vector<Wire> wires) {
     std::vector<double> rawOutput(wires.size() * (actionDimensions + 1));
     

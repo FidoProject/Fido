@@ -89,7 +89,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		int iter;
 		double explorationConstant = 10;
 		for (iter = 0; iter < maxIterations; iter++) {
-			explorationConstant /= 1.2;
+			explorationConstant /= 1.03;
 			oldStates.push_back(getState());
 			actions.push_back(learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], explorationConstant));
 			performAction(actions[actions.size() - 1]);
@@ -104,7 +104,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 2);
 
 			std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
-			if (simulator.getDistanceOfRobotFromEmitter() < 50) {
+			if (simulator.getDistanceOfRobotFromEmitter() < 150) {
 				break;
 			}
 
