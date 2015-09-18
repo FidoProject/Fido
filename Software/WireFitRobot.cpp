@@ -22,7 +22,7 @@ WireFitRobot::WireFitRobot() {
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
 	boltzmanExplorationLevel = 8;
-	explorationDevaluationPerTimestep = 0.6;
+	explorationDevaluationPerTimestep = 0.9;
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {
@@ -65,13 +65,17 @@ void WireFitRobot::run(int numberOfTimeSteps) {
 }
 
 void WireFitRobot::test(int numberOfTimes, int maxIterations) {
+	/// Vector Declarations
 	std::vector< std::vector<double> > actions;
 	std::vector< std::vector<double> > oldStates;
 	std::vector<double> immediateRewards;
 	std::vector< std::vector<double> > newStates;
 	std::vector<double> elapsedTimes;
-
 	std::vector<int> results(numberOfTimes);
+
+	int historyLength = 100, numberOfPoints = 200, numberOfRepetitions = 2, sleepTime = 500;
+	std::vector<double> minAction = { -1, -1 }, maxAction = { 1, 1 };
+	double allowableDistance = 150, maxDistance = 982;
 
 	for (int a = 0; a < numberOfTimes; a++) {
 		oldStates.clear();
@@ -82,26 +86,34 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
-			boltzmanExplorationLevel /= 1.1;
-			oldStates.push_back(getState());
-			actions.push_back(learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], { -1, -1 }, {1, 1}, 200, boltzmanExplorationLevel));
-			performAction(actions[actions.size() - 1]);
+			boltzmanExplorationLevel /= explorationDevaluationPerTimestep;
 
+			/// Get state and perform action
+			oldStates.push_back(getState());
+			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, numberOfPoints, boltzmanExplorationLevel);
+			actions.push_back(action);
+			performAction(action);
+
+			/// Determine reward
 			TDVect imu = simulator.getCompass();
-			double reward = 1 - (simulator.getDistanceOfRobotFromEmitter() / 982);
+			double reward = 1 - (simulator.getDistanceOfRobotFromEmitter() / maxDistance);
+
+			/// Record state and reward
 			immediateRewards.push_back(reward);
 			newStates.push_back(getState());
 			elapsedTimes.push_back(1);
 
+			///  Train model on reward
 			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
-			learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 2);
+			//learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, numberOfRepetitions);
 
-			std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
-			if (simulator.getDistanceOfRobotFromEmitter() < 150) {
+			/// Learning criteria
+			if (simulator.getDistanceOfRobotFromEmitter() < allowableDistance) {
 				break;
 			}
 
-			if (iter >= 100) {
+			/// Erase history past allowable timesteps
+			if (iter >= historyLength) {
 				actions.erase(actions.begin());
 				oldStates.erase(oldStates.begin());
 				immediateRewards.erase(immediateRewards.begin());
@@ -109,7 +121,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 				elapsedTimes.erase(elapsedTimes.begin());
 			}
 		}
-		sf::sleep(sf::milliseconds(500));
+		sf::sleep(sf::milliseconds(sleepTime));
 		std::cout << "a: " << a << "; iter: " << iter << "\n";
 		results[a] = iter;
 
@@ -128,7 +140,7 @@ void WireFitRobot::waitForStateInput() {
 
 std::vector<double> WireFitRobot::getState() {
 	std::vector<double> state;
-	state.push_back(0);
+	state.push_back(simulator.getDistanceOfRobotFromEmitter());
 
 	return state;
 }
