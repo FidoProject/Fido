@@ -267,8 +267,13 @@ void Simlink::placeEmitterInRandomPosition() {
 }
 
 double Simlink::getDistanceOfRobotFromEmitter() {
-	int difX = emitter.getPosition().x - robot.getPosition().x;
-	int difY = emitter.getPosition().y - robot.getPosition().y;
+	double difX = emitter.getPosition().x - robot.getPosition().x;
+	double difY = emitter.getPosition().y - robot.getPosition().y;
 
 	return sqrt(pow(difX, 2) + pow(difY, 2));
+}
+
+void Simlink::getRobotDisplacementFromEmitter(double *x, double *y) {
+	*x = emitter.getPosition().x - robot.getPosition().x;
+	*y = emitter.getPosition().y - robot.getPosition().y;
 }

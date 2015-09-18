@@ -100,6 +100,9 @@ public:
 	// Gets the distance of the robot from the emitter
 	double getDistanceOfRobotFromEmitter();
 
+	// Gets the displacement of the robot from the emitter in terms of x and y components
+	void getRobotDisplacementFromEmitter(double *x, double *y);
+
 private:
 	void mainWindowHandler();
 

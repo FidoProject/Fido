@@ -140,8 +140,11 @@ void WireFitRobot::waitForStateInput() {
 
 std::vector<double> WireFitRobot::getState() {
 	std::vector<double> state;
-	state.push_back(simulator.getDistanceOfRobotFromEmitter());
+	double x, y;
 
+	simulator.getRobotDisplacementFromEmitter(&x, &y);
+
+	state = { x, y };
 	return state;
 }
 
