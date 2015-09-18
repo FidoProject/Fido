@@ -73,7 +73,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 	std::vector<int> results(numberOfTimes);
 
-	simulator.closeWindow();
+	//simulator.closeWindow();
 
 	/// Test a modification to the WireFitQlearn algorithm
 	for (int a = 0; a < numberOfTimes; a++) {
@@ -83,27 +83,32 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		newStates.clear();
 		elapsedTimes.clear();
 
+		simulator.placeEmitterInRandomPosition();
+		simulator.placeRobotInRandomPosition();
+
 		int iter;
+		double explorationConstant = 10;
 		for (iter = 0; iter < maxIterations; iter++) {
+			explorationConstant /= 1.2;
 			oldStates.push_back(getState());
-			actions.push_back(learner.chooseRandomAction(oldStates[oldStates.size() - 1], { 0, 0 }, { 1, 1 }));
+			actions.push_back(learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], explorationConstant));
 			performAction(actions[actions.size() - 1]);
 
 			TDVect imu = simulator.getCompass();
-			double reward = 1 - (sqrt(pow(imu.xComp, 2) + pow(imu.yComp, 2)) / 142);
+			double reward = 1 - (simulator.getDistanceOfRobotFromEmitter() / 982);
 			immediateRewards.push_back(reward);
-			newStates.push_back(oldStates[oldStates.size() - 1]);
+			newStates.push_back(getState());
 			elapsedTimes.push_back(1);
 
 			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
-			//learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
+			learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 2);
 
 			std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
-			if (pow(imu.xComp, 2) + pow(imu.yComp, 2) < 50) {
+			if (simulator.getDistanceOfRobotFromEmitter() < 50) {
 				break;
 			}
 
-			if (iter >= 0) {
+			if (iter >= 100) {
 				actions.erase(actions.begin());
 				oldStates.erase(oldStates.begin());
 				immediateRewards.erase(immediateRewards.begin());
@@ -111,6 +116,8 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 				elapsedTimes.erase(elapsedTimes.begin());
 			}
 		}
+		performAction({0, 0});
+		sf::sleep(sf::milliseconds(500));
 		std::cout << "a: " << a << "; iter: " << iter << "\n";
 		results[a] = iter;
 

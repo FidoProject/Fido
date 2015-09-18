@@ -16,10 +16,10 @@
 int main() {
     srand(time(NULL));
     
-	Simlink link;
+	//Simlink link;
 
-	//WireFitRobot robot;
-	//robot.test(50, 600);
+	WireFitRobot robot;
+	robot.test(50, 3000);
 
 	while (true) {
 

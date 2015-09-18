@@ -26,7 +26,7 @@ void Emitter::bye() {
 
 /// inverse square law
 TDVect Emitter::sense(Robby robot,int thresh) {
-    int difX = getPosition().x-robot.getPosition().x;
+	int difX = getPosition().x-robot.getPosition().x;
     int difY = getPosition().y-robot.getPosition().y;
     double radius = sqrt(pow(difX,2)+pow((difY),2));
     if (radius<thresh) radius = thresh;
@@ -41,6 +41,6 @@ TDVect Emitter::sense(Robby robot,int thresh) {
     vect.xComp = mag*cos(0.0174532925*theta);
     vect.yComp = mag*sin(0.0174532925*theta);
     vect.zComp = 0;
-    
+
     return vect;
 }

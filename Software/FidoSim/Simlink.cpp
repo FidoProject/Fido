@@ -173,27 +173,6 @@ void Simlink::updateMainWindow() {
 	horizontalSlide.setPosition(500 + tempVal * 2, 835);
 	mainWindow.draw(horizontalSlide);
 
-	sf::RectangleShape mOneLine(sf::Vector2f(20, abs(motors.motorOne) * 2));
-	sf::RectangleShape mTwoLine(sf::Vector2f(20, abs(motors.motorTwo) * 2));
-	mOneLine.setFillColor(sf::Color(0, 0, 0));
-	mTwoLine.setFillColor(sf::Color(0, 0, 0));
-
-	if (motors.motorOne > 0) {
-		mOneLine.setPosition(680, 230 - motors.motorOne * 2);
-		mainWindow.draw(mOneLine);
-	}
-	else if (motors.motorOne < 0) {
-		mOneLine.setPosition(680, 370);
-		mainWindow.draw(mOneLine);
-	} if (motors.motorTwo > 0) {
-		mTwoLine.setPosition(980, 230 - motors.motorTwo * 2);
-		mainWindow.draw(mTwoLine);
-	}
-	else if (motors.motorTwo < 0) {
-		mTwoLine.setPosition(980, 370);
-		mainWindow.draw(mTwoLine);
-	}
-
 	/// Kinematics
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(mainWindow);
@@ -203,20 +182,11 @@ void Simlink::updateMainWindow() {
 		emitter.bye();
 	}
 
-	int mLeft, mRight;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) mLeft = 100;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) mLeft = -100;
-	else mLeft = 0;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) mRight = 100;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mRight = -100;
-	else mRight = 0;
-
 	TDVect emitSense = emitter.sense(robot, 50);
 	imu.compass = {emitSense.xComp / 6.4, emitSense.yComp / 6.4, emitSense.zComp / 6.4};
 
 	sf::Vector2f previousRobotPosition = robot.getPosition();
-	robot.goAccel(mLeft, mRight);
+	robot.goAccel(motors.motorOne, motors.motorTwo);
 	sf::Vector2f newRobotPosition = robot.getPosition();
 	if(newRobotPosition.x < 500 + robot.getGlobalBounds().height / 2 
 		|| newRobotPosition.x > 1200 - robot.getGlobalBounds().height / 2
@@ -280,4 +250,25 @@ void Simlink::chirp(int volume, int frequency) {
 
 int Simlink::getTemperature() {
 	return tempVal;
+}
+
+void Simlink::placeRobotInRandomPosition() {
+	double randX = (((double)rand() / (double)RAND_MAX) * (1200 - 500)) + 500;
+	double randY = ((double)rand() / (double)RAND_MAX) * (595 - 0);
+
+	robot.setPosition(randX, randY);
+}
+
+void Simlink::placeEmitterInRandomPosition() {
+	double randX = ((double)rand() / (double)RAND_MAX) * (1200 - 500) + 500;
+	double randY = ((double)rand() / (double)RAND_MAX) * (595 - 0) + 0;
+
+	emitter.set(sf::Vector2i((int)randX, (int)randY));
+}
+
+double Simlink::getDistanceOfRobotFromEmitter() {
+	int difX = emitter.getPosition().x - robot.getPosition().x;
+	int difY = emitter.getPosition().y - robot.getPosition().y;
+
+	return sqrt(pow(difX, 2) + pow(difY, 2));
 }

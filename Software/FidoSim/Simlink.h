@@ -90,7 +90,16 @@ public:
 
 	// Gets the current temperature value from 0-100
 	int getTemperature();
-    
+
+	// Places the robot in a random position
+	void placeRobotInRandomPosition();
+
+	// Places the emitter in a random position
+	void placeEmitterInRandomPosition();
+
+	// Gets the distance of the robot from the emitter
+	double getDistanceOfRobotFromEmitter();
+
 private:
 	void mainWindowHandler();
 

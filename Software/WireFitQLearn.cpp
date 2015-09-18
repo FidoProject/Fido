@@ -66,6 +66,8 @@ std::vector<double> WireFitQLearn::chooseBestAction(std::vector<double> currentS
 }
 
 std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant) {
+	if (explorationConstant < 0.001) explorationConstant = 0.001;
+
     double determiner = (double)rand() / (double)RAND_MAX;
     std::vector<double> exponentTerms;
     double sumOfExponentTerms = 0;
