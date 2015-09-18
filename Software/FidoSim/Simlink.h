@@ -127,16 +127,6 @@ private:
     IMU imu;
     Piezo piezo;
 
-	void kinematicWindowHandler();
-
-	// Updates the main simulator window
-	void updateKinematicWindow();
-
-	// Kinematic window.
-	sf::RenderWindow kinematicWindow;
-
-	std::thread kinematicWindowThread;
-
 	Robby robot;
 	Emitter emitter;
 

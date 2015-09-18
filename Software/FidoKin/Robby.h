@@ -12,7 +12,7 @@ public:
     /* Construct a robot of a certain width
      * and height.
      */
-    Robby(int width, int height);
+    Robby(int x, int y, int width, int height);
     
     /* Set robot motor values and return a
      * gyro sensor double.

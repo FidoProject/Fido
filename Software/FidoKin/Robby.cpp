@@ -2,10 +2,10 @@
 
 #include "Simlink.h"
 
-Robby::Robby(int width, int height):
+Robby::Robby(int x, int y, int width, int height):
 sf::RectangleShape(sf::Vector2f(width,height)) {
     setFillColor(sf::Color(0, 0, 0));
-    setPosition(500,400);
+    setPosition(x,y);
     setOrigin(width/2,height/2);
     setRotation(90);
     lastSpeed=0;

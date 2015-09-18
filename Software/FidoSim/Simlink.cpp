@@ -1,7 +1,7 @@
 #include "Simlink.h"
 
 
-Simlink::Simlink() : emitter(50), robot(100, 80) {
+Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40) {
 	irVal = motors.motorOne = motors.motorTwo = 0;
 	micVal = 30;
 	visVal = batVal = 50;
@@ -15,7 +15,6 @@ Simlink::Simlink() : emitter(50), robot(100, 80) {
 	keepWindowsOpen = true;
 
 	mainWindowThread = std::thread(&Simlink::mainWindowHandler, this);
-	kinematicWindowThread = std::thread(&Simlink::kinematicWindowHandler, this);
 }
 
 Simlink::~Simlink() {
@@ -26,7 +25,6 @@ void Simlink::closeWindow() {
 	keepWindowsOpen = false;
 
 	if(mainWindowThread.joinable() == true) mainWindowThread.join();
-	if(kinematicWindowThread.joinable() == true) kinematicWindowThread.join();
 }
 
 void Simlink::mainWindowHandler() {
@@ -172,7 +170,7 @@ void Simlink::updateMainWindow() {
 	sf::RectangleShape horizontalSlide(sf::Vector2f(30, 40));
 	horizontalSlide.setFillColor(sf::Color(0, 0, 0));
 
-	horizontalSlide.setPosition(500 + tempVal*2, 835);
+	horizontalSlide.setPosition(500 + tempVal * 2, 835);
 	mainWindow.draw(horizontalSlide);
 
 	sf::RectangleShape mOneLine(sf::Vector2f(20, abs(motors.motorOne) * 2));
@@ -196,66 +194,41 @@ void Simlink::updateMainWindow() {
 		mainWindow.draw(mTwoLine);
 	}
 
-	std::string pText = "Vol: " + std::to_string(piezo.volume)
-		+ "\nFreq: " + std::to_string(piezo.frequency);
+	/// Kinematics
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+		sf::Vector2i mousePosition = sf::Mouse::getPosition(mainWindow);
+		if(mousePosition.x > 496 + emitter.getRadius() && mousePosition.x < 1200 - emitter.getRadius() && mousePosition.y > 0 + emitter.getRadius() && mousePosition.y < 595 - emitter.getRadius())
+			emitter.set(sf::Mouse::getPosition(mainWindow));
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+		emitter.bye();
+	}
 
-	/**
-	sf::Font font;
-	font.loadFromFile("times.ttf");
-	sf::Text piezoText("Hello guyz",font);
-	piezoText.setCharacterSize(50);
-	piezoText.setPosition(1000,500);
-	mainWindow.draw(piezoText);
-	**/
+	int mLeft, mRight;
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) mLeft = 100;
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) mLeft = -100;
+	else mLeft = 0;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) mRight = 100;
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mRight = -100;
+	else mRight = 0;
+
+	TDVect emitSense = emitter.sense(robot, 50);
+	imu.compass = emitSense;
+
+	sf::Vector2f previousRobotPosition = robot.getPosition();
+	robot.goAccel(mLeft, mRight);
+	sf::Vector2f newRobotPosition = robot.getPosition();
+	if(newRobotPosition.x < 500 + robot.getGlobalBounds().height / 2 
+		|| newRobotPosition.x > 1200 - robot.getGlobalBounds().height / 2
+		|| newRobotPosition.y < 0 + robot.getGlobalBounds().height / 2
+		|| newRobotPosition.y > 595 - robot.getGlobalBounds().height / 2) {
+		robot.setPosition(previousRobotPosition);
+	}
+
+	mainWindow.draw(robot);
+	mainWindow.draw(emitter);
 	mainWindow.display();
-}
-
-void Simlink::kinematicWindowHandler() {
-	// Initialize kinematic window
-	kinematicWindow.create(sf::VideoMode(1000, 800), "Fido Kinematic Simulator");
-
-	while (keepWindowsOpen == true) {
-		updateKinematicWindow();
-	}
-
-	kinematicWindow.close();
-}
-
-void Simlink::updateKinematicWindow() {
-	while (kinematicWindow.isOpen()) {
-		sf::Event event;
-		while (kinematicWindow.pollEvent(event))
-			if (event.type == sf::Event::Closed) kinematicWindow.close();
-
-		/// emitter mouse stuff (copy this)
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-			emitter.set(sf::Mouse::getPosition(kinematicWindow));
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
-			emitter.bye();
-
-		int mLeft, mRight;
-
-		/// testing of kinematic model
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) mLeft = 100;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) mLeft = -100;
-		else mLeft = 0;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) mRight = 100;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) mRight = -100;
-		else mRight = 0;
-
-		TDVect emitSense = emitter.sense(robot);
-		std::cout << "x:" << emitSense.xComp << ",y:" << emitSense.yComp << "\n";
-		imu.compass = emitSense;
-
-		robot.goAccel(mLeft, mRight);
-
-		kinematicWindow.clear(sf::Color(255, 255, 255));
-		kinematicWindow.draw(robot);
-		kinematicWindow.draw(emitter);
-		kinematicWindow.display();
-		sf::sleep(sf::milliseconds(25));
-	}
+	sf::sleep(sf::milliseconds(25));
 }
 
 TDVect Simlink::getAccel() {
