@@ -102,9 +102,10 @@ namespace net {
 
 		// Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
 		std::vector<Wire> getWires(std::vector<double> state);
+
+		// Gets the number of wires specified on the interpolator function for the given state between the min and max actions given
+		std::vector<Wire> getSetOfWires(std::vector<double> state, std::vector<double> minAction, std::vector<double> maxAction, int numberOfWires);
     private:
-        
-        
         // Given a set of wires converts them to the raw output of the NN
         std::vector<double> getRawOutput(std::vector<Wire> wires);
         

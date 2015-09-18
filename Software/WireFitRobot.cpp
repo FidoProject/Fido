@@ -89,7 +89,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		int iter;
 		double explorationConstant = 10;
 		for (iter = 0; iter < maxIterations; iter++) {
-			explorationConstant /= 1.03;
+			explorationConstant /= 1.1;
 			oldStates.push_back(getState());
 			actions.push_back(learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], explorationConstant));
 			performAction(actions[actions.size() - 1]);
