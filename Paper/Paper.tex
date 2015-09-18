@@ -2,8 +2,8 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[nottoc]{tocbibind}
-\usepackage[margin=1in]{geometry}
-
+\usepackage[margin=1.5in]{geometry}
+%\usepackage{mathptmx}
 \usepackage[activate={true,nocompatibility},final,
 			tracking=true,kerning=true,spacing=true,
 			factor=1100,stretch=10,shrink=10]{microtype}
@@ -18,11 +18,12 @@
 
 \begin{titlepage}
 	\begin{center}
-		{\LARGE Paper Title}
+		{\Large \textbf{Reinforcement Learning with Limited Feedback in a General Robotic Control System}}
 	\end{center}
 	\input{Sections/Abstract.tex}
 \end{titlepage}
 
+\newgeometry{top=1in,bottom=1in,right=1in,left=1in}
 \pagebreak
 
 \section{Introduction}
