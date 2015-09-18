@@ -65,13 +65,18 @@ std::vector<double> WireFitQLearn::chooseBestAction(std::vector<double> currentS
     return action;
 }
 
-std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant) {
+std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> currentState,
+	const std::vector<double> &minAction,
+	const std::vector<double> &maxAction,
+	int numberOfWires,
+	double explorationConstant) {
+
 	if (explorationConstant < 0.001) explorationConstant = 0.001;
 
     double determiner = (double)rand() / (double)RAND_MAX;
     std::vector<double> exponentTerms;
     double sumOfExponentTerms = 0;
-    std::vector<Wire> wires = getWires(currentState);
+    std::vector<Wire> wires = getSetOfWires(currentState, minAction, maxAction, numberOfWires);
     
     for(int a = 0; a < wires.size(); a++) {
         double exponentTerm = exp(wires[a].reward / explorationConstant);
@@ -259,8 +264,38 @@ std::vector<Wire> WireFitQLearn::getWires(std::vector<double> state) {
     return wires;
 }
 
-std::vector<Wire> WireFitQLearn::getSetOfWires(std::vector<double> state, std::vector<double> minAction, std::vector<double> maxAction, int numberOfWires) {
+std::vector<Wire> WireFitQLearn::getSetOfWires(const std::vector<double> &state,
+												const std::vector<double> &minAction,
+												const std::vector<double> &maxAction,
+												int numberOfWires) {
+	
+	if (minAction.size() != maxAction.size() || minAction.size() != actionDimensions) {
+		std::cout << "Mismatching minAction max action \n";
+		throw 1;
+	}
+	if(numberOfWires <= 1) {
+		std::cout << "Value of numberOfWires is too small\n";
+	}
 
+	std::vector<Wire> controlWires = getWires(state);
+	
+	std::vector<double> scaleVector(minAction.size());
+	for (int a = 0; a < minAction.size(); a++) {
+		scaleVector[a] = (maxAction[a] - minAction[a]) / ((double)numberOfWires - 1);
+	}
+
+	std::vector<Wire> wires(numberOfWires);
+	for (int a = 0; a < wires.size(); a++) {
+		Wire wire;
+		for (int b = 0; b < minAction.size(); b++) {
+			wire.action.push_back(a*scaleVector[b]);
+		}
+		wire.reward = interpolator->getReward(controlWires, wire.action);
+
+		wires.push_back(wire);
+	}
+	
+	return wires;
 }
 
 std::vector<double> WireFitQLearn::getRawOutput(std::vector<Wire> wires) {

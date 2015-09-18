@@ -51,7 +51,11 @@ namespace net {
          * Non-random search heuristic used so that the neural network explores actions despite their reward value. 
          * The lower the exploration constanstant, the more likely it is to pick the best action for the current state.
          */
-        std::vector<double> chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant);
+        std::vector<double> chooseBoltzmanAction(std::vector<double> currentState,
+												const std::vector<double> &minAction,
+												const std::vector<double> &maxAction,
+												int numberOfWires,
+												double explorationConstant);
 
 		// Chooses a random action vector between the minmum and maximum vectors given
 		std::vector<double> chooseRandomAction(const std::vector<double> &state, const std::vector<double> &minAction, const std::vector<double> &maxAction);
@@ -104,7 +108,10 @@ namespace net {
 		std::vector<Wire> getWires(std::vector<double> state);
 
 		// Gets the number of wires specified on the interpolator function for the given state between the min and max actions given
-		std::vector<Wire> getSetOfWires(std::vector<double> state, std::vector<double> minAction, std::vector<double> maxAction, int numberOfWires);
+		std::vector<Wire> getSetOfWires(const std::vector<double> &state, 
+										const std::vector<double> &minAction, 
+										const std::vector<double> &maxAction, 
+										int numberOfWires);
     private:
         // Given a set of wires converts them to the raw output of the NN
         std::vector<double> getRawOutput(std::vector<Wire> wires);

@@ -73,9 +73,6 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 	std::vector<int> results(numberOfTimes);
 
-	//simulator.closeWindow();
-
-	/// Test a modification to the WireFitQlearn algorithm
 	for (int a = 0; a < numberOfTimes; a++) {
 		oldStates.clear();
 		actions.clear();
@@ -83,15 +80,11 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		newStates.clear();
 		elapsedTimes.clear();
 
-		simulator.placeEmitterInRandomPosition();
-		simulator.placeRobotInRandomPosition();
-
 		int iter;
-		double explorationConstant = 10;
 		for (iter = 0; iter < maxIterations; iter++) {
-			explorationConstant /= 1.1;
+			boltzmanExplorationLevel /= 1.1;
 			oldStates.push_back(getState());
-			actions.push_back(learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], explorationConstant));
+			actions.push_back(learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], { -1, -1 }, {1, 1}, 200, boltzmanExplorationLevel));
 			performAction(actions[actions.size() - 1]);
 
 			TDVect imu = simulator.getCompass();
@@ -116,41 +109,14 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 				elapsedTimes.erase(elapsedTimes.begin());
 			}
 		}
-		performAction({0, 0});
 		sf::sleep(sf::milliseconds(500));
 		std::cout << "a: " << a << "; iter: " << iter << "\n";
 		results[a] = iter;
 
-		learner.resetControlPoints();
+		resetRobot();
 	}
 
-	/// Compute stats about the modifications performance
-	double mean = 0, median = 0, mode = 0;
-	std::vector<int> histogram(maxIterations + 1);
-
-	for (int a = 0; a < numberOfTimes; a++) {
-		mean += (double)results[a] / (double)numberOfTimes;
-		histogram[results[a]]++;
-	}
-
-	int iterator = 0;
-	for (int a = 0; a <= maxIterations; a++) {
-		iterator += histogram[a];
-		if (iterator > numberOfTimes / 2) {
-			median = a;
-			break;
-		}
-	}
-
-	int maxInstances = 0;
-	for (int a = 0; a <= maxIterations; a++) {
-		if (histogram[a] > maxInstances) {
-			maxInstances = histogram[a], mode = a;
-		}
-		iterator += histogram[a];
-	}
-
-	std::cout << "Mean: " << mean << "; median: " << median << ";  mode: " << mode << ";  maxinstances: " << maxInstances << "\n";
+	printStats(results);
 }
 
 void WireFitRobot::waitForStateInput() {
@@ -178,4 +144,50 @@ double WireFitRobot::getReward() {
 
 void WireFitRobot::performAction(const std::vector<double> &action) {
 	simulator.setMotors(action[0] * 100, action[1] * 100);
+}
+
+void WireFitRobot::resetRobot() {
+	learner.resetControlPoints();
+	simulator.placeEmitterInRandomPosition();
+	simulator.placeRobotInRandomPosition();
+	performAction({ 0, 0 });
+	boltzmanExplorationLevel = 8;
+}
+
+void WireFitRobot::printStats(std::vector<int> data) {
+	double mean = 0, median = 0, mode = 0;
+
+	int min = 9999999, max = -9999999;
+	for (int a = 0; a < data.size(); a++) {
+		if (data[a] > max) max = data[a];
+		if (data[a] < min) min = data[a];
+	}
+	int range = max - min;
+
+	std::vector<int> histogram(range + 1);
+
+	for (int a = 0; a < data.size(); a++) {
+		mean += (double)data[a] / (double)data.size();
+		histogram[data[a] - min]++;
+	}
+
+	int iterator = 0;
+	for (int a = 0; a <= histogram.size(); a++) {
+		iterator += histogram[a];
+		if (iterator > data.size() / 2) {
+			median = a;
+			break;
+		}
+	}
+
+	int maxInstances = 0;
+	for (int a = 0; a <= histogram.size(); a++) {
+		if (histogram[a] > maxInstances) {
+			maxInstances = histogram[a];
+			mode = a;
+		}
+		iterator += histogram[a];
+	}
+
+	std::cout << "Mean: " << mean << "; median: " << median << ";  mode: " << mode << ";  maxinstances: " << maxInstances << "\n";
 }

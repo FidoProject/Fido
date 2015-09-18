@@ -39,6 +39,11 @@ private:
 	// Performs an action using the simulator
 	void performAction(const std::vector<double> &action);
 
+	// Resets the simulator, the learner, and the boltzmanExplorationLevel
+	void resetRobot();
+
+	// Print the mean median and mode of the datasetgiven
+	void printStats(std::vector<int> data);
 };
 
 #endif
