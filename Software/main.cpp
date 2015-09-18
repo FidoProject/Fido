@@ -19,7 +19,7 @@ int main() {
 	Simlink link;
 
 	//WireFitRobot robot;
-	//robot.test(50, 300);
+	//robot.test(50, 600);
 
 	while (true) {
 

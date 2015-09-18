@@ -83,25 +83,24 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		newStates.clear();
 		elapsedTimes.clear();
 
-		int iter, timesInARow = 0;
+		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
 			oldStates.push_back(getState());
 			actions.push_back(learner.chooseRandomAction(oldStates[oldStates.size() - 1], { 0, 0 }, { 1, 1 }));
 			performAction(actions[actions.size() - 1]);
-			immediateRewards.push_back(std::max(1 - abs(actions[actions.size() - 1][0] - actions[actions.size() - 1][1]), 0.0));
+
+			TDVect imu = simulator.getCompass();
+			double reward = 1 - (sqrt(pow(imu.xComp, 2) + pow(imu.yComp, 2)) / 142);
+			immediateRewards.push_back(reward);
 			newStates.push_back(oldStates[oldStates.size() - 1]);
 			elapsedTimes.push_back(1);
 
-			//learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
-			learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
+			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
+			//learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 1);
 
 			std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
-			if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
-				timesInARow++;
-				if (timesInARow == 5) break;
-			}
-			else {
-				timesInARow = 0;
+			if (pow(imu.xComp, 2) + pow(imu.yComp, 2) < 50) {
+				break;
 			}
 
 			if (iter >= 0) {

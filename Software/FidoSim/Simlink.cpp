@@ -213,7 +213,7 @@ void Simlink::updateMainWindow() {
 	else mRight = 0;
 
 	TDVect emitSense = emitter.sense(robot, 50);
-	imu.compass = emitSense;
+	imu.compass = {emitSense.xComp / 6.4, emitSense.yComp / 6.4, emitSense.zComp / 6.4};
 
 	sf::Vector2f previousRobotPosition = robot.getPosition();
 	robot.goAccel(mLeft, mRight);
@@ -268,7 +268,7 @@ void Simlink::setLED(int r, int g, int b, int i) {
 void Simlink::setMotors(int motorOne, int motorTwo) {
     motors.motorOne = motorOne;
     motors.motorTwo = motorTwo;
-}
+} 
 
 void Simlink::chirp(int volume, int frequency) {
     piezo.frequency = frequency;
