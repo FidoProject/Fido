@@ -182,18 +182,6 @@ void Simlink::updateMainWindow() {
 		emitter.bye();
 	}
 
-	TDVect emitSense = emitter.sense(robot, 50);
-	imu.compass = {emitSense.xComp / 6.4, emitSense.yComp / 6.4, emitSense.zComp / 6.4};
-
-	sf::Vector2f previousRobotPosition = robot.getPosition();
-	sf::Vector2f newRobotPosition = robot.getPosition();
-	if(newRobotPosition.x < 500 + robot.getGlobalBounds().height / 2 
-		|| newRobotPosition.x > 1200 - robot.getGlobalBounds().height / 2
-		|| newRobotPosition.y < 0 + robot.getGlobalBounds().height / 2
-		|| newRobotPosition.y > 595 - robot.getGlobalBounds().height / 2) {
-		robot.setPosition(previousRobotPosition);
-	}
-
 	mainWindow.draw(robot);
 	mainWindow.draw(emitter);
 	mainWindow.display();
@@ -209,6 +197,8 @@ TDVect Simlink::getGyro() {
 }
 
 TDVect Simlink::getCompass() {
+	TDVect emitSense = emitter.sense(robot, 50);
+	imu.compass = { emitSense.xComp / 6.4, emitSense.yComp / 6.4, emitSense.zComp / 6.4 };
     return imu.compass;
 }
 
@@ -238,7 +228,17 @@ void Simlink::setMotors(int motorOne, int motorTwo) {
     motors.motorOne = motorOne;
     motors.motorTwo = motorTwo;
 
+	sf::Vector2f previousRobotPosition = robot.getPosition();
+
 	robot.goAccel(motors.motorOne, motors.motorTwo);
+
+	sf::Vector2f newRobotPosition = robot.getPosition();
+	if (newRobotPosition.x < 500 + robot.getGlobalBounds().height / 2
+		|| newRobotPosition.x > 1200 - robot.getGlobalBounds().height / 2
+		|| newRobotPosition.y < 0 + robot.getGlobalBounds().height / 2
+		|| newRobotPosition.y > 595 - robot.getGlobalBounds().height / 2) {
+		robot.setPosition(previousRobotPosition);
+	}
 } 
 
 void Simlink::chirp(int volume, int frequency) {

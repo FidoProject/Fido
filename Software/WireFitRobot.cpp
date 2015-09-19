@@ -4,9 +4,9 @@
 
 WireFitRobot::WireFitRobot() {
 	int stateSize = 2;
-	int numberOfHiddenLayers = 3;
-	int numberOfNeuronsPerHiddenLayer = 15;
-	int numberOfActions = 5, actionDimensions = 2;
+	int numberOfHiddenLayers = 4;
+	int numberOfNeuronsPerHiddenLayer = 30;
+	int numberOfActions = 10, actionDimensions = 2;
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 
@@ -21,8 +21,8 @@ WireFitRobot::WireFitRobot() {
 	double devaluationFactor = 0.4;
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
-	boltzmanExplorationLevel = 8;
-	explorationDevaluationPerTimestep = 0.9;
+	boltzmanExplorationLevel = 10;
+	explorationDevaluationPerTimestep = 0.8;
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {
@@ -74,7 +74,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	std::vector<int> results(numberOfTimes);
 
 	/// Constant definitions
-	int historyLength = 100, numberOfPoints = 3, numberOfRepetitions = 2, sleepTime = 500;
+	int historyLength = 100, baseOfDimensions = 11, numberOfRepetitions = 2, sleepTime = 1000;
 	std::vector<double> minAction = { -1, -1 }, maxAction = { 1, 1 };
 	double allowableDistance = 150;
 	maxDistance = 982;
@@ -86,13 +86,15 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		newStates.clear();
 		elapsedTimes.clear();
 
+		resetRobot();
+
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
 			boltzmanExplorationLevel /= explorationDevaluationPerTimestep;
 
 			/// Get state and perform action
 			oldStates.push_back(getState());
-			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, numberOfPoints, boltzmanExplorationLevel);
+			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 			actions.push_back(action);
 			performAction(action);
 
@@ -122,12 +124,11 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 				newStates.erase(newStates.begin());
 				elapsedTimes.erase(elapsedTimes.begin());
 			}
+			sf::sleep(sf::milliseconds(sleepTime));
 		}
 		sf::sleep(sf::milliseconds(sleepTime));
 		std::cout << "a: " << a << "; iter: " << iter << "\n";
 		results[a] = iter;
-
-		resetRobot();
 	}
 
 	printStats(results);

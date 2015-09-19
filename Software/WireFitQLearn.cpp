@@ -86,9 +86,7 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
     
     double sumOfProbabilities = 0;
     for(int a = 0; a < wires.size(); a++) {
-		std::cout << "ex: " << exponentTerms[a] << "; sum: " << sumOfExponentTerms << "\n";
         sumOfProbabilities += (exponentTerms[a] / sumOfExponentTerms);
-		std::cout << "prop: " << sumOfProbabilities << "\n";
         if(sumOfProbabilities >= determiner) {
             lastAction = wires[a].action;
             lastState = currentState;
@@ -297,7 +295,7 @@ std::vector<Wire> WireFitQLearn::getSetOfWires(const std::vector<double> &state,
 			wire.action.push_back(iteratorVector[actionDimension] * scaleVector[actionDimension] + minAction[actionDimension]);
 		}
 		wire.reward = interpolator->getReward(controlWires, wire.action);
-		wires.push_back(wire);
+		wires[a] = (wire);
 
 		/// Increment iterator vector
 		iteratorVector[iteratorVector.size() - 1]++;
