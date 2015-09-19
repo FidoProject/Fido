@@ -17,7 +17,7 @@ class WireFitRobot {
 public:
 	net::WireFitQLearn learner;
 	Simlink simulator;
-	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, maxDistance;
+	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, maxDistance, allowableDistance;
 
 	// Initializes a robot object
 	WireFitRobot();
@@ -25,7 +25,11 @@ public:
 	// Runs the robot for a specified number of time steps
 	void run(int numberOfTimeSteps);
 
-	void test(int numberOfTimes, int maxIterations);
+	// Function for testing the robot on different tasks. Returns a vector containing the number of reward iterations it took to converge on a solution each trial
+	std::vector<int> test(int numberOfTimes, int maxIterations);
+
+	// Runs a search of a number of combinations of hyperparameters to determine the best set
+	void hyperParameterTest();
 private:
 	// Waits until the user says they have finished inputting the state
 	void waitForStateInput();

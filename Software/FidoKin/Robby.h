@@ -19,8 +19,9 @@ public:
      *
      * Should be called every loop.
      * Speed is ~1.
+	 * DeltaTime is in milliseconds.
      */
-    double go(int motLeft, int motRight, double speed);
+    double go(int motLeft, int motRight, double speed, double deltaTime);
     
     /* In testing method which simulates
      * acceleration in the kinematic model.

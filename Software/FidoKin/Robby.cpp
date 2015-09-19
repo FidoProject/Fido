@@ -11,22 +11,21 @@ sf::RectangleShape(sf::Vector2f(width,height)) {
 }
 
 /// Creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
-double Robby::go(int motLeft,int motRight,double speed) {
+double Robby::go(int motLeft,int motRight,double speed,double deltaTime) {
     double mLeft = -(((double)motLeft)/200)*speed;
     double mRight = -(((double)motRight)/200)*speed;
     
     double xprime,yprime,rprime;
     double length = getSize().x;
-    double time = moveClock.restart().asMilliseconds();
-    
+
     double rX = getPosition().x;
     double rY = getPosition().y;
     double rTheta = getRotation()*0.0174532925;
     double omega = (mRight-mLeft)/length;
 
     if (mLeft == mRight) {
-        xprime = rX + mLeft*cos(rTheta)*time;
-        yprime = rY + mLeft*sin(rTheta)*time;
+        xprime = rX + mLeft*cos(rTheta)*deltaTime;
+        yprime = rY + mLeft*sin(rTheta)*deltaTime;
         rprime = rTheta;
     } else {
         double radius = (length/2)*(mLeft+mRight)/(mRight-mLeft);
@@ -34,11 +33,11 @@ double Robby::go(int motLeft,int motRight,double speed) {
         double iccX = rX - radius*sin(rTheta);
         double iccY = rY + radius*cos(rTheta);
         
-        xprime = iccX + (cos(omega*time)*(rX-iccX)+
-                         -sin(omega*time)*(rY-iccY));
-        yprime = iccY + (sin(omega*time)*(rX-iccX)+
-                         cos(omega*time)*(rY-iccY));
-        rprime = rTheta + omega*time;
+        xprime = iccX + (cos(omega*deltaTime)*(rX-iccX)+
+                         -sin(omega*deltaTime)*(rY-iccY));
+        yprime = iccY + (sin(omega*deltaTime)*(rX-iccX)+
+                         cos(omega*deltaTime)*(rY-iccY));
+        rprime = rTheta + omega*deltaTime;
     }
     
     setPosition(xprime,yprime);
@@ -56,7 +55,7 @@ double Robby::goAccel(int motLeft,int motRight) {
     if(!(m1Last==0 && m2Last==0)) lastSpeed -= .0015*aChange;
     if (motLeft==0 && motRight==0) lastSpeed=0;
     if (lastSpeed < 1) lastSpeed += .05;
-    double gyro = go(motLeft,motRight,lastSpeed);
+    double gyro = go(motLeft,motRight,lastSpeed,moveClock.restart().asMilliseconds());
     m1Last = motLeft; m2Last = motRight;
     
     double delta = 100*(lastSpeed-speed);

@@ -71,7 +71,7 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
 	int baseOfDimensions,
 	double explorationConstant) {
 
-	if (explorationConstant < 0.002) explorationConstant = 0.002;
+	if (explorationConstant < 0.004) explorationConstant = 0.004;
 
     double determiner = (double)rand() / (double)RAND_MAX;
     std::vector<double> exponentTerms;

@@ -66,7 +66,7 @@ public:
      * Positive is forwards, negative is reverse,
      * zero is stopped.
      */
-    void setMotors(int motorOne, int motorTwo, double speed);
+    void setMotors(int motorOne, int motorTwo, double speed, double deltaTime);
     
     // Stop the motors.
     void stop();
