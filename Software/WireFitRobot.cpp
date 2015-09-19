@@ -90,7 +90,8 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
-			boltzmanExplorationLevel /= explorationDevaluationPerTimestep;
+			std::cout << "boltz: " << boltzmanExplorationLevel << "\n";
+			boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
 
 			/// Get state and perform action
 			oldStates.push_back(getState());
@@ -161,7 +162,8 @@ double WireFitRobot::getReward() {
 }
 
 void WireFitRobot::performAction(const std::vector<double> &action) {
-	simulator.setMotors(action[0] * 100, action[1] * 100);
+	std::cout << "action: " << action[0] << " " << action[1] << "\n";
+	simulator.setMotors(action[0] * 100, action[1] * 100, 0.1);
 }
 
 void WireFitRobot::resetRobot() {

@@ -33,7 +33,7 @@ protected:
     sf::Clock moveClock;
     
     int m1Last,m2Last,m1Target,m2Target;
-    double lastSpeed,speed;
+    double speed;
 };
 
 #endif

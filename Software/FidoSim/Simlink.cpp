@@ -219,13 +219,13 @@ void Simlink::setLED(int r, int g, int b, int i) {
     led.b = b * i/100;
 }
 
-void Simlink::setMotors(int motorOne, int motorTwo) {
+void Simlink::setMotors(int motorOne, int motorTwo, double speed) {
     motors.motorOne = motorOne;
     motors.motorTwo = motorTwo;
 
 	sf::Vector2f previousRobotPosition = robot.getPosition();
 
-	robot.goAccel(motors.motorOne, motors.motorTwo);
+	robot.go(motors.motorOne, motors.motorTwo, speed);
 
 	sf::Vector2f newRobotPosition = robot.getPosition();
 	if (newRobotPosition.x < 500 + robot.getGlobalBounds().height / 2

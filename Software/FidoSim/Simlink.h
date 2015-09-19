@@ -66,7 +66,7 @@ public:
      * Positive is forwards, negative is reverse,
      * zero is stopped.
      */
-    void setMotors(int motorOne, int motorTwo);
+    void setMotors(int motorOne, int motorTwo, double speed);
     
     // Stop the motors.
     void stop();
@@ -103,6 +103,8 @@ public:
 	// Gets the displacement of the robot from the emitter in terms of x and y components
 	void getRobotDisplacementFromEmitter(double *x, double *y);
 
+	Robby robot;
+	Emitter emitter;
 private:
 	void mainWindowHandler();
 
@@ -138,10 +140,6 @@ private:
     Motors motors;
     IMU imu;
     Piezo piezo;
-
-	Robby robot;
-	Emitter emitter;
-
 	
 	bool keepWindowsOpen;
 };

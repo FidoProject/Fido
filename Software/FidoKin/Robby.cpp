@@ -8,10 +8,9 @@ sf::RectangleShape(sf::Vector2f(width,height)) {
     setPosition(x,y);
     setOrigin(width/2,height/2);
     setRotation(90);
-    lastSpeed=0;
 }
 
-// creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
+/// Creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
 double Robby::go(int motLeft,int motRight,double speed) {
     double mLeft = -(((double)motLeft)/200)*speed;
     double mRight = -(((double)motRight)/200)*speed;
