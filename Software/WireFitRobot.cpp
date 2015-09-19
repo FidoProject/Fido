@@ -3,7 +3,7 @@
 #include "LSInterpolator.h"
 
 WireFitRobot::WireFitRobot() {
-	int stateSize = 2;
+	int stateSize = 3;
 	int numberOfHiddenLayers = 3;
 	int numberOfNeuronsPerHiddenLayer = 15;
 	int numberOfActions = 5, actionDimensions = 2;
@@ -21,8 +21,8 @@ WireFitRobot::WireFitRobot() {
 	double devaluationFactor = 0.4;
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
-	boltzmanExplorationLevel = 10;
-	explorationDevaluationPerTimestep = 0.8;
+	boltzmanExplorationLevel = 30;
+	explorationDevaluationPerTimestep = 0.99;
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {
@@ -74,7 +74,7 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	std::vector<int> results(numberOfTimes);
 
 	/// Constant definitions
-	int historyLength = 100, baseOfDimensions = 11, numberOfRepetitions = 2, sleepTime = 1000;
+	int historyLength = 100, baseOfDimensions = 11, numberOfRepetitions = 2, sleepTime = 100;
 	std::vector<double> minAction = { -1, -1 }, maxAction = { 1, 1 };
 	double allowableDistance = 150;
 	maxDistance = 982;
@@ -148,7 +148,9 @@ std::vector<double> WireFitRobot::getState() {
 
 	simulator.getRobotDisplacementFromEmitter(&x, &y);
 
-	state = { x / maxDistance, y / maxDistance};
+	std::cout << "s: " << x / maxDistance << ", " << y / maxDistance << "\n";
+
+	state = { x / maxDistance, y / maxDistance, (double)simulator.robot.getRotation() / 360.0};
 	return state;
 }
 
@@ -162,8 +164,8 @@ double WireFitRobot::getReward() {
 }
 
 void WireFitRobot::performAction(const std::vector<double> &action) {
-	std::cout << "action: " << action[0] << " " << action[1] << "\n";
-	simulator.setMotors(action[0] * 100, action[1] * 100, 0.1);
+	///std::cout << "action: " << action[0] << " " << action[1] << "\n";
+	simulator.setMotors(action[0] * 100, action[1] * 100, 0.9);
 }
 
 void WireFitRobot::resetRobot() {
