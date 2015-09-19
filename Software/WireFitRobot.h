@@ -17,7 +17,7 @@ class WireFitRobot {
 public:
 	net::WireFitQLearn learner;
 	Simlink simulator;
-	double boltzmanExplorationLevel, explorationDevaluationPerTimestep;
+	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, maxDistance;
 
 	// Initializes a robot object
 	WireFitRobot();

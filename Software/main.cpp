@@ -14,9 +14,7 @@
 
 
 int main() {
-    srand(time(NULL));
-    
-	//Simlink link;
+    srand(time(NULL));  
 
 	WireFitRobot robot;
 	robot.test(50, 3000);

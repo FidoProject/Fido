@@ -3,7 +3,7 @@
 #include "LSInterpolator.h"
 
 WireFitRobot::WireFitRobot() {
-	int stateSize = 1;
+	int stateSize = 2;
 	int numberOfHiddenLayers = 3;
 	int numberOfNeuronsPerHiddenLayer = 15;
 	int numberOfActions = 5, actionDimensions = 2;
@@ -73,9 +73,11 @@ void WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	std::vector<double> elapsedTimes;
 	std::vector<int> results(numberOfTimes);
 
-	int historyLength = 100, numberOfPoints = 200, numberOfRepetitions = 2, sleepTime = 500;
+	/// Constant definitions
+	int historyLength = 100, numberOfPoints = 3, numberOfRepetitions = 2, sleepTime = 500;
 	std::vector<double> minAction = { -1, -1 }, maxAction = { 1, 1 };
-	double allowableDistance = 150, maxDistance = 982;
+	double allowableDistance = 150;
+	maxDistance = 982;
 
 	for (int a = 0; a < numberOfTimes; a++) {
 		oldStates.clear();
@@ -144,7 +146,7 @@ std::vector<double> WireFitRobot::getState() {
 
 	simulator.getRobotDisplacementFromEmitter(&x, &y);
 
-	state = { x, y };
+	state = { x / maxDistance, y / maxDistance};
 	return state;
 }
 

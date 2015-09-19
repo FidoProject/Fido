@@ -68,7 +68,7 @@ std::vector<double> WireFitQLearn::chooseBestAction(std::vector<double> currentS
 std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> currentState,
 	const std::vector<double> &minAction,
 	const std::vector<double> &maxAction,
-	int numberOfWires,
+	int baseOfDimensions,
 	double explorationConstant) {
 
 	if (explorationConstant < 0.001) explorationConstant = 0.001;
@@ -76,7 +76,7 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
     double determiner = (double)rand() / (double)RAND_MAX;
     std::vector<double> exponentTerms;
     double sumOfExponentTerms = 0;
-    std::vector<Wire> wires = getSetOfWires(currentState, minAction, maxAction, numberOfWires);
+    std::vector<Wire> wires = getSetOfWires(currentState, minAction, maxAction, baseOfDimensions);
     
     for(int a = 0; a < wires.size(); a++) {
         double exponentTerm = exp(wires[a].reward / explorationConstant);
@@ -265,34 +265,48 @@ std::vector<Wire> WireFitQLearn::getWires(std::vector<double> state) {
 }
 
 std::vector<Wire> WireFitQLearn::getSetOfWires(const std::vector<double> &state,
-												const std::vector<double> &minAction,
-												const std::vector<double> &maxAction,
-												int numberOfWires) {
-	
+	const std::vector<double> &minAction,
+	const std::vector<double> &maxAction,
+	int baseOfDimensions) {
+
 	if (minAction.size() != maxAction.size() || minAction.size() != actionDimensions) {
 		std::cout << "Mismatching minAction max action \n";
 		throw 1;
 	}
-	if(numberOfWires <= 1) {
-		std::cout << "Value of numberOfWires is too small\n";
+	if (baseOfDimensions <= 1) {
+		std::cout << "Value of baseOfDimensions is too small\n";
+		throw 1;
 	}
 
 	std::vector<Wire> controlWires = getWires(state);
-	
+
 	std::vector<double> scaleVector(minAction.size());
 	for (int a = 0; a < minAction.size(); a++) {
-		scaleVector[a] = (maxAction[a] - minAction[a]) / ((double)numberOfWires - 1);
+		scaleVector[a] = (maxAction[a] - minAction[a]) / ((double)baseOfDimensions - 1);
 	}
 
-	std::vector<Wire> wires(numberOfWires);
-	for (int a = 0; a < wires.size(); a++) {
+	int numberOfWiresReturned = pow(baseOfDimensions, actionDimensions);
+	std::vector<Wire> wires(numberOfWiresReturned);
+	
+	std::vector<double> iteratorVector(actionDimensions);
+	for (int a = 0; a < iteratorVector.size(); a++) iteratorVector[a] = 0;
+
+	for (int a = 0; a < numberOfWiresReturned; a++) {
 		Wire wire;
-		for (int b = 0; b < minAction.size(); b++) {
-			wire.action.push_back(a*scaleVector[b]);
+		for (int actionDimension = 0; actionDimension < minAction.size(); actionDimension++) {
+			wire.action.push_back(iteratorVector[actionDimension] * scaleVector[actionDimension] + minAction[actionDimension]);
 		}
 		wire.reward = interpolator->getReward(controlWires, wire.action);
-
 		wires.push_back(wire);
+
+		/// Increment iterator vector
+		iteratorVector[iteratorVector.size() - 1]++;
+		for (int iteratorVectorIndex = iteratorVector.size() - 1; iteratorVectorIndex >= 0; iteratorVectorIndex--) {
+			if (iteratorVector[iteratorVectorIndex] >= baseOfDimensions) {
+				iteratorVector[iteratorVectorIndex] = 0;
+				if(iteratorVectorIndex > 0)iteratorVector[iteratorVectorIndex - 1]++;
+			}
+		}
 	}
 	
 	return wires;
