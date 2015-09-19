@@ -3,7 +3,7 @@
 #include "LSInterpolator.h"
 
 WireFitRobot::WireFitRobot() {
-	int stateSize = 3;
+	int stateSize = 2;
 	int numberOfHiddenLayers = 3;
 	int numberOfNeuronsPerHiddenLayer = 15;
 	int numberOfActions = 5, actionDimensions = 2;
@@ -21,8 +21,8 @@ WireFitRobot::WireFitRobot() {
 	double devaluationFactor = 0.4;
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
-	boltzmanExplorationLevel = 30;
-	explorationDevaluationPerTimestep = 0.99;
+	boltzmanExplorationLevel = 10000;
+	explorationDevaluationPerTimestep = 0.95;
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {
@@ -74,12 +74,12 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	std::vector<int> results(numberOfTimes);
 
 	/// Constant definitions
-	int historyLength = 100, baseOfDimensions = 11, numberOfRepetitions = 2, sleepTime = 0;
-	std::vector<double> minAction = { -1, -1 }, maxAction = { 1, 1 };
+	int historyLength = 10, baseOfDimensions = 6, numberOfRepetitions = 2, sleepTime = 0;
+	std::vector<double> minAction = {-1, -1}, maxAction = { 1, 1 };
 	allowableDistance = 120;
-	maxDistance = 982;
+	maxDistance = 990;
 
-	simulator.closeWindow();
+	///simulator.closeWindow();
 
 	for (int a = 0; a < numberOfTimes; a++) {
 		oldStates.clear();
@@ -90,19 +90,40 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 		resetRobot();
 
+		int turnsStill = 0;
+		int turnsAway = 0;
+
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
 			boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
+			if (boltzmanExplorationLevel < 0.1) boltzmanExplorationLevel = 0.1;
+			std::cout << "b: " << boltzmanExplorationLevel << "\n";
 
 			/// Get state and perform action
 			oldStates.push_back(getState());
 			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 			actions.push_back(action);
+
+			sf::Vector2f previousRobotPosition = simulator.robot.getPosition();
+			double previousDistance = simulator.getDistanceOfRobotFromEmitter();
 			performAction(action);
+			if (simulator.robot.getPosition() == previousRobotPosition) {
+				turnsStill++;
+			} else {
+				turnsStill = 0;
+			}
+
+			if (simulator.getDistanceOfRobotFromEmitter() > previousDistance) {
+				turnsAway++;
+			}
+			else {
+				turnsAway = 0;
+			}
 
 			/// Determine reward
 			TDVect imu = simulator.getCompass();
-			double reward = 1 - (simulator.getDistanceOfRobotFromEmitter() / maxDistance);
+			double reward = (1 - (turnsStill*0.02 + turnsAway*0.08)) - (simulator.getDistanceOfRobotFromEmitter() / maxDistance);
+			
 
 			/// Record state and reward
 			immediateRewards.push_back(reward);
@@ -126,21 +147,19 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 				newStates.erase(newStates.begin());
 				elapsedTimes.erase(elapsedTimes.begin());
 			}
+			
 			///sf::sleep(sf::milliseconds(sleepTime));
 		}
 		///sf::sleep(sf::milliseconds(sleepTime));
-		std::cout << "a: " << a << "; iter: " << iter << "\n";
 		results[a] = iter;
 	}
-
-	printStats(results);
 
 	return results;
 }
 
 void WireFitRobot::hyperParameterTest() {
-	int minLayers = 1, maxLayers = 10, minNumberOfActions = 2, maxNumberOfActions = 15, minNeuronsPerLayer = 6, maxNeuronsPerLayer = 45;
-	int numberOfTimes = 50, maxIterations = 1000;
+	int minLayers = 4, maxLayers = 10, minNumberOfActions = 5, maxNumberOfActions = 13, minNeuronsPerLayer = 20, maxNeuronsPerLayer = 50;
+	int numberOfTimes = 20, maxIterations = 3000;
 
 	int layers = minLayers, numberOfActions = minNumberOfActions, neuronsPerLayer = minNeuronsPerLayer;
 
@@ -158,13 +177,12 @@ void WireFitRobot::hyperParameterTest() {
 		backprop.setDerivedOutputActivationFunction("simpleLinear");
 
 		double learningRate = 0.95;
-		double devaluationFactor = 0.4;
+		double devaluationFactor = 0.8;
 
 		delete learner.network;
 		learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
-		boltzmanExplorationLevel = 30;
-		explorationDevaluationPerTimestep = 0.95;
+		boltzmanExplorationLevel = 10000;
 
 		std::vector<int> results = test(numberOfTimes, maxIterations);
 		std::cout << "l: " << layers << "; a: " << numberOfActions << "; n-per-l: " << neuronsPerLayer << "; ";
@@ -172,15 +190,14 @@ void WireFitRobot::hyperParameterTest() {
 
 		neuronsPerLayer++;
 		if(neuronsPerLayer > maxNeuronsPerLayer) {
-			neuronsPerLayer = 0;
+			neuronsPerLayer = minNeuronsPerLayer;
 			numberOfActions++;
 		}
 		if(numberOfActions > maxNumberOfActions) {
-			numberOfActions = 0;
+			numberOfActions = minNumberOfActions;
 			layers++;
 		}
 	}
-
 }
 
 void WireFitRobot::waitForStateInput() {
@@ -212,8 +229,18 @@ double WireFitRobot::getReward() {
 }
 
 void WireFitRobot::performAction(const std::vector<double> &action) {
-	///std::cout << "action: " << action[0] << " " << action[1] << "\n";
-	simulator.setMotors(action[0] * 100, action[1] * 100, 1, 30);
+	std::cout << "action: " << action[0] << " " << action[1] << "\n";
+	sf::Vector2f previousRobotPosition = simulator.robot.getPosition();
+
+	simulator.robot.go(action[0]*100, action[1]*100, 1, 25);
+
+	sf::Vector2f newRobotPosition = simulator.robot.getPosition();
+	if (newRobotPosition.x < 500 + simulator.robot.getGlobalBounds().height / 2
+		|| newRobotPosition.x > 1200 - simulator.robot.getGlobalBounds().height / 2
+		|| newRobotPosition.y < 0 + simulator.robot.getGlobalBounds().height / 2
+		|| newRobotPosition.y > 595 - simulator.robot.getGlobalBounds().height / 2) {
+		simulator.robot.setPosition(previousRobotPosition);
+	}
 }
 
 void WireFitRobot::resetRobot() {
@@ -248,7 +275,7 @@ void WireFitRobot::printStats(std::vector<int> data) {
 	for (int a = 0; a <= histogram.size(); a++) {
 		iterator += histogram[a];
 		if (iterator > data.size() / 2) {
-			median = a;
+			median = a+min;
 			break;
 		}
 	}
@@ -257,7 +284,7 @@ void WireFitRobot::printStats(std::vector<int> data) {
 	for (int a = 0; a < histogram.size(); a++) {
 		if (histogram[a] > maxInstances) {
 			maxInstances = histogram[a];
-			mode = a;
+			mode = a+min;
 		}
 		iterator += histogram[a];
 	}
