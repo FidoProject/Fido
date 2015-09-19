@@ -45,11 +45,6 @@ void Simlink::mainWindowHandler() {
 	} sf::Text text("Hello SFML", font, 50);
 	text.setColor(sf::Color::Black);
 
-	sf::Music music;
-	if (!music.openFromFile("C:/Users/Michael/Documents/Fido/Software/FidoSim/nice_music.ogg")) {
-		exit(EXIT_FAILURE);
-	} music.play();
-
 	while (keepWindowsOpen == true) {
 		updateMainWindow();
 	}

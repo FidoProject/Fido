@@ -4,9 +4,9 @@
 
 WireFitRobot::WireFitRobot() {
 	int stateSize = 2;
-	int numberOfHiddenLayers = 4;
-	int numberOfNeuronsPerHiddenLayer = 30;
-	int numberOfActions = 10, actionDimensions = 2;
+	int numberOfHiddenLayers = 3;
+	int numberOfNeuronsPerHiddenLayer = 15;
+	int numberOfActions = 5, actionDimensions = 2;
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 
