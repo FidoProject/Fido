@@ -34,12 +34,11 @@
   - Introduction
   - Abstract
 
-### Task examples
- * Learn to always keep an LED on
- * Learn to keep an LED on when a red light is shone on the system
- * Learn to display only red with the LED
- * Learn to drive straight
- * Learn to seek a magnetic field
+## Future TODO
+- Implement more tasks
+  - Have to instances of Fido reproduce
+  - Place two instances of Fido in a simulation with limited food; Give them the ability to kill
+  - Use genetic algorithms to actually have instances of Fido reproduce and evolve
 
 ### Papers used for References
  * Q Learning for Continous State Action Spaces - http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf
