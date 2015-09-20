@@ -19,7 +19,7 @@ An artificial neuron is simply a mathematical model of a biological neuron, and 
 
 A weight is simply a positive or negative number that governs the impact of of its respective input on the neuron's single output. The bias term is a number that is added to the summation of weights and inputs. The bias term allows us to make affine transformations on the domain of the activation function. 
 
-In biologically inspired neurons, the activation function is a binary step function. If the activation function's input is less than a certain threshold, the output is zero. If it is greater than the threshold, the output is one. However, a binary output can be somewhat limiting for many applications of neural networks. For example, many of Fido's outputs are gradient rather than linear; as an example, an LED can be given a brightness. For this purpose alternate activation functions can be used with gradient outputs. One such function is a sigmoid function, expressed as such:
+In biologically inspired neurons, the activation function is a binary step function. If the activation function's input is less than a certain threshold, the output is zero. If it is greater than the threshold, the output is one. However, a binary output can be somewhat limiting for many applications of neural networks. For example, many of Fido's outputs are gradient rather than binary; as an example, Fido will have to set the brightness of an LED. Because of this, alternate activation functions giving gradient outputs are used. One such function is the sigmoid function, expressed as such:
 
 \begin{equation}
 	O(a) = \cfrac{1}{1+e^{-\frac{a}{p}}}
