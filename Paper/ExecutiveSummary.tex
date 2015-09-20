@@ -2,7 +2,7 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[nottoc]{tocbibind}
-\usepackage[margin=1.5in]{geometry}
+\usepackage[margin=1.25in]{geometry}
 \usepackage{mathptmx}
 \usepackage[activate={true,nocompatibility},final,
 			tracking=true,kerning=true,spacing=true,
@@ -27,6 +27,10 @@ The Executive Summary on its own, separate from the Research Report, should conv
 
 \noindent
 
-A robot intelligence can be simplified into a black box, with inputs such as sensor data and outputs such as motor control.  The purpose of this project was to develop an intelligence that not only can adapt to any set of robot inputs and outputs, but can also be trained using positive and negative reinforcement.  The implementation is lightweight and resource-efficient, making it a practical solution as a control system for mobile robots.  This was achieved by regulating artificial neural networks according to a novel learning algorithm, in addition to modifying network shape and size to best fit the task at hand.  The control system was tested on a simulated robot with a differential drive system (similar to that of a tank), a large sensor array, and some additional outputs.  The system performed well doing a variety of tasks, such as learning to follow a radio emitter.  Additionally results showed that only limited sensor feedback was necessary for learning, further 
+A robot intelligence can be simplified into a black box, with inputs such as sensor data and outputs such as motor control.  Most robot software today operate as ``expert systems,'' using preprogrammed conditional logic to execute a set routine.  These implementations are sufficient for the specific purpose and platform they are designed for, but lack the ability to perform other tasks or work on other robots.
+
+The purpose of this project was to develop a universal robot control system that not can not only adapt to any robot hardware, but can also be trained using positive and negative reinforcement.  The implementation (nicknamed Fido) is lightweight and resource-efficient, making it a practical solution as a control system for mobile robots.  This was achieved by regulating artificial neural networks according to a novel learning algorithm, in addition to modifying network shape and size to best fit the task at hand.
+
+Fido was tested on a simulated robot with a differential drive system (similar to that of a tank), a large sensor array, and some additional outputs.  The system performed well doing a variety of tasks, such as learning to follow a radio emitter, line following, and drawing basic shapes.  Additionally, results showed that only limited sensor feedback was necessary for learning, further widening possible applications.  Future plans for continuing research include a hardware implementation to test Fido outside of a simulation environment.
 
 \end{document}
