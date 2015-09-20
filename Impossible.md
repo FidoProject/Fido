@@ -5,11 +5,11 @@
   - Statically type hyperparameters (nn topology, number of actions, boltzman devaluation and starting constant)
   - Evaluate performance on driving toward an emmiter and setting an LED to the right color when given the proper stimulus
   - Determine if there is a need to dynamically change hyperparameters
-- Separate tasks from WireFitRobot class for code reuse
+- ~~Separate tasks from WireFitRobot class for code reuse~~
   - ~~Create virtual class and pass in objects of this class to WireFitRobot~~
-  - Create Tasks for common tasks
+  - ~~Create Tasks for common tasks~~
     - ~~Float to emitter~~
-    - Drive to emitter
+    - ~~Drive to emitter~~
     - LED to right color when prompted
 - Implement dynamic changing of number of control wires
   - Calculate bias (error at predicting reward) and variance (deviation from the mean)
