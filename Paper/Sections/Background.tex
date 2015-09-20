@@ -44,7 +44,7 @@ The sigmoid function provides us with a gradient output. However, output is stil
 
 \subsection{Feedforward Neural Network}
 
-A traditional method of arranging artificial neurons in a neural network is called a feedforward network. Neurons are connected as previously described: the output of each neuron is connected to one of the inputs of another neuron. These neurons are organized into layers, as described in the following figure: % ogres have layers
+A traditional method of arranging artificial neurons in a neural network is called a feedforward network. Neurons are connected as previously described: the output of each neuron is connected to one of the inputs of another neuron. These neurons are organized into layers, as described in the following figure:
 
 \begin{figure}[ht]
 	\centering
@@ -52,4 +52,6 @@ A traditional method of arranging artificial neurons in a neural network is call
 	\caption{Single Output Feedforward Network}
 \end{figure}
 
-Initial inputs are first sent into the input layer. Next, the output of each input layer neuron is sent into each neuron in the hidden layer. The hidden layer processes the inputs to outputs using an activation function and a weight value for each input. There can be any number of hidden layers in a neural network, depending on the complexity of the computation being performed. Finally the outputs from the last hidden layer neurons are sent into each neuron of the output layer, where the final outputs are processed. A concrete example of a feedforward network is that of Fido. Sensor inputs such as light and sound are sent into the input layer. After the signals have passed through to the output layer, the outputs from the output layer are used to change the speed of motors, the color of LEDs, and the sounds of buzzers. The purpose of training a neural network is to make input values correspond to the correct output values, depending on the desired behavior. An example could be making Fido drive when it senses light. The way to give a neural network desired behavior is by changing the weights and biases of each neuron using a learning algorithm.
+The output of each neuron in a layer becomes an input of every neuron in the next layer. In this way, the original inputs of the neural network are "fed forward" layer by layer, starting from the first layer (the input layer), passing through any number of hidden layers, ending with the last layer (the output layer). The outputs of the neurons of the output layer are the outputs of the whole network.
+
+A concrete example of a feedforward network is that of Fido. Sensor inputs such as light and sound are sent into the input layer. The outputs of the output layer's neurons are used to change the speed of Fido's motors, the color of Fido's LEDs, and the sounds of Fido's buzzers.
