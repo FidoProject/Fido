@@ -20,7 +20,7 @@ void FloatToEmitter::getRobotParameters(int *stateSize,
 						double *baseOfDimensions) {
 
 	*stateSize = 2, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 0.3, *explorationConstantDevaluation = 1;
+	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
 	*baseOfDimensions = 6;
 }
