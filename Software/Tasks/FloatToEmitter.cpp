@@ -15,8 +15,10 @@ void FloatToEmitter::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-
-
+	*stateSize = 2, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
+	*beginningExplorationConstant = 10, *explorationConstantDevaluation = 0.9;
+	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
+	*baseOfDimensions = 6;
 }
 
 std::vector<double> FloatToEmitter::getState() {
@@ -57,4 +59,10 @@ bool FloatToEmitter::isTaskDone() {
 		return false;
 	}
 }
- 
+
+void FloatToEmitter::reset() {
+	do {
+		simulator->placeEmitterInRandomPosition();
+		simulator->placeRobotInRandomPosition();
+	} while(simulator->getDistanceOfRobotFromEmitter() < allowableDistance);
+}

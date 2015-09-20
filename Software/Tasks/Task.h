@@ -28,6 +28,7 @@ public:
 	virtual std::vector<double> getState() = 0;
 	virtual double performAction(const std::vector<double> &action) = 0;
 	virtual bool isTaskDone() = 0;
+	virtual void reset() = 0;
 };
 
 #endif

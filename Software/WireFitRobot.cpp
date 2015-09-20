@@ -23,45 +23,6 @@ WireFitRobot::WireFitRobot(Task *task_) {
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 }
 
-void WireFitRobot::run(int numberOfTimeSteps) {
-	std::vector< std::vector<double> > actions;
-	std::vector< std::vector<double> > oldStates;
-	std::vector<double> immediateRewards;
-	std::vector< std::vector<double> > newStates;
-	std::vector<double> elapsedTimes;
-
-	int timesInARow = 0;
-	int a;
-	for(a = 0; a < numberOfTimeSteps; a++) {
-		oldStates.push_back(getState());
-		actions.push_back(learner.chooseRandomAction(oldStates[oldStates.size() - 1], { 0, 0 }, { 1, 1 }));
-		performAction(actions[actions.size() -1 ]);
-		immediateRewards.push_back(std::max(1 - abs(actions[actions.size() - 1][0] - actions[actions.size() - 1][1]), 0.0));
-		newStates.push_back(oldStates[oldStates.size() - 1]);
-		elapsedTimes.push_back(1);
-
-		learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, 4);
-
-		std::vector<double> bestAction = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
-		if (std::max(1 - abs(bestAction[0] - bestAction[1]), 0.0) > 0.95) {
-			timesInARow++;
-			if (timesInARow == 5) break;
-		} else {
-			timesInARow = 0;
-		}
-	}
-
-	std::cout << "a: " << a << "\n";
-	
-	while (true) {
-		waitForStateInput();
-		std::vector<double> state = getState();
-		std::vector<double> action = learner.chooseBestAction(state);
-		performAction(action);
-		learner.applyReinforcementToLastAction(getReward(), state, 1);
-	}
-}
-
 std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	/// Vector Declarations
 	std::vector< std::vector<double> > actions;
@@ -110,9 +71,7 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			//learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, numberOfRepetitions);
 
 			/// Learning criteria
-			if (task->isTaskDone()) {
-				break;
-			}
+			if (task->isTaskDone()) break;
 
 			/// Erase history past allowable timesteps
 			if (iter >= historyLength) {
@@ -122,8 +81,6 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 				newStates.erase(newStates.begin());
 				elapsedTimes.erase(elapsedTimes.begin());
 			}
-			
-			///sf::sleep(sf::milliseconds(sleepTime));
 		}
 		///sf::sleep(sf::milliseconds(sleepTime));
 		results[a] = iter;
@@ -139,9 +96,10 @@ void WireFitRobot::hyperParameterTest() {
 	int layers = minLayers, numberOfActions = minNumberOfActions, neuronsPerLayer = minNeuronsPerLayer;
 
 	while(layers <= maxLayers) {
-		int stateSize = 3;
-		int actionDimensions = 2;
-		net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), layers, neuronsPerLayer, "sigmoid");
+		/// Setup Robot
+		task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &boltzmanExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
+
+		net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 		network->setOutputActivationFunction("simpleLinear");
 
 		double backpropLearningRate = 0.1;
@@ -152,17 +110,16 @@ void WireFitRobot::hyperParameterTest() {
 		backprop.setDerivedOutputActivationFunction("simpleLinear");
 
 		double learningRate = 0.95;
-		double devaluationFactor = 0.8;
-
+		double devaluationFactor = 0.4;
 		delete learner.network;
 		learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
-		boltzmanExplorationLevel = 10000;
-
+		/// Carry out test
 		std::vector<int> results = test(numberOfTimes, maxIterations);
 		std::cout << "l: " << layers << "; a: " << numberOfActions << "; n-per-l: " << neuronsPerLayer << "; ";
 		printStats(results);
 
+		/// Update hyperparameters
 		neuronsPerLayer++;
 		if(neuronsPerLayer > maxNeuronsPerLayer) {
 			neuronsPerLayer = minNeuronsPerLayer;
@@ -175,58 +132,9 @@ void WireFitRobot::hyperParameterTest() {
 	}
 }
 
-void WireFitRobot::waitForStateInput() {
-	std::string response;
-	std::cout << "Respond when you finish inputing the state\n";
-
-	std::cin >> response;
-}
-
-std::vector<double> WireFitRobot::getState() {
-	std::vector<double> state;
-	double x, y;
-
-	simulator.getRobotDisplacementFromEmitter(&x, &y);
-
-	//std::cout << "s: " << x / maxDistance << ", " << y / maxDistance << ", " << (double)simulator.robot.getRotation() / 360.0 << "\n";
-
-	state = { x / maxDistance, y / maxDistance, (double)simulator.robot.getRotation() / 360.0};
-	return state;
-}
-
-double WireFitRobot::getReward() {
-	double reward = 0;
-
-	std::cout << "Enter a reward.\n";
-	std::cin >> reward;
-
-	return reward;
-}
-
-void WireFitRobot::performAction(const std::vector<double> &action) {
-	std::cout << "action: " << action[0] << " " << action[1] << "\n";
-	sf::Vector2f previousRobotPosition = simulator.robot.getPosition();
-
-	simulator.robot.go(action[0]*100, action[1]*100, 2, 150);
-
-	sf::Vector2f newRobotPosition = simulator.robot.getPosition();
-	if (newRobotPosition.x < 500 + simulator.robot.getGlobalBounds().height / 2
-		|| newRobotPosition.x > 1200 - simulator.robot.getGlobalBounds().height / 2
-		|| newRobotPosition.y < 0 + simulator.robot.getGlobalBounds().height / 2
-		|| newRobotPosition.y > 595 - simulator.robot.getGlobalBounds().height / 2) {
-		//simulator.robot.setPosition(previousRobotPosition);
-	}
-}
-
 void WireFitRobot::resetRobot() {
-	do {
-		simulator.placeEmitterInRandomPosition();
-		simulator.placeRobotInRandomPosition();
-	} while (simulator.getDistanceOfRobotFromEmitter() < allowableDistance);
-	
 	learner.resetControlPoints();
-	performAction({ 0, 0 });
-	boltzmanExplorationLevel = 8;
+	task->reset();
 }
 
 void WireFitRobot::printStats(std::vector<int> data) {
