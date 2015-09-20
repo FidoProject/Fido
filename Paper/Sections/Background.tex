@@ -10,10 +10,10 @@ The human brain is composed of billions of neurons, interconnected electrically 
 	\caption{Single Neuron Diagram}
 \end{figure}
 
-An artificial neuron is simply a mathematical model of a biological neuron, and, therefore, its functionality is very similar. Each artificial neuron has multiple inputs, each one the output of another connected neuron. In addition, each neuron has a weight for each input, a bias term, an activation function, and one output. The output of the neuron becomes the input of other, connected neurons. The output of a neuron is expressed mathematically for $n$ inputs $x$, $n$ weights $w$, a bias term $b$, and an activation function $f$:
+An artificial neuron is simply a mathematical model of a biological neuron, and therefore its functionality is very similar. Each artificial neuron has multiple inputs, each one the output of a different neuron. In addition, each neuron has a weight for each input, a bias term, an activation function, and one output. The output of one neuron becomes the input of another, connected neurons. The output of a neuron $o$ is expressed mathematically for $n$ inputs $x$, $n$ weights $w$, a bias term $b$, and an activation function $f$:
 
 \begin{equation}
-	f(\sum_{i=0}^{i=n}x_i w_i + b)
+	o = f(\sum_{i=0}^{i=n}x_i w_i + b)
 	\,.
 \end{equation}
 
