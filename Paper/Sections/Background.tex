@@ -10,14 +10,15 @@ The human brain is composed of billions of neurons, interconnected electrically 
 	\caption{Single Neuron Diagram}
 \end{figure}
 
-An artificial neuron is simply a mathematical model of a biological neuron, and therefore its functionality is very similar. Each artificial neuron has multiple inputs, each one the output of a different neuron. In addition, each neuron has a weight for each input, a bias term, an activation function, and one output. The output of one neuron becomes the input of another, connected neurons. The output of a neuron $o$ is expressed mathematically for $n$ inputs $x$, $n$ weights $w$, a bias term $b$, and an activation function $f$:
+An artificial neuron is simply a mathematical model of a biological neuron, and therefore its functionality is very similar. Each artificial neuron has multiple inputs, each one the output of a different neuron. In addition, each neuron has a weight for each input, a bias term, an activation function, and one output. The output of one neuron becomes the input of another, connected neurons. The output of a neuron is expressed mathematically for $n$ inputs $x$ and weights $w$, a bias term $b$, and activation function $O(x)$:
 
-\begin{equation}
-	o = f(\sum_{i=0}^{i=n}x_i w_i + b)
+\begin{align*}
+	\text{activation} = \sum_{i=0}^{i=n}x_i w_i + b\\
+	\text{output} = O(\text{activation})
 	\,.
-\end{equation}
+\end{align*}
 
-A weight is simply a positive or negative number that governs the impact of of its respective input on the neuron's single output. The bias term is a number that is added to the summation of weights and inputs. The bias term allows us to make affine transformations on the domain of the activation function. 
+A weight is a positive or negative number that governs the impact of of its respective input on the neuron's single output. The bias term is a number that is added to the summation of weights and inputs. The bias term allows us to make affine transformations on the domain of the activation function. 
 
 In biologically inspired neurons, the activation function is a binary step function. If the activation function's input is less than a certain threshold, the output is zero. If it is greater than the threshold, the output is one. However, a binary output can be somewhat limiting for many applications of neural networks. For example, many of Fido's outputs are gradient rather than binary; as an example, Fido will have to set the brightness of an LED. Because of this, alternate activation functions giving gradient outputs are used. One such function is the sigmoid function, expressed as such:
 
@@ -52,6 +53,6 @@ A traditional method of arranging artificial neurons in a neural network is call
 	\caption{Single Output Feedforward Network}
 \end{figure}
 
-The output of each neuron in a layer becomes an input of every neuron in the next layer. In this way, the original inputs of the neural network are ``fed forward" layer by layer, starting from the first layer (the input layer), passing through any number of hidden layers, ending with the last layer (the output layer). The outputs of the neurons of the output layer are the outputs of the whole network.
+The output of each neuron in a layer becomes an input of every neuron in the next layer. In this way, the original inputs of the neural network are ``fed forward'' layer by layer, starting from the first layer (the input layer), passing through any number of hidden layers, ending with the last layer (the output layer). The outputs of the neurons of the output layer are the outputs of the whole network.
 
 A concrete example of a feedforward network is that of Fido. Sensor inputs such as light and sound are sent into the input layer. The outputs of the output layer's neurons are used to change the speed of Fido's motors, the color of Fido's LEDs, and the sounds of Fido's buzzers.
