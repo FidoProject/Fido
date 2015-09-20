@@ -7,8 +7,9 @@
   - Determine if there is a need to dynamically change hyperparameters
 - Separate tasks from WireFitRobot class for code reuse
   - Create virtual class and pass in objects of this class to WireFitRobot
-- Implement dynamic changing of hyperparameters
+- Implement dynamic changing of number of control wires
   - Calculate bias (error at predicting reward) and variance (deviation from the mean)
-  - Use brute force descent (change the number of actions see if variance changes favorably) to determine the proper number of actions
+  - Use brute force descent (change the number of control wires see if variance changes favorably) to determine the proper number of control wires
+    - When lowering or raising the number of control wires, `take the new set of control wires (add or subtract one fromt the old set) and use gradient descent to minimize error in modeling the interpolator function with the past control points
 - **Paperwork**
   - **Excecutive summary**
