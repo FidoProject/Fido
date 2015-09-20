@@ -20,3 +20,12 @@
     - Acceptable error level will be set low (0.001) and maxIterations will be low (1000)
 - **Paperwork**
   - **Excecutive summary**
+  - Schiller's forms
+  - Weitz's forms
+- Paper
+  - Learning Impl
+  - Results
+  - Discussion
+  - Conclusion
+  - Introduction
+  - Abstract
