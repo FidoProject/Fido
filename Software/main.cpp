@@ -18,7 +18,7 @@
 int main() {
     srand(time(NULL));  
 
-	WireFitRobot robot(new FlashingLights());
+	WireFitRobot robot(new FloatToEmitter());
 	robot.hyperParameterTest();
 
 	while (true) {

@@ -49,13 +49,11 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
 			boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
-			std::cout << "b: " << boltzmanExplorationLevel << "\n";
 
 			/// Get state and perform action
 			oldStates.push_back(task->getState());
 
-			std::vector<double> action;
-			action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 			actions.push_back(action);
 
 			double reward = task->performAction(action);
@@ -72,6 +70,11 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			/// Learning criteria
 			if (task->isTaskDone()) break;
 
+			for (int a = 0; a < 5; a++) {
+				std::vector<double> action = learner.chooseBoltzmanAction(task->getState(), minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+				task->performAction(action);
+			}
+
 			/// Erase history past allowable timesteps
 			if (iter >= historyLength) {
 				actions.erase(actions.begin());
@@ -83,6 +86,7 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		}
 		///sf::sleep(sf::milliseconds(sleepTime));
 		results[a] = iter;
+		std::cout << "iter: " << iter << "\n";
 	}
 
 	return results;

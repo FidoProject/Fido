@@ -249,15 +249,15 @@ int Simlink::getTemperature() {
 }
 
 void Simlink::placeRobotInRandomPosition() {
-	double randX = (((double)rand() / (double)RAND_MAX) * (1190 - 510)) + 510;
-	double randY = ((double)rand() / (double)RAND_MAX) * (585 - 10) + 10;
+	double randX = (((double)rand() / (double)RAND_MAX) * (1150 - 550)) + 550;
+	double randY = ((double)rand() / (double)RAND_MAX) * (530 - 50) + 50;
 
 	robot.setPosition(randX, randY);
 }
 
 void Simlink::placeEmitterInRandomPosition() {
-	double randX = ((double)rand() / (double)RAND_MAX) * (1190 - 510) + 510;
-	double randY = ((double)rand() / (double)RAND_MAX) * (585 - 10) + 10;
+	double randX = ((double)rand() / (double)RAND_MAX) * (1150 - 550) + 550;
+	double randY = ((double)rand() / (double)RAND_MAX) * (530 - 50) + 50;
 
 	emitter.set(sf::Vector2i((int)randX, (int)randY));
 }

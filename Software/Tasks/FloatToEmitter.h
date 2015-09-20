@@ -8,7 +8,7 @@ class Simlink;
 class FloatToEmitter : public Task {
 public:
 	Simlink *simulator;
-	const double maxDistance = 982, allowableDistance = 110;
+	const double maxDistance = 982, allowableDistance = 70;
 	double turnsStill = 0, turnsAway = 0;
 
 	FloatToEmitter();
