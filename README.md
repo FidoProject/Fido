@@ -13,6 +13,8 @@
     - ~~Float to emitter~~
     - ~~Drive to emitter~~
     - ~~LED to right color when prompted~~
+    - Drive in a shape
+    - Line following using the light sensor
 - Implement dynamic changing of number of control wires
   - Calculate bias (error at predicting reward) and variance (deviation from the mean)
   - Use brute force descent (change the number of control wires see if variance changes favorably) to determine the proper number of control wires
