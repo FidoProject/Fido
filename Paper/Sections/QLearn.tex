@@ -1,0 +1,17 @@
+% Intro text here; a sentence or two
+Intro text.
+
+\subsection{Q-Learning}
+
+Reinforcement learning seeks to find the optimal action to be undertaken for a given state through trial and error. In the context of Fido, an action can be the playing of a note or driving straight forward and the state can be the amount of light that is detected or how near the robot is too another object. Once an action is performed, a reward and a new state are given back to the reinforcement learning algorithm. Overtime as actions are performed, a reinforcement learning algorithm sharpens its ability to receive reward.
+
+Q-Learning (Watkins, 1989) is a popular reinforcement learning algorithm that works by learning an action-value function that takes an action-state pair as an input and outputs an expected utility value of performing that action in that state. This utility value is know as the $Q$-value. The $Q$-value is a combination of immediate reward and expected future reward. Every reward iteration, the $Q$-value of an action-state pair is updated as such:
+
+\begin{equation}
+	Q(a, s) := Q(a, s)(1 - \alpha) + \alpha(R + \gamma \max Q(a, s_{t+1}))
+	\,,
+\end{equation}
+
+Where $a$ is the action carried out, $s$ is the initial state, $R$ is the reward received, and $s_{t+1}$ is the new state. $\alpha$ is the learning rate of the algorithm. $\alpha$ may be lowered or raised to diminish or amplify the changes made to the $Q$-value each reward iteration, and so determines the rate of convergence. $\gamma$ is the devaluation factor, which determines the weight given to future rewards. A $\gamma$ approaching zero will force the algorithm to only value immediate reward, while a $\gamma$ approaching one will make it focused on high long term reward.
+
+\subsection{Wire-Fitted Q-Learning}
