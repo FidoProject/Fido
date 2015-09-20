@@ -8,9 +8,13 @@ class Simlink;
 
 // A virtual class that may be subclassed to implement a task to be carried out by WireFitRobot
 class Task {
+public:
 	Simlink *simulator;
 
-	void init(Simlink * simulator_);
+	void init(Simlink *simulator_) {
+		simulator = simulator_;
+	};
+
 	virtual void getRobotParameters(int *stateSize, 
 									int *actionDimensions, 
 									int *numberOfActions, 
@@ -22,12 +26,9 @@ class Task {
 									std::vector<double> *maxAction,
 									double *baseOfDimensions) = 0;
 	virtual std::vector<double> getState() = 0;
-	virtual void performAction(const std::vector<double> &action) = 0;
+	virtual double performAction(const std::vector<double> &action) = 0;
 	virtual bool isTaskDone() = 0;
 };
 
 #endif
 
-void Task::init(Simlink *simulator_) {
-	simulator = simulator_;
-};

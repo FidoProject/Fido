@@ -26,8 +26,9 @@ std::vector<double> FloatToEmitter::getState() {
 	return {x / maxDistance, y / maxDistance};
 }
 
-void FloatToEmitter::performAction(const std::vector<double> &action) {
+double FloatToEmitter::performAction(const std::vector<double> &action) {
 	sf::Vector2f previousRobotPosition = simulator->robot.getPosition();
+	double previousDistance = simulator->getDistanceOfRobotFromEmitter();
 
 	simulator->robot.setPosition(simulator->robot.getPosition().x + action[0] * 10, simulator->robot.getPosition().y + action[1] * 10);
 
@@ -39,6 +40,14 @@ void FloatToEmitter::performAction(const std::vector<double> &action) {
 		
 		simulator->robot.setPosition(previousRobotPosition);
 	}
+
+	if (simulator->robot.getPosition() == previousRobotPosition) turnsStill++;
+	else turnsStill = 0;
+
+	if (simulator->getDistanceOfRobotFromEmitter() > previousDistance) turnsAway++;
+	else turnsAway = 0;
+
+	return (1 - (turnsStill*0.02 + turnsAway*0.1)) - (simulator->getDistanceOfRobotFromEmitter() / maxDistance);
 }
 
 bool FloatToEmitter::isTaskDone() {

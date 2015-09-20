@@ -6,9 +6,10 @@
 class Simlink;
 
 class FloatToEmitter : public Task {
-
+public:
 	Simlink *simulator;
 	const double maxDistance = 982, allowableDistance = 110;
+	double turnsStill = 0, turnsAway = 0;
 
 	FloatToEmitter();
 
@@ -23,7 +24,7 @@ class FloatToEmitter : public Task {
 							std::vector<double> *maxAction,
 							double *baseOfDimensions);
 	std::vector<double> getState();
-	void performAction(const std::vector<double> &action);
+	double performAction(const std::vector<double> &action);
 	bool isTaskDone();
 };
 

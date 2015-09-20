@@ -11,12 +11,12 @@
 #include "Robot.h"
 #include "WireFitRobot.h"
 #include "WireFitQLearn.h"
-
+#include "Tasks/FloatToEmitter.h"
 
 int main() {
     srand(time(NULL));  
 
-	WireFitRobot robot;
+	WireFitRobot robot(new FloatToEmitter());
 	robot.hyperParameterTest();
 
 	while (true) {
