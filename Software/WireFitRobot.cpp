@@ -55,8 +55,7 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			oldStates.push_back(task->getState());
 
 			std::vector<double> action;
-			if (boltzmanExplorationLevel < 0.1) action = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
-			else action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+			action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 			actions.push_back(action);
 
 			double reward = task->performAction(action);
@@ -93,13 +92,13 @@ void WireFitRobot::hyperParameterTest() {
 	int minLayers = 4, maxLayers = 10, minNumberOfActions = 5, maxNumberOfActions = 13, minNeuronsPerLayer = 20, maxNeuronsPerLayer = 50;
 	int numberOfTimes = 20, maxIterations = 3000;
 
-	int layers = minLayers, numberOfActions = minNumberOfActions, neuronsPerLayer = minNeuronsPerLayer;
+	int hpLayers = minLayers, hpNumberOfActions = minNumberOfActions, hpNeuronsPerLayer = minNeuronsPerLayer;
 
-	while(layers <= maxLayers) {
+	while(hpLayers <= maxLayers) {
 		/// Setup Robot
 		task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &boltzmanExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
 
-		net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
+		net::NeuralNet * network = new net::NeuralNet(stateSize, hpNumberOfActions * (actionDimensions + 1), hpLayers, hpNeuronsPerLayer, "sigmoid");
 		network->setOutputActivationFunction("simpleLinear");
 
 		double backpropLearningRate = 0.1;
@@ -112,22 +111,22 @@ void WireFitRobot::hyperParameterTest() {
 		double learningRate = 0.95;
 		double devaluationFactor = 0.4;
 		delete learner.network;
-		learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
+		learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, hpNumberOfActions);
 
 		/// Carry out test
 		std::vector<int> results = test(numberOfTimes, maxIterations);
-		std::cout << "l: " << layers << "; a: " << numberOfActions << "; n-per-l: " << neuronsPerLayer << "; ";
+		std::cout << "l: " << hpNeuronsPerLayer << "; a: " << hpNumberOfActions << "; n-per-l: " << hpNeuronsPerLayer << "; ";
 		printStats(results);
 
 		/// Update hyperparameters
-		neuronsPerLayer++;
-		if(neuronsPerLayer > maxNeuronsPerLayer) {
-			neuronsPerLayer = minNeuronsPerLayer;
-			numberOfActions++;
+		hpNeuronsPerLayer++;
+		if(hpNeuronsPerLayer > maxNeuronsPerLayer) {
+			hpNeuronsPerLayer = minNeuronsPerLayer;
+			hpNumberOfActions++;
 		}
-		if(numberOfActions > maxNumberOfActions) {
-			numberOfActions = minNumberOfActions;
-			layers++;
+		if(hpNumberOfActions > maxNumberOfActions) {
+			hpNumberOfActions = minNumberOfActions;
+			hpLayers++;
 		}
 	}
 }

@@ -13,6 +13,7 @@ public:
 
 	FloatToEmitter();
 
+	void init(Simlink *simulator_);
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
 							int *numberOfActions, 

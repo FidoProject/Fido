@@ -2,7 +2,11 @@
 
 #include "Simlink.h"
 
-FloatToEmitter::FloatToEmitter() {}
+FloatToEmitter::FloatToEmitter() {};
+
+void FloatToEmitter::init(Simlink *simulator_) {
+	simulator = simulator_;
+};
 
 void FloatToEmitter::getRobotParameters(int *stateSize,
 						int *actionDimensions,
@@ -16,7 +20,7 @@ void FloatToEmitter::getRobotParameters(int *stateSize,
 						double *baseOfDimensions) {
 
 	*stateSize = 2, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 10, *explorationConstantDevaluation = 0.9;
+	*beginningExplorationConstant = 0.3, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
 	*baseOfDimensions = 6;
 }
@@ -45,11 +49,12 @@ double FloatToEmitter::performAction(const std::vector<double> &action) {
 
 	if (simulator->robot.getPosition() == previousRobotPosition) turnsStill++;
 	else turnsStill = 0;
-
 	if (simulator->getDistanceOfRobotFromEmitter() > previousDistance) turnsAway++;
 	else turnsAway = 0;
 
-	return (1 - (turnsStill*0.02 + turnsAway*0.1)) - (simulator->getDistanceOfRobotFromEmitter() / maxDistance);
+	std::cout << "t: " << turnsStill << "\n";
+	return (1 - (turnsStill*0.06 + turnsAway*0.1)) - (simulator->getDistanceOfRobotFromEmitter() / maxDistance);
+	
 }
 
 bool FloatToEmitter::isTaskDone() {

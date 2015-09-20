@@ -11,9 +11,7 @@ class Task {
 public:
 	Simlink *simulator;
 
-	void init(Simlink *simulator_) {
-		simulator = simulator_;
-	};
+	virtual void init(Simlink *simulator_) = 0;
 
 	virtual void getRobotParameters(int *stateSize, 
 									int *actionDimensions, 
