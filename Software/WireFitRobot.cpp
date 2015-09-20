@@ -2,11 +2,11 @@
 
 #include "LSInterpolator.h"
 
-WireFitRobot::WireFitRobot() {
-	int stateSize = 2;
-	int numberOfHiddenLayers = 3;
-	int numberOfNeuronsPerHiddenLayer = 15;
-	int numberOfActions = 5, actionDimensions = 2;
+WireFitRobot::WireFitRobot(Task *task_) {
+	task = task_;
+
+	task->getRobotParameters();
+
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 
@@ -20,9 +20,6 @@ WireFitRobot::WireFitRobot() {
 	double learningRate = 0.95;
 	double devaluationFactor = 0.4;
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
-
-	boltzmanExplorationLevel = 10000;
-	explorationDevaluationPerTimestep = 0.9;
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {

@@ -7,6 +7,7 @@
 #include "NeuralNet.h"
 #include "WireFitQLearn.h"
 #include "FidoSim/Simlink.h"
+#include "Tasks/Task.h"
 
 
 /* Uses the WireFitQLearn object paired with the simulator to progressively learn a task through reinforcement learning.
@@ -17,10 +18,13 @@ class WireFitRobot {
 public:
 	net::WireFitQLearn learner;
 	Simlink simulator;
-	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, maxDistance, allowableDistance;
+	Task *task;
+	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, maxDistance, allowableDistance, baseOfDimensions;
+	int stateSize, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, numberOfActions, actionDimensions;
+	std::vector<double> minAction, maxAction;
 
 	// Initializes a robot object
-	WireFitRobot();
+	WireFitRobot(Task *task_);
 
 	// Runs the robot for a specified number of time steps
 	void run(int numberOfTimeSteps);
