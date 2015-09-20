@@ -1,4 +1,4 @@
-The human brain is composed of billions of neurons: interconnected electrically excitable cells that form the basis of our intelligence.  Each neuron has synapses that receive electrical signals from multiple other neurons.  If the sum of these inputs is greater than a certain value, the neuron fires, generating a voltage at its axon.  The axon, or the output of the neuron cell, is itself connected to a synapse of another neuron.  The interconnections of these neurons form a massive network, where a huge number of inputs are processed in parallel to a set of outputs.  The basis of artificial neural networks is to simulate the mathematical properties of these neurons in order to perform similar tasks of mass parallel computation.
+The human brain is composed of billions of neurons, interconnected electrically excitable cells that form the basis of our intelligence. Each neuron has synapses that receive electrical signals from multiple other neurons. If the sum of these inputs is greater than a certain value, the neuron fires, generating a voltage down its axon. The axon, or the output of the neuron cell, is itself connected to a synapse of another neuron. The interconnections of these neurons form a massive network, where a huge number of inputs are processed in parallel to a set of outputs. The basis of artificial neural networks is to simulate the mathematical properties of these neurons in order to perform similar tasks of mass parallel computation.
 
 
 \subsection{Single Artificial Neuron}
@@ -10,21 +10,23 @@ The human brain is composed of billions of neurons: interconnected electrically 
 	\caption{Single Neuron Diagram}
 \end{figure}
 
-An artificial neuron simply a mathematical model of a biological neuron, and therefore its functionality is very similar.  Each neuron has multiple inputs, each with an individual weight, and one output.  The weight of an input is simply a positive or negative fraction that govern the impact of each input on the single output.  An artificial neuron's set of weights determines its function, and the function of each neuron in a neural network (in addition to the arrangement of the network) determines the function of the network as a whole.  This will become important as we discuss training Fido's neural network, however for the moment we will adjust our focus to the output of an artificial neural network.  By summing each input multiplied by its individual weight we reach a value called the activation, expressed as such mathematically for each input $x$ and weight $w$:
+An artificial neuron is simply a mathematical model of a biological neuron, and, therefore, its functionality is very similar. Each artificial neuron has multiple inputs, each one the output of another connected neuron. In addition, each neuron has a weight for each input, a bias term, an activation function, and one output. The output of the neuron becomes the input of other, connected neurons. The output of a neuron is expressed mathematically for $n$ inputs $x$, $n$ weights $w$, a bias term $b$, and an activation function $f$:
 
 \begin{equation}
-	a=\sum_{i=0}^{i=n}x_i w_i
+	f(\sum_{i=0}^{i=n}x_i w_i + b)
 	\,.
 \end{equation}
 
-If this activation value is less than a certain threshold, the output is zero.  If it is greater than the threshold, the output is one.  This activation function most closely resembles the biological model of a neuron, a binary step function.  However, a binary output can be somewhat limiting for many applications of neural networks.  For example, many of Fido's outputs are gradient rather than linear; as an example, an LED can be given a brightness.  For this purpose alternate activation functions can be used with gradient outputs.  One such function is a sigmoid function, expressed as such:
+A weight is simply a positive or negative number that governs the impact of of its respective input on the neuron's single output. The bias term is a number that is added to the summation of weights and inputs. The bias term allows us to make affine transformations on the domain of the activation function. 
+
+In biologically inspired neurons, the activation function is a binary step function. If the activation function's input is less than a certain threshold, the output is zero. If it is greater than the threshold, the output is one. However, a binary output can be somewhat limiting for many applications of neural networks. For example, many of Fido's outputs are gradient rather than linear; as an example, an LED can be given a brightness. For this purpose alternate activation functions can be used with gradient outputs. One such function is a sigmoid function, expressed as such:
 
 \begin{equation}
 	O(a) = \cfrac{1}{1+e^{-\frac{a}{p}}}
 	\,,
 \end{equation}
 
-\noindent for each output $O$, activation $a$, and constant $p$.  The sigmoid activation function can also be graphed as below.
+\noindent for each output $O$, activation $a$, and constant $p$. The sigmoid activation function can also be graphed as below.
 
 \begin{figure}[ht]
 	\centering
@@ -32,7 +34,7 @@ If this activation value is less than a certain threshold, the output is zero.  
 	\caption{Sigmoid Function Graph}
 \end{figure}
 
-This provides us with a gradient output, however output is still limited to positive values.  An alternative activation function which allows outputs ranging from -1 to +1 is the hyperbolic tangent activation function:
+This provides us with a gradient output, however output is still limited to positive values. An alternative activation function which allows outputs ranging from -1 to +1 is the hyperbolic tangent activation function:
 
 \begin{equation}
 	O(a) = \tanh(a)% = \cfrac{e^a-e^{-a}}{e^a+e^{-a}}
@@ -49,7 +51,7 @@ The hyperbolic tangent activation can be graphed as such, demonstrating its grea
 
 \subsection{Feedforward Neural Network}
 
-A traditional method of arranging artificial neurons in a neural network is called a feedforward network.  Neurons are connected as previously described: the output of each neuron is connected to one of the inputs of another neuron.  These neurons are organized into layers, as described in the following figure: % ogres have layers
+A traditional method of arranging artificial neurons in a neural network is called a feedforward network. Neurons are connected as previously described: the output of each neuron is connected to one of the inputs of another neuron. These neurons are organized into layers, as described in the following figure: % ogres have layers
 
 \begin{figure}[ht]
 	\centering
@@ -57,4 +59,4 @@ A traditional method of arranging artificial neurons in a neural network is call
 	\caption{Single Output Feedforward Network}
 \end{figure}
 
-Initial inputs are first sent into the input layer.  Next, the output of each input layer neuron is sent into each neuron in the hidden layer.  The hidden layer processes the inputs to outputs using an activation function and a weight value for each input.  There can be any number of hidden layers in a neural network, depending on the complexity of the computation being performed.  Finally the outputs from the last hidden layer neurons are sent into each neuron of the output layer, where the final outputs are processed.  A concrete example of a feedforward network is that of Fido.  Sensor inputs such as light and sound are sent into the input layer.  After the signals have passed through to the output layer, the outputs from the output layer are sent to outputs such as motors, LEDs, and buzzers.   The purpose of training a neural network is to make input values correspond to the correct output values, depending on the desired behavior.  An example could be making Fido drive when light is applied.  The way to give a neural network desired behavior is by controlling the weights of each neuron using a learning algorithm.
+Initial inputs are first sent into the input layer. Next, the output of each input layer neuron is sent into each neuron in the hidden layer. The hidden layer processes the inputs to outputs using an activation function and a weight value for each input. There can be any number of hidden layers in a neural network, depending on the complexity of the computation being performed. Finally the outputs from the last hidden layer neurons are sent into each neuron of the output layer, where the final outputs are processed. A concrete example of a feedforward network is that of Fido. Sensor inputs such as light and sound are sent into the input layer. After the signals have passed through to the output layer, the outputs from the output layer are sent to outputs such as motors, LEDs, and buzzers.  The purpose of training a neural network is to make input values correspond to the correct output values, depending on the desired behavior. An example could be making Fido drive when light is applied. The way to give a neural network desired behavior is by controlling the weights of each neuron using a learning algorithm.
