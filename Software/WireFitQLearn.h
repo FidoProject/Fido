@@ -70,7 +70,6 @@ namespace net {
 
 		// Resets the neural network of object so that a random set of control points are outputted
 		void resetControlPoints();
-		
 
 		void repeated(const std::vector< std::vector<double> > &actions, 
 			const std::vector< std::vector<double> > &oldStates, 
@@ -136,7 +135,12 @@ namespace net {
         
         // Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires  
         std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);
-    };
+
+		void updateBias(double oldReward, double correctReward);
+		
+		double biasMovingAverage;
+		int rewardIterations;
+	};
 };
 
 #endif

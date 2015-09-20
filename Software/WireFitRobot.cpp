@@ -22,7 +22,7 @@ WireFitRobot::WireFitRobot() {
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 
 	boltzmanExplorationLevel = 10000;
-	explorationDevaluationPerTimestep = 0.95;
+	explorationDevaluationPerTimestep = 0.9;
 }
 
 void WireFitRobot::run(int numberOfTimeSteps) {
@@ -93,15 +93,23 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		int turnsStill = 0;
 		int turnsAway = 0;
 
+		int turnsSinceMin = 0;
+
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
 			boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
-			if (boltzmanExplorationLevel < 0.1) boltzmanExplorationLevel = 0.1;
 			std::cout << "b: " << boltzmanExplorationLevel << "\n";
+
+			/*for (int a = 0; a < 20; a++) {
+				std::vector<double> action = learner.chooseBoltzmanAction(getState(), minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+				performAction(action);
+			}*/
 
 			/// Get state and perform action
 			oldStates.push_back(getState());
-			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+			std::vector<double> action;
+			if (boltzmanExplorationLevel < 0.1) action = learner.chooseBestAction(oldStates[oldStates.size() - 1]);
+			else action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 			actions.push_back(action);
 
 			sf::Vector2f previousRobotPosition = simulator.robot.getPosition();
@@ -122,8 +130,8 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 			/// Determine reward
 			TDVect imu = simulator.getCompass();
-			double reward = (1 - (turnsStill*0.02 + turnsAway*0.08)) - (simulator.getDistanceOfRobotFromEmitter() / maxDistance);
-			
+			//double reward = (1 - (turnsStill*0.02 + turnsAway*0.1)) - (simulator.getDistanceOfRobotFromEmitter() / maxDistance);
+			double reward = getReward();
 
 			/// Record state and reward
 			immediateRewards.push_back(reward);
@@ -232,14 +240,14 @@ void WireFitRobot::performAction(const std::vector<double> &action) {
 	std::cout << "action: " << action[0] << " " << action[1] << "\n";
 	sf::Vector2f previousRobotPosition = simulator.robot.getPosition();
 
-	simulator.robot.go(action[0]*100, action[1]*100, 1, 25);
+	simulator.robot.go(action[0]*100, action[1]*100, 2, 150);
 
 	sf::Vector2f newRobotPosition = simulator.robot.getPosition();
 	if (newRobotPosition.x < 500 + simulator.robot.getGlobalBounds().height / 2
 		|| newRobotPosition.x > 1200 - simulator.robot.getGlobalBounds().height / 2
 		|| newRobotPosition.y < 0 + simulator.robot.getGlobalBounds().height / 2
 		|| newRobotPosition.y > 595 - simulator.robot.getGlobalBounds().height / 2) {
-		simulator.robot.setPosition(previousRobotPosition);
+		//simulator.robot.setPosition(previousRobotPosition);
 	}
 }
 

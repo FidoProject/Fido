@@ -14,6 +14,8 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator
 	interpolator = interpolator_;
     
     scalingFactorToMillis = 1;
+	biasMovingAverage = 0;
+	rewardIterations = 0;
 
     controlPointsGDErrorTarget = 0.001;
     controlPointsGDLearningRate = 0.1;
@@ -30,7 +32,7 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
     if(input.is_open()) {
         input >> learningRate >> devaluationFactor;
         input >> actionDimensions >> numberOfWires;
-        input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations;
+        input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> biasMovingAverage >> rewardIterations;
         
         lastAction = std::vector<double>(actionDimensions);
         for(int a = 0; a < actionDimensions; a++) {
@@ -119,9 +121,12 @@ std::vector<double> WireFitQLearn::chooseRandomAction(const std::vector<double> 
 void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis) {
 	std::vector<Wire> controlWires = getWires(lastState);
 	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, elapsedTimeMillis, controlWires);
+	double oldReward = interpolator->getReward(controlWires, lastAction);
 
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
+
+	updateBias(oldReward, newRewardForLastAction);
 
     backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
 }
@@ -231,7 +236,7 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
     if(output.is_open()) {
         output << learningRate << " " << devaluationFactor << "\n";
         output << actionDimensions << " " << numberOfWires << "\n";
-        output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << "\n";
+        output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << biasMovingAverage << " " << rewardIterations << "\n";
         
         for(int a = 0; a < lastAction.size(); a++) output << lastAction[a] << " ";
         output << "\n";
@@ -452,4 +457,10 @@ void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWi
 				window.close();
 		}
 	}
+}
+
+void WireFitQLearn::updateBias(double oldReward, double correctReward) {
+	rewardIterations++;
+	biasMovingAverage -= biasMovingAverage / (double)rewardIterations;
+	biasMovingAverage += pow(correctReward - oldReward, 2) / (double)rewardIterations;
 }
