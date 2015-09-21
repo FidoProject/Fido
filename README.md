@@ -46,3 +46,4 @@
  * Backpropagation Tutorial - https://www4.rgu.ac.uk/files/chapter3%20-%20bp.pdf
  * Backpropagation Tutorial - http://www.cse.unsw.edu.au/~cs9417ml/MLP2/
  * Q Learning Implementation - http://web.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
+ * Boltzmann - http://computing.dcu.ie/~humphrys/PhD/ch2.html
