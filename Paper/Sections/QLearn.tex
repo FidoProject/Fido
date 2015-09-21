@@ -22,7 +22,17 @@ Conventional $Q$-Learning is discrete. No relation is made between states or act
 
 \subsection{Wire-Fitted Q-Learning}
 
-To accommodate continuous action-spaces, we coupled a wire-fitted moving least squares interpolator with our feedforward neural network as described in \cite{wirefit}.
+To accommodate continuous action-spaces, we coupled a wire-fitted moving least squares interpolator with our feedforward neural network as described in \cite{wirefit}. 
+
+Feed-forward neural networks can generalize between states in Q-Learning problems with discrete actions as described in (Rummery 1995). To extend this implementation to a continuous action space, our feed-forward neural network outputs discrete ``wires'' when given a state. Each wire consists of an action with its respective $Q$-value for the state given to the neural network. These wires may be interpolated to model $Q$, allowing us to get the $Q$-value of any action performed in state given as an input to the network. The interpolator used in Fido is a wire-fitted moving least squares interpolator used in the context of a memory-based learning system in \cite{baird}.
+
+The $Q$-value of an action $\hat{a}$ for a state $s$ given a set of $n$ actions $a$ each with a respective $Q$-value $q$ is calculated as such:
+
+\begin{equation}
+	Q(a, s) = Q(a, s)(1 - \alpha) + \alpha(R + \gamma \max Q(a, s_{t+1}))
+	\,,
+\end{equation}
+
 
 \begin{figure}[ht]
     \centering
