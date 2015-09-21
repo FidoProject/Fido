@@ -41,7 +41,7 @@ Figure \ref{fig::wirefitexample} is an example of interpolation on a set of wire
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[height=5cm]{Figures/WireFit.png}
+    \includegraphics[height=6.5cm]{Figures/WireFit.png}
 	\caption{Moving Least Squares Interpolator (adapted from Gaskett, Wettergreen, \& Zelinsky, 1999)}
     \label{fig::wirefitexample}
 \end{figure}
@@ -50,7 +50,7 @@ The wire-fitting function has few properties that make it especially suited for 
 
 Every update to the $Q$-value requires that $Q$-max is computed and the action for $Q$-max is often needed for action selection. As proved in \cite{baird}, the wire with the greatest $Q$-value is the interpolation point with the greatest $Q$-value, and so, maximum $Q$-value outputted by the wire-fitting function is the maximum $Q$-value out of the set of wires that the function takes as an input. This makes it extremely computationally cheap to compute $Q$-value, allowing Fido's latency to stay minimal.
 
-The wire-fitting function is derivable, allowing us to update our estimation of the $Q$. Once the reward and new state for an action-state pair is received and an updated $Q$-value is calculated using equation \ref{equ::qlearnupdate}, the error in previous Q-learn value can be calculated as such:
+The wire-fitting function is derivable, allowing us to update our estimation of the $Q$. Once the reward and new state for an action-state pair is received and an updated $Q$-value is calculated using equation \ref{equ::updateqlearn}, the error in previous Q-learn value can be calculated as such:
 
 \begin{equation}
 	(\hat{Q} - Q)^2
