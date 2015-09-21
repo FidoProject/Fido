@@ -60,5 +60,13 @@ The wire-fitting function is derivable, allowing us to update our estimation of 
 
 where $\hat{Q}$ is our new $Q$-value and $Q$ is our old $Q$-value. Using equation \ref{equ::wirefiterrorfunction} as our cost function and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, new wires that model $Q$ so that it correctly outputs $\hat{Q}$ may be calculated for our current state using gradient descent. Our neural network may then be trained to output these new wires using back propagation, thus updating our estimation of $Q$.
 
-\subsection{Boltzmann Soft-Max Distribution}
+\subsection{Boltzmann Probability Distribution Selection Policy}
 
+There are a number of approaches to action selection. The most common approach is to simply pick the action with the best $Q$-value for the current state. However, this strategy stifles exploration of the state-action space and gives a bias towards an actor's the starting policy, which is random. This problem is compounded in the case of Fido, due to the large state and action spaces that Fido must explore. Another common method of action selection is to choose each action randomly for a set number of reward iterations, and then to switch to choosing the action with the highest $Q$-value. This plan improves upon the first by allowing for a period of exploration, but is not suited for Fido. During its lifetime, Fido must have the ability to learn new tasks and be retrained by the person or programming providing feedback, and so, must continuously explore its state space.
+
+Fido selects actions probabilistically using a Boltzmann or soft-max distribution of probability. The likelihood that an action $\hat{a}$ will be chosen our of a set of $n$ actions $a$ for a state $s$ is given as:
+
+\begin{equation}
+	p(\hat{a}) = \cfrac{e^{\frac{Q(s, \hat{a})}{T}}}{\sum_{i=0}^{n}e^{\frac{Q(s, a_i)}{T}}}
+	\,,
+\end{equation}
