@@ -11,7 +11,8 @@ $Q$-Learning \cite{watkins} is a popular reinforcement learning algorithm that w
 	\label{equ::updateqlearn}
 \end{equation}
 
-Where $a$ is the action carried out, $s$ is the initial state, $R$ is the reward received, and $s_{t+1}$ is the new state. $\alpha$ is the learning rate of the algorithm. The learning rate determines the rate of convergence by diminishing or amplifying the changes made to the $Q$-value each reward iteration. $\gamma$ is the devaluation factor, which determines the weight given to future rewards. A devaluation factor approaching $\gamma=0$ will force the algorithm to only value immediate reward, while a devaluation factor approaching $\gamma=1$ will make it focused on high long term reward.
+\noindent
+where $a$ is the action carried out, $s$ is the initial state, $R$ is the reward received, and $s_{t+1}$ is the new state. $\alpha$ is the learning rate of the algorithm. The learning rate determines the rate of convergence by diminishing or amplifying the changes made to the $Q$-value each reward iteration. $\gamma$ is the devaluation factor, which determines the weight given to future rewards. A devaluation factor approaching $\gamma=0$ will force the algorithm to only value immediate reward, while a devaluation factor approaching $\gamma=1$ will make it focused on high long term reward.
 
 The $Q$-Learning algorithm had to be immediately modified in two ways to make it suitable for Fido. Its scalability had to be improved, and it had to be able to work in continuous state-action spaces. 
 
@@ -32,6 +33,7 @@ The wire-fitting function calculates $Q$-value of an action $\hat{a}$ for a stat
 	\,,
 \end{equation}
 
+\noindent
 where $q_{max}$ is the greatest $Q$-value among the set of $Q$-values $q$, and $k$ is a small constant that avoids division by 0. $c$ is the smoothing factor. The greater the smoothing factor, the smoother the interpolated function.
 
 
@@ -56,6 +58,7 @@ The wire-fitting function is derivable, allowing us to update our estimation of 
 	\label{equ::wirefiterrorfunction}
 \end{equation}
 
+\noindent
 where $\hat{Q}$ is our new $Q$-value and $Q$ is our old $Q$-value. Using equation \ref{equ::wirefiterrorfunction} as our cost function and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, new wires that model $Q$ so that it correctly outputs $\hat{Q}$ may be calculated for our current state using gradient descent. Our neural network may then be trained to output these new wires using back propagation, thus updating our estimation of $Q$.
 
 \subsection{Boltzmann Probability Distribution Selection Policy}
@@ -66,7 +69,7 @@ Fido selects actions probabilistically using a Boltzmann or soft-max distributio
 
 \begin{equation}
 	p(\hat{a}) = \cfrac{e^{\frac{Q(s, \hat{a})}{T}}}{\sum_{i=0}^{n}e^{\frac{Q(s, a_i)}{T}}}
-	\,,
+	\,.
 \end{equation}
 
 $T$ is the temperature, or exploration level. As $T$ approaches infinity, a random action is chosen. As $T$ tends toward 0, the best action is chosen. Fido keeps $T$ at a constant value around $0.15$ throughout its lifetime to encourage occasional exploration.

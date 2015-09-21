@@ -27,10 +27,10 @@ The model's two motors are arranged in a differential drive arrangement.  Drivin
 Every movement the robot takes can be interpreted as a rotation of radius $R$ around the ICC, or instantaneous center of curvature.   If the robot is moving straight, this radius is simply infinite.   The robot travels at an angular velocity $\omega$ around the circle, and at any given moment is at the coordinates $(x,y)$ and orientation $\theta$.  The length of the robot from wheel-center to wheel-center is defined as $l$, while the velocity vectors of each motor are defined as $V_l$ and $V_r$ respectively.  The passing of time from the last call of motor values is defined as $\Delta t$.  We can solve for $R$ and $\omega$ at any point using the following equations:
 \begin{align*}
 	R &= \cfrac{l}{2} \times \cfrac{V_l + V_r}{V_r - V_l}\\
-	\omega &= \cfrac{V_r - V_l}{l}
+	\omega &= \cfrac{V_r - V_l}{l}\,.
 \end{align*}
 
-Using these values we can easily define the ICC as $(x - R\sin\theta,y + R\cos\theta)$.  We then solve for the robot's new position, defined as coordinates $(x',y')$ and orientation $\theta'$.
+Using these values we can easily define the ICC as $(x - R\sin\theta,y + R\cos\theta)$.  We then solve for the robot's new position, defined as coordinates $(x',y')$ and orientation $\theta'$:
 
 \begin{equation}
 	\begin{bmatrix}
@@ -52,7 +52,7 @@ Using these values we can easily define the ICC as $(x - R\sin\theta,y + R\cos\t
 		ICC_x          \\
 		ICC_y          \\
 		\omega\Delta t \\
-	\end{bmatrix}
+	\end{bmatrix} \,.
 \end{equation}
 
 A brief inspection of these equations verify their performance in certain use cases.  If $V_r = -V_l$ $R$ becomes zero, as the robot turns around it's center.  If $V_r = V_l$ $R$ becomes infinite, as the robot is traveling in a straight line.  Using these equations we were were able to fully simulate Fido's kinematic model, and attach simulator motor inputs to Fido's outputs to visualize learning taking place.   

@@ -65,10 +65,10 @@ In the most abstract sense, back propagation neural networks learn through examp
 	W_{AB}^{+} = W_{AB} + (\delta_B \text{Output}_A)\,.
 \end{equation}
 
-The same approach could be taken for neuron $C$.  However, this method cannot calculate an improved weight for hidden layer neurons such as neuron $A$, as there is no predefined target.  Therefore we must calculate the error of $A$ indirectly by back propagating from the two output layer neurons, for which the error is already known.
+The same approach could be taken for neuron $C$.  However, this method cannot calculate an improved weight for hidden layer neurons such as neuron $A$, as there is no predefined target.  Therefore we must calculate the error of $A$ indirectly by back propagating from the two output layer neurons, for which the error is already known:
 
 \begin{equation}
-	\delta_A = W_{AB}\delta_B + W_{AC}\delta_C
+	\delta_A = W_{AB}\delta_B + W_{AC}\delta_C \,.
 \end{equation}
 
 Once the error for neuron $A$ is obtained, its trained weights can be calculated in the same fashion as done for neuron $B$.  This pattern can be repeated throughout a larger neural network in order to converge upon the target output.
