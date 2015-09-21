@@ -10,6 +10,7 @@ $Q$-Learning \cite{watkins} is a popular reinforcement learning algorithm that w
 \begin{equation}
 	Q(s, a) := Q(s, a)(1 - \alpha) + \alpha(R + \gamma \max Q(s_{t+1}, a))
 	\,,
+	\label{equ::updateqlearn}
 \end{equation}
 
 Where $a$ is the action carried out, $s$ is the initial state, $R$ is the reward received, and $s_{t+1}$ is the new state. $\alpha$ is the learning rate of the algorithm. The learning rate determines the rate of convergence by diminishing or amplifying the changes made to the $Q$-value each reward iteration. $\gamma$ is the devaluation factor, which determines the weight given to future rewards. A devaluation factor approaching $\gamma=0$ will force the algorithm to only value immediate reward, while a devaluation factor approaching $\gamma=1$ will make it focused on high long term reward.
@@ -45,6 +46,18 @@ Figure \ref{fig::wirefitexample} is an example of interpolation on a set of wire
     \label{fig::wirefitexample}
 \end{figure}
 
-The wire-fitting function has many properties that make it especially suited for Fido.
+The wire-fitting function has few properties that make it especially suited for Fido.
 
-Updates to the $Q$-value and oftentimes choosing which action to perform require that $Q$-max is computed. As proved in \cite{baird}, the maximum $Q$-value outputted by the wire-fitting function is the maximum $Q$-value out of the set of wires that the function takes as an input. This makes it extremely computationally cheap to 
+Every update to the $Q$-value requires that $Q$-max is computed and the action for $Q$-max is often needed for action selection. As proved in \cite{baird}, the wire with the greatest $Q$-value is the interpolation point with the greatest $Q$-value, and so, maximum $Q$-value outputted by the wire-fitting function is the maximum $Q$-value out of the set of wires that the function takes as an input. This makes it extremely computationally cheap to compute $Q$-value, allowing Fido's latency to stay minimal.
+
+The wire-fitting function is derivable, allowing us to update our estimation of the $Q$. Once the reward and new state for an action-state pair is received and an updated $Q$-value is calculated using equation \ref{equ::qlearnupdate}, the error in previous Q-learn value can be calculated as such:
+
+\begin{equation}
+	(\hat{Q} - Q)^2
+	\,,
+	\label{equ::wirefiterrorfunction}
+\end{equation}
+
+where $\hat{Q}$ is our new $Q$-value and $Q$ is our old $Q$-value. Using equation \ref{equ::wirefiterrorfunction} as our cost function and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, new wires that model $Q$ so that it correctly outputs $\hat{Q}$ may be calculated for our current state using gradient descent. Our neural network may then be trained to output these new wires using back propagation, thus updating our estimation of $Q$.
+
+\subsection{Boltzmann Soft-Max Distribution}
