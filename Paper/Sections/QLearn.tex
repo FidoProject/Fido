@@ -61,3 +61,4 @@ The wire-fitting function is derivable, allowing us to update our estimation of 
 where $\hat{Q}$ is our new $Q$-value and $Q$ is our old $Q$-value. Using equation \ref{equ::wirefiterrorfunction} as our cost function and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, new wires that model $Q$ so that it correctly outputs $\hat{Q}$ may be calculated for our current state using gradient descent. Our neural network may then be trained to output these new wires using back propagation, thus updating our estimation of $Q$.
 
 \subsection{Boltzmann Soft-Max Distribution}
+
