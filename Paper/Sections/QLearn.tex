@@ -8,7 +8,7 @@ Reinforcement learning seeks to find the optimal action to be undertaken for a g
 $Q$-Learning \cite{watkins} is a popular reinforcement learning algorithm that works by learning an action-value function $Q$ that takes an state-action pair as an input and outputs an expected utility value of performing that action in that state. This utility value is know as the $Q$-value. The $Q$-value is a combination of immediate reward and expected future reward. Every reward iteration, the $Q$-value of an state-action pair is updated as such:
 
 \begin{equation}
-	Q(a, s) := Q(a, s)(1 - \alpha) + \alpha(R + \gamma \max Q(a, s_{t+1}))
+	Q(s, a) := Q(s, a)(1 - \alpha) + \alpha(R + \gamma \max Q(s_{t+1}, a))
 	\,,
 \end{equation}
 
@@ -29,13 +29,18 @@ Feed-forward neural networks can generalize between states in Q-Learning problem
 The $Q$-value of an action $\hat{a}$ for a state $s$ given a set of $n$ actions $a$ each with a respective $Q$-value $q$ is calculated as such:
 
 \begin{equation}
-	Q(a, s) = Q(a, s)(1 - \alpha) + \alpha(R + \gamma \max Q(a, s_{t+1}))
+	Q(a, s) = \frac{\sum_{i=0}^{n}\frac{q_i}{||\hat{a}-a_i||^2+c(q_{max}-q_i)+k}}{\sum_{i=0}^{n}\frac{1}{||\hat{a}-a_i||^2+c(q_{max}-q_i)+k}}
 	\,,
 \end{equation}
 
+where $q_{max}$ is the greatest $Q$-value among the set of $Q$-values $q$, and $k$ is a small constant that avoids division by 0. $c$ is the smoothing factor. The greater the smoothing factor, the smoother the interpolated function.
+
+
+\ref{fig::wirefitexample} is an example of interpolation on a set of wires. The graph shows the value of one-dimensional actions plotted against their respective Q-value.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[height=5cm]{Figures/WireFit.png}
     \caption{Moving Least Squares Interpolator}
+    \label{fig::wirefitexample}
 \end{figure}
