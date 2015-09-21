@@ -18,15 +18,15 @@ The $Q$-Learning algorithm had to be immediately modified in two ways to make it
 
 $Q$-learning in its simplest form uses a table to model the $Q$ function, storing past state-action pairs and each pair's respective $Q$-value.  However, this strategy lacks scalability. In large state-action spaces, such as those Fido will have to perform in, the amount of data and computation needed to maintain such a table renders such a strategy impractical. Since Fido will be working in large state-action space, it is necessary to use a function approximator to model $Q$. A feedforward neural networks were chosen for this task for their ability to model non-linear functions, lightweight computational footprint, high trainablility.
 
-Conventional $Q$-Learning is discrete. No relation is made between states or actions, and every action for each state must be performed individually repeatedly in a noisy feedback system to determine its $Q$-value. However, Fido will work in a large, continuous state-action spaces where relations made between (state-action, $Q$-value) pairs can drastically reduce the number of reward iterations needed for convergence. An example of a task that would benefit from continuity is teaching Fido to adjust the speed of its motors based on the intensity of light that the robot detects. There is an obvious gradient relation between the (state-action, $Q$-value) pairs in this task and with a limited number of Q-values known, it is possible to correctly model $Q$.
+Conventional $Q$-Learning is discrete. No relation is made between states or actions, and every action for each state must be performed individually repeatedly in a noisy feedback system to determine its $Q$-value. However, Fido will work in a large, continuous state-action spaces where relations made between (state-action, $Q$-value) pairs can drastically reduce the number of reward iterations needed for convergence. An example of a task that would benefit from continuity is teaching Fido to adjust the speed of its motors based on the intensity of light that the robot detects. There is an obvious gradient relation between the (state-action, $Q$-value) pairs in this task and with a limited number of $Q$-values known, it is possible to correctly model $Q$.
 
 \subsection{Wire-Fitted Q-Learning}
 
 To accommodate continuous action-spaces, we coupled a wire-fitted moving least squares interpolator with our feedforward neural network as described in \cite{wirefit}. 
 
-Feed-forward neural networks can generalize between states in Q-Learning problems with discrete actions as described in (Rummery 1995). To extend this implementation to a continuous action space, our feed-forward neural network outputs discrete ``wires'' when given a state. Each wire consists of an action with its respective $Q$-value for the state given to the neural network. These wires may be interpolated to model $Q$, allowing us to get the $Q$-value of any action performed in state given as an input to the network. The interpolator used in Fido is a wire-fitted moving least squares interpolator used in the context of a memory-based learning system in \cite{baird}.
+Feed-forward neural networks can generalize between states in $Q$-Learning problems with discrete actions as described in \cite{rummery}. To extend this implementation to a continuous action space, our feed-forward neural network outputs discrete ``wires'' when given a state. Each wire consists of an action with its respective $Q$-value for the state given to the neural network. These wires may be interpolated to model $Q$, allowing us to get the $Q$-value of any action performed in state given as an input to the network. The interpolator used in Fido is a wire-fitted moving least squares interpolator used in the context of a memory-based learning system in \cite{baird}.
 
-The $Q$-value of an action $\hat{a}$ for a state $s$ given a set of $n$ actions $a$ each with a respective $Q$-value $q$ is calculated as such:
+The wire-fitting function calculates $Q$-value of an action $\hat{a}$ for a state $s$ given a set of $n$ actions $a$ each with a respective $Q$-value $q$ as such:
 
 \begin{equation}
 	Q(a, s) = \frac{\sum_{i=0}^{n}\frac{q_i}{||\hat{a}-a_i||^2+c(q_{max}-q_i)+k}}{\sum_{i=0}^{n}\frac{1}{||\hat{a}-a_i||^2+c(q_{max}-q_i)+k}}
@@ -36,7 +36,7 @@ The $Q$-value of an action $\hat{a}$ for a state $s$ given a set of $n$ actions 
 where $q_{max}$ is the greatest $Q$-value among the set of $Q$-values $q$, and $k$ is a small constant that avoids division by 0. $c$ is the smoothing factor. The greater the smoothing factor, the smoother the interpolated function.
 
 
-\ref{fig::wirefitexample} is an example of interpolation on a set of wires. The graph shows the value of one-dimensional actions plotted against their respective Q-value.
+\ref{fig::wirefitexample} is an example of interpolation on a set of wires. The graph shows the value of one-dimensional actions plotted against their respective $Q$-value.
 
 \begin{figure}[ht]
     \centering
@@ -44,3 +44,7 @@ where $q_{max}$ is the greatest $Q$-value among the set of $Q$-values $q$, and $
 	\caption{Moving Least Squares Interpolator (adapted from Gaskett, Wettergreen, \& Zelinsky, 1999)}
     \label{fig::wirefitexample}
 \end{figure}
+
+The wire-fitting function has many properties that make it especially suited for Fido.
+
+Updates to the $Q$-value and oftentimes choosing which action to perform require that $Q$-max is computed. As proved in \cite{baird}, the maximum $Q$-value outputted by the wire-fitting function is the maximum $Q$-value out of the set of wires that the function takes as an input. This makes it extremely computationally cheap to 
