@@ -6,7 +6,7 @@
 #include "NeuralNet.h"
 #include "QLearn.h"
 #include "FidoSim/Simlink.h"
-
+#include "Tasks/Task.h"
 
 /* Uses the QLearn object paired with the simulator to progressively learn a task through reinforcement learning.
  *
@@ -16,25 +16,19 @@ class Robot {
 public:
 	net::QLearn learner;
 	Simlink simulator;
-	double boltzmanExplorationLevel, explorationDevaluationPerTimestep;
+	Task *task;
+	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
+	int stateSize, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, actionDimensions;
+	std::vector<double> minAction, maxAction;
 
 	// Initializes a robot object
-	Robot();
+	Robot(Task *task_);
 
 	// Runs the robot for a specified number of time steps
 	void run(int numberOfTimeSteps);
+
 private:
-	// Waits until the user says they have finished inputting the state
-	void waitForStateInput();
-
-	// Gets the current state from the simulator
-	std::vector<double> getState();
-
-	// Gets a reward from the user
-	double getReward();
-
-	// Performs an action using the simulator
-	void performAction(int action);
+	std::vector<double> getAction(int action);
 
 };
 

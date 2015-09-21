@@ -19,7 +19,7 @@ public:
 	net::WireFitQLearn learner;
 	Simlink simulator;
 	Task *task;
-	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, maxDistance, allowableDistance, baseOfDimensions;
+	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
 	int stateSize, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, numberOfActions, actionDimensions;
 	std::vector<double> minAction, maxAction;
 

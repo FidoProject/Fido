@@ -294,7 +294,7 @@ std::vector<Wire> WireFitQLearn::getSetOfWires(const std::vector<double> &state,
 	int numberOfWiresReturned = pow(baseOfDimensions, actionDimensions);
 	std::vector<Wire> wires(numberOfWiresReturned);
 	
-	std::vector<double> iteratorVector(actionDimensions);
+	std::vector<int> iteratorVector(actionDimensions);
 	for (int a = 0; a < iteratorVector.size(); a++) iteratorVector[a] = 0;
 
 	for (int a = 0; a < numberOfWiresReturned; a++) {
