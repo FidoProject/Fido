@@ -19,8 +19,8 @@ void FloatToEmitter::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 2, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 1000, *explorationConstantDevaluation = 1;
+	*stateSize = 2, *actionDimensions = 2, *numberOfActions = 1, *neuronsPerLayer = 1, *numberOfLayers = 1;
+	*beginningExplorationConstant = 0.15, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
 	*baseOfDimensions = 8;
 }
@@ -29,7 +29,7 @@ std::vector<double> FloatToEmitter::getState() {
 	double x, y;
 	simulator->getRobotDisplacementFromEmitter(&x, &y);
 
-	return {x / maxDistance, y / maxDistance};
+	return {x / (abs(x)+abs(y)), y / (abs(x) + abs(y)) };
 }
 
 double FloatToEmitter::performAction(const std::vector<double> &action) {
