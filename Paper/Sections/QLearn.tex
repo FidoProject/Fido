@@ -70,3 +70,5 @@ Fido selects actions probabilistically using a Boltzmann or soft-max distributio
 	p(\hat{a}) = \cfrac{e^{\frac{Q(s, \hat{a})}{T}}}{\sum_{i=0}^{n}e^{\frac{Q(s, a_i)}{T}}}
 	\,,
 \end{equation}
+
+$T$ is the temperature, or exploration level. As $T$ approaches infinity, a random action is chosen. As $T$ tends toward 0, the best action is chosen. Fido keeps $T$ at a constant value around $0.15$ throughout its lifetime to encourage occasional exploration.
