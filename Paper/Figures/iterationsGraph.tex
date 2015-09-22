@@ -1,22 +1,22 @@
 \footnotesize
 \begin{tikzpicture}[font=\sffamily]
 \begin{axis}[
-    	symbolic x coords={flash an LED,
-                           float to emitter,
-    					   drive to emitter,
-    					   drive in a shape,
-    					   line following},
+    	symbolic x coords={flash,
+                           float,
+    					   drive,
+    					   shape,
+    					   line follow},
     	ylabel={reward iterations},
     	width = 14cm, height = 7cm,
         grid=major,grid style={dashed, gray!30},
         ymin=0,xtick=data]
     
     \addplot[ybar,pattern=north west lines] coordinates {
-        (flash an LED,8)
-        (float to emitter,14)
-        (drive to emitter,17)
-        (drive in a shape,12)
-        (line following, 21)
+        (flash,6)
+        (float,14)
+        (drive,17)
+        (shape,12)
+        (line follow, 21)
     };
 \end{axis}
 \end{tikzpicture}
