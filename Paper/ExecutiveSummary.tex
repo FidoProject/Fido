@@ -27,7 +27,7 @@ The Executive Summary on its own, separate from the Research Report, should conv
 
 \noindent
 
-A robot intelligence can be simplified into a black box, with inputs such as sensor data and outputs such as motor control.  Most robot software today operate as ``expert systems,'' using preprogrammed conditional logic to execute a set routine.  These implementations are sufficient for the specific purpose and platform they are designed for, but lack the ability to perform other tasks or work on other robots.
+A robot intelligence can be simplified into a black box, with inputs such as sensor data and outputs such as motor control.  Most robot software today operates as ``expert systems,'' using preprogrammed conditional logic to execute a set routine.  These implementations are sufficient for the specific purpose and platform they are designed for but lack the ability to perform other tasks or work on other robots.
 
 The purpose of this project was to develop a universal robot control system that can not only adapt to any robot hardware, but can also be trained using positive and negative reinforcement.  The implementation (nicknamed Fido) is lightweight and resource-efficient, making it a practical solution as a control system for mobile robots.  This was achieved by regulating artificial neural networks according to a novel learning algorithm.  The algorithm modifies a well-tested reinforcement learning algorithm called $Q$-learning by fitting a curve to discrete points through a moving least squares interpolator, leading to Fido's high performance.
 
