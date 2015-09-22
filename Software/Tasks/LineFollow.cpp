@@ -1,6 +1,8 @@
 #include "LineFollow.h"
 
+#include <algorithm>
 #include "Simlink.h"
+
 
 LineFollow::LineFollow() {};
 
@@ -27,8 +29,8 @@ void LineFollow::getRobotParameters(int *stateSize,
 
 std::vector<double> LineFollow::getState() {
 	double distance = distanceFromLine(simulator->robot.getPosition());
-	if(distance != 0) simulator->visVal = std::min(100 / distance, 100);
-	else simulator->visVal = 100;
+	if(distance != 0) simulator->visVal = std::min(distance, 100);
+	else simulator->visVal = 0;
 
 	return {simulator->getVis()/100.0};
 }
