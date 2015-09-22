@@ -31,12 +31,12 @@ public:
 
 	// Runs a search of a number of combinations of hyperparameters to determine the best set
 	void hyperParameterTest();
+
+	// Print the mean median and mode of the datasetgiven
+	static void printStats(std::vector<double> data);
 private:
 	// Resets the simulator, the learner, and the boltzmanExplorationLevel
 	void resetRobot();
-
-	// Print the mean median and mode of the datasetgiven
-	void printStats(std::vector<int> data);
 };
 
 #endif

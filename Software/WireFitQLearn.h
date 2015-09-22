@@ -84,19 +84,6 @@ namespace net {
 			const std::vector< std::vector<double> > &newStates,
 			const std::vector<double> &elapsedTimes,
 			int numberOfIterations);
-
-		void boltzman(const std::vector< std::vector<double> > &actions,
-			const std::vector< std::vector<double> > &oldStates,
-			const std::vector<double> &immediateRewards,
-			const std::vector< std::vector<double> > &newStates,
-			const std::vector<double> &elapsedTimes);
-
-		void fit(const std::vector< std::vector<double> > &actions,
-			const std::vector< std::vector<double> > &oldStates,
-			const std::vector<double> &immediateRewards,
-			const std::vector< std::vector<double> > &newStates,
-			const std::vector<double> &elapsedTimes,
-			int numberOfIterations);
         
         // Stores the WireFitQLearn object in a file
         void storeWireFitQLearn(std::string filename);

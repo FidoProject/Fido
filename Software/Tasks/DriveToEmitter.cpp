@@ -29,7 +29,7 @@ std::vector<double> DriveToEmitter::getState() {
 	double x, y;
 	simulator->getRobotDisplacementFromEmitter(&x, &y);
 
-	return {x / maxDistance, y / maxDistance, (double)simulator->robot.getRotation() / 360.0};
+	return {x / (abs(x) + abs(y)), y / (abs(x) + abs(y)), (double)simulator->robot.getRotation() / 360.0};
 }
 
 double DriveToEmitter::performAction(const std::vector<double> &action) {
@@ -52,7 +52,6 @@ double DriveToEmitter::performAction(const std::vector<double> &action) {
 	if (simulator->getDistanceOfRobotFromEmitter() > previousDistance) turnsAway++;
 	else turnsAway = 0;
 
-	std::cout << "t: " << turnsStill << "\n";
 	return (1 - (turnsStill*0.06 + turnsAway*0.1)) - (simulator->getDistanceOfRobotFromEmitter() / maxDistance);
 	
 }

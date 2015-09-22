@@ -24,20 +24,48 @@ Robot::Robot(Task *task_) {
 
 }
 
-void Robot::run(int numberOfTimeSteps) {
-	task->reset();
-	for(int a = 0; a < numberOfTimeSteps; a++) {
-		boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
+void Robot::run(int trials, int numberOfTimeSteps) {
+	std::vector<int> results(trials);
+	for (int currentTrial = 0; currentTrial < trials; currentTrial++) {
+		task->reset();
 
-		std::vector<double> state = task->getState();
+		net::NeuralNet * network = new net::NeuralNet(stateSize, 1, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
+		network->setOutputActivationFunction("simpleLinear");
 
-		int action = learner.chooseBoltzmanAction(state, boltzmanExplorationLevel);
-		double reward = task->performAction(getAction(action));
+		double backpropLearningRate = 0.1;
+		double backpropMomentumTerm = 0;
+		double backpropTargetError = 0.001;
+		int backpropMaximumIterations = 10000;
+		net::Backpropagation backprop = net::Backpropagation(backpropLearningRate, backpropMomentumTerm, backpropTargetError, backpropMaximumIterations);
+		backprop.setDerivedOutputActivationFunction("simpleLinear");
 
-		learner.applyReinforcementToLastAction(reward, state);
+		double learningRate = 0.95;
+		double devaluationFactor = 0.4;
+		learner = net::QLearn(network, backprop, learningRate, devaluationFactor, pow(baseOfDimensions, actionDimensions));
 
-		if (task->isTaskDone() == true) break;
+		int a;
+		for (a = 0; a < numberOfTimeSteps; a++) {
+			boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
+
+			std::vector<double> state = task->getState();
+
+			std::vector<double> action = getAction(learner.chooseBoltzmanAction(state, boltzmanExplorationLevel));
+			double reward = task->performAction(action);
+
+			learner.applyReinforcementToLastAction(reward, state);
+
+			if (task->isTaskDone() == true) break;
+
+			for (int a = 0; a < 6; a++) {
+				action = getAction(learner.chooseBoltzmanAction(task->getState(), boltzmanExplorationLevel));
+				task->performAction(action);
+			}
+		}
+		std::cout << "iter: " << a << "\n";
+		results[currentTrial] = a;
 	}
+
+	WireFitRobot::printStats(std::vector<double>(results.begin(), results.end()));
 }
 
 std::vector<double> Robot::getAction(int action) {
@@ -59,7 +87,7 @@ std::vector<double> Robot::getAction(int action) {
 
 	std::vector<double> actionVector(actionDimensions);
 	for (int actionDimension = 0; actionDimension < minAction.size(); actionDimension++) {
-		actionVector.push_back(iteratorVector[actionDimension] * scaleVector[actionDimension] + minAction[actionDimension]);
+		actionVector[actionDimension] = iteratorVector[actionDimension] * scaleVector[actionDimension] + minAction[actionDimension];
 	}
 
 	return actionVector;

@@ -51,17 +51,16 @@ int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explor
 	std::vector<double> exponentTerms(networks.size());
 	double sumOfExponentTerms = 0;
 
+	if (explorationConstant < 0.01) explorationConstant = 0.01;
+
 	for(int a = 0; a < networks.size(); a++) {
 		double reward = networks[a]->getOutput(currentState)[0];
-		std::cout << "re: " << reward << "; exploration: " << explorationConstant << "\n";
 		double exponentTerm = exp(reward / explorationConstant);
         
         rewards[a] = reward;
 		exponentTerms[a] = exponentTerm;
 		sumOfExponentTerms += exponentTerm;
 	}
-
-	std::cout << "sum: " << sumOfExponentTerms << "\n";
 
 	double sumOfProbabilities = 0;
 	for(int a = 0; a < networks.size(); a++) {
@@ -74,7 +73,10 @@ int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explor
 		}
 	}
 
-	throw 1;
+	/// Incase a floating point error resulted in no action
+	lastAction = networks.size() - 1;
+	lastState = currentState;
+	return networks.size() - 1;
 }
 
 void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState) {
@@ -82,8 +84,6 @@ void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> n
     
 	double feedback = (reward + (devaluationFactor*highestReward(newState)));
 	double targetValueForLastState = ((1 - learningRate) * lastReward) + (learningRate*feedback);
-
-	std::cout << "T val: " << targetValueForLastState << "\n";
 
 	backprop.trainOnData(networks[lastAction], { lastState }, { { targetValueForLastState } });
 }

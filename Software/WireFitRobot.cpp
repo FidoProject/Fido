@@ -31,6 +31,8 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	std::vector< std::vector<double> > newStates;
 	std::vector<double> elapsedTimes;
 	std::vector<int> results(numberOfTimes);
+	std::vector<double> boltz;
+	std::vector<double> train;
 
 	/// Constant definitions
 	int historyLength = 10, numberOfRepetitions = 2, sleepTime = 0;
@@ -53,7 +55,12 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			/// Get state and perform action
 			oldStates.push_back(task->getState());
 
+			clock_t begin = clock();
 			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+			clock_t end = clock();
+			double millis = double(end - begin) / (CLOCKS_PER_SEC);
+			boltz.push_back(millis);
+			
 			actions.push_back(action);
 
 			double reward = task->performAction(action);
@@ -63,15 +70,20 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			newStates.push_back(task->getState());
 			elapsedTimes.push_back(1);
 
+			begin = clock();
 			///  Train model on reward
 			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
 			//learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, numberOfRepetitions);
+			end = clock();
+			millis = double(end - begin) / (CLOCKS_PER_SEC);
+			train.push_back(millis);
+			
 
 			/// Learning criteria
 			if (task->isTaskDone()) break;
 
-			for (int a = 0; a < 6; a++) {
-				std::vector<double> action = learner.chooseBoltzmanAction(task->getState(), minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+			for (int a = 0; a < 3; a++) {
+				action = learner.chooseBoltzmanAction(task->getState(), minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 				task->performAction(action);
 			}
 
@@ -89,7 +101,9 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 		std::cout << "iter: " << iter << "\n";
 	}
 
-	printStats(results);
+	printStats(std::vector<double>(results.begin(), results.end()));
+	printStats(boltz);
+	printStats(train);
 
 	return results;
 }
@@ -122,7 +136,7 @@ void WireFitRobot::hyperParameterTest() {
 		/// Carry out test
 		std::vector<int> results = test(numberOfTimes, maxIterations);
 		std::cout << "l: " << hpNeuronsPerLayer << "; a: " << hpNumberOfActions << "; n-per-l: " << hpNeuronsPerLayer << "; ";
-		printStats(results);
+		printStats(std::vector<double>(results.begin(), results.end()));
 
 		/// Update hyperparameters
 		hpNeuronsPerLayer++;
@@ -142,40 +156,25 @@ void WireFitRobot::resetRobot() {
 	task->reset();
 }
 
-void WireFitRobot::printStats(std::vector<int> data) {
-	double mean = 0, median = 0, mode = 0;
+void WireFitRobot::printStats(std::vector<double> data) {
+	double mean = 0, median = 0;
 
-	int min = 9999999, max = -9999999;
+	double min = 9999999, max = -9999999;
 	for (int a = 0; a < data.size(); a++) {
 		if (data[a] > max) max = data[a];
 		if (data[a] < min) min = data[a];
 	}
-	int range = max - min;
+	double range = max - min;
 
-	std::vector<int> histogram(range + 1);
-
+	double totalValue = 0;
 	for (int a = 0; a < data.size(); a++) {
 		mean += (double)data[a] / (double)data.size();
-		histogram[data[a] - min]++;
 	}
 
-	int iterator = 0;
-	for (int a = 0; a <= histogram.size(); a++) {
-		iterator += histogram[a];
-		if (iterator > data.size() / 2) {
-			median = a+min;
-			break;
-		}
-	}
+	auto sortfunction = [](double a, double b) -> bool { return a > b; };
+	std::sort(data.begin(), data.end(), sortfunction);
 
-	int maxInstances = 0;
-	for (int a = 0; a < histogram.size(); a++) {
-		if (histogram[a] > maxInstances) {
-			maxInstances = histogram[a];
-			mode = a+min;
-		}
-		iterator += histogram[a];
-	}
+	median = data[data.size() / 2];
 
-	std::cout << "Mean: " << mean << "; median: " << median << ";  mode: " << mode << ";  maxinstances: " << maxInstances << "\n";
+	std::cout << "Mean: " << mean << "; median: " << median << "\n";
 }

@@ -9,7 +9,7 @@ class DriveToEmitter : public Task {
 public:
 	Simlink *simulator;
 	const double maxDistance = 982, allowableDistance = 110;
-	const int speed = 1, deltaTime = 20;
+	const int speed = 3, deltaTime = 20;
 	double turnsStill = 0, turnsAway = 0;
 
 	DriveToEmitter();

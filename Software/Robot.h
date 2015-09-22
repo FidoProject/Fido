@@ -7,6 +7,7 @@
 #include "QLearn.h"
 #include "FidoSim/Simlink.h"
 #include "Tasks/Task.h"
+#include "WireFitRobot.h"
 
 /* Uses the QLearn object paired with the simulator to progressively learn a task through reinforcement learning.
  *
@@ -25,7 +26,7 @@ public:
 	Robot(Task *task_);
 
 	// Runs the robot for a specified number of time steps
-	void run(int numberOfTimeSteps);
+	void run(int trials, int numberOfTimeSteps);
 
 private:
 	std::vector<double> getAction(int action);
