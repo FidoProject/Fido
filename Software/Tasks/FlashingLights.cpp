@@ -19,30 +19,30 @@ void FlashingLights::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
+	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 3;
 	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
 	*minAction = { 0 }, *maxAction = { 1 };
 	*baseOfDimensions = 6;
 }
 
 std::vector<double> FlashingLights::getState() {
-	return {(double)simulator->getVis() / 100.0};
+	simulator->visVal = ((double)rand() / (double)RAND_MAX) * 100;
+	return{ simulator->getVis() / 100.0 };
 }
 
 double FlashingLights::performAction(const std::vector<double> &action) {
 	simulator->setLED(action[0] * 255, 0, 0, 100);
+
+	if (abs(action[0] - simulator->getVis() / 100.0) < 0.02) isDone = true;
 	
-	if(simulator->getVis() > 50) {
-		return action[0];
-	} else {
-		return 1 - action[0];
-	}
+	return 1 - abs(action[0] - simulator->getVis() / 100.0);
 }
 
 bool FlashingLights::isTaskDone() {
-	return false;
+	return isDone;
 }
 
 void FlashingLights::reset() {
-	
+	simulator->visVal = ((double)rand() / (double)RAND_MAX) * 100;
+	isDone = false;
 }

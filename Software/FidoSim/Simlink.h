@@ -105,6 +105,7 @@ public:
 
 	Robby robot;
 	Emitter emitter;
+	int visVal;
 private:
 	void mainWindowHandler();
 
@@ -132,7 +133,7 @@ private:
     struct Piezo { int volume, frequency; };
     
     // Sensor values, all ranging from 0-100.
-	int irVal, micVal, batVal, visVal, tempVal;
+	int irVal, micVal, batVal, tempVal;
     
     bool click;
     int cx,cy;

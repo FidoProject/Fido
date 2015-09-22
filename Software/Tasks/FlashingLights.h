@@ -26,6 +26,8 @@ public:
 	double performAction(const std::vector<double> &action);
 	bool isTaskDone();
 	void reset();
+
+	bool isDone = false;
 };
 
 #endif

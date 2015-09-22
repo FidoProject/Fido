@@ -14,11 +14,12 @@
 #include "Tasks/FloatToEmitter.h"
 #include "Tasks/DriveToEmitter.h"
 #include "Tasks/FlashingLights.h"
+#include "Tasks/LineFollow.h"
 
 int main() {
     srand(time(NULL));  
 
-	WireFitRobot robot(new DriveToEmitter());
+	WireFitRobot robot(new LineFollow());
 	robot.test(500, 5000);
 
 	//Robot robot(new FloatToEmitter());

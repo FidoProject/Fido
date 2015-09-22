@@ -1,18 +1,19 @@
-#ifndef DRIVETOEMITTER_H
-#define DRIVETOEMITTER_H
+#ifndef LINEFOLLOW_H
+#define LINEFOLLOW_H
 
 #include "Task.h"
 
 class Simlink;
 
-class DriveToEmitter : public Task {
+class LineFollow : public Task {
 public:
-	Simlink *simulator;
-	const double maxDistance = 3000, allowableDistance = 110;
-	const int speed = 3, deltaTime = 20;
-	double turnsStill = 0, turnsAway = 0;
 
-	DriveToEmitter();
+	Simlink *simulator;
+
+	const int speed = 3, deltaTime = 20;
+	sf::Vector2f p1, p2;
+
+	LineFollow();
 
 	void init(Simlink *simulator_);
 	void getRobotParameters(int *stateSize, 
@@ -29,6 +30,8 @@ public:
 	double performAction(const std::vector<double> &action);
 	bool isTaskDone();
 	void reset();
+
+	double distanceFromLine(sf::Vector2f p);
 };
 
 #endif
