@@ -20,9 +20,9 @@ void DriveToEmitter::getRobotParameters(int *stateSize,
 						double *baseOfDimensions) {
 
 	*stateSize = 3, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
+	*beginningExplorationConstant = 0.15, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
-	*baseOfDimensions = 6;
+	*baseOfDimensions = 8;
 }
 
 std::vector<double> DriveToEmitter::getState() {
@@ -44,7 +44,7 @@ double DriveToEmitter::performAction(const std::vector<double> &action) {
 		|| newRobotPosition.y < 0 + simulator->robot.getGlobalBounds().height / 2
 		|| newRobotPosition.y > 595 - simulator->robot.getGlobalBounds().height / 2) {
 		
-		simulator->robot.setPosition(previousRobotPosition);
+		///simulator->robot.setPosition(previousRobotPosition);
 	}
 
 	if (simulator->robot.getPosition() == previousRobotPosition) turnsStill++;
@@ -52,7 +52,9 @@ double DriveToEmitter::performAction(const std::vector<double> &action) {
 	if (simulator->getDistanceOfRobotFromEmitter() > previousDistance) turnsAway++;
 	else turnsAway = 0;
 
-	return (1 - (turnsStill*0.06 + turnsAway*0.1)) - (simulator->getDistanceOfRobotFromEmitter() / maxDistance);
+	return (double)(previousDistance - simulator->getDistanceOfRobotFromEmitter()) / 1.415;
+
+	///return (1 - (turnsStill*0.06 + turnsAway*0.1)) - (simulator->getDistanceOfRobotFromEmitter() / maxDistance);
 	
 }
 
