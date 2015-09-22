@@ -1,6 +1,8 @@
-Results, testing, and applications go here.
-\long\def\/*#1*/{}
-\subsection{Training Methods}
+\subsection{Experiments}
+
+To test Fido's effectiveness at learning with limited feedback, Fido was trained on a number of different tasks through our simulator using reward values delegated by our software. Data was collected regarding Fido's latency and number of reward iterations needed for convergence.
+
+Fido's first task, nickname ``Float,'' challenged our learning implementation to direct a robot to point. Each time it was told to select an action, Fido specified the robot's vertical and horizontal velocity between +10 and -10 pixels. Each trial Fido and the emitter were placed randomly on a boundless plane within 768 pixels of one another. Fido was fed the ratio of its x displacement to its y displacement from its target point as the state. Every fourth action that Fido made was chosen as a reward iteration, and Fido was given a reward value corresponding to its last action. This reward value was the difference between Fido's distance away from the target point before performing the action and Fido's distance from the target point after performing the action. Fido's feed-forward neural network had 3 hidden layers each with 10 neurons. The exploration constant in equation \ref{equ::boltzmann} was held at 0.15.
 
 \subsection{Findings}
 
@@ -15,13 +17,3 @@ Results, testing, and applications go here.
 	\input{Figures/timeGraph.tex}
 	\caption{Time to Learn for Fido Learning Tasks}
 \end{figure}
-
-\/*
-Outline
-- Compare to discrete
-- Compare to other action selection methods
-- Compare to actor critic
-
-*/
-
-\subsection{Further Applications}

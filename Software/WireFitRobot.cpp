@@ -105,8 +105,6 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	printStats(boltz);
 	printStats(train);
 
-	simulator.playMusic();
-
 	return results;
 }
 

@@ -13,7 +13,6 @@ Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40) {
 
 	click = false; 
 	keepWindowsOpen = true;
-	musicOn = false;
 
 	mainWindowThread = std::thread(&Simlink::mainWindowHandler, this);
 }
@@ -39,10 +38,6 @@ void Simlink::mainWindowHandler() {
 	if (!texture.loadFromFile("C:/Users/Michael/Documents/Fido/Software/FidoSim/background.png")) {
 		exit(EXIT_FAILURE);
 	} background = sf::Sprite(texture);
-	
-	if (!music.openFromFile("C:/Users/Michael/Documents/Fido/Software/FidoSim/nice_music.ogg")) {
-		exit(EXIT_FAILURE);
-	}
 
 	sf::Font font;
 	if (!font.loadFromFile("C:/Users/Michael/Documents/Fido/Software/FidoSim/sansation.ttf")) {
@@ -186,11 +181,6 @@ void Simlink::updateMainWindow() {
 	mainWindow.draw(emitter);
 	mainWindow.display();
 
-	if (musicOn) { 
-		music.play();
-		musicOn = false;
-	}
-
 	sf::sleep(sf::milliseconds(25));
 }
 
@@ -283,8 +273,4 @@ double Simlink::getDistanceOfRobotFromEmitter() {
 void Simlink::getRobotDisplacementFromEmitter(double *x, double *y) {
 	*x = emitter.getPosition().x - robot.getPosition().x;
 	*y = emitter.getPosition().y - robot.getPosition().y;
-}
-
-void Simlink::playMusic() {
-	musicOn = true;
 }

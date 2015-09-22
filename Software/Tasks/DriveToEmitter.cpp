@@ -20,9 +20,9 @@ void DriveToEmitter::getRobotParameters(int *stateSize,
 						double *baseOfDimensions) {
 
 	*stateSize = 3, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 0.15, *explorationConstantDevaluation = 1;
+	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
-	*baseOfDimensions = 8;
+	*baseOfDimensions = 6;
 }
 
 std::vector<double> DriveToEmitter::getState() {
