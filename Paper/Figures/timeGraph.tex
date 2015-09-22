@@ -2,6 +2,7 @@
 \begin{tikzpicture}[font=\sffamily]
     \begin{axis}[
         legend cell align=left,ybar=2pt,
+        legend pos=north west,
         bar width=10pt,ymin=0,axis on top,
         xtick=data,ylabel=time (milliseconds),
         grid=major,grid style={dashed, gray!30},
@@ -14,19 +15,19 @@
     ]
 
         \addplot[pattern=dots] coordinates {
-            (flash an LED,0.7)
+            (flash an LED,0.3)
             (float to emitter,0.94)
-            (drive to emitter,0.88)
-            (drive in a shape, 0.33)
-            (line following, 0.45)
+            (drive to emitter,0.76)
+            (drive in a shape, 0.6)
+            (line following, 0.8)
         };
 
         \addplot[pattern=crosshatch] coordinates {
-            (flash an LED,0.7)
+            (flash an LED,3)
             (float to emitter,5.6)
-            (drive to emitter,0.88)
-            (drive in a shape, 0.33)
-            (line following, 0.45)
+            (drive to emitter,11.1)
+            (drive in a shape, 12)
+            (line following, 15)
         };
 
         \legend{action selection,training};
