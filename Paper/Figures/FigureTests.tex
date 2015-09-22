@@ -2,7 +2,10 @@
 \usepackage[margin=1in]{geometry}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,graphicx,tikz,circuitikz,pgfplots,fixltx2e,filecontents,pgfplotstable}
+\usepackage{amsmath,graphicx,tikz,circuitikz,pgfplots,filecontents,pgfplotstable}
+
+\pgfplotsset{compat=1.8}
+\usetikzlibrary{decorations.pathmorphing}
 
 \usepackage[justification=centering]{caption}
 \usetikzlibrary{arrows,fit,patterns}
@@ -22,6 +25,16 @@
 \section{Figures}
 \centering
 
-\input{iterationsGraph.tex}
+\begin{figure}[ht]
+	\centering
+	\input{timeGraph.tex}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\input{iterationsGraph.tex}
+\end{figure}
+
+\end{document}
 
 \end{document}

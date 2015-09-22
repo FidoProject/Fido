@@ -2,8 +2,8 @@
 \begin{tikzpicture}[font=\sffamily]
 \begin{axis}[
     	symbolic x coords={flash an LED,
+                           float to emitter,
     					   drive to emitter,
-    					   float to emitter,
     					   drive in a shape,
     					   line following},
     	ylabel={reward iterations},
@@ -13,8 +13,8 @@
     
     \addplot[ybar,pattern=north west lines] coordinates {
         (flash an LED,42)
+        (float to emitter,14)
         (drive to emitter,50)
-        (float to emitter,80)
         (drive in a shape,120)
         (line following, 60)
     };
