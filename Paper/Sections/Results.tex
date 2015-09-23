@@ -12,6 +12,8 @@ Fido's last challenge, called ``Follow,'' was to perform a classic robotic task,
 
 \subsection{Findings}
 
+Each task was run 500 times to gather the data show in Table \ref{tab:data}.  The reward iterations values shown in the above data table were the medians of the data collected. The median is shown instead of the mean to discount a few large outliers that were present in data. The time data shown above is the mean of the data collected.
+
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{@{}lccc@{}}
@@ -26,6 +28,5 @@ Fido's last challenge, called ``Follow,'' was to perform a classic robotic task,
 	\label{tab:data}
 \end{table}
 
-Each task was run 500 times to gather the data show in Table \ref{tab:data}.  The reward iterations values shown in the above data table were the medians of the data collected. The median is shown instead of the mean to discount a few large outliers that were present in data. The time data shown above is the mean of the data collected.
-
 The data collected demonstrates the prowess of the Fido control system.   Fido was able to master both a holonomic and differential-drive motor control system (the ``float'' and ``drive'' tasks), proving its hardware agnostic capabilities.  All tasks showed low numbers of reward iterations and low latency, allowing Fido to learn quickly and efficiently. Even the task that was most difficult to Fido, ``Follow,'' took a median of 21 reward iterations, well within the patience of a human.
+
