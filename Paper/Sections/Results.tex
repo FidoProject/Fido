@@ -2,9 +2,9 @@
 
 To test Fido's effectiveness at learning with limited feedback, Fido was trained on a number of different tasks through our simulator using reward values delegated by our software. Data was collected regarding Fido's latency and number of reward iterations needed for convergence.
 
-Fido's first and simplest task was to set the brightness value of an LED to a value proportional to the amount of light that it sensed. Each reward iteration, Fido's neural network was given the intensity of visible light that Fido detected and was asked for the brightness value of Fido's LED. Fido was then given a reward value equal to $1 - |b - v|$ where $b$ was the brightness value of Fido's network ranging from 0 to 1 and $v$ was the intensity of visible light that Fido detected ranging from 0 to 1. Fido's feed-forward neural network had 3 hidden layers each with 10 neurons and outputted 4 wires to the wire-fitted interpolator. As for all of the tasks, this neural network's input and hidden layers used a sigmoid activation function, while  its output layer used a linear activation function that simply outputted its input. The exploration constant in equation \ref{equ::boltzmann} was held at 0.2 for the duration of the task.
+Fido's first and simplest task, named ``Flash'' by us, was to set the brightness value of an LED to a value proportional to the amount of light that it sensed. Each reward iteration, Fido's neural network was given the intensity of visible light that Fido detected and was asked for the brightness value of Fido's LED. Fido was then given a reward value equal to $1 - |b - v|$ where $b$ was the brightness value of Fido's network ranging from 0 to 1 and $v$ was the intensity of visible light that Fido detected ranging from 0 to 1. Fido's feed-forward neural network had 3 hidden layers each with 10 neurons and outputted 4 wires to the wire-fitted interpolator. As for all of the tasks, this neural network's input and hidden layers used a sigmoid activation function, while  its output layer used a linear activation function that simply outputted its input. The exploration constant in equation \ref{equ::boltzmann} was held at 0.2 for the duration of the task.
 
-``Float,'' Fido's second task, challenged our learning implementation to direct a robot to point. Each time it was told to select an action, Fido specified the robot's vertical and horizontal velocity between +10 and -10 pixels. At the start of each trial, Fido and the point were placed randomly on a boundless plane within 768 pixels of one another. Fido was fed the ratio of its x displacement to its y displacement from its target point as the state. Every fourth action that Fido made was chosen as a reward iteration, and Fido was given a reward value corresponding to its last action. This reward value was the difference between Fido's distance away from the target point before performing the action and Fido's distance from the target point after performing the action. Fido completed each trial when it was within 70 pixels of the point. Fido's feed-forward neural network had 3 hidden layers each with 10 neurons and outputted 3 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at 0.15.
+``Float,'' Fido's second task, challenged our learning implementation to direct a robot to point. Each time it was told to select an action, Fido specified the robot's vertical and horizontal velocity between +10 and -10 pixels. This emulates certain holonomic drive systems, where motor outputs directly correlate to movement on the x and y axes. At the start of each trial, Fido and the point were placed randomly on a boundless plane within 768 pixels of one another. Fido was fed the ratio of its x displacement to its y displacement from its target point as the state. Every fourth action that Fido made was chosen as a reward iteration, and Fido was given a reward value corresponding to its last action. This reward value was the difference between Fido's distance away from the target point before performing the action and Fido's distance from the target point after performing the action. Fido completed each trial when it was within 70 pixels of the point. Fido's feed-forward neural network had 3 hidden layers each with 10 neurons and outputted 3 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at 0.15.
 
 Fido's next task, nicknamed ``Drive,'' required that it direct a robot to point by controlling the motors of a differential drive system. At the start of each trial, Fido and the point were placed randomly on a boundless plane within 768 pixels of one another. Fido was fed the ratio of its x displacement to its y displacement from its target point as the state as well as its rotation. Every fourth action that Fido made was chosen as a reward iteration, and Fido was given a reward value corresponding to its last action. This reward value was the difference between Fido's distance away from the target point before performing the action and Fido's distance from the target point after performing the action. Fido completed each trial when it was within 70 pixels of the point. Fido's feed-forward neural network had 4 hidden layers each with 10 neurons and outputted 5 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at 0.2.
 
@@ -20,23 +20,12 @@ Fido's last challenge, called ``Follow,'' was to perform a classic robotic task,
 		Flash       & 6                   & 0.26                  & 5.97               \\
 		Float       & 14                  & 0.94                  & 5.60               \\
 		Drive       & 17                  & 0.76                  & 11.09              \\
-		Line Follow & 20                  & yolo                  & yolo               \\ \bottomrule
+		Line Follow & 21                  & 1.78                  & 9.79               \\ \bottomrule
 	\end{tabular}
-	\caption{ADD TABLE CAPTION HERE}
+	\caption{Number of Learning Iterations, Action Selection Time, and Training Time Per Iteration for Fido Tasks}
+	\label{tab:data}
 \end{table}
 
-\begin{figure}[ht]
-	\centering
-	\input{Figures/iterationsGraph.tex}
-	\caption{Number of Reward Iterations for Fido Learning Tasks}
-	\label{gra::rewarditerations}
-\end{figure}
+Each task was run 500 times to gather the data show in Table \ref{tab:data}.  The reward iterations values shown in the above data table were the medians of the data collected. The median is shown instead of the mean to discount a few large outliers that were present in data. The time data shown above is the mean of the data collected.
 
-\begin{figure}[ht]
-	\centering
-	\input{Figures/timeGraph.tex}
-	\caption{Time to Learn for Fido Learning Tasks}
-	\label{gra::time}
-\end{figure}
-
-Each task was run 500 times to gather the data show in Figures \ref{gra::rewarditerations} and \ref{gra::time}. The reward iterations values graphed in Figure \ref{gra::rewarditerations} was the median of the data collected. The median is shown instead of the mean to discount a few large outliers that were present in data. The time data graphed in Figure \ref{gra::rewarditerations} was the mean of the data collected.
+The data collected demonstrates the prowess of the Fido control system.   Fido was able to master both a holonomic and differential-drive motor control system (the ``float'' and ``drive'' tasks), proving its hardware agnostic capabilities.  All tasks showed low numbers of reward iterations and low latency, allowing Fido to learn quickly and efficiently.
