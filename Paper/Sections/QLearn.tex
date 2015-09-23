@@ -1,7 +1,7 @@
 % Intro text here; a sentence or two (I don't think it's necessary)
 \subsection{Q-Learning}
 
-Reinforcement learning seeks to find the optimal action to be undertaken for a given state through trial and error. In the context of Fido, an action could be the playing of a note or driving straight forwards, while the state could the amount of light detected by the robot or how near the robot is to another object. Once an action is performed, a reward and a new state are given back to the reinforcement learning algorithm.  As actions are performed over time the reinforcement learning algorithm sharpens its ability to receive reward.
+Reinforcement learning seeks to find the optimal action to be undertaken for a given state through trial and error. In the context of Fido, an action could be the playing of a note or driving straight forwards, while the state could be the amount of light detected by the robot or how near the robot is to another object. Once an action is performed, a reward and a new state are given back to the reinforcement learning algorithm.  As actions are performed over time, the reinforcement learning algorithm sharpens its ability to receive reward.
 
 $Q$-Learning \cite{watkins} is a popular reinforcement learning algorithm that works by learning an action-value function $Q$ that takes a state-action pair as an input and outputs the expected utility value of performing that action in that state. This utility value is know as the $Q$-value. The $Q$-value is a combination of immediate reward and expected future reward. Every reward iteration the $Q$-value of an state-action pair is updated as such:
 
@@ -48,7 +48,15 @@ Figure \ref{fig::wirefitexample} is an example of interpolation on a set of wire
 
 Every update to the $Q$-value requires that $q_{max}$ is computed and the action that produces $q_{max}$ is needed for common action selection policies. As proved in \cite{baird}, the wire with the greatest $Q$-value is the interpolation point with the greatest $Q$-value, therefore $q_{max}$ is the maximum $Q$-value out of the set of wires given to the wire-fitting function. This makes it extremely computationally cheap to compute $Q$-value, allowing Fido's latency to stay minimal.
 
-The wire-fitting function is derivable, allowing us to update our estimation of the $Q$. Once the reward and new state for an action-state pair is received and an updated $Q$-value is calculated using Equation \ref{equ::updateqlearn}, the error in previous Q-learn value can be calculated as such:
+The wire-fitting function is derivable. This allows us to update our wires, and therefore our model of $Q$, using gradient descent. Gradient descent is an optimization algorithm that looks to find the local minimum of a function by modifying each of its parameters, one by one. The update function for a parameter is calculated as such:
+
+\begin{equation}
+	a = a - \gamma \Delta F(a)
+	\,,
+	\label{equ::wirefiterrorfunction}
+\end{equation}
+
+where $a$ is the parameter to be updated, $\gamma$ is the learning rate, and $\Delta F(a)$ is the partial derivative of the function to be minimized $F$ with respect to $a$. In the case of Fido, once the reward and new state for an action-state pair is received and an updated $Q$-value $\hat{q}$ is calculated using Equation \ref{equ::updateqlearn}, we are trying to minimize the wire-fitting function's error at predicting $\hat{q}$ when given the wires for Fido's previous state. This error can be calculated as:
 
 \begin{equation}
 	(\hat{q} - q)^2
@@ -57,7 +65,8 @@ The wire-fitting function is derivable, allowing us to update our estimation of 
 \end{equation}
 
 \noindent
-where $\hat{q}$ is the new $Q$-value and $q$ is the old $Q$-value. Using Equation \ref{equ::wirefiterrorfunction} as our cost function and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, new wires that model $Q$ so that they correctly output $\hat{q}$ may be calculated for our current state using gradient descent. Our neural network can then be trained to output these new wires using back propagation, thus updating our estimation of $Q$.
+
+where $q$ is the old $Q$-value. Using Equation \ref{equ::wirefiterrorfunction} as our function to be minimized and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, we may compute the partial derivatives of our cost function. Using these, new wires may be calculated for Fido's previous state using gradient descent. Fido's neural network may be trained using back propagation to output these new wires when given the previous state.
 
 \subsection{Boltzmann Probability Distribution Selection Policy}
 
