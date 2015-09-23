@@ -11,7 +11,7 @@ public:
 
 	Simlink *simulator;
 
-	const double allowableDistance = 60;
+	const double allowableDistance = 40;
 	const int speed = 2, deltaTime = 20;
 	sf::Vector2f p1, p2;
 
