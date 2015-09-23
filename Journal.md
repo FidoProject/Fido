@@ -99,3 +99,8 @@ My next tasks are:
 
 - Implementing a linear interpolator and measuring its performance at learning to drive straight
 - Testing my modifications to WireFitQLearn while using a suitable interpolator
+
+###September 23, 2015 at 12:01
+#### Joshua Gruenstein
+
+We've submitted to Siemens.  As we were rushing we didn't have much time to document the massive amount of work we were doing in the journal, but the code documentation has been continued.  Over the next couple of days we will back-document what happened in these hectic last weeks.
