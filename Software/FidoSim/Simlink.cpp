@@ -1,5 +1,7 @@
 #include "Simlink.h"
 
+#include <math.h>
+
 
 Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40) {
 	irVal = motors.motorOne = motors.motorTwo = 0;
@@ -179,6 +181,9 @@ void Simlink::updateMainWindow() {
 
 	mainWindow.draw(robot);
 	mainWindow.draw(emitter);
+
+	if (dodraw)mainWindow.draw(line);
+
 	mainWindow.display();
 
 	sf::sleep(sf::milliseconds(25));
@@ -273,4 +278,15 @@ double Simlink::getDistanceOfRobotFromEmitter() {
 void Simlink::getRobotDisplacementFromEmitter(double *x, double *y) {
 	*x = emitter.getPosition().x - robot.getPosition().x;
 	*y = emitter.getPosition().y - robot.getPosition().y;
+}
+
+void Simlink::drawLine(sf::Vector2f p1, sf::Vector2f p2) {
+	line = sf::RectangleShape();
+	line.setSize({ 2, sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2)) });
+	line.setPosition(p1);
+	line.setFillColor(sf::Color(0, 0, 0));
+
+	line.setRotation((atan2(p1.y - p2.y, p1.x - p2.x)*180 / 3.14159) - 90);
+
+	dodraw = true;
 }

@@ -82,7 +82,7 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			/// Learning criteria
 			if (task->isTaskDone()) break;
 
-			for (int a = 0; a < 3; a++) {
+			for (int a = 0; a < 0; a++) {
 				action = learner.chooseBoltzmanAction(task->getState(), minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 				task->performAction(action);
 			}

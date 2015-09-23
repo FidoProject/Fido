@@ -103,6 +103,8 @@ public:
 	// Gets the displacement of the robot from the emitter in terms of x and y components
 	void getRobotDisplacementFromEmitter(double *x, double *y);
 
+	void drawLine(sf::Vector2f p1, sf::Vector2f p2);
+
 	Robby robot;
 	Emitter emitter;
 	int visVal;
@@ -141,6 +143,8 @@ private:
     Motors motors;
     IMU imu;
     Piezo piezo;
+	sf::RectangleShape line;
+	bool dodraw = false;
 
 	bool keepWindowsOpen;
 };

@@ -20,19 +20,25 @@ void LineFollow::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 3, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
+	*stateSize = 3, *actionDimensions = 2, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 4;
+	*beginningExplorationConstant = 0.15, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
-	*baseOfDimensions = 6;
+	*baseOfDimensions = 11;
 }
 
 std::vector<double> LineFollow::getState() {
 	double distance = distanceFromLine(simulator->robot.getPosition());
 	double leftDistance = distanceFromLine(simulator->robot.getPoint(0));
 	double rightDistance = distanceFromLine(simulator->robot.getPoint(1));
+
+	sf::Vector2f point = getFootOfPerpendicular(simulator->robot.getPosition(), p1, p2);
+	double x = point.x;
+	double y = point.y;
+
+	return {x / (abs(x) + abs(y)), y / (abs(x) + abs(y)), (double)simulator->robot.getRotation() / 360.0 };
 	
-	if (leftDistance < rightDistance) return {1, 0};
-	else return { 0, 1 };
+	//if (leftDistance < rightDistance) return {1, 0, (double)simulator->robot.getRotation() / 360.0 };
+	//else return { 0, 1, (double)simulator->robot.getRotation() / 360.0 };
 }
 
 double LineFollow::performAction(const std::vector<double> &action) {
@@ -40,19 +46,33 @@ double LineFollow::performAction(const std::vector<double> &action) {
 
 	simulator->robot.go(action[0] * 100, action[1] * 100, speed, deltaTime);
 
-	return (double)(previousDistance - distanceFromLine(simulator->robot.getPosition())) / 1.415;
+	double distance = distanceFromLine(simulator->robot.getPosition());
+
+	if(distance > allowableDistance) return (double)(previousDistance - distance) / 1.5;
+	else return (double)(previousDistance - distance) / 0.5;
 	
 }
 
 bool LineFollow::isTaskDone() {
-	return false;
+	double distance = distanceFromLine(simulator->robot.getPosition());
+	///std::cout << "distance: " << distance << "\n";
+
+	if (distance < allowableDistance)  timesOn++;
+	else timesOn = 0;
+
+	if (timesOn > 10) return true;
+	else return false;
 }
 
 void LineFollow::reset() {
 	simulator->placeRobotInRandomPosition();
 
 	p1 = simulator->robot.getPosition();
-	p2 = {5.0*cos(simulator->robot.getRotation()*3.14159265/180.0), 5.0*sin(simulator->robot.getRotation()*3.14159265/180.0)};
+	p2 = {p1.x + (float)(500.0*cos((simulator->robot.getRotation()+90)*3.14159265/180.0)), p1.y + (float)(500.0*sin((simulator->robot.getRotation()+40)*3.14159265/180.0))};
+
+	simulator->placeRobotInRandomPosition();
+
+	simulator->drawLine(p1, p2);
 
 }
 
