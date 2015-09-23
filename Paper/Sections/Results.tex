@@ -15,10 +15,14 @@ Fido's next task task, nicknamed ``Drive,'' required that it direct a robot to p
 	\centering
 	\input{Figures/iterationsGraph.tex}
 	\caption{Number of Reward Iterations for Fido Learning Tasks}
+	\label{gra::rewarditerations}
 \end{figure}
 
 \begin{figure}[ht]
 	\centering
 	\input{Figures/timeGraph.tex}
 	\caption{Time to Learn for Fido Learning Tasks}
+	\label{gra::time}
 \end{figure}
+
+Each task was run 500 times to gather the data show in Figures \ref{gra::rewarditerations} and \ref{gra::time}. The reward iterations values graphed in Figure \ref{gra::rewarditerations} was the median of the data collected. The median is shown instead of the mean to discount a few large outliers that were present in data. The time data graphed in Figure \ref{gra::rewarditerations} was the mean of the data collected.
