@@ -8,8 +8,20 @@ Fido's first and simplest task was to set the brightness value of an LED to a va
 
 Fido's next task task, nicknamed ``Drive,'' required that it direct a robot to point by controlling the motors of a differential drive system. At the start of each trial, Fido and the emitter were placed randomly on a boundless plane within 768 pixels of one another. Fido was fed the ratio of its x displacement to its y displacement from its target point as the state as well as its rotation. Every fourth action that Fido made was chosen as a reward iteration, and Fido was given a reward value corresponding to its last action. This reward value was the difference between Fido's distance away from the target point before performing the action and Fido's distance from the target point after performing the action. Fido's feed-forward neural network had 4 hidden layers each with 10 neurons and outputted 5 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at 0.2.
 
-
 \subsection{Findings}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{@{}lccc@{}}
+		\toprule
+		Task        & Learning Iterations & Action Selection (ms) & Training Time (ms) \\ \midrule
+		Flash       & 6                   & 0.26                  & 5.97               \\
+		Float       & 14                  & 0.94                  & 5.60               \\
+		Drive       & 17                  & 0.76                  & 11.09              \\
+		Line Follow & 20                  & yolo                  & yolo               \\ \bottomrule
+	\end{tabular}
+	\caption{ADD TABLE CAPTION HERE}
+\end{table}
 
 \begin{figure}[ht]
 	\centering
