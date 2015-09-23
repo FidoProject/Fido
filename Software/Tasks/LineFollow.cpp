@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "Simlink.h"
 
-
 LineFollow::LineFollow() {};
 
 void LineFollow::init(Simlink *simulator_) {
@@ -29,6 +28,8 @@ void LineFollow::getRobotParameters(int *stateSize,
 
 std::vector<double> LineFollow::getState() {
 	double distance = distanceFromLine(simulator->robot.getPosition());
+	double leftDistance = distanceFromLine(sf::Vector2f(simulator->robot.getGlobalBounds().left, simulator->robot.getGlobalBounds().top));
+	double rightDistance = distanceFromLine(sf::Vector2f(simulator->robot.getGlobalBounds().left + simulator->robot.getGlobalBounds().width, simulator->robot.getGlobalBounds().top));
 	if(distance != 0) simulator->visVal = std::min(distance, 100);
 	else simulator->visVal = 0;
 
