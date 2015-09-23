@@ -34,7 +34,7 @@ The wire-fitting function calculates $Q$-value of an action $\hat{a}$ for a stat
 \end{equation}
 
 \noindent
-where $q_{max}$ is the greatest $Q$-value among the set of $Q$-values $q$, and $k$ is a small constant that avoids division by zero. $c$ is the smoothing factor. The greater the smoothing factor, the smoother the interpolated function.
+where $q_{max}$ is the greatest $Q$-value among the set of $Q$-values $q$, and $k$ is a small value that avoids division by zero. $c$ is the smoothing factor. The greater the smoothing factor, the smoother the interpolated function.
 
 
 Figure \ref{fig::wirefitexample} is an example of interpolation on a set of wires. The graph shows the value of one-dimensional actions plotted against their respective $Q$-values. The wire-fitting function has few properties that make it especially suited for Fido.
@@ -46,22 +46,22 @@ Figure \ref{fig::wirefitexample} is an example of interpolation on a set of wire
     \label{fig::wirefitexample}
 \end{figure}
 
-Every update to the $Q$-value requires that $Q$-max is computed and the action for $Q$-max is often needed for action selection. As proved in \cite{baird}, the wire with the greatest $Q$-value is the interpolation point with the greatest $Q$-value, therefore the maximum $Q$-value outputted by the wire-fitting function is the maximum $Q$-value out of the set of wires that the function takes as an input. This makes it extremely computationally cheap to compute $Q$-value, allowing Fido's latency to stay minimal.
+Every update to the $Q$-value requires that $q_{max}$ is computed and the action that produces $q_{max}$ is needed for common action selection policies. As proved in \cite{baird}, the wire with the greatest $Q$-value is the interpolation point with the greatest $Q$-value, therefore $q_{max}$ is the maximum $Q$-value out of the set of wires given to the wire-fitting function. This makes it extremely computationally cheap to compute $Q$-value, allowing Fido's latency to stay minimal.
 
 The wire-fitting function is derivable, allowing us to update our estimation of the $Q$. Once the reward and new state for an action-state pair is received and an updated $Q$-value is calculated using Equation \ref{equ::updateqlearn}, the error in previous Q-learn value can be calculated as such:
 
 \begin{equation}
-	(\hat{Q} - Q)^2
+	(\hat{q} - q)^2
 	\,,
 	\label{equ::wirefiterrorfunction}
 \end{equation}
 
 \noindent
-where $\hat{Q}$ is the new $Q$-value and $Q$ is the old $Q$-value. Using Equation \ref{equ::wirefiterrorfunction} as our cost function and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, new wires that model $Q$ so that they correctly output $\hat{Q}$ may be calculated for our current state using gradient descent. Our neural network can then be trained to output these new wires using back propagation, thus updating our estimation of $Q$.
+where $\hat{q}$ is the new $Q$-value and $q$ is the old $Q$-value. Using Equation \ref{equ::wirefiterrorfunction} as our cost function and the partial derivative of the wire-fitting function with respect to each action vector and each q-value, new wires that model $Q$ so that they correctly output $\hat{q}$ may be calculated for our current state using gradient descent. Our neural network can then be trained to output these new wires using back propagation, thus updating our estimation of $Q$.
 
 \subsection{Boltzmann Probability Distribution Selection Policy}
 
-There are a number of approaches to action selection. The most common approach is to simply pick the action with the best $Q$-value for the current state. However this strategy stifles exploration of the state-action space and gives a bias towards an actor's starting policy, which is random. This problem is compounded in the case of Fido due to the large state and action spaces that Fido must explore. Another common method of action selection is to choose each action randomly for a set number of reward iterations, and then to switch to choosing the action with the highest $Q$-value. This plan improves upon the first by allowing for a period of exploration, but is not suited for Fido. During its lifetime, Fido must have the ability to learn new tasks and be retrained by the operator providing feedback, and so, must continuously explore its state space.
+$Q$-learn requires that actions are selected to be performed. There are a number of approaches to choosing this action, and each has a large affect on the behavior of the learning implementation. The most common approach is to simply pick the action with the best $Q$-value for the current state. However this strategy stifles exploration of the state-action space, increasing the time of convergence on a task, hurting the retrain-ability of the model, and giving a bias towards an actor's starting policy, which is random. This problem is compounded in the case of Fido due to the large state and action spaces that Fido must explore. Another common method of action selection is to choose each action randomly for a set number of reward iterations, and then to switch to choosing the action with the highest $Q$-value. This plan improves upon the first by allowing for a period of exploration, but is not suited for Fido. During its lifetime, Fido must have the ability to learn new tasks and be retrained by the operator providing feedback, and so, must continuously explore its state space.
 
 Fido selects actions probabilistically using a Boltzmann or soft-max distribution of probability. The likelihood that an action $\hat{a}$ will be chosen from a set of $n$ actions $a$ for a state $s$ is given as:
 
@@ -71,4 +71,4 @@ Fido selects actions probabilistically using a Boltzmann or soft-max distributio
 	\label{equ::boltzmann}
 \end{equation}
 
-$T$ is the temperature, or exploration level. As $T$ approaches infinity, a random action is chosen. As $T$ tends toward 0, the best action is chosen. Fido keeps $T$ at a constant value around $T \approx 0.15$ throughout its lifetime to encourage occasional exploration.
+$T$ is the temperature, or exploration level. As $T$ approaches infinity, a random action is chosen. As $T$ tends toward 0, the best action is chosen. Fido keeps $T$ at a constant value around $T \approx 0.15$ throughout its lifetime to encourage occasional, continued exploration.
