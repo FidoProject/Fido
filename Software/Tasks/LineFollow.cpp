@@ -28,12 +28,11 @@ void LineFollow::getRobotParameters(int *stateSize,
 
 std::vector<double> LineFollow::getState() {
 	double distance = distanceFromLine(simulator->robot.getPosition());
-	double leftDistance = distanceFromLine(sf::Vector2f(simulator->robot.getGlobalBounds().left, simulator->robot.getGlobalBounds().top));
-	double rightDistance = distanceFromLine(sf::Vector2f(simulator->robot.getGlobalBounds().left + simulator->robot.getGlobalBounds().width, simulator->robot.getGlobalBounds().top));
-	if(distance != 0) simulator->visVal = std::min(distance, 100);
-	else simulator->visVal = 0;
-
-	return {simulator->getVis()/100.0};
+	double leftDistance = distanceFromLine(simulator->robot.getPoint(0));
+	double rightDistance = distanceFromLine(simulator->robot.getPoint(1));
+	
+	if (leftDistance < rightDistance) return {1, 0};
+	else return { 0, 1 };
 }
 
 double LineFollow::performAction(const std::vector<double> &action) {
