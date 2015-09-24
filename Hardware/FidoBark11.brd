@@ -38,7 +38,7 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
@@ -144,6 +144,8 @@
 <wire x1="40.31" y1="0" x2="40.31" y2="45.71" width="0" layer="20"/>
 <wire x1="40.31" y1="45.71" x2="0" y2="45.71" width="0" layer="20"/>
 <wire x1="0" y1="45.71" x2="0" y2="0" width="0" layer="20"/>
+<hole x="2.54" y="43.18" drill="3.2"/>
+<hole x="38.1" y="2.54" drill="3.2"/>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors">
@@ -1962,7 +1964,7 @@ design rules under a new name.</description>
 <element name="R7" library="rcl" package="R0603" value="4.7k" x="27.432" y="33.401" rot="R180"/>
 <element name="R8" library="SparkFun" package="0402-RES" value="200" x="16.51" y="38.735" rot="R90"/>
 <element name="R9" library="rcl" package="R0603" value="10k" x="20.32" y="25.7175"/>
-<element name="SP1" library="adafruit" package="PS12" value="SPEAKER/PS12" x="33.02" y="7.62"/>
+<element name="SP1" library="adafruit" package="PS12" value="SPEAKER/PS12" x="33.02" y="10.16"/>
 <element name="T1" library="opto-trans-siemens" package="BPX81" value="BPX81" x="25.4" y="40.64" rot="R180">
 <attribute name="OC_NEWARK" value="unknown" x="25.4" y="40.64" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MPN" value="" x="25.4" y="40.64" size="1.778" layer="27" rot="R180" display="off"/>
@@ -2114,9 +2116,9 @@ design rules under a new name.</description>
 <wire x1="20.0025" y1="5.715" x2="20.0025" y2="8.7325" width="0.3302" layer="1"/>
 <wire x1="20.0025" y1="8.7325" x2="20.05" y2="8.78" width="0.3302" layer="1"/>
 <wire x1="20.05" y1="8.78" x2="25.51" y2="8.78" width="0.3302" layer="1"/>
-<wire x1="25.51" y1="8.78" x2="29.21" y2="5.08" width="0.3302" layer="1"/>
-<wire x1="29.21" y1="5.08" x2="32.98" y2="5.08" width="0.3302" layer="1"/>
-<wire x1="32.98" y1="5.08" x2="35.52" y2="7.62" width="0.3302" layer="1"/>
+<wire x1="25.51" y1="8.78" x2="29.21" y2="6.35" width="0.3302" layer="1"/>
+<wire x1="29.21" y1="6.35" x2="32.98" y2="6.35" width="0.3302" layer="1"/>
+<wire x1="32.98" y1="6.35" x2="35.52" y2="10.16" width="0.3302" layer="1"/>
 <wire x1="20.45" y1="13.0175" x2="20.05" y2="12.6175" width="0.508" layer="1"/>
 <wire x1="20.05" y1="12.6175" x2="20.05" y2="8.78" width="0.508" layer="1"/>
 <wire x1="37.56" y1="39.37" x2="38.1" y2="38.83" width="0.3302" layer="1"/>
@@ -2372,7 +2374,7 @@ design rules under a new name.</description>
 <signal name="PIEZO">
 <contactref element="SP1" pad="P$1"/>
 <contactref element="U$1" pad="20/A6"/>
-<wire x1="30.52" y1="7.62" x2="30.52" y2="25.44" width="0.3302" layer="16"/>
+<wire x1="30.52" y1="10.16" x2="30.52" y2="25.44" width="0.3302" layer="16"/>
 <wire x1="30.52" y1="25.44" x2="35.56" y2="30.48" width="0.3302" layer="16"/>
 <wire x1="35.56" y1="30.48" x2="35.56" y2="31.75" width="0.3302" layer="16"/>
 <wire x1="35.56" y1="31.75" x2="34.29" y2="33.02" width="0.3302" layer="16"/>
