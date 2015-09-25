@@ -2026,7 +2026,7 @@ design rules under a new name.</description>
 </element>
 <element name="U$4" library="invensense" package="QFN.24.4X4" value="MPU-9150.QFN" x="26.67" y="29.21"/>
 <element name="U1" library="microbuilder" package="SOIC8_208MIL" value="MB85RC256VPF-G-JNERE2" x="11.43" y="26.67" rot="R270"/>
-<element name="U2" library="SparkFun" package="ADMP401" value="ADMP401" x="20.32" y="40.9575" rot="R180"/>
+<element name="U2" library="SparkFun" package="ADMP401" value="SPW2430" x="20.32" y="40.9575" rot="R180"/>
 <element name="U$2" library="esp8266modules" package="ESP12" value="ESP12" x="35.179" y="9.271" rot="R270"/>
 <element name="R1" library="rcl" package="R0603" value="10k" x="40.259" y="19.939"/>
 </elements>
@@ -2141,7 +2141,6 @@ design rules under a new name.</description>
 <contactref element="U$4" pad="15"/>
 <contactref element="U$4" pad="17"/>
 <contactref element="U$4" pad="18"/>
-<contactref element="U$4" pad="9"/>
 <contactref element="C3" pad="2"/>
 <contactref element="C2" pad="2"/>
 <contactref element="SP1" pad="P$2"/>
@@ -2212,7 +2211,6 @@ design rules under a new name.</description>
 <wire x1="27.94" y1="28.96" x2="27.944" y2="29.722" width="0.3302" layer="1"/>
 <wire x1="27.944" y1="29.722" x2="26.416" y2="29.718" width="0.3302" layer="1"/>
 <wire x1="26.416" y1="29.718" x2="26.416" y2="27.239" width="0.3302" layer="1"/>
-<wire x1="26.416" y1="27.239" x2="26.42" y2="27.235" width="0.3302" layer="1"/>
 <wire x1="28.645" y1="30.46" x2="29.23" y2="30.46" width="0.3302" layer="1"/>
 <wire x1="29.23" y1="30.46" x2="30.06" y2="29.63" width="0.3302" layer="1"/>
 <wire x1="30.06" y1="29.63" x2="30.48" y2="29.63" width="0.3302" layer="1"/>
@@ -2528,6 +2526,9 @@ design rules under a new name.</description>
 <wire x1="36.979" y1="17.294" x2="38.227" y2="18.542" width="0.4064" layer="1"/>
 <wire x1="38.227" y1="18.542" x2="39.712" y2="18.542" width="0.4064" layer="1"/>
 <wire x1="39.712" y1="18.542" x2="41.109" y2="19.939" width="0.4064" layer="1"/>
+</signal>
+<signal name="N$6">
+<contactref element="U$4" pad="9"/>
 </signal>
 </signals>
 </board>
