@@ -1,5 +1,10 @@
 #include "QLearn.h"
 
+#include <stdlib.h>
+#include <iostream>
+
+#include "NeuralNet.h"
+
 using namespace net;
 
 QLearn::QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_) {

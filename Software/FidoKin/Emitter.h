@@ -1,11 +1,7 @@
 #ifndef __FidoKin__Emitter__
 #define __FidoKin__Emitter__
 
-#include <stdio.h>
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <math.h>
 
 struct TDVect;
 class Robby;

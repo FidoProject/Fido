@@ -1,4 +1,11 @@
 #include "GeneticAlgo.h"
+
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <map>
+#include <ctime>
+
 using namespace gen;
 
 GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet *> neuralNet)) {

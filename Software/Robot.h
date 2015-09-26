@@ -1,13 +1,10 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include <iostream>
-
-#include "NeuralNet.h"
-#include "QLearn.h"
 #include "FidoSim/Simlink.h"
-#include "Tasks/Task.h"
-#include "WireFitRobot.h"
+#include "QLearn.h"
+
+class Task;
 
 /* Uses the QLearn object paired with the simulator to progressively learn a task through reinforcement learning.
  *

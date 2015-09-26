@@ -1,5 +1,7 @@
 #include "Interpolator.h"
 
+#include <iostream>
+
 #include "LSInterpolator.h"
 
 using namespace net;

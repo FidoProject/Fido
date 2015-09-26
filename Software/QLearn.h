@@ -1,14 +1,14 @@
 #ifndef QLEARN_H
 #define QLEARN_H
 
-#include <iostream>
 #include <vector>
-#include <stdlib.h>
 
-#include "NeuralNet.h"
 #include "BackPropagation.h"
 
 namespace net {
+	
+	class NeuralNet;
+
 	class QLearn {
 	public:
 		std::vector<NeuralNet *> networks;

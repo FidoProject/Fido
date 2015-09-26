@@ -1,12 +1,7 @@
 #ifndef GENETICALGO_H
 #define GENETICALGO_H
 
-#include <iostream>
 #include <vector>
-#include <stdio.h>
-#include <stdlib.h>
-#include <map>
-#include <ctime>
 
 #include "../NeuralNet.h"
 

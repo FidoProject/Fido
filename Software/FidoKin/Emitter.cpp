@@ -1,5 +1,10 @@
 #include "Emitter.h"
 
+#include <stdio.h>
+#include <SFML/Audio.hpp>
+#include <iostream>
+#include <math.h>
+
 #include "Robby.h"
 #include "Simlink.h"
 

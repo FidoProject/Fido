@@ -2,7 +2,12 @@
 
 #include <random>
 #include <chrono>
+#include <iostream>
+#include <stdlib.h>
+#include <SFML/Graphics.hpp>
 
+#include "Interpolator.h"
+#include "NeuralNet.h"
 
 using namespace net;
 

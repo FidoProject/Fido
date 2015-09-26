@@ -1,6 +1,14 @@
 #include "Simlink.h"
 
+#include <SFML/Audio.hpp>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <ctime>
+#include <functional>
+
 
 
 Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40) {

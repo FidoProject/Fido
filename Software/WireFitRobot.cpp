@@ -1,6 +1,11 @@
 #include "WireFitRobot.h"
 
+#include <iostream>
+#include <algorithm>
+
 #include "LSInterpolator.h"
+#include "Tasks/Task.h"
+#include "NeuralNet.h"
 
 WireFitRobot::WireFitRobot(Task *task_) {
 	task = task_;

@@ -1,5 +1,10 @@
 #include "TicTacToe.h"
 
+#include <thread>
+#include <iostream>
+
+#include "GeneticAlgo.h"
+
 std::vector<net::NeuralNet *> TicTacToe::randomSet = std::vector<net::NeuralNet*>(0);
 
 net::NeuralNet* TicTacToe::getBestPlayer(int numberOfIterations) {

@@ -1,6 +1,7 @@
 #include "LSInterpolator.h"
 
 #include <string>
+#include <iostream>
 
 using namespace net;
 

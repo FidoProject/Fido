@@ -1,17 +1,15 @@
 #ifndef WIREFITQLEARN_H
 #define WIREFITQLEARN_H
 
-#include <iostream>
 #include <vector>
-#include <stdlib.h>
 
-#include "NeuralNet.h"
 #include "BackPropagation.h"
-#include "Interpolator.h"
-
-#include <SFML/Graphics.hpp>
 
 namespace net {
+
+	class NeuralNet;
+	class Interpolator;
+	struct Wire;
 
     /* An implementation of QLearn that works with continous state action spaces, 
      * as detailed in http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf.

@@ -1,7 +1,6 @@
 #ifndef INTERPOLATOR_H
 #define INTERPOLATOR_H
 
-#include <iostream>
 #include <vector>
 #include <fstream>
 

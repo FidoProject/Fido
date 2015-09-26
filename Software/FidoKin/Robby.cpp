@@ -1,5 +1,10 @@
 #include "Robby.h"
 
+#include <SFML/Audio.hpp>
+#include <iostream>
+#include <math.h>
+#include <stdio.h>
+
 #include "Simlink.h"
 
 Robby::Robby(int x, int y, int width, int height):

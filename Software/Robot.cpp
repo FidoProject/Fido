@@ -1,5 +1,11 @@
 #include "Robot.h"
 
+#include <iostream>
+
+#include "WireFitRobot.h"
+#include "Tasks/Task.h"
+#include "NeuralNet.h"
+
 Robot::Robot(Task *task_) {
 	task = task_;
 

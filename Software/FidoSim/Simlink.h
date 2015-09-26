@@ -4,15 +4,8 @@
 #include "FidoKin/Robby.h"
 #include "FidoKin/Emitter.h"
 
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <iostream>
-#include <ctime>
 #include <thread>
-#include <functional>
+#include <SFML/Graphics.hpp>
 
 // Three dimensional vector (used with IMU).
 struct TDVect {

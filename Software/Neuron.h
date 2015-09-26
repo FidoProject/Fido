@@ -1,7 +1,6 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-
 #include <vector>
 
 namespace net {

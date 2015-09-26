@@ -1,7 +1,6 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include <iostream>
 #include <vector>
 
 class Simlink;

@@ -1,14 +1,10 @@
 #ifndef WIREFITROBOT_H
 #define WIREFITROBOT_H
 
-#include <iostream>
-#include <algorithm>
-
-#include "NeuralNet.h"
 #include "WireFitQLearn.h"
 #include "FidoSim/Simlink.h"
-#include "Tasks/Task.h"
 
+class Task;
 
 /* Uses the WireFitQLearn object paired with the simulator to progressively learn a task through reinforcement learning.
  *

@@ -1,10 +1,7 @@
 #ifndef TICTACTOE_H
 #define TICTACTOE_H
 
-#include <thread>
-
-#include "../NeuralNet.h"
-#include "GeneticAlgo.h"
+#include "../NeuralNet.h"""
 
 class TicTacToe
 {
