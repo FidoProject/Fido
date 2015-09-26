@@ -26,31 +26,31 @@ Backpropagation::Backpropagation() {
 
 Backpropagation::Backpropagation(std::string filename) { 
 	std::ifstream input(filename);
-	initWithStream(input);
+	initWithStream(&input);
 	input.close();
 }
 
-Backpropagation::Backpropagation(std::ifstream &input) {
+Backpropagation::Backpropagation(std::ifstream *input) {
 	initWithStream(input);
 }
 
 void Backpropagation::storeBackpropagation(std::string filename) {
 	std::ofstream output(filename);
-	storeBackpropagationWithStream(output);
+	storeBackpropagationWithStream(&output);
 	output.close();
 }
 
-void Backpropagation::storeBackpropagationWithStream(std::ofstream &output) {
-	if(output.is_open()) {
-		output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maxiumumIterations << "\n";
-		output << getDerivedHiddenActivationFunctionName() << " " << getDerivedOutputActivationFunctionName() << "\n";
+void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
+	if(output->is_open()) {
+		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maxiumumIterations << "\n";
+		*output << getDerivedHiddenActivationFunctionName() << " " << getDerivedOutputActivationFunctionName() << "\n";
 	} else {
 		std::cout << "Could not store backprop\n";
 		throw 1;
 	}
 }
 
-void Backpropagation::trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput) {
+void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
     resetLastChangeInWeight(network);
@@ -164,12 +164,12 @@ std::string Backpropagation::getDerivedOutputActivationFunctionName() {
     throw 1;
 }
 
-void Backpropagation::initWithStream(std::ifstream &input) {
-	if(input.is_open()) {
-		input >> learningRate >> momentumTerm >> targetErrorLevel >> maxiumumIterations;
+void Backpropagation::initWithStream(std::ifstream *input) {
+	if(input->is_open()) {
+		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maxiumumIterations;
 
 		std::string hiddenActivationFunctionDerivativeName, outputActivationFunctionDerivativeName;
-		input >> hiddenActivationFunctionDerivativeName >> outputActivationFunctionDerivativeName;
+		*input >> hiddenActivationFunctionDerivativeName >> outputActivationFunctionDerivativeName;
 		setDerivedHiddenActivationFunction(hiddenActivationFunctionDerivativeName);
 		setDerivedOutputActivationFunction(outputActivationFunctionDerivativeName);
 

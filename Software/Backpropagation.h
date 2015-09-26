@@ -23,13 +23,13 @@ namespace net {
 		Backpropagation(std::string filename);
 
 		// Loads a Backpropagation object using an input stream
-		Backpropagation(std::ifstream &input);
+		Backpropagation(std::ifstream *input);
 
 		// Stores a Backpropagation object in the specified file
 		void storeBackpropagation(std::string filename);
 
 		// Stores a Backpropagation object using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.
-		void storeBackpropagationWithStream(std::ofstream &output);
+		void storeBackpropagationWithStream(std::ofstream *output);
 
 		/* Trains a neural network on a training set.
 		 *
@@ -37,7 +37,7 @@ namespace net {
 		 * or the number of training cycles reaches the value of maximumIterations.
 		 * NOTE: If learning rate is not low enough, the weights of the neurl network may got to infinity due to the nature of backpropagation.
 		 */
-		void trainOnData(net::NeuralNet *network, std::vector< std::vector<double> > input, std::vector< std::vector<double> > correctOutput);
+		void trainOnData(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
 
 		// Gets the output of the neural network, calculates the error of each neuron, and edits the weights of the neurons to reduce error
 		double trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput);
@@ -66,7 +66,7 @@ namespace net {
 		ActivationFunction outputActivationFunctionDerivative;
 
 		// Uses a ifstream to initialize a backpropagation object
-		void initWithStream(std::ifstream &input);
+		void initWithStream(std::ifstream *input);
         
         // Resets the lastchanginweight vector using a neural network is needed (NN is needed cause the number of layers, neurons, and weights are needed). 
         void resetLastChangeInWeight(net::NeuralNet *network);

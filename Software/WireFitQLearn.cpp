@@ -50,9 +50,9 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
             
         }
         
-        backprop = Backpropagation(input);
+        backprop = Backpropagation(&input);
 		interpolator = Interpolator::getAnyInterpolatorFromFile(&input);
-        network = new NeuralNet(input);
+        network = new NeuralNet(&input);
         
         input.close();
 
@@ -222,9 +222,9 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
         for(int a = 0; a < lastAction.size(); a++) output << lastAction[a] << " ";
         output << "\n";
         
-        backprop.storeBackpropagationWithStream(output);
+        backprop.storeBackpropagationWithStream(&output);
 		interpolator->storeInterpolator(&output);
-        network->storeNetWithStream(output);
+        network->storeNetWithStream(&output);
         
         output.close();
     } else {

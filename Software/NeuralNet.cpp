@@ -40,27 +40,27 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 
 NeuralNet::NeuralNet(std::string filename) { 
 	std::ifstream input(filename);
-	initWithStream(input);
+	initWithStream(&input);
 	input.close();
 }
 
-NeuralNet::NeuralNet(std::ifstream &input) {
+NeuralNet::NeuralNet(std::ifstream *input) {
 	initWithStream(input);
 }
 
 void NeuralNet::storeNet(std::string filename) {
 	std::ofstream output(filename);
-	storeNetWithStream(output);
+	storeNetWithStream(&output);
 	output.close();
 }
 
-void NeuralNet::storeNetWithStream(std::ofstream &output) {
-	if(output.is_open()) {
-		output << numInputs << " " << numOutputs << " " << numHiddenLayers << " " << numNeuronsPerHiddenLayer << "\n";
-		output << getHiddenActivationFunctionName() << " " << getOutputActivationFunctionName() << "\n";
+void NeuralNet::storeNetWithStream(std::ofstream *output) {
+	if(output->is_open()) {
+		*output << numInputs << " " << numOutputs << " " << numHiddenLayers << " " << numNeuronsPerHiddenLayer << "\n";
+		*output << getHiddenActivationFunctionName() << " " << getOutputActivationFunctionName() << "\n";
 
 		std::vector<double> weights = getWeights();
-		for(int a = 0; a < weights.size(); a++) output << weights[a] << " ";
+		for(int a = 0; a < weights.size(); a++) *output << weights[a] << " ";
 		std::cout << "\n";
 	} else {
 		std::cout << "Could not store neural network\n";
@@ -236,12 +236,12 @@ void NeuralNet::setupNeuronLayers() {
     net.push_back(outputLayer);
 }
 
-void NeuralNet::initWithStream(std::ifstream &input) {
-	if(input.is_open()) {
-		input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
+void NeuralNet::initWithStream(std::ifstream *input) {
+	if(input->is_open()) {
+		*input >> numInputs >> numOutputs >> numHiddenLayers >> numNeuronsPerHiddenLayer;
 
 		std::string hiddenActivationFunctionName, outputActivationFunctionName;
-		input >> hiddenActivationFunctionName >> outputActivationFunctionName;
+		*input >> hiddenActivationFunctionName >> outputActivationFunctionName;
 		setHiddenActivationFunction(hiddenActivationFunctionName);
 		setOutputActivationFunction(outputActivationFunctionName);
 
@@ -249,7 +249,7 @@ void NeuralNet::initWithStream(std::ifstream &input) {
 
 		std::vector<double> newWeights;
 		double middleMan = 0;
-		while(input >> middleMan) newWeights.push_back(middleMan);
+		while(*input >> middleMan) newWeights.push_back(middleMan);
 		setWeights(newWeights);
 	} else {
 		std::cout << "Could not retrieve neural network from file\n";
