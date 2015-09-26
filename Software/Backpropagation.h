@@ -2,12 +2,14 @@
 #define BACKPROPAGATION_H
 
 #include <iostream>
-#include <chrono>
-#include <thread>
+#include <map>
+#include <vector>
 
-#include "NeuralNet.h"
+#include "ActivationFunctions.h";
 
 namespace net {
+
+	class NeuralNet;
 
 	class Backpropagation {
 	public:

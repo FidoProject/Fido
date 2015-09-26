@@ -19,8 +19,8 @@
 int main() {
     srand(time(NULL));  
 
-	WireFitRobot robot(new LineFollow());
-	robot.test(500, 5000);
+	WireFitRobot robot(new DriveToEmitter());
+	robot.test(20, 5000);
 
 	//Robot robot(new FloatToEmitter());
 	//robot.run(100, 3000);

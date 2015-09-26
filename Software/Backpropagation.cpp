@@ -1,5 +1,13 @@
 #include "Backpropagation.h"
 
+#include <chrono>
+#include <thread>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include "NeuralNet.h"
+
 using namespace net;
 
 Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_) {

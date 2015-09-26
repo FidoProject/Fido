@@ -1,4 +1,8 @@
 #include "Neuron.h"
+
+#include <iostream>
+#include <stdlib.h>
+
 using namespace net;
 
 Neuron::Neuron(int numInputs) {

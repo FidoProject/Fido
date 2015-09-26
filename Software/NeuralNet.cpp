@@ -1,5 +1,12 @@
 #include "NeuralNet.h"
 
+#include <iostream>
+
+#include <sstream>
+#include <vector>
+#include <math.h>
+#include <string>
+
 using namespace net;
 
 NeuralNet::NeuralNet() {

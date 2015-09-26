@@ -1,9 +1,8 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-#include <iostream>
+
 #include <vector>
-#include <stdlib.h>
 
 namespace net {
 

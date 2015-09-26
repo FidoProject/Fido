@@ -1,12 +1,7 @@
 #ifndef NEURALNET_H
 #define NEURALNET_H
 
-#include <iostream>
 #include <fstream>
-#include <sstream>
-#include <vector>
-#include <math.h>
-#include <string>
 #include <map>
 
 #include "Neuron.h"
