@@ -13,10 +13,10 @@ struct TDVect {
 	double xComp, yComp, zComp;
 
 	// Get 3d vector as radius, xy angle, and z angle.
-	void getRTP(double& r, double& xy, double& z) {
-		r = sqrt(pow(xComp, 2) + pow(yComp, 2) + pow(zComp, 2));
-		xy = atan2(xComp, yComp);
-		z = acos(zComp / r);
+	void getRTP(double *r, double *xy, double *z) {
+		*r = sqrt(pow(xComp, 2) + pow(yComp, 2) + pow(zComp, 2));
+		*xy = atan2(xComp, yComp);
+		*z = acos(zComp / *r);
 	}
 };
 

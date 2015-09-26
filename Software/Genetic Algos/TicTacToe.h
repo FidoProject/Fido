@@ -19,10 +19,10 @@ public:
 	static int getOutcomeOfGame(net::NeuralNet *player1, net::NeuralNet *player2);
 
 	// Gets the neural network's move in tic tac toe and executes it on the board
-	static void executeMove(net::NeuralNet *player, std::vector< std::vector<int> > &board, int playerNumber);
+	static void executeMove(net::NeuralNet *player, std::vector< std::vector<int> > *board, int playerNumber);
 
 	// Initializes the board
-	static void initializeBoard(std::vector< std::vector<int> > &board);
+	static void initializeBoard(std::vector< std::vector<int> > *board);
 
 	/* 
 	 * Determines if a tic tac toe game has ended given a 2d vector of ints representing the board

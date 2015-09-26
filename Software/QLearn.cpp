@@ -45,7 +45,7 @@ QLearn::QLearn(std::string filename) {
 QLearn::QLearn() { }
 
 int QLearn::chooseBestAction(std::vector<double> currentState) {
-    getBestActionAndReward(currentState, lastAction, lastReward);
+    getBestActionAndReward(currentState, &lastAction, &lastReward);
 	lastState = currentState;
 	return lastAction;
 }
@@ -93,15 +93,15 @@ void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> n
 	backprop.trainOnData(networks[lastAction], { lastState }, { { targetValueForLastState } });
 }
 
-void QLearn::getBestActionAndReward(std::vector<double> state, int &bestAction, double &bestReward) {
-	bestAction = 0;
-	bestReward = -99999;
+void QLearn::getBestActionAndReward(std::vector<double> state, int *bestAction, double *bestReward) {
+	*bestAction = 0;
+	*bestReward = -99999;
 
 	for(int a = 0; a < networks.size(); a++) {
 		double reward = networks[a]->getOutput(state)[0];
-		if(reward > bestReward) {
-			bestAction = a;
-			bestReward = reward;
+		if(reward > *bestReward) {
+			*bestAction = a;
+			*bestReward = reward;
 		}
 	}
 }
@@ -109,7 +109,7 @@ void QLearn::getBestActionAndReward(std::vector<double> state, int &bestAction, 
 double QLearn::highestReward(std::vector<double> state) {
 	int bestAction;
 	double bestReward;
-	getBestActionAndReward(state, bestAction, bestReward);
+	getBestActionAndReward(state, &bestAction, &bestReward);
 
 	return bestReward;
 }
@@ -117,7 +117,7 @@ double QLearn::highestReward(std::vector<double> state) {
 int QLearn::bestAction(std::vector<double> state) {
 	int bestAction;
 	double bestReward;
-	getBestActionAndReward(state, bestAction, bestReward);
+	getBestActionAndReward(state, &bestAction, &bestReward);
 
 	return bestAction;
 }

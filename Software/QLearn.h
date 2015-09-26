@@ -60,7 +60,7 @@ namespace net {
 		void storeQLearn(std::string filename);
 	private:
 		// Gets the action with the highest reward for a state and gets that action's reward
-		void getBestActionAndReward(std::vector<double> state, int &bestAction, double &bestReward);
+		void getBestActionAndReward(std::vector<double> state, int *bestAction, double *bestReward);
 
 		// Returns the reward value of the action with the greatest reward.
 		double highestReward(std::vector<double> state);
