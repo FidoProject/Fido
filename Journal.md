@@ -73,7 +73,7 @@ After meeting with Dr. Weitz D period today, we've decided to apply to the Sieme
 	- Psuedocode/algorithms
 		- Q-learn
 		- Wirefit q-learn
-		- Modified wirefit q-learn
+		- Modified wire-fit q-learn
 
 ### September 13, 2015
 #### Joshua Gruenstein
