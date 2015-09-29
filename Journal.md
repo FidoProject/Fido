@@ -12,7 +12,7 @@ Our original idea for Fido's body was a "black box," an object seemingly lacking
 
 Multiple computing cores were considered for the project, but we decided to go with an ARM Cortex M4 micro-controller devboard called Teensy 3.1.  The Teensy is open source, powerful, and can be programmed in C++ without having to muddle through Linux or any other operating system; with a micro-controller you write your own firmware.  A schematic was made in Eagle CAD and a PCB routed.  The boards were fabricated by Smart Prototyping in Shenzhen, and are set to arrive September 9th.  When they arrive they'll need to be assembled with parts ordered from Digikey and Mouser, two bulk electronics suppliers.  It'll be a lot of soldering.  So much fun.
 
-##Post Summer Research
+## Post Summer Research
 
 ### September 7, 2015
 #### Michael Truell
@@ -39,13 +39,13 @@ I have a few ideas as to how to modify WireFitQLearn for the better:
 
 After meeting with Dr. Weitz D period today, we've decided to apply to the Siemens competition as well.   This modifies our existing plan, as we now have to complete a submittable project in 11 days (the deadline for paper submission is September 22, and you cannot resubmit your paper with more research).  Firstly, we're switching to a fully simulator based paper and upgrading our simulator to be more full featured.  Rather than simply displaying motor value vectors, we will simulate a dynamic model of the robot in 2D space using differential drive kinematics.   We also need to finish adapting our wirefit q-learning method to use less data points.  Below is a todo list for the next 11 days:
 
-#####Technical
+##### Technical
 - Make model learn with less datapoints
 	- Modify wirefit q-learn and check effectiveness
 	- Switch to adaptive critic if need be
 - ~~Simulator kinematics~~
 
-#####Paper
+##### Paper
 - Siemens paperwork
 - Abstract
 - Introduction
@@ -100,7 +100,7 @@ My next tasks are:
 - Implementing a linear interpolator and measuring its performance at learning to drive straight
 - Testing my modifications to WireFitQLearn while using a suitable interpolator
 
-###September 23, 2015 at 12:01
+### September 23, 2015 at 12:01
 #### Joshua Gruenstein
 
 We've submitted to Siemens.  As we were rushing we didn't have much time to document the massive amount of work we were doing in the journal, but the code documentation has been continued.  Over the next couple of days we will back-document what happened in these hectic last weeks.
