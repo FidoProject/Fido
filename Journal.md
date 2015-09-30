@@ -104,3 +104,23 @@ My next tasks are:
 #### Joshua Gruenstein
 
 We've submitted to Siemens.  As we were rushing we didn't have much time to document the massive amount of work we were doing in the journal, but the code documentation has been continued.  Over the next couple of days we will back-document what happened in these hectic last weeks.
+
+### September 28, 2015
+#### Michael Truell
+This is the beginning of my post-mortem of our rush to submit to the Siemens competition.
+
+After my last journal entry, I quickly moved to testing Fido on a couple of more complex problems. These, as detailed in our research report, are called "Float" and "Drive." "Float" challenged Fido to direct a robot with a holonomic drive system to an arbitrary point within 768 pixels on an infinite 2D plane. "Drive" challenged Fido to direct a robot with a differential drive system to an arbitrary point within 768 pixels on an infinite 2D plane. To compensate for our growing number of tasks I changed the structure of our software to allow each task to be written as a standalone class. This allowed us to store all of our previous tasks. On initialization, Fido would be given a task object to perform.
+
+At first, Fido was not doing very well at learning with few reward iterations. On average it took around 100 iterations for Float, the easier of the two, and its median number of iterations was often in the 90s. However, at the moment, Fido's performance is greatly affected by a number of constants. These are:
+- The number of hidden layers in Fido's neural network
+- The number of neurons in each hidden layer
+- The number of discrete "wires" that Fido's neural network outputs
+- Fido's Boltzmann exploration constant. This controls how much the robot explores
+
+By modifying these constants I was able to improve Fido's performance. However, Fido's performance improved significantly when I changed what variables I was passing to Fido as the current state and when I changed how the program was giving Fido reward. At first, for both Float, the state consisted of Fido's x and y displacement from the target point. For Drive, it consisted of Fido's x and y displacement from the target point and Fido's current rotation. However, the action that Fido should carry out will be same between two states if the ratio of Fido's x and y displacement is the same. Because of this, Fido was passed its x displacement over the sum of its x and y displacements and its y displacement over the sum of its x and y displacements. At first, Fido's reward was equal to the inverse of its distance from the target point. However, this is not how a human would give reward. A human would give a reward value to an action based on how much closer the action brought Fido to the target point. In addition to being more human, this approach is more effective. 
+
+These modifications to Fido allowed us to reduce Fido's performance on the Float task to a median of 14 iterations and its performance on the Drive task to a median of 17 iterations. The means for both of these tasks were around 40 iterations. This is because very rarely Fido would take quite an enormous while to converge on a task. During such trials, Fido would speed off away from the target point, and when it had learned which way to head, it would already be so far off, that it would take a large number of reward iterations to backtrack all its steps.
+
+After improving Fido to a level I was very happy with, I turned to building a few more tasks to include in our paper. The first was "Flash." To complete Flash, Fido had set the brightness of its LED to a value proportional to the amount of light it sensed around it. This task was simple for Fido, and it took it a median of 6 reward iterations. The next was a classic robotic problem, line following. Fido had to approach a line and stay within 60 pixels of it for 10 consecutive actions. Fido took a median of 21 reward iterations to complete this.
+
+After this, I set to writing tests to gauge Fido's latency. On any of the tasks, Fido took no more than an average of 2 milliseconds to choose an action and 11 milliseconds to update its model when given a reward. A complete table of our data can be found in our research report.
