@@ -39,41 +39,53 @@
       <div class="repository-with-sidebar repo-container with-full-navigation">
 
         
-          <div class="discussion-timeline ">
-            <div class="timeline-comment-wrapper">
-              <div class="timeline-comment">
-                <div class="comment">
-                  <div class="comment-content">
-                    <div class="comment-body markdown-body markdown-format">
-                      <h1>Fido Research Journal</h1>
+          <div class="repository-content context-loader-container">
+            <div id="readme" class="boxed-group flush clearfix announce instapaper_body md">
+              
+                <h3>
+                  <span class="octicon octicon-book"></span>
+                  Journal.md
+                </h3>
+              
+              <div class="markdown-body entry-content">
+                <h1>
+<a id="user-content-fido-research-journal" class="anchor" href="#fido-research-journal" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fido Research Journal</h1>
 
-<h2>Progress made over the summer</h2>
+<h2>
+<a id="user-content-progress-made-over-the-summer" class="anchor" href="#progress-made-over-the-summer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Progress made over the summer</h2>
 
-<h3>Software - Michael Truell</h3>
+<h3>
+<a id="user-content-software---michael-truell" class="anchor" href="#software---michael-truell" aria-hidden="true"><span class="octicon octicon-link"></span></a>Software - Michael Truell</h3>
 
 <p>We began by familiarizing ourselves with the scientific literature on neural networks and their uses. I began with a fabulous tutorial on using neural networks paired with a genetic algorithm to solve tasks (<a href="http://www.ai-junkie.com/ann/evolved/nnt1.html">http://www.ai-junkie.com/ann/evolved/nnt1.html</a>). Then general implementations of a neural network and a genetic algorithm were written. To test these two pieces of software, neural networks were taught to play tic tac toe by playing against one another and by being subject to our genetic algorithm. Once this was done, I familiarized myself with backpropagation, an algorithm widely used to train neural networks given a set of training data, by reading a number of introductory papers on the subject. After this, an implementation of backpropagation was written and added to our code base. It was tested by teaching a neural network to perform some simple linear regression. To further test the power of our software, we used our genetic algorithm implementation to teach neural networks to play Halite, a game for AIs made by our friend and classmate Benjamin Spector (10th grade), and used our backpropagation implementation to teach neural networks how to perform linear and nonlinear regression.</p>
 
 <p>We then turned our sights on the topic of our project, reinforcement learning. We implemented the popular algorithm Q-learn, for teaching function approximators (a feedforward neural network is just a function approximator) discrete actions. We added in some non-random search heuristics, so that our NNs could learn in large state and action spaces. We tested our implementations on simple tasks, like turning on an LED when prompted with the proper stimuli (like a flash of light), using a simulator that we built. However, though our q-learning implementation can handle continuous state spaces, our neural networks will have to carry out continuous actions (like the setting of motor values), and so it was necessary to extend our Q Learning implementation into one that could handle continuous action spaces. We turned to the use of a wire-fitted least squares interpolator couple with a neural network as described in Gasket et al. (<a href="http://users.cecs.anu.edu.au/%7Ersl/rsl_papers/99ai.kambara.pdf">http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf</a>). We are currently testing and modifying this algorithm so that it converges on the correct method for completing a task with less human feedback</p>
 
-<h3>Hardware - Joshua Gruenstein</h3>
+<h3>
+<a id="user-content-hardware---joshua-gruenstein" class="anchor" href="#hardware---joshua-gruenstein" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hardware - Joshua Gruenstein</h3>
 
 <p>Our original idea for Fido's body was a "black box," an object seemingly lacking in potential that could had hidden abilities the neural networks could learn to utilize.  However, due to the practical issues with the locomotion of a cube without wheels we decided to pursue our next best option, a sphere.  We decided to have a differential drive robot inside of a sphere, an easy kinematic model to learn: left motor pushes right, right motor pushes left, and combining these vectors pushes straight.  For inputs we chose easy manipulatable sensors for training purposes: light and a microphone were obvious initial choices.  We also decided to add an infrared phototransistor as another form of one dimensional gradient stimulus (the intensity of the IR) that could be used during training.  Battery level also seemed like an easy choice as it mimics nature in an interesting way.  We also decided to add an IMU, or inertial measurement unit.  This is an all in one package which generally contains three axis of accelerometers, gyroscopes, and magnetometers.  In addition to calculating our orientation in 3D space from these sensors, we can also use the raw readings for various purposes: as a high acceleration (after compensating for gravity) is generally indicative of a high force according to F=ma, a high acceleration can be used as a negative reinforcement.  The same thinking was used with gyroscopic readings and dizziness.  We decided to use the magnetometer similarly to IR as an easily controlled stimulus, but now in three dimensions.</p>
 
 <p>Multiple computing cores were considered for the project, but we decided to go with an ARM Cortex M4 micro-controller devboard called Teensy 3.1.  The Teensy is open source, powerful, and can be programmed in C++ without having to muddle through Linux or any other operating system; with a micro-controller you write your own firmware.  A schematic was made in Eagle CAD and a PCB routed.  The boards were fabricated by Smart Prototyping in Shenzhen, and are set to arrive September 9th.  When they arrive they'll need to be assembled with parts ordered from Digikey and Mouser, two bulk electronics suppliers.  It'll be a lot of soldering.  So much fun.</p>
 
-<h2>Post Summer Research</h2>
+<h2>
+<a id="user-content-post-summer-research" class="anchor" href="#post-summer-research" aria-hidden="true"><span class="octicon octicon-link"></span></a>Post Summer Research</h2>
 
-<h3>September 7, 2015</h3>
+<h3>
+<a id="user-content-september-7-2015" class="anchor" href="#september-7-2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>September 7, 2015</h3>
 
-<h4>Michael Truell</h4>
+<h4>
+<a id="user-content-michael-truell" class="anchor" href="#michael-truell" aria-hidden="true"><span class="octicon octicon-link"></span></a>Michael Truell</h4>
 
 <p>A WireFitRobot class was created that connected our of Wire Fit Q Learn implementation to our simulator. This was taught a number of simple tasks, such as to drive as fast as possible and to drive straight. Learning to drive as fast as possible was defined as choosing a speed above 95% for five iterations of feedback in a row and learning to drive straight was classified as having a difference of motor values of less than 0.05 for five iterations of feedback in a row. However, the number of inputs required by a human subject before the robot learned successfully is quite high. For a WireFitQLearn object with 3 wires, it was on the order of 50 to learn drive straight and around 15 to drive fast. In contrast, for our discrete Q-Learn implementation it took less than 10 feedback iterations for it to learn to only turn on an LED when triggered by the proper stimulus.</p>
 
 <p>This can surely be fixed with modifications to the present Wire Fit Q-learn implementation. </p>
 
-<h3>September 10, 2015</h3>
+<h3>
+<a id="user-content-september-10-2015" class="anchor" href="#september-10-2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>September 10, 2015</h3>
 
-<h4>Michael Truell</h4>
+<h4>
+<a id="user-content-michael-truell-1" class="anchor" href="#michael-truell-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Michael Truell</h4>
 
 <p>Right now, a reward is tagged to the last action taken, which is used to update the Q-value (or long term reward) of the action. Stochastic gradient descent is used to modify the control points outputted by the neural network, so that the control points produce an interpolator function that accurately outputs the Q-value of the last action.</p>
 
@@ -86,13 +98,16 @@
 <li><p>Past reward-action value pairs can be stored, and the control points can be fitted on historical data points a set number of times. Data points will be chosen using a boltzman soft-max distribution that favors newer data points.</p></li>
 </ul>
 
-<h3>September 11, 2015</h3>
+<h3>
+<a id="user-content-september-11-2015" class="anchor" href="#september-11-2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>September 11, 2015</h3>
 
-<h4>Joshua Gruenstein</h4>
+<h4>
+<a id="user-content-joshua-gruenstein" class="anchor" href="#joshua-gruenstein" aria-hidden="true"><span class="octicon octicon-link"></span></a>Joshua Gruenstein</h4>
 
 <p>After meeting with Dr. Weitz D period today, we've decided to apply to the Siemens competition as well.   This modifies our existing plan, as we now have to complete a submittable project in 11 days (the deadline for paper submission is September 22, and you cannot resubmit your paper with more research).  Firstly, we're switching to a fully simulator based paper and upgrading our simulator to be more full featured.  Rather than simply displaying motor value vectors, we will simulate a dynamic model of the robot in 2D space using differential drive kinematics.   We also need to finish adapting our wirefit q-learning method to use less data points.  Below is a todo list for the next 11 days:</p>
 
-<h5>Technical</h5>
+<h5>
+<a id="user-content-technical" class="anchor" href="#technical" aria-hidden="true"><span class="octicon octicon-link"></span></a>Technical</h5>
 
 <ul>
 <li>Make model learn with less datapoints
@@ -105,7 +120,8 @@
 <li><del>Simulator kinematics</del></li>
 </ul>
 
-<h5>Paper</h5>
+<h5>
+<a id="user-content-paper" class="anchor" href="#paper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Paper</h5>
 
 <ul>
 <li>Siemens paperwork</li>
@@ -163,11 +179,13 @@
 </li>
 </ul>
 
-<h3>September 13, 2015</h3>
+<h3>
+<a id="user-content-september-13-2015" class="anchor" href="#september-13-2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>September 13, 2015</h3>
 
-<h4>Joshua Gruenstein</h4>
+<h4>
+<a id="user-content-joshua-gruenstein-1" class="anchor" href="#joshua-gruenstein-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Joshua Gruenstein</h4>
 
-<p>On Friday I began the implementation of the kinematic simulation of a differential drive robot.  As reference I used UC Berkeley class notes compiled from "Dudek and Jenkin, Computational Principles of Mobile<br>
+<p>On Friday I began the implementation of the kinematic simulation of a differential drive robot.  As reference I used UC Berkeley class notes compiled from "Dudek and Jenkin, Computational Principles of Mobile
 Robotics."  I later had to use the book itself and found a copy on Google books.  The implementation was fairly simple,  and can simply be described as such: determine the circle around which's circumference the robot will turn, find the center of the robot on said circumference, rotate around the origin by the curve at that point around circle, make the linear transformation, than transform back to standard space.  A robot class was created with a go(motorLeft,motorRight) method to input motor values in a traditional fashion.  While I initially encountered issues regarding the origin of the robot shape, after compensating for this I was able to get the kinematic model to respond beautifully.  I hooked it up to some keys on my keyboard and could drive it around like a slightly less exciting racing game.</p>
 
 <p>In addition to the sensors already implemented in our simulator, we also wanted the ability to train a robot to follow an object, such as an emitter of electromagnetic radiation on some part of the spectrum.  However doing a "hot and cold" type adjustment on sliders seemed impractical, and instead the ability to graphically add a radio beacon to the simulation environment was added instead.  Right clicking added/moved the beacon, giving off some sort of field.  As this is a simulation the type of radiation is purposefully vague, but readings from the robot are separated into an X component and a Y component and follow an inverse square law.  The hope is to use this tool to train Fido to follow this beacon by associating larger sensor readings with positive reinforcement.</p>
@@ -176,7 +194,8 @@ Robotics."  I later had to use the book itself and found a copy on Google books.
 
 <p>As I've completed the technical side of my part of the work for the fast approaching Siemens deadline, I'm currently working on writing about and making figures for our Neural Network implementation in our paper.</p>
 
-<h4>Michael Truell</h4>
+<h4>
+<a id="user-content-michael-truell-2" class="anchor" href="#michael-truell-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Michael Truell</h4>
 
 <p>These past 2 days I have set about implementing the four modifications to our Wire fitted Q-learning implementation as specified in my last journal entry. I began by trying to implement my first idea of fitting the control points to many data points simultaneously. However, this modification would become useless on any task with a large state space, such as following the origin of an electromagnetic emitter, and as such, is of no use to us.</p>
 
@@ -191,14 +210,41 @@ Robotics."  I later had to use the book itself and found a copy on Google books.
 <li>Testing my modifications to WireFitQLearn while using a suitable interpolator</li>
 </ul>
 
-<h3>September 23, 2015 at 12:01</h3>
+<h3>
+<a id="user-content-september-23-2015-at-1201" class="anchor" href="#september-23-2015-at-1201" aria-hidden="true"><span class="octicon octicon-link"></span></a>September 23, 2015 at 12:01</h3>
 
-<h4>Joshua Gruenstein</h4>
+<h4>
+<a id="user-content-joshua-gruenstein-2" class="anchor" href="#joshua-gruenstein-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Joshua Gruenstein</h4>
 
 <p>We've submitted to Siemens.  As we were rushing we didn't have much time to document the massive amount of work we were doing in the journal, but the code documentation has been continued.  Over the next couple of days we will back-document what happened in these hectic last weeks.</p>
-                    </div>
-                  </div>
-                </div>
+
+<h3>
+<a id="user-content-september-29-2015" class="anchor" href="#september-29-2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>September 29, 2015</h3>
+
+<h4>
+<a id="user-content-michael-truell-3" class="anchor" href="#michael-truell-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Michael Truell</h4>
+
+<p>This is the beginning of my post-mortem of our rush to submit to the Siemens competition.</p>
+
+<p>After my last journal entry, I quickly moved to testing Fido on a couple of more complex problems. These, as detailed in our research report, are called "Float" and "Drive." "Float" challenged Fido to direct a robot with a holonomic drive system to an arbitrary point within 768 pixels on an infinite 2D plane. "Drive" challenged Fido to direct a robot with a differential drive system to an arbitrary point within 768 pixels on an infinite 2D plane. To compensate for our growing number of tasks I changed the structure of our software to allow each task to be written as a standalone class. This allowed us to store all of our previous tasks. On initialization, Fido would be given a task object to perform.</p>
+
+<p>At first, Fido was not doing very well at learning with few reward iterations. On average it took around 100 iterations for Float, the easier of the two, and its median number of iterations was often in the 90s. However, at the moment, Fido's performance is greatly affected by a number of constants. These are:</p>
+
+<ul>
+<li>The number of hidden layers in Fido's neural network</li>
+<li>The number of neurons in each hidden layer</li>
+<li>The number of discrete "wires" that Fido's neural network outputs</li>
+<li>Fido's Boltzmann exploration constant. This controls how much the robot explores</li>
+</ul>
+
+<p>By modifying these constants I was able to improve Fido's performance. However, Fido's performance improved significantly when I changed what variables I was passing to Fido as the current state and when I changed how the program was giving Fido reward. At first, for both Float, the state consisted of Fido's x and y displacement from the target point. For Drive, it consisted of Fido's x and y displacement from the target point and Fido's current rotation. However, the action that Fido should carry out will be same between two states if the ratio of Fido's x and y displacement is the same. Because of this, Fido was passed its x displacement over the sum of its x and y displacements and its y displacement over the sum of its x and y displacements. At first, Fido's reward was equal to the inverse of its distance from the target point. However, this is not how a human would give reward. A human would give a reward value to an action based on how much closer the action brought Fido to the target point. In addition to being more human, this approach is more effective. </p>
+
+<p>These modifications to Fido allowed us to reduce Fido's performance on the Float task to a median of 14 iterations and its performance on the Drive task to a median of 17 iterations. The means for both of these tasks were around 40 iterations. This is because very rarely Fido would take quite an enormous while to converge on a task. During such trials, Fido would speed off away from the target point, and when it had learned which way to head, it would already be so far off, that it would take a large number of reward iterations to backtrack all its steps.</p>
+
+<p>After improving Fido to a level I was very happy with, I turned to building a few more tasks to include in our paper. The first was "Flash." To complete Flash, Fido had set the brightness of its LED to a value proportional to the amount of light it sensed around it. This task was simple for Fido, and it took it a median of 6 reward iterations. The next was a classic robotic problem, line following. Fido had to approach a line and stay within 60 pixels of it for 10 consecutive actions. Fido took a median of 21 reward iterations to complete this.</p>
+
+<p>After this, I set to writing tests to gauge Fido's latency. On any of the tasks, Fido took no more than an average of 2 milliseconds to choose an action and 11 milliseconds to update its model when given a reward. A complete table of our data can be found in our research report.</p>
+
               </div>
             </div>
           </div>
