@@ -219,7 +219,7 @@ Robotics."  I later had to use the book itself and found a copy on Google books.
 <p>We've submitted to Siemens.  As we were rushing we didn't have much time to document the massive amount of work we were doing in the journal, but the code documentation has been continued.  Over the next couple of days we will back-document what happened in these hectic last weeks.</p>
 
 <h3>
-<a id="user-content-september-29-2015" class="anchor" href="#september-29-2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>September 29, 2015</h3>
+<a id="user-content-siemens-post-mortem" class="anchor" href="#siemens-post-mortem" aria-hidden="true"><span class="octicon octicon-link"></span></a>Siemens Post-Mortem</h3>
 
 <h4>
 <a id="user-content-michael-truell-3" class="anchor" href="#michael-truell-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Michael Truell</h4>
@@ -244,6 +244,13 @@ Robotics."  I later had to use the book itself and found a copy on Google books.
 <p>After improving Fido to a level I was very happy with, I turned to building a few more tasks to include in our paper. The first was "Flash." To complete Flash, Fido had set the brightness of its LED to a value proportional to the amount of light it sensed around it. This task was simple for Fido, and it took it a median of 6 reward iterations. The next was a classic robotic problem, line following. Fido had to approach a line and stay within 60 pixels of it for 10 consecutive actions. Fido took a median of 21 reward iterations to complete this.</p>
 
 <p>After this, I set to writing tests to gauge Fido's latency. On any of the tasks, Fido took no more than an average of 2 milliseconds to choose an action and 11 milliseconds to update its model when given a reward. A complete table of our data can be found in our research report.</p>
+
+<h4>
+<a id="user-content-joshua-gruenstein-3" class="anchor" href="#joshua-gruenstein-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Joshua Gruenstein</h4>
+
+<p>In the massive rush to prepare for Siemens I had two main jobs as a hardware person: implementing a kinematically-accurate simulation of our robot and working on the paper.  After finishing the kinematics section Friday night I was left with no more technical tasks to do (besides occasional tasks such as an efficient moving least squares function), so I began working on writing.  </p>
+
+<p>We had begun an outline describing the structure of our paper, and I modified it to fit after papers we had read as research.  This included adding a discussion section.  I ended up writing the executive summary, abstract, introduction, background, and simulation sections while Michael finished off the learning implementation, in addition to making figures in LaTeX and references in BibTex.  This went off relatively smoothly, and collaborative writing was made easy through our version control system.  Four drafts were proofread and corrected on printed copies using red pen.  We ended up submitting to Siemens at 11:56PM after spending ~ 11:00 to 11:50 fixing minor mistakes such as typos and significant figures.  Semifinalists will be announced Friday October 16th, while finalists will be announced Monday October 19th.  Fingers crossed.</p>
 
               </div>
             </div>
