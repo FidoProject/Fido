@@ -105,7 +105,7 @@ My next tasks are:
 
 We've submitted to Siemens.  As we were rushing we didn't have much time to document the massive amount of work we were doing in the journal, but the code documentation has been continued.  Over the next couple of days we will back-document what happened in these hectic last weeks.
 
-### September 28, 2015
+### Siemens Post-Mortem
 #### Michael Truell
 This is the beginning of my post-mortem of our rush to submit to the Siemens competition.
 
@@ -124,3 +124,9 @@ These modifications to Fido allowed us to reduce Fido's performance on the Float
 After improving Fido to a level I was very happy with, I turned to building a few more tasks to include in our paper. The first was "Flash." To complete Flash, Fido had set the brightness of its LED to a value proportional to the amount of light it sensed around it. This task was simple for Fido, and it took it a median of 6 reward iterations. The next was a classic robotic problem, line following. Fido had to approach a line and stay within 60 pixels of it for 10 consecutive actions. Fido took a median of 21 reward iterations to complete this.
 
 After this, I set to writing tests to gauge Fido's latency. On any of the tasks, Fido took no more than an average of 2 milliseconds to choose an action and 11 milliseconds to update its model when given a reward. A complete table of our data can be found in our research report.
+
+#### Joshua Gruenstein
+
+In the massive rush to prepare for Siemens I had two main jobs as a hardware person: implementing a kinematically-accurate simulation of our robot and working on the paper.  After finishing the kinematics section Friday night I was left with no more technical tasks to do (besides occasional tasks such as an efficient moving least squares function), so I began working on writing.  
+
+We had begun an outline describing the structure of our paper, and I modified it to fit after papers we had read as research.  This included adding a discussion section.  I ended up writing the executive summary, abstract, introduction, background, and simulation sections while Michael finished off the learning implementation, in addition to making figures in LaTeX and references in BibTex.  This went off relatively smoothly, and collaborative writing was made easy through our version control system.  Four drafts were proofread and corrected on printed copies using red pen.  We ended up submitting to Siemens at 11:56PM after spending ~ 11:00 to 11:50 fixing minor mistakes such as typos and significant figures.  Semifinalists will be announced Friday October 16th, while finalists will be announced Monday October 19th.  Fingers crossed.
