@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<namespace id="net" name="net" xmlns="http://jessevdk.github.com/cldoc/1.0">
-  <class name="NeuralNet" ref="net::NeuralNet#net::NeuralNet">
-    <brief>Class representing a neural network.</brief>
-  </class>
-  <class name="Neuron" ref="net::Neuron#net::Neuron">
-    <brief>Class representing a single neuron.</brief>
-  </class>
-</namespace>
