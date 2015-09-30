@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+<class id="gen::GeneticAlgo" name="GeneticAlgo" xmlns="http://jessevdk.github.com/cldoc/1.0">
+  <field id="gen::GeneticAlgo::population" name="population">
+    <brief>A set of neural networks to act as a population.</brief>
+    <type name="std::__1::vector&lt;net::NeuralNet, std::__1::allocator&lt;net::NeuralNet&gt; &gt;" />
+  </field>
+  <field id="gen::GeneticAlgo::populationSize" name="populationSize">
+    <type builtin="yes" name="int" />
+  </field>
+  <field id="gen::GeneticAlgo::numberOfGenerations" name="numberOfGenerations">
+    <type builtin="yes" name="int" />
+  </field>
+  <field id="gen::GeneticAlgo::mutationRate" name="mutationRate">
+    <type builtin="yes" name="float" />
+  </field>
+  <field id="gen::GeneticAlgo::crossoverRate" name="crossoverRate">
+    <type builtin="yes" name="float" />
+  </field>
+  <field id="gen::GeneticAlgo::getPopulationFitness" name="getPopulationFitness">
+    <brief>Get the fitnesses of the neural network population.</brief>
+    <type class="function" qualifier="*">
+      <result>
+        <type name="std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;" />
+      </result>
+      <arguments>
+        <type name="std::__1::vector&lt;net::NeuralNet, std::__1::allocator&lt;net::NeuralNet&gt; &gt;" />
+      </arguments>
+    </type>
+  </field>
+  <constructor id="gen::GeneticAlgo::GeneticAlgo" name="GeneticAlgo">
+    <brief> Initialize a genetic algorithm from a population.</brief>
+    <doc>Model traits are passed in such as population size, mutation rate, crossover rate, etc.
+</doc>
+    <argument id="gen::GeneticAlgo::GeneticAlgo::populationSize_" name="populationSize_">
+      <type builtin="yes" name="int" />
+    </argument>
+    <argument id="gen::GeneticAlgo::GeneticAlgo::mutationRate_" name="mutationRate_">
+      <type builtin="yes" name="float" />
+    </argument>
+    <argument id="gen::GeneticAlgo::GeneticAlgo::crossoverRate_" name="crossoverRate_">
+      <type builtin="yes" name="float" />
+    </argument>
+    <argument id="gen::GeneticAlgo::GeneticAlgo::getPopulationFitness_" name="getPopulationFitness_">
+      <type class="function" qualifier="*">
+        <result>
+          <type name="std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;" />
+        </result>
+        <arguments>
+          <type name="std::__1::vector&lt;net::NeuralNet, std::__1::allocator&lt;net::NeuralNet&gt; &gt;" />
+        </arguments>
+      </type>
+    </argument>
+  </constructor>
+  <method id="gen::GeneticAlgo::crossover" name="crossover">
+    <brief> Produce two new neural networks from two parent neural networks.</brief>
+    <doc>The method uses the crossoverRate variable to determine if two neural networks are mixed
+and then and mixes their neurons weights to produce two new neural networks.
+</doc>
+    <return>
+      <type builtin="yes" name="void" />
+    </return>
+    <argument id="gen::GeneticAlgo::crossover::mom" name="mom">
+      <type name="net::NeuralNet" ref="net::NeuralNet#net::NeuralNet" />
+    </argument>
+    <argument id="gen::GeneticAlgo::crossover::dad" name="dad">
+      <type name="net::NeuralNet" ref="net::NeuralNet#net::NeuralNet" />
+    </argument>
+    <argument id="gen::GeneticAlgo::crossover::offspring1" name="offspring1">
+      <type name="net::NeuralNet" qualifier=" &amp;" ref="net::NeuralNet#net::NeuralNet" />
+    </argument>
+    <argument id="gen::GeneticAlgo::crossover::offspring2" name="offspring2">
+      <type name="net::NeuralNet" qualifier=" &amp;" ref="net::NeuralNet#net::NeuralNet" />
+    </argument>
+  </method>
+  <method id="gen::GeneticAlgo::getBestNeuralNetwork" name="getBestNeuralNetwork">
+    <brief> Return the most fit neural network in a population that undergoes a specified number of generations.</brief>
+    <doc>modelNetwork is used to determine the number of inputs, outputs, hidden layers,
+and neurons per hidden layer for each network in the population.
+</doc>
+    <return>
+      <type name="net::NeuralNet" ref="net::NeuralNet#net::NeuralNet" />
+    </return>
+    <argument id="gen::GeneticAlgo::getBestNeuralNetwork::numberOfGenerations" name="numberOfGenerations">
+      <type builtin="yes" name="int" />
+    </argument>
+    <argument id="gen::GeneticAlgo::getBestNeuralNetwork::modelNetwork" name="modelNetwork">
+      <type name="net::NeuralNet" ref="net::NeuralNet#net::NeuralNet" />
+    </argument>
+  </method>
+  <method id="gen::GeneticAlgo::mutate" name="mutate">
+    <brief>Randomnly change the weights of a neural network based on the mutation rate.</brief>
+    <return>
+      <type name="net::NeuralNet" ref="net::NeuralNet#net::NeuralNet" />
+    </return>
+    <argument id="gen::GeneticAlgo::mutate::net" name="net">
+      <type name="net::NeuralNet" ref="net::NeuralNet#net::NeuralNet" />
+    </argument>
+  </method>
+</class>

@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+	\begin{scope}[rotate=-20]
+		\tikzset{dot/.style={circle,fill=#1,inner sep=0,minimum size=.5pt}}
+
+		\draw[ultra thin] (0,0) -- (8.5,0);
+		\draw[pattern=north west lines,thick](3,0) ellipse (0.4cm and 1.4cm);
+		\draw[pattern=north west lines,thick](7,0) ellipse (0.4cm and 1.4cm);
+
+		\node[circle,fill,inner sep=-2pt,label=below:${(x,y)}$] at (5,0){};
+		\node[circle,fill,inner sep=-2pt,label={[xshift=.6cm, yshift=0.1cm]$\theta$}] at (0,0){};
+		\node[circle,fill,inner sep=-2pt,label={[xshift=.2cm, yshift=-1.5cm]$\omega$}] at (0,0){};
+		\node at (0,-.4) {ICC};
+
+		\draw[->,dashed] (.5,0) arc (0:110:.5cm);
+		\draw[->] (1,0) arc (0:-110:1cm);
+		
+		\draw[->] (2.3,-1) -- (2.3,1.5);
+		\node at (1.8,.8) {$V_{left}$};
+		\draw[->] (7.7,-1) -- (7.7,1.5);
+		\node at (8.3,.8) {$V_{right}$};
+
+		\draw[<->,dashed] (0,-2) -- (5,-2);
+		\node at (2.5,-2.3) {$R$};
+
+		\draw[<->,dashed] (3,2) -- (7,2);
+		\node at (5,2.3) {$l$};
+	\end{scope}
+	
+	%\draw[step=.5cm,gray,ultra thin] (-1,1.5) grid (9,-4.5);
+\end{tikzpicture}

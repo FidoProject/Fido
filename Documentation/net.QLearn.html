@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>QLearn</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="styles/cldoc.css">
+</head>
+
+<body id="cldoc">
+    <div id="cldoc_sidebar">
+        <div id="cldoc_sidebar_items">
+            <div class="back">
+                <div class="name"><span><span class="keyword">Class</span><span>net::QLearn</span></span>
+                </div><a href="net.html"><span class="arrow">↵</span> <span>net</span></a></div>
+            <div id="cldoc_sidebar_pagenav"></div>
+            <div class="subtitle">Fields</div>
+            <ul>
+                <li><a href="#net.QLearn.networks">networks<span class="counter"></span></a></li>
+                <li><a href="#net.QLearn.backprop">backprop<span class="counter"></span></a></li>
+                <li><a href="#net.QLearn.lastAction">lastAction<span class="counter"></span></a></li>
+                <li><a href="#net.QLearn.numberOfActions">numberOfActions<span class="counter"></span></a></li>
+                <li><a href="#net.QLearn.learningRate">learningRate<span class="counter"></span></a></li>
+                <li><a href="#net.QLearn.devaluationFactor">devaluationFactor<span class="counter"></span></a></li>
+                <li><a href="#net.QLearn.lastReward">lastReward<span class="counter"></span></a></li>
+                <li><a href="#net.QLearn.lastState">lastState<span class="counter"></span></a></li>
+            </ul>
+            <div class="subtitle">Constructors</div>
+            <ul>
+                <li><a href="#net.QLearn.QLearn">QLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Initializes a QLearn object with a model network and the values of learning rate and devaluationFactor.</p>
+                    </div>
+                </li>
+                <li><a href="#net.QLearn.QLearn">QLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Initializes a QLearn object with an vector of networks and the values of learning rate and devaluationFactor.</p>
+                    </div>
+                </li>
+                <li><a href="#net.QLearn.QLearn">QLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Initializes a QLearn object with a file that contains a stored QLearn object</p>
+                    </div>
+                </li>
+                <li><a href="#net.QLearn.QLearn">QLearn<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Initialize empty QLearn object</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="subtitle">Member Functions</div>
+            <ul>
+                <li><a href="#net.QLearn.applyReinforcementToLastAction">applyReinforcementToLastAction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Given the immediate reward from the last action taken and the new state, </p>
+                    </div>
+                </li>
+                <li><a href="#net.QLearn.chooseBestAction">chooseBestAction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Gets the action that the network deems most benificial for the currentState</p>
+                    </div>
+                </li>
+                <li><a href="#net.QLearn.chooseBoltzmanAction">chooseBoltzmanAction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Gets an action using the Boltzman softmax probability distribution</p>
+                    </div>
+                </li>
+                <li><a href="#net.QLearn.storeQLearn">storeQLearn<span class="counter"></span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="cldoc_content">
+        <h1 id="net::QLearn"><span><span class="keyword">Class</span><span>net::QLearn</span></span></h1>
+        <h2 data-cldoc-dynamic="1" id="fields">Fields</h2>
+        <table class="fields">
+            <tbody>
+                <tr id="net::QLearn::networks">
+                    <td class="field_name identifier">networks</td>
+                    <td class="field_type"><span class="type"><span class="name ">std::__1::vector&lt;net::NeuralNet *, std::__1::allocator&lt;net::NeuralNet *&gt; &gt;</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::QLearn::backprop">
+                    <td class="field_name identifier">backprop</td>
+                    <td class="field_type"><span class="type"><span class="name "><a href="net.Backpropagation.html#net.Backpropagation">Backpropagation</a></span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::QLearn::lastAction">
+                    <td class="field_name identifier">lastAction</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::QLearn::numberOfActions">
+                    <td class="field_name identifier">numberOfActions</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::QLearn::learningRate">
+                    <td class="field_name identifier">learningRate</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::QLearn::devaluationFactor">
+                    <td class="field_name identifier">devaluationFactor</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::QLearn::lastReward">
+                    <td class="field_name identifier">lastReward</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">double</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+                <tr id="net::QLearn::lastState">
+                    <td class="field_name identifier">lastState</td>
+                    <td class="field_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </td>
+                    <td class="doc"></td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 data-cldoc-dynamic="1" id="constructors">Constructors</h2>
+        <div class="constructors">
+            <div class="function">
+                <div class="declaration" id="net::QLearn::QLearn">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">QLearn</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name "><a href="net.NeuralNet.html#net.NeuralNet">NeuralNet</a></span><span class="qualifier"> *</span></span>
+                                </td>
+                                <td class="argument_name">modelNetwork,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name "><a href="net.Backpropagation.html#net.Backpropagation">Backpropagation</a></span></span>
+                                </td>
+                                <td class="argument_name">backprop_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">learningRate_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">devaluationFactor_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numberOfActions_</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>The model network is used as a model architecture for the networks that will rate the reward of each action. Learning rate is a constant between 0 and 1 that dictates how fast the robot learns from reinforcement. Devaluation factor
+                        is a constant between 0 and 1 that weighs future reward vs immediate reward. A value of 0 will make the network only value immediate reward, while a value of 1 will make it consider future reward with the same weight as immediate
+                        reward.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::QLearn::QLearn::modelNetwork">
+                            <td>modelNetwork</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::QLearn::backprop_">
+                            <td>backprop_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::QLearn::learningRate_">
+                            <td>learningRate_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::QLearn::devaluationFactor_">
+                            <td>devaluationFactor_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::QLearn::numberOfActions_">
+                            <td>numberOfActions_</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::QLearn::QLearn">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">QLearn</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;net::NeuralNet *, std::__1::allocator&lt;net::NeuralNet *&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">networks_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name "><a href="net.Backpropagation.html#net.Backpropagation">Backpropagation</a></span></span>
+                                </td>
+                                <td class="argument_name">backprop_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">learningRate_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">devaluationFactor_</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p><em>
+</em> The vector of networks contains the networks that will rate the reward of each action
+                        <em> Learning rate is a constant between 0 and 1 that dictates how fast the robot learns from reinforcement.
+</em> Devaluation factor is a constant between 0 and 1 that weighs future reward vs immediate reward. * A value of 0 will make the network only value immediate reward, while a value of 1 will make it consider future reward with
+                        the same weight as immediate reward.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::QLearn::QLearn::networks_">
+                            <td>networks_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::QLearn::backprop_">
+                            <td>backprop_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::QLearn::learningRate_">
+                            <td>learningRate_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::QLearn::devaluationFactor_">
+                            <td>devaluationFactor_</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::QLearn::QLearn">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">QLearn</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">filename</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Initializes a QLearn object with a file that contains a stored QLearn object</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::QLearn::QLearn::filename">
+                            <td>filename</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::QLearn::QLearn">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">QLearn</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Initialize empty QLearn object</p>
+                </div>
+                <table class="arguments"></table>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="member functions">Member Functions</h2>
+        <div class="member_functions">
+            <div class="function">
+                <div class="declaration" id="net::QLearn::applyReinforcementToLastAction">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">applyReinforcementToLastAction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">reward,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">newState</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>this function updates the correct value for the longterm reward of the lastAction and trains the network in charge of the lastAction to output the corect reward value</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::QLearn::applyReinforcementToLastAction::reward">
+                            <td>reward</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::applyReinforcementToLastAction::newState">
+                            <td>newState</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::QLearn::chooseBestAction">
+                    <div class="return_type"><span class="type"><span class="name builtin">int</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">chooseBestAction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">currentState</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Gets the action that the network deems most benificial for the currentState</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::QLearn::chooseBestAction::currentState">
+                            <td>currentState</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::QLearn::chooseBoltzmanAction">
+                    <div class="return_type"><span class="type"><span class="name builtin">int</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">chooseBoltzmanAction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">currentState,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">double</span></span>
+                                </td>
+                                <td class="argument_name">explorationConstant</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>Non-random search heuristic used so that the neural network explores actions despite their reward value. The lower the exploration constanstant, the more likely it is to pick the best action for the current state.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::QLearn::chooseBoltzmanAction::currentState">
+                            <td>currentState</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::QLearn::chooseBoltzmanAction::explorationConstant">
+                            <td>explorationConstant</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::QLearn::storeQLearn">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">storeQLearn</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">filename</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::QLearn::storeQLearn::filename">
+                            <td>filename</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- vi:ts=2:et -->

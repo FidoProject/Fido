@@ -1,0 +1,18 @@
+\begin{tikzpicture}[font=\sffamily]
+  \begin{axis}[
+        axis x line=middle,
+        axis y line=left,
+        grid = major,
+        width=13cm,
+        height=9cm,
+        grid style={dashed, gray!30},
+        xmin=1,xmax= 3,ymin=40,ymax= 120,
+        xlabel=time (seconds),ylabel=reward iterations,
+        tick align=outside,
+        enlargelimits=false]
+    \addplot[scatter, mark=*,only marks, 
+            scatter src=explicit symbolic,
+            nodes near coords]
+      table [x=time, y=rewards, meta=task,col sep=comma] {Figures/scat.csv};
+   \end{axis}
+\end{tikzpicture}

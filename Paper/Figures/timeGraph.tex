@@ -1,0 +1,32 @@
+\footnotesize
+\begin{tikzpicture}[font=\sffamily]
+    \begin{axis}[
+        legend cell align=left,ybar=2pt,
+        legend pos=north west,
+        bar width=10pt,ymin=0,axis on top,
+        xtick=data,ylabel=time (milliseconds),
+        grid=major,grid style={dashed, gray!30},
+        symbolic x coords={flash,float,
+                           drive,line follow},
+        xmin={flash},xmax={line follow},
+        enlarge x limits={abs=1cm},
+        width=14cm,height = 7cm
+    ]
+
+        \addplot[pattern=dots] coordinates {
+            (flash,0.26)
+            (float,0.94)
+            (drive,0.76)
+            (line follow, 0.8)
+        };
+
+        \addplot[pattern=crosshatch] coordinates {
+            (flash,5.96)
+            (float,5.6)
+            (drive,11.1)
+            (line follow, 15)
+        };
+
+        \legend{action selection,training};
+    \end{axis}
+\end{tikzpicture}

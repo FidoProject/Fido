@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+    \draw (-4,0) arc (180:360:4cm and 2cm);
+    \draw[dashed] (-4,0) arc (180:0:4cm and 2cm);
+    \draw (0,4) arc (90:270:2cm and 4cm);
+    \draw[dashed] (0,4) arc (90:-90:2cm and 4cm);
+    \draw (0,0) circle (4cm);
+    \shade[ball color=blue!10!white,opacity=0.20] (0,0) circle (4cm);
+    \fill[blue!40!white,draw=black,opacity=0.40] (-2,2) rectangle (2,-2);
+    \fill[black,draw=black,opacity=0.40] (-2,1) rectangle (-2.5,-1);
+    \fill[black,draw=black,opacity=0.40] (2,1) rectangle (2.5,-1);
+    \node at (0,0) {robot};
+    \node at (0,2.8) {exosphere};
+\end{tikzpicture}

@@ -1,0 +1,36 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[nottoc]{tocbibind}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{mathptmx}
+\usepackage[activate={true,nocompatibility},final,
+			tracking=true,kerning=true,spacing=true,
+			factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage{amsmath,setspace} \long\def\/*#1*/{}
+\doublespacing
+
+\begin{document}
+
+\/*
+
+The Executive Summary on its own, separate from the Research Report, should convey the essence of your project and should be understood by someone without scientific expertise. Do not simply replicate what you wrote in your Abstract. The summary should clearly present three content areas - the question asked, the methods used and the lessons learned and must be written in layperson (non-specialist) language. NOTE: The summary will be used to explain your project to the general public and in preparing press releases for the media.
+
+*/
+
+\begin{center}
+	{\Large
+	\textbf{A Universal Robotic Control System using Reinforcement Learning with Limited Feedback}}\\
+	\vspace{1cm}
+	{\large \textbf{Executive Summary}}
+\end{center}
+
+\noindent
+
+Robotic intelligence can be simplified to a black box, with inputs such as sensor data and outputs such as motor control.  Most robotic software today operates as an ``expert system,'' using preprogrammed logic to execute a set routine.  These implementations are sufficient for the specific purpose and platform that they are designed for but lack the ability to perform other tasks or work on other robots.
+
+The purpose of this project was to develop a universal robot control system that does not require preprogrammed logic to accomplish specific tasks, can be adapted to any robot hardware, and can be trained in a short amount of time using positive and negative reinforcement.  The control system we developed (nicknamed Fido) is lightweight and resource-efficient, making it a practical solution for mobile robots.  This was achieved by employing an artificial neural network and a novel learning algorithm.  The algorithm takes a well-tested learning algorithm called $Q$-learning and modifies it to be better suited for robotic tasks.
+
+Fido was tested on a computer simulated robot with a motor control system, a large sensor array, and some additional outputs.  The system performed well doing a variety of tasks, such as learning to drive to a radio beacon and following a line.  Additionally, results showed that very little sensory data was necessary and training took very little time.  Future plans for continuing research include testing Fido using actual robotic hardware and additional improvements to Fido's speed and abilities.
+
+\end{document}

@@ -1,0 +1,51 @@
+The robot model chosen for simulation was modeled after easily producible robots.  The software powering the simulation was intended to be portable enough to work on a hardware implementation, and the model facilitates this goal as well.  Additionally, the robot model had to be easily trainable and debuggable when implemented in hardware.   Lastly the sensors and design chosen had to facilitate the concept of natural learning, modeling after nature to some degree.
+
+\subsection{Robot Inputs and Outputs}
+
+Multiple inputs were modeled for simulation with outlets for control both by a human operator using sliders and by programmed handlers using a bridge class.  A microphone and light sensor were chosen as clear, human modifiable inputs that model after nature and could easily be used for reinforcement training.  An infrared light sensor was added as another easily controllable variable in a testing setup: a human operator could easily bring farther and closer an IR LED for purposes of training.   Additionally sensors for battery level, three axes of accelerometers, and three axes of gyroscopes were added as more complex inputs for Fido to master.  The last sensor added was a three axis radio receiver.  The purpose of the receiver was to allow location-based training of the robot relative to a radio beacon, such as following the beacon or avoiding it.  The radio sensor is a stand-in for Bluetooth, Wi-Fi, or any other radio technology; this was inspired by the common practice in many areas of robotics to use radio beacons for localization.
+
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[height=10cm]{Figures/Screenshot.png}}
+	\caption{Screenshot of the Fido Simulator Graphical User Interface}
+\end{figure}
+
+Fido's outputs were chosen similarly.  Two motors allow movement, buzzer of varying tone and frequency can play sounds and a multicolor LED can be lit to any red-green-blue color combination.
+
+\subsection{Implementation and Kinematics}
+
+A graphical user interface was implemented using the SFML multimedia library for C++.  Sliders manually adjust inputs such as accelerometer and gyroscope sensor axes, battery life, and temperature.  A colored circle displays the output of the multicolor LED, while the frequency and volume of the piezoelectric speaker are displayed on the bottom bar.   Initially vectors of motor values were displayed graphically in the top right of the window.  This made sense for initial testing purposes: both competition entrants were familiar with differential drive robots, and could easily visualize robot movement from robot vectors.  However, as we decided to do more development on the simulator we wanted to allow more complex training on the simulator, such as path following.  Such training requires a visual kinematic simulation of the robot model.
+
+\begin{figure}[ht]
+	\centering
+	\input{Figures/Kinematics.tex}
+	\caption{Differential Drive Kinematics Diagram}
+\end{figure}
+
+The model's two motors are arranged in a differential drive arrangement, a common system where there is a single wheel on each side of the robot independently controlled to provide a non-holomnic control system; the robot can turn in any direction and go backwards and forwards, but lacks the ability to translate its position left and right.  Every movement the robot takes can be interpreted as a rotation of radius $R$ around the ICC (instantaneous center of curvature) at a rotational velocity $\omega$ \cite{dudek}.   If the robot is moving straight, this radius is simply infinite.  Using these values we can solve for the robot's new position, defined as coordinates $(x',y',\theta')$:
+
+\begin{equation}
+	\begin{bmatrix}
+	    x'      \\
+	    y'      \\
+	    \theta' \\
+	\end{bmatrix} =
+	\begin{bmatrix}
+		\cos(\omega\Delta t) & -\sin(\omega\Delta t) & 0 \\
+		\sin(\omega\Delta t) & \cos(\omega\Delta t)  & 0 \\
+		0                    &                       & 1 \\
+	\end{bmatrix}
+	\begin{bmatrix}
+		x - ICC_x  \\
+		y - ICC_y  \\
+		\theta     \\
+	\end{bmatrix} + 
+	\begin{bmatrix}
+		ICC_x          \\
+		ICC_y          \\
+		\omega\Delta t \\
+	\end{bmatrix} \,.
+\end{equation}
+
+Using these equations we were were able to fully simulate Fido's kinematic model, and attach simulator motor inputs to Fido's outputs to visualize learning taking place.   
+The black rectangle in the upper right corner of the simulator is the robot, having been moved as part of training.  The red dot near the rectangle is a graphical representation of a radio beacon.  As adjusting sliders to represent the location of a radio beacon relative to the robot would be impractical, we decided to implement a beacon that could be placed and dragged by right clicking on the simulator.  Simulated sensor readings of beacon strength on two axes are gathered using an inverse square law, as applies to radio waves in general.  These readings are then displayed in the sliders and can be manually altered as well.  The radio beacon can be removed by a human operator by pressing the ``p'' key in the simulator environment.  This was especially helpful in the task of training Fido to follow a radio beacon.

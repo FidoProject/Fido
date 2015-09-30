@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Neuron</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="styles/cldoc.css">
+</head>
+
+<body id="cldoc">
+    <div id="cldoc_sidebar">
+        <div id="cldoc_sidebar_items">
+            <div class="back">
+                <div class="name"><span><span class="keyword">Class</span><span>net::Neuron</span></span>
+                </div><a href="net.html"><span class="arrow">↵</span> <span>net</span></a></div>
+            <div id="cldoc_sidebar_pagenav"></div>
+            <div class="subtitle">Fields</div>
+            <ul>
+                <li><a href="#net.Neuron.weights">weights<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Set of weights for the Neuron object.</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="subtitle">Constructors</div>
+            <ul>
+                <li><a href="#net.Neuron.Neuron">Neuron<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Create a neuron with randomly assigned weights.</p>
+                    </div>
+                </li>
+                <li><a href="#net.Neuron.Neuron">Neuron<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Create a neuron with given weights.</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="subtitle">Member Functions</div>
+            <ul>
+                <li><a href="#net.Neuron.getOutput">getOutput<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Get outputs of neuron from given inputs. </p>
+                    </div>
+                </li>
+                <li><a href="#net.Neuron.randomWeight">randomWeight<span class="counter"></span></a><span class="static">s</span>
+                    <div class="brief">
+                        <p>Return a random weight between zero and one.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="cldoc_content">
+        <h1 id="net::Neuron"><span><span class="keyword">Class</span><span>net::Neuron</span></span></h1>
+        <div class="description">
+            <div class="doc">
+                <p>Each neuron takes a variable number of inputs each assigned a weight and returns one output. Each neuron has a threshold value used to detemine if an output is produced (or to determine the magnitude of the neuron's output). A quality
+                    class by all accounts.</p>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="fields">Fields</h2>
+        <table class="fields">
+            <tbody>
+                <tr id="net::Neuron::weights">
+                    <td class="field_name identifier">weights</td>
+                    <td class="field_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </td>
+                    <td class="doc">
+                        <div class="brief">
+                            <p>Set of weights for the Neuron object.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 data-cldoc-dynamic="1" id="constructors">Constructors</h2>
+        <div class="constructors">
+            <div class="function">
+                <div class="declaration" id="net::Neuron::Neuron">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">Neuron</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numInputs</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>Each weight is a random double between 0 and 1</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::Neuron::Neuron::numInputs">
+                            <td>numInputs</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::Neuron::Neuron">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">Neuron</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">w</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Create a neuron with given weights.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::Neuron::Neuron::w">
+                            <td>w</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="member functions">Member Functions</h2>
+        <div class="member_functions">
+            <div class="function">
+                <div class="declaration" id="net::Neuron::getOutput">
+                    <div class="return_type"><span class="type"><span class="name builtin">double</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getOutput</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">inputs</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>The last weight is the threshold, as documented <a href="http://www.ai-junkie.com/ann/evolved/nnt6.html">here</a>.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::Neuron::getOutput::inputs">
+                            <td>inputs</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::Neuron::randomWeight">
+                    <ul class="specifiers">
+                        <li class="static">static</li>
+                    </ul>
+                    <div class="return_type"><span class="type"><span class="name builtin">double</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">randomWeight</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Return a random weight between zero and one.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- vi:ts=2:et -->

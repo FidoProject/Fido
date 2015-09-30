@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NeuralNet</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="styles/cldoc.css">
+</head>
+
+<body id="cldoc">
+    <div id="cldoc_sidebar">
+        <div id="cldoc_sidebar_items">
+            <div class="back">
+                <div class="name"><span><span class="keyword">Class</span><span>net::NeuralNet</span></span>
+                </div><a href="net.html"><span class="arrow">↵</span> <span>net</span></a></div>
+            <div id="cldoc_sidebar_pagenav"></div>
+            <div class="subtitle">Fields</div>
+            <ul>
+                <li><a href="#net.NeuralNet.net">net<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>A two dimensional network of neurons.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.numInputs">numInputs<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Variables used to describe Neural Networks.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.numOutputs">numOutputs<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Variables used to describe Neural Networks.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.numHiddenLayers">numHiddenLayers<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Variables used to describe Neural Networks.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.numNeuronsPerHiddenLayer">numNeuronsPerHiddenLayer<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Variables used to describe Neural Networks.</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="subtitle">Constructors</div>
+            <ul>
+                <li><a href="#net.NeuralNet.NeuralNet">NeuralNet<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Makes an empty neural network</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.NeuralNet">NeuralNet<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Manually initialize a neural network.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.NeuralNet">NeuralNet<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.NeuralNet">NeuralNet<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Restores a neural network from the specified file</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.NeuralNet">NeuralNet<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Loads a neural network from a file using a stream</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="subtitle">Member Functions</div>
+            <ul>
+                <li><a href="#net.NeuralNet.feedForward">feedForward<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Returns the output of each layer of neurons as an input is fed for just as it is fed forward in getOutput</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getActivationFunctionNameMap">getActivationFunctionNameMap<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Gets a map with the names of each activation function as its keys and the available activation functions as its values</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getHiddenActivationFunctionName">getHiddenActivationFunctionName<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Gets the name of the activation function of the nuerons of the hidden layers</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getHiddenLayerWeights2D">getHiddenLayerWeights2D<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Get the weights of each neuron in a hidden layer in a 2d vector format</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getOutput">getOutput<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Produce an output based on an input vector of doubles.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getOutputActivationFunctionName">getOutputActivationFunctionName<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Gets the name of the activation function of the neurons of the output layer</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getOutputLayerWeights2D">getOutputLayerWeights2D<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Get the weights of each neuron in the output layer in a 2d vector format</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getWeights">getWeights<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Get the weights of each neuron in the net.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.getWeights3D">getWeights3D<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Get the weights of each neuron in the net in 3d vector form</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.printWeights">printWeights<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Prints the weights of the neurons of the layers of the net</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.setHiddenActivationFunction">setHiddenActivationFunction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Sets the activation function for the neurons of the hidden layers with the name of the activation funciton</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.setHiddenLayerWeights2D">setHiddenLayerWeights2D<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Set the weights of each neuron in a hidden layer using a 2d vector format</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.setOutputActivationFunction">setOutputActivationFunction<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Sets the activation function for the neurons of the output layer with the name of the activation funciton</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.setOutputLayerWeights2D">setOutputLayerWeights2D<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Set the weights of each neuron in the output layer using a 2d vector format</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.setWeights">setWeights<span class="counter"></span></a>
+                    <div class="brief">
+                        <p> Set the weights of each input for each neuron in the net according to a vector.</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.setWeights3D">setWeights3D<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Set the weights of each input for each neuron in the net according to a 3d vector</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.storeNet">storeNet<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Stores a neural network in the specified file</p>
+                    </div>
+                </li>
+                <li><a href="#net.NeuralNet.storeNetWithStream">storeNetWithStream<span class="counter"></span></a>
+                    <div class="brief">
+                        <p>Stores a neural network using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="cldoc_content">
+        <h1 id="net::NeuralNet"><span><span class="keyword">Class</span><span>net::NeuralNet</span></span></h1>
+        <div class="description">
+            <div class="doc">
+                <p>A flexible implementation designed to be usable in a wide scope of projects.</p>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="fields">Fields</h2>
+        <table class="fields">
+            <tbody>
+                <tr id="net::NeuralNet::net">
+                    <td class="field_name identifier">net</td>
+                    <td class="field_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;net::Neuron, std::__1::allocator&lt;net::Neuron&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;net::Neuron, std::__1::allocator&lt;net::Neuron&gt; &gt; &gt; &gt;</span></span>
+                    </td>
+                    <td class="doc">
+                        <div class="brief">
+                            <p>A two dimensional network of neurons.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="net::NeuralNet::numInputs">
+                    <td class="field_name identifier">numInputs</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc">
+                        <div class="brief">
+                            <p>Variables used to describe Neural Networks.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="net::NeuralNet::numOutputs">
+                    <td class="field_name identifier">numOutputs</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc">
+                        <div class="brief">
+                            <p>Variables used to describe Neural Networks.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="net::NeuralNet::numHiddenLayers">
+                    <td class="field_name identifier">numHiddenLayers</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc">
+                        <div class="brief">
+                            <p>Variables used to describe Neural Networks.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="net::NeuralNet::numNeuronsPerHiddenLayer">
+                    <td class="field_name identifier">numNeuronsPerHiddenLayer</td>
+                    <td class="field_type"><span class="type"><span class="name builtin">int</span></span>
+                    </td>
+                    <td class="doc">
+                        <div class="brief">
+                            <p>Variables used to describe Neural Networks.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 data-cldoc-dynamic="1" id="constructors">Constructors</h2>
+        <div class="constructors">
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::NeuralNet">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">NeuralNet</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Makes an empty neural network</p>
+                </div>
+                <table class="arguments"></table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::NeuralNet">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">NeuralNet</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numInputs_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numOutputs_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numHiddenLayers_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">numNeuronsPerHiddenLayer_,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">activationFunctionName</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>Uses the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::NeuralNet::numInputs_">
+                            <td>numInputs_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::NeuralNet::NeuralNet::numOutputs_">
+                            <td>numOutputs_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::NeuralNet::NeuralNet::numHiddenLayers_">
+                            <td>numHiddenLayers_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::NeuralNet::NeuralNet::numNeuronsPerHiddenLayer_">
+                            <td>numNeuronsPerHiddenLayer_</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::NeuralNet::NeuralNet::activationFunctionName">
+                            <td>activationFunctionName</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::NeuralNet">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">NeuralNet</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name "><a href="#net.NeuralNet">NeuralNet</a></span><span class="qualifier"> *</span></span>
+                                </td>
+                                <td class="argument_name">otherNet</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Make a neural network with the same number of inputs, outputs, hidden layers, and neurons per hidden layer.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::NeuralNet::otherNet">
+                            <td>otherNet</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::NeuralNet">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">NeuralNet</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">filename</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Restores a neural network from the specified file</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::NeuralNet::filename">
+                            <td>filename</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::NeuralNet">
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">NeuralNet</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::ifstream</span><span class="qualifier">  &amp;</span></span>
+                                </td>
+                                <td class="argument_name">input</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Loads a neural network from a file using a stream</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::NeuralNet::input">
+                            <td>input</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h2 data-cldoc-dynamic="1" id="member functions">Member Functions</h2>
+        <div class="member_functions">
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::feedForward">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">feedForward</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">input</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Returns the output of each layer of neurons as an input is fed for just as it is fed forward in getOutput</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::feedForward::input">
+                            <td>input</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getActivationFunctionNameMap">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::map&lt;std::__1::basic_string&lt;char&gt;, double (*)(double), std::__1::less&lt;std::__1::basic_string&lt;char&gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;const std::__1::basic_string&lt;char&gt;, double (*)(double)&gt; &gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getActivationFunctionNameMap</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Gets a map with the names of each activation function as its keys and the available activation functions as its values</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getHiddenActivationFunctionName">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getHiddenActivationFunctionName</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Gets the name of the activation function of the nuerons of the hidden layers</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getHiddenLayerWeights2D">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getHiddenLayerWeights2D</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">hiddenLayerIndex</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>A hiddenLayerIndex value of 0 specifies the hidden layer that is directly fed the input and a value of numHiddenLayers-1 specifies the hidden layer closes to the ouput layer</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::getHiddenLayerWeights2D::hiddenLayerIndex">
+                            <td>hiddenLayerIndex</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getOutput">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getOutput</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">input</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>The crowning function of this class.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::getOutput::input">
+                            <td>input</td>
+                            <td></td>
+                        </tr>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getOutputActivationFunctionName">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getOutputActivationFunctionName</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Gets the name of the activation function of the neurons of the output layer</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getOutputLayerWeights2D">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getOutputLayerWeights2D</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Get the weights of each neuron in the output layer in a 2d vector format</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getWeights">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getWeights</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p>These values are organized into a vector starting from the first neuron in the first layer to the last neuron in the output layer.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::getWeights3D">
+                    <div class="return_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt; &gt; &gt;</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">getWeights3D</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Get the weights of each neuron in the net in 3d vector form</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr class="return">
+                            <td class="keyword">return</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::printWeights">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">printWeights</td>
+                                <td class="open_paren">(</td>
+                                <td colspan="2"></td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Prints the weights of the neurons of the layers of the net</p>
+                </div>
+                <table class="arguments"></table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::setHiddenActivationFunction">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">setHiddenActivationFunction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">name</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Sets the activation function for the neurons of the hidden layers with the name of the activation funciton</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::setHiddenActivationFunction::name">
+                            <td>name</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::setHiddenLayerWeights2D">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">setHiddenLayerWeights2D</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name builtin">int</span></span>
+                                </td>
+                                <td class="argument_name">hiddenLayerIndex,</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">w</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc">
+                    <p><em>
+</em> A hiddenLayerIndex value of 0 specifies the hidden layer that is directly fed the input and a value of numHiddenLayers-1 specifies the hidden layer closes to the ouput layer</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::setHiddenLayerWeights2D::hiddenLayerIndex">
+                            <td>hiddenLayerIndex</td>
+                            <td></td>
+                        </tr>
+                        <tr id="net::NeuralNet::setHiddenLayerWeights2D::w">
+                            <td>w</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::setOutputActivationFunction">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">setOutputActivationFunction</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">name</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Sets the activation function for the neurons of the output layer with the name of the activation funciton</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::setOutputActivationFunction::name">
+                            <td>name</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::setOutputLayerWeights2D">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">setOutputLayerWeights2D</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">w</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Set the weights of each neuron in the output layer using a 2d vector format</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::setOutputLayerWeights2D::w">
+                            <td>w</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::setWeights">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">setWeights</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">w</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p> Set the weights of each input for each neuron in the net according to a vector.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::setWeights::w">
+                            <td>w</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::setWeights3D">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">setWeights3D</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::vector&lt;std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt;, std::__1::allocator&lt;std::__1::vector&lt;double, std::__1::allocator&lt;double&gt; &gt; &gt; &gt; &gt; &gt;</span></span>
+                                </td>
+                                <td class="argument_name">w</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Set the weights of each input for each neuron in the net according to a 3d vector</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::setWeights3D::w">
+                            <td>w</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::storeNet">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">storeNet</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::string</span></span>
+                                </td>
+                                <td class="argument_name">filename</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Stores a neural network in the specified file</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::storeNet::filename">
+                            <td>filename</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="function">
+                <div class="declaration" id="net::NeuralNet::storeNetWithStream">
+                    <div class="return_type"><span class="type"><span class="name builtin">void</span></span>
+                    </div>
+                    <table class="declaration">
+                        <tbody>
+                            <tr>
+                                <td class="identifier">storeNetWithStream</td>
+                                <td class="open_paren">(</td>
+                                <td class="argument_type"><span class="type"><span class="name ">std::__1::ofstream</span><span class="qualifier">  &amp;</span></span>
+                                </td>
+                                <td class="argument_name">output</td>
+                                <td class="close_paren">)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="brief">
+                    <p>Stores a neural network using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.</p>
+                </div>
+                <table class="arguments">
+                    <tbody>
+                        <tr id="net::NeuralNet::storeNetWithStream::output">
+                            <td>output</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- vi:ts=2:et -->
