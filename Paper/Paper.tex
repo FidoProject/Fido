@@ -1,9 +1,8 @@
-\documentclass[letterpaper,12pt]{article}
+\documentclass[letterpaper,11pt]{article}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[nottoc]{tocbibind}
 \usepackage[margin=1.25in]{geometry}
-\usepackage{mathptmx}
 \usepackage[activate={true,nocompatibility},final,
 			tracking=true,kerning=true,spacing=true,
 			factor=1100,stretch=10,shrink=10]{microtype}
@@ -11,20 +10,20 @@
 \usepackage{amsmath,apacite,graphicx,wrapfig,setspace,tikz,pgfplots,booktabs}
 \usepackage[justification=centering]{caption}
 \usetikzlibrary{matrix,arrows,calc,3d,fit,patterns}
-\doublespacing
 \frenchspacing
+
+\title{A Universal Robotic Control System using Reinforcement Learning with Limited Feedback}
+
+\author{Joshua Gruenstein \and Michael Truell}
 
 \begin{document}
 
-\begin{titlepage}
-	\begin{center}
-		{\Large \textbf{A Universal Robotic Control System using Reinforcement Learning with Limited Feedback}}\\
-		\vspace{1.5cm}
-	\end{center}
-	\input{Sections/Abstract.tex}
-\end{titlepage}
+\maketitle
 
-\newgeometry{top=1in,bottom=1in,right=1in,left=1in}
+
+\input{Sections/Abstract.tex}
+
+
 \pagebreak
 
 \section{Introduction}
