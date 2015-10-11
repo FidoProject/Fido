@@ -71,9 +71,9 @@ void NeuralNet::storeNetWithStream(std::ofstream *output) {
 std::vector<double> NeuralNet::getWeights() {
 	std::vector<double> weights;
 	for(int a = 0; a < net.size(); a++) {
-		for(int b = 0; b < net[a].size(); b++) {
-			for(int c = 0; c < net[a][b].weights.size(); c++) {
-				weights.push_back(net[a][b].weights[c]);
+		for(int b = 0; b < net[a].neurons.size(); b++) {
+			for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+				weights.push_back(net[a].neurons[b].weights[c]);
 			}
 		}
 	}
@@ -84,8 +84,8 @@ std::vector< std::vector< std::vector<double> > > NeuralNet::getWeights3D() {
 	std::vector< std::vector< std::vector<double> > > weights;
 	for(int a = 0; a < net.size(); a++) {
 		std::vector< std::vector<double> > layer;
-		for(int b = 0; b < net[a].size(); b++) {
-			layer.push_back(net[a][b].weights);
+		for(int b = 0; b < net[a].neurons.size(); b++) {
+			layer.push_back(net[a].neurons[b].weights);
 		}
 		weights.push_back(layer);
 	}
@@ -98,16 +98,16 @@ std::vector< std::vector<double> > NeuralNet::getHiddenLayerWeights2D(int hidden
 		throw 1;
 	}
 	std::vector< std::vector<double> > weights;
-	for(int b = 0; b < net[hiddenLayerIndex].size(); b++) {
-		weights.push_back(net[hiddenLayerIndex][b].weights);
+	for(int b = 0; b < net[hiddenLayerIndex].neurons.size(); b++) {
+		weights.push_back(net[hiddenLayerIndex].neurons[b].weights);
 	}
 	return weights;
 }
 
 std::vector< std::vector<double> > NeuralNet::getOutputLayerWeights2D() {
 	std::vector< std::vector<double> > weights;
-	for(int b = 0; b < net[net.size()-1].size(); b++) {
-		weights.push_back(net[net.size() - 1][b].weights);
+	for(int b = 0; b < net[net.size()-1].neurons.size(); b++) {
+		weights.push_back(net[net.size() - 1].neurons[b].weights);
 	}
 	return weights;
 }
@@ -115,9 +115,9 @@ std::vector< std::vector<double> > NeuralNet::getOutputLayerWeights2D() {
 void NeuralNet::setWeights(std::vector<double> w) {
 	int counter = 0;
 	for(int a = 0; a < net.size(); a++) {
-		for(int b = 0; b < net[a].size(); b++) {
-			for(int c = 0; c < net[a][b].weights.size(); c++) {
-				net[a][b].weights[c] = w[counter];
+		for(int b = 0; b < net[a].neurons.size(); b++) {
+			for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+				net[a].neurons[b].weights[c] = w[counter];
 				counter++;
 			}
 		}
@@ -130,24 +130,24 @@ void NeuralNet::setWeights(std::vector<double> w) {
 
 void NeuralNet::setWeights3D(std::vector< std::vector< std::vector<double> > > w) {
 	for(int a = 0; a < net.size(); a++) {
-		for(int b = 0; b < net[a].size(); b++) {
-			net[a][b].weights = w[a][b];
+		for(int b = 0; b < net[a].neurons.size(); b++) {
+			net[a].neurons[b].weights = w[a][b];
 		}
 	}
 }
 
 void NeuralNet::setHiddenLayerWeights2D(int hiddenLayerIndex, std::vector< std::vector<double> > w) {
-	for(int b = 0; b < net[hiddenLayerIndex].size(); b++) {
-		for(int c = 0; c < net[hiddenLayerIndex][b].weights.size(); c++) {
-			net[hiddenLayerIndex][b].weights[c] = w[b][c];
+	for(int b = 0; b < net[hiddenLayerIndex].neurons.size(); b++) {
+		for(int c = 0; c < net[hiddenLayerIndex].neurons[b].weights.size(); c++) {
+			net[hiddenLayerIndex].neurons[b].weights[c] = w[b][c];
 		}
 	}
 }
 
 void NeuralNet::setOutputLayerWeights2D(std::vector< std::vector<double> > w) {
-	for(int b = 0; b < net[net.size() - 1].size(); b++) {
-		for(int c = 0; c < net[net.size() - 1][b].weights.size(); c++) {
-			net[net.size() - 1][b].weights[c] = w[b][c];
+	for(int b = 0; b < net[net.size() - 1].neurons.size(); b++) {
+		for(int c = 0; c < net[net.size() - 1].neurons[b].weights.size(); c++) {
+			net[net.size() - 1].neurons[b].weights[c] = w[b][c];
 		}
 	}
 }
@@ -158,10 +158,10 @@ std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 	for(int a = 0; a < net.size(); a++) {
 		if(a > 0) input = output;
 		output.clear();
-		for(int b = 0; b < net[a].size(); b++) {
+		for(int b = 0; b < net[a].neurons.size(); b++) {
 			double out;
-			if(a == net.size() - 1) out = outputActivationFunction(net[a][b].getOutput(input));
-			else out = hiddenActivationFunction(net[a][b].getOutput(input));
+			if(a == net.size() - 1) out = outputActivationFunction(net[a].neurons[b].getOutput(input));
+			else out = hiddenActivationFunction(net[a].neurons[b].getOutput(input));
 			output.push_back(out);
 		}
 	}
@@ -175,10 +175,10 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 
 		std::vector<double> outputLayer;
 
-		for(int b = 0; b < net[a].size(); b++) {
+		for(int b = 0; b < net[a].neurons.size(); b++) {
 			double out;
-			if(a == net.size() - 1) out = outputActivationFunction(net[a][b].getOutput(input));
-			else out = hiddenActivationFunction(net[a][b].getOutput(input));
+			if(a == net.size() - 1) out = outputActivationFunction(net[a].neurons[b].getOutput(input));
+			else out = hiddenActivationFunction(net[a].neurons[b].getOutput(input));
 			outputLayer.push_back(out);
 		}
 
@@ -221,18 +221,18 @@ std::string NeuralNet::getOutputActivationFunctionName() {
 }
 
 void NeuralNet::setupNeuronLayers() {
-    std::vector<Neuron> firstHiddenLayer;
-    for(int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.push_back(Neuron(numInputs));
+	Layer firstHiddenLayer;
+    for(int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.neurons.push_back(Neuron(numInputs));
     net.push_back(firstHiddenLayer);
     
     for(int a = 0; a < numHiddenLayers-1; a++) {
-        std::vector<Neuron> hiddenLayer;
-        for(int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
+        Layer hiddenLayer;
+        for(int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
         net.push_back(hiddenLayer);
     }
     
-    std::vector<Neuron> outputLayer;
-    for(int a = 0; a < numOutputs; a++) outputLayer.push_back(Neuron(numNeuronsPerHiddenLayer));
+    Layer outputLayer;
+    for(int a = 0; a < numOutputs; a++) outputLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
     net.push_back(outputLayer);
 }
 
@@ -261,10 +261,10 @@ void NeuralNet::printWeights() {
     std::cout << "Neuron weights: \n";
     for(int a = 0; a < net.size(); a++) {
         std::cout << "  Layer " << a << ":\n";
-        for(int b = 0; b < net[a].size(); b++) {
+        for(int b = 0; b < net[a].neurons.size(); b++) {
             std::cout << "      Neuron " << b << ": ";
-            for(int c = 0; c < net[a][b].weights.size(); c++) {
-                std::cout << net[a][b].weights[c] << " ";
+            for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+                std::cout << net[a].neurons[b].weights[c] << " ";
             }
             std::cout << "\n";
         }

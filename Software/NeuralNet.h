@@ -9,6 +9,11 @@
 
 namespace net {
 
+	struct Layer {
+		ActivationFunction activationFunction;
+		std::vector<Neuron> neurons;
+	};
+
 	/* Class representing a neural network.
 	 *
 	 * A flexible implementation designed to be usable in a wide scope of projects.
@@ -103,7 +108,7 @@ namespace net {
         void printWeights();
 
 		// A two dimensional network of neurons.
-		std::vector< std::vector<Neuron> > net;
+		std::vector< Layer > net;
 
 		// Variables used to describe Neural Networks.
 		int numInputs, numOutputs, numHiddenLayers, numNeuronsPerHiddenLayer;
