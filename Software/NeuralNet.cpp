@@ -53,9 +53,11 @@ void NeuralNet::storeNet(std::string filename) {
 
 void NeuralNet::storeNetWithStream(std::ofstream *output) {
 	if(output->is_open()) {
-		std::vector<double> weights = getWeights();
-		for(int a = 0; a < weights.size(); a++) *output << weights[a] << " ";
-		std::cout << "\n";
+		// Output the net to the file
+		*output << net.size() << "\n";
+		for(int a = 0; a < net.size(); a++) {
+			net[a].storeNetWithStream(output);
+		}
 	} else {
 		std::cout << "Could not store neural network\n";
 		throw 1;
@@ -146,14 +148,11 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 
 void NeuralNet::initWithStream(std::ifstream *input) {
 	if(input->is_open()) {
-
-		std::string hiddenActivationFunctionName, outputActivationFunctionName;
-		*input >> hiddenActivationFunctionName >> outputActivationFunctionName;
-
-		std::vector<double> newWeights;
-		double middleMan = 0;
-		while(*input >> middleMan) newWeights.push_back(middleMan);
-		setWeights(newWeights);
+		int numLayers;
+		*input >> numLayers;
+		for (int a = 0; a < numLayers; a++) {
+			net.push_back(Layer(input));
+		}
 	} else {
 		std::cout << "Could not retrieve neural network from file\n";
 		throw 1;
