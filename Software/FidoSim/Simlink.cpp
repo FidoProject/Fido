@@ -117,15 +117,15 @@ void Simlink::updateMainWindow() {
 			imu.compass.zComp = -((cy - 620) - 130) / 1.28;
 
 		if (cx > 780 && cx < 850 && cy > 620 && cy < 880)
-			batVal = (880 - cy) / 2.6;
+			batVal = (int)((880 - cy) / 2.6);
 		else if (cx > 890 && cx < 960 && cy > 620 && cy < 880)
-			irVal = (880 - cy) / 2.6;
+			irVal = (int)((880 - cy) / 2.6);
 		else if (cx > 1000 && cx < 1070 && cy > 620 && cy < 880)
-			visVal = (880 - cy) / 2.6;
+			visVal = (int)((880 - cy) / 2.6);
 		else if (cx > 1110 && cx < 1180 && cy > 620 && cy < 880)
-			micVal = (880 - cy) / 2.6;
+			micVal = (int)((880 - cy) / 2.6);
 		else if (cx > 500 && cx < 700 && cy > 800 && cy < 880)
-			tempVal = (cx - 500) / 2;
+			tempVal = (int)((cx - 500) / 2);
 
 	}
 

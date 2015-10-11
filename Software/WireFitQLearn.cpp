@@ -326,7 +326,7 @@ double WireFitQLearn::highestReward(std::vector<double> state) {
 std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
     std::vector<Wire> wires = getWires(state);
     double bestReward = -99999;
-    std::vector<double> *bestAction = 0;
+    std::vector<double> *bestAction = &wires[0].action;
     
     for(int a = 0; a < wires.size(); a++) {
         if(wires[a].reward > bestReward) {

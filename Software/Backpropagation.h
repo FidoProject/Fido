@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-#include "ActivationFunctions.h";
+#include "ActivationFunctions.h"
 
 namespace net {
 

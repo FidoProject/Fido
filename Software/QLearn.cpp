@@ -44,13 +44,13 @@ QLearn::QLearn(std::string filename) {
 
 QLearn::QLearn() { }
 
-int QLearn::chooseBestAction(std::vector<double> currentState) {
+unsigned int QLearn::chooseBestAction(std::vector<double> currentState) {
     getBestActionAndReward(currentState, &lastAction, &lastReward);
 	lastState = currentState;
 	return lastAction;
 }
 
-int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant) {
+unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant) {
 	double determiner = (double)rand() / (double)RAND_MAX;
     std::vector<double> rewards(networks.size());
 	std::vector<double> exponentTerms(networks.size());
@@ -81,7 +81,7 @@ int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explor
 	/// Incase a floating point error resulted in no action
 	lastAction = networks.size() - 1;
 	lastState = currentState;
-	return networks.size() - 1;
+	return (unsigned int)networks.size() - 1;
 }
 
 void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState) {
@@ -93,7 +93,7 @@ void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> n
 	backprop.trainOnData(networks[lastAction], { lastState }, { { targetValueForLastState } });
 }
 
-void QLearn::getBestActionAndReward(std::vector<double> state, int *bestAction, double *bestReward) {
+void QLearn::getBestActionAndReward(std::vector<double> state, unsigned int *bestAction, double *bestReward) {
 	*bestAction = 0;
 	*bestReward = -99999;
 
@@ -107,7 +107,7 @@ void QLearn::getBestActionAndReward(std::vector<double> state, int *bestAction, 
 }
 
 double QLearn::highestReward(std::vector<double> state) {
-	int bestAction;
+	unsigned int bestAction;
 	double bestReward;
 	getBestActionAndReward(state, &bestAction, &bestReward);
 
@@ -115,7 +115,7 @@ double QLearn::highestReward(std::vector<double> state) {
 }
 
 int QLearn::bestAction(std::vector<double> state) {
-	int bestAction;
+	unsigned int bestAction;
 	double bestReward;
 	getBestActionAndReward(state, &bestAction, &bestReward);
 

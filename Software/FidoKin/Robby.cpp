@@ -7,7 +7,7 @@
 
 #include "Simlink.h"
 
-Robby::Robby(int x, int y, int width, int height):
+Robby::Robby(float x, float y, float width, float height):
 sf::RectangleShape(sf::Vector2f(width,height)) {
     setFillColor(sf::Color(0, 0, 0));
     setPosition(x,y);

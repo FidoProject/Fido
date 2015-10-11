@@ -7,7 +7,7 @@
 using namespace net;
 
 Interpolator * Interpolator::getAnyInterpolatorFromFile(std::ifstream *in) {
-	int placeInFile = in->tellg();
+	long placeInFile = in->tellg();
 	Interpolator *interpolator;
 
 	interpolator = (Interpolator *)new LSInterpolator();

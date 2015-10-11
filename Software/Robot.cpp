@@ -78,7 +78,7 @@ std::vector<double> Robot::getAction(int action) {
 	std::vector<int> iteratorVector(actionDimensions);
 	for (int a = 0; a < action; a++) {
 		iteratorVector[iteratorVector.size() - 1]++;
-		for (int iteratorVectorIndex = iteratorVector.size() - 1; iteratorVectorIndex >= 0; iteratorVectorIndex--) {
+		for (unsigned int iteratorVectorIndex = iteratorVector.size() - 1; iteratorVectorIndex >= 0; iteratorVectorIndex--) {
 			if (iteratorVector[iteratorVectorIndex] >= baseOfDimensions) {
 				iteratorVector[iteratorVectorIndex] = 0;
 				if (iteratorVectorIndex > 0)iteratorVector[iteratorVectorIndex - 1]++;
