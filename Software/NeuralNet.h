@@ -4,15 +4,10 @@
 #include <fstream>
 #include <map>
 
-#include "Neuron.h"
+#include "Layer.h"
 #include "ActivationFunctions.h"
 
 namespace net {
-
-	struct Layer {
-		ActivationFunction activationFunction;
-		std::vector<Neuron> neurons;
-	};
 
 	/* Class representing a neural network.
 	 *
@@ -28,16 +23,16 @@ namespace net {
 		 * 
 		 * Uses the number of inputs, the number of outputs, the number of hidden layers, and the number of neurons per hidden layer.
 		 */
-		NeuralNet(int numInputs_, int numOutputs_, int numHiddenLayers_, int numNeuronsPerHiddenLayer_, std::string activationFunctionName);
+		NeuralNet(int numInputs, int numOutputs, int numHiddenLayers, int numNeuronsPerHiddenLayer, std::string activationFunctionName);
 		
 		// Make a neural network with random weights but the same number of inputs, outputs, hidden layers, and neurons per hidden layer as the network given.
-		NeuralNet(NeuralNet* otherNet);
+		explicit NeuralNet(NeuralNet* otherNet);
         
         // Restores a neural network from the specified file
-		NeuralNet(std::string filename);
+		explicit NeuralNet(std::string filename);
 
 		// Loads a neural network from a file using a stream
-		NeuralNet(std::ifstream *input);
+		explicit NeuralNet(std::ifstream *input);
         
         // Stores a neural network in the specified file
         void storeNet(std::string filename);
@@ -54,15 +49,6 @@ namespace net {
 
 		// Get the weights of each neuron in the net in 3d vector form
 		std::vector< std::vector< std::vector<double> > > getWeights3D();
-
-		/* Get the weights of each neuron in a hidden layer in a 2d vector format
-		 *
-		 * A hiddenLayerIndex value of 0 specifies the hidden layer that is directly fed the input and a value of numHiddenLayers-1 specifies the hidden layer closes to the ouput layer
-		 */
-		std::vector< std::vector<double> > getHiddenLayerWeights2D(int hiddenLayerIndex);
-
-		// Get the weights of each neuron in the output layer in a 2d vector format
-		std::vector< std::vector<double> > getOutputLayerWeights2D();
 		
 		/* Set the weights of each input for each neuron in the net according to a vector.
 		 * 
@@ -71,15 +57,9 @@ namespace net {
 
 		// Set the weights of each input for each neuron in the net according to a 3d vector
 		void setWeights3D(std::vector< std::vector< std::vector<double> > > w);
-		
-		/* Set the weights of each neuron in a hidden layer using a 2d vector format
-		*
-		* A hiddenLayerIndex value of 0 specifies the hidden layer that is directly fed the input and a value of numHiddenLayers-1 specifies the hidden layer closes to the ouput layer
-		*/
-		void setHiddenLayerWeights2D(int hiddenLayerIndex, std::vector< std::vector<double> > w);
 
-		// Set the weights of each neuron in the output layer using a 2d vector format
-		void setOutputLayerWeights2D(std::vector< std::vector<double> > w);
+		// Randomizes all the weights of the neurons in the net
+		void randomizeWeights();
 
 		/* Produce an output based on an input vector of doubles.
 		 *
@@ -88,47 +68,26 @@ namespace net {
 
 		// Returns the output of each layer of neurons as an input is fed for just as it is fed forward in getOutput
 		std::vector< std::vector<double> > feedForward(std::vector<double> input);
-
-		// Gets a map with the names of each activation function as its keys and the available activation functions as its values
-		std::map<std::string, ActivationFunction> getActivationFunctionNameMap();
-
-		// Sets the activation function for the neurons of the hidden layers with the name of the activation funciton
-		void setHiddenActivationFunction(std::string name);
-
-		// Sets the activation function for the neurons of the output layer with the name of the activation funciton
-		void setOutputActivationFunction(std::string name);
-
-		// Gets the name of the activation function of the nuerons of the hidden layers
-		std::string getHiddenActivationFunctionName();
-
-		// Gets the name of the activation function of the neurons of the output layer
-		std::string getOutputActivationFunctionName();
         
         // Prints the weights of the neurons of the layers of the net
         void printWeights();
+		
+		// Gets the number of hidden layers in the neural net. Returns the number of layers minus 1
+		int numberOfHiddenLayers();
+
+		// Gets the number of intput neurons in the NeuralNet
+		int numberOfInputs();
+
+		// Gets the number of output neurons in the NeuralNet
+		int numberOfOutputs();
+
+		// Sets the activation function of the output layer
+		void setOutputActivationFunction(std::string name);
 
 		// A two dimensional network of neurons.
 		std::vector< Layer > net;
-
-		// Variables used to describe Neural Networks.
-		int numInputs, numOutputs, numHiddenLayers, numNeuronsPerHiddenLayer;
 		
     private:
-		/* The activation function for the hidden neurons
-		*
-		* An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
-		*/
-		ActivationFunction hiddenActivationFunction;
-
-		/* The activation function for the output neurons
-		*
-		* An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
-		*/
-		ActivationFunction outputActivationFunction;
-
-        // Creates layers of neurons with random weights according to the values of numInputs, numOutputs, numHiddenLayers, and numNeuronsPerHiddenLayer
-        void setupNeuronLayers();
-
 		void initWithStream(std::ifstream *input);
 	};
 }

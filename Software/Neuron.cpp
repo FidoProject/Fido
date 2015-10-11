@@ -13,6 +13,10 @@ Neuron::Neuron(std::vector<double> w) {
 	weights = w;
 }
 
+void Neuron::randomizeWeights() {
+	for (int a = 0; a < weights.size(); a++) weights[a] = Neuron::randomWeight();
+}
+
 double Neuron::getOutput(std::vector<double> inputs) {
 	if(inputs.size() != weights.size() - 1) {
 		std::cout << "Wrong number of neuron inputs\n";

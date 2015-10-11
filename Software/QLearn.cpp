@@ -79,7 +79,7 @@ unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, doub
 	}
 
 	/// Incase a floating point error resulted in no action
-	lastAction = networks.size() - 1;
+	lastAction = (unsigned int)networks.size() - 1;
 	lastState = currentState;
 	return (unsigned int)networks.size() - 1;
 }

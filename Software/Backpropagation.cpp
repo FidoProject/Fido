@@ -22,6 +22,9 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 Backpropagation::Backpropagation() {
 	hiddenActivationFunctionDerivative = sigmoidDerivative;
 	outputActivationFunctionDerivative = sigmoidDerivative;
+
+	learningRate = momentumTerm = targetErrorLevel = 0;
+	maxiumumIterations = 0;
 }
 
 Backpropagation::Backpropagation(std::string filename) { 
@@ -85,13 +88,13 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	errors.push_back(outputNeuronErrors);
 
 	/// Compute hidden layer error
-	for(int hiddenLayerIndex = network->numHiddenLayers - 1; hiddenLayerIndex >= 0; hiddenLayerIndex--) {
+	for(int layerIndex = network->net.size() - 2; layerIndex >= 0; layerIndex--) {
 		std::vector<double> currentLayerError;
-		const std::vector<double> &currentHiddenLayerOutput = outputs[hiddenLayerIndex];
+		const std::vector<double> &currentHiddenLayerOutput = outputs[layerIndex];
 		const std::vector<double> &lastLayerError = errors[errors.size() - 1];
-		const std::vector< std::vector<double> > &lastLayerWeights = weights[hiddenLayerIndex + 1];
+		const std::vector< std::vector<double> > &lastLayerWeights = weights[layerIndex + 1];
 		
-		for(int neuronIndex = 0; neuronIndex < network->numNeuronsPerHiddenLayer; neuronIndex++) {
+		for(int neuronIndex = 0; neuronIndex < network->net[layerIndex].neurons.size(); neuronIndex++) {
 			double errorsTimesWeights = 0;
 			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
 				errorsTimesWeights += lastLayerError[previousNeuronIndex] * lastLayerWeights[previousNeuronIndex][neuronIndex];

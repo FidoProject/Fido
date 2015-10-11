@@ -20,10 +20,10 @@ namespace net {
 		Backpropagation();
 
 		// Loads a Backpropagation object from a file
-		Backpropagation(std::string filename);
+		explicit Backpropagation(std::string filename);
 
 		// Loads a Backpropagation object using an input stream
-		Backpropagation(std::ifstream *input);
+		explicit Backpropagation(std::ifstream *input);
 
 		// Stores a Backpropagation object in the specified file
 		void storeBackpropagation(std::string filename);

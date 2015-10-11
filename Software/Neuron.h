@@ -15,10 +15,10 @@ namespace net {
 		 *
 		 * Each weight is a random double between 0 and 1 
 		 */
-		Neuron(int numInputs);
+		explicit Neuron(int numInputs);
 
 		// Create a neuron with given weights.
-		Neuron(std::vector<double> w);
+		explicit Neuron(std::vector<double> w);
 
 		/* Get outputs of neuron from given inputs.	
 		 *
@@ -28,6 +28,9 @@ namespace net {
 		
 		// Set of weights for the Neuron object.
 		std::vector<double> weights;
+
+		// Randomizes the weights of the neuron
+		void randomizeWeights();
 
 		// Return a random weight between zero and one.
 		static double randomWeight() {

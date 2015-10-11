@@ -10,7 +10,7 @@ Interpolator * Interpolator::getAnyInterpolatorFromFile(std::ifstream *in) {
 	long placeInFile = in->tellg();
 	Interpolator *interpolator;
 
-	interpolator = (Interpolator *)new LSInterpolator();
+	interpolator = static_cast<Interpolator *>(new LSInterpolator());
 	if(interpolator->initFromFile(in)) {
 		return interpolator;
 	}

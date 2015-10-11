@@ -29,7 +29,7 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator
     controlPointsGDLearningRate = 0.1;
     controlPointsGDMaxIterations = 10000;
 
-    if(network->numOutputs != numberOfWires * (actionDimensions+1)) {
+    if(network->numberOfOutputs() != numberOfWires * (actionDimensions+1)) {
         std::cout << "Neural network incorrectly formatted!\n";
         throw 1;
     }
@@ -56,7 +56,7 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
         
         input.close();
 
-        if(network->numOutputs != numberOfWires * (actionDimensions+1)) {
+        if(network->numberOfOutputs() != numberOfWires * (actionDimensions+1)) {
             std::cout << "Neural network incorrectly formatted!\n";
             throw 1;
         }
