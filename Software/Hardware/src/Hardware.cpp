@@ -1,4 +1,5 @@
 #include "Hardware.h"
+#include <buzzer.h>
 
 Hardware::Hardware() {
 	/// init IMU
@@ -7,6 +8,11 @@ Hardware::Hardware() {
 
 	/// init motors
 	motors.standby(false);
+
+	/// init adc
+    adc_i2c = new mraa::I2c(1);
+    adc = new ads1015(adc_i2c, 0x48);
+    adc->setRange(_4_096V);
 }
 
 TDVect Hardware::getGyro() {
@@ -47,9 +53,15 @@ void Hardware::chirp(int volume, int frequency) {
 }
 
 int Hardware::getVis() {
+	return adc->getRawResult(0);
 }
 
 int Hardware::getMicrophone() {
+	return adc->getRawResult(1);
+}
+
+int Hardware::getIR() {
+	return adc->getRawResult(2);
 }
 
 void Hardware::setLed(int r, int g, int b, int i) {
