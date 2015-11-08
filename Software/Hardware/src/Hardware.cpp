@@ -1,6 +1,9 @@
 #include "Hardware.h"
 
 #define BUZZ_PIN 13
+#define LED_R_PIN 12
+#define LED_G_PIN 182
+#define LED_B_PIN 183
 
 Hardware::Hardware() {
 	/// init IMU
@@ -17,6 +20,14 @@ Hardware::Hardware() {
 
     /// init buzzer
     buzz = new upm::Buzzer(BUZZ_PIN);
+
+    /// init RGB strip
+    pwmR = new mraa::Pwm(LED_R_PIN);
+    pwmG = new mraa::Pwm(LED_G_PIN);
+	pwmB = new mraa::Pwm(LED_B_PIN);
+	pwmR->enable(true);
+	pwmG->enable(true);
+	pwmB->enable(true);
 }
 
 TDVect Hardware::getGyro() {
@@ -48,8 +59,8 @@ TDVect Hardware::getCompass() {
 
 void Hardware::setMotors(int motorOne, int motorTwo) {
 	motors.shortBrake(motorOne==0,motorTwo==0);
-	double scaleOne = ((double)motorOne)/100.0;
-	double scaleTwo = ((double)motorTwo)/100.0;
+	double scaleOne = motorOne/100.0;
+	double scaleTwo = motorTwo/100.0;
 	motors.diffDrive(scaleOne,scaleTwo);
 }
 
@@ -58,28 +69,39 @@ void Hardware::chirp(double volume, int frequency, int time) {
 	buzz->playSound(frequency,time);
 }
 
-int Hardware::getVis() {
-	return adc->getRawResult(0);
+double Hardware::getVis() {
+	return adc->getRawResult(0)/2047.0;
 }
 
-int Hardware::getMicrophone() {
-	return adc->getRawResult(1);
+double Hardware::getMicrophone() {
+	return adc->getRawResult(1)/2047.0;
 }
 
-int Hardware::getIR() {
-	return adc->getRawResult(2);
+double Hardware::getIR() {
+	return adc->getRawResult(2)/2047.0;
 }
 
-void Hardware::setLed(int r, int g, int b, int i) {
+void Hardware::setLed(double r, double g, double b) {
+	pwmR->write(r);
+	pwmG->write(g);
+	pwmB->write(b);
 }
 
-int Hardware::getTemperature() {
+double Hardware::getTemperature() {
 	imu->readTemp();
-	return imu->temperature;
+	return imu->temperature/4096.0;
 }
 
 Hardware::~Hardware() {
 	buzz->stopSound();
 	motors.standby(true);
+
+	delete buzz;
+	delete adc_i2c;
+	delete adc;
+	delete imu;
+	delete pwmR;
+	delete pwmG;
+	delete pwmB;
 }
 

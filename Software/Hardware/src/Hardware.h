@@ -26,16 +26,17 @@ struct TDVect {
 
 class Hardware {
 public:
+	// Initializes IO
 	Hardware();
 
 	// Returns 3 axis of rotational velocity
 	// in degrees per second
 	TDVect getGyro();
 
-	// Returns 3 axis of acceleration in Gs
+	// Returns 3 axis of acceleration in g
 	TDVect getAccel();
 
-	// Returns 3 axis of magnetism in gauss
+	// Returns 3 axis of magnetism in Gauss
 	TDVect getCompass();
 
 	/* Sets the motors (-100 to 100).
@@ -51,21 +52,23 @@ public:
 	void chirp(double volume, int frequency, int time);
 
 	// Returns a visible light intensity value
-	// from 0-2047
-	int getVis();
+	// from 0-1
+	double getVis();
 
-	// Returns a sound pressure value from 0-2047
-	int getMicrophone();
+	// Returns a sound pressure value from 0-1
+	double getMicrophone();
 
-	// Returns a temperature value
-	int getTemperature();
+	// Returns a temperature value from 0-1
+	double getTemperature();
 
 	// Returns an infrared light intensity value
-	// from 0-2047
-	int getIR();
+	// from 0-1
+	double getIR();
 
-	void setLed(int r, int g, int b, int i);
+	// Set the LED strip to an RGB value (0-1)
+	void setLed(double r, double g, double b);
 
+	// Destructs the hardware safely
 	virtual ~Hardware();
 private:
 	LSM9DS0 *imu;
@@ -73,6 +76,9 @@ private:
 	mraa::I2c *adc_i2c;
 	ads1015 *adc;
 	upm::Buzzer *buzz;
+	mraa::Pwm* pwmR;
+	mraa::Pwm* pwmG;
+	mraa::Pwm* pwmB;
 };
 
 #endif /* HARDWARE_H_ */
