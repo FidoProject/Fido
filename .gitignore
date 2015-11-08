@@ -51,7 +51,6 @@
 *.nav
 *.snm
 
-
 ###########
 ## Eagle ##
 ###########
@@ -144,6 +143,18 @@ DerivedData
 .idea/
 *.pbxproj
 
+#############
+## Eclipse ##
+#############
+
+*.pioenvs
+*.dblite
+*.project
+*.cproject
+*.settings
+*.launch
+Debug
+
 ##########
 ## Fido ##
 ##########
@@ -154,9 +165,3 @@ stateIn.txt
 graphics.py
 Journal.html
 Gerbers.zip
-
-############
-## Teensy ##
-############
-.pioenvs
-*.dblite
