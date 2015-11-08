@@ -1,12 +1,14 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include <cmath>
-#include <iostream>
 #include <unistd.h>
+#include <iostream>
+#include <iomanip>
+#include <cmath>
 
 #include "mraa.hpp"
-#include "SFE_LSM9DS0.h"
+#include "lib/SFE_LSM9DS0.h"
+#include "lib/Sparkfun_TB6612_Edison.h"
 
 struct TDVect {
 	// Components of 3d vector
@@ -46,6 +48,7 @@ public:
 	virtual ~Hardware();
 private:
 	LSM9DS0 *imu;
+	tb6612 motors;
 };
 
 #endif /* HARDWARE_H_ */

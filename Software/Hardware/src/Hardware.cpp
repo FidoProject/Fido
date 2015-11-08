@@ -4,6 +4,9 @@ Hardware::Hardware() {
 	/// init IMU
 	imu = new LSM9DS0(0x6B, 0x1D);
 	uint16_t imuResult = imu->begin();
+
+	/// init motors
+	motors.standby(false);
 }
 
 TDVect Hardware::getGyro() {
@@ -34,6 +37,10 @@ TDVect Hardware::getCompass() {
 }
 
 void Hardware::setMotors(int motorOne, int motorTwo) {
+	motors.shortBrake(motorOne==0,motorTwo==0);
+	double scaleOne = ((double)motorOne)/100.0;
+	double scaleTwo = ((double)motorTwo)/100.0;
+	motors.diffDrive(scaleOne,scaleTwo);
 }
 
 void Hardware::chirp(int volume, int frequency) {
