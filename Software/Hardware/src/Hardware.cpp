@@ -1,5 +1,6 @@
 #include "Hardware.h"
-#include <buzzer.h>
+
+#define BUZZ_PIN 13
 
 Hardware::Hardware() {
 	/// init IMU
@@ -13,6 +14,9 @@ Hardware::Hardware() {
     adc_i2c = new mraa::I2c(1);
     adc = new ads1015(adc_i2c, 0x48);
     adc->setRange(_4_096V);
+
+    /// init buzzer
+    buzz = new upm::Buzzer(BUZZ_PIN);
 }
 
 TDVect Hardware::getGyro() {
@@ -49,7 +53,9 @@ void Hardware::setMotors(int motorOne, int motorTwo) {
 	motors.diffDrive(scaleOne,scaleTwo);
 }
 
-void Hardware::chirp(int volume, int frequency) {
+void Hardware::chirp(double volume, int frequency, int time) {
+	buzz->setVolume(volume);
+	buzz->playSound(frequency,time);
 }
 
 int Hardware::getVis() {
@@ -73,6 +79,7 @@ int Hardware::getTemperature() {
 }
 
 Hardware::~Hardware() {
-
+	buzz->stopSound();
+	motors.standby(true);
 }
 
