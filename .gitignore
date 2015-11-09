@@ -154,6 +154,14 @@ DerivedData
 *.launch
 Debug
 
+#############
+## AutoCAD ##
+#############
+
+*.dwl*
+*.bak
+*.stl
+
 ##########
 ## Fido ##
 ##########
