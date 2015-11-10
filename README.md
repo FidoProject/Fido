@@ -1,5 +1,12 @@
 # Fido
 
+## Due Monday B Period
+- BLE App
+  - Android code
+  - Robot code
+- Hardware
+  - Drivers
+  - Assembled version of Fido
 
 ## Future TODO
 - Implement more tasks
