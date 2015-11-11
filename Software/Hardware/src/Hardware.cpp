@@ -1,14 +1,14 @@
 #include "Hardware.h"
 
-#define BUZZ_PIN 13
-#define LED_R_PIN 12
-#define LED_G_PIN 182
-#define LED_B_PIN 183
+#define BUZZ_PIN 14
+#define LED_R_PIN 20
+#define LED_G_PIN 0
+#define LED_B_PIN 21
 
 Hardware::Hardware() {
 	/// init IMU
 	imu = new LSM9DS0(0x6B, 0x1D);
-	uint16_t imuResult = imu->begin();
+	imu->begin();
 
 	/// init motors
 	motors.standby(false);

@@ -2,6 +2,7 @@
 #define HARDWARE_H_
 
 #include <unistd.h>
+#include <signal.h>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -9,7 +10,7 @@
 #include "mraa.hpp"
 #include "lib/SFE_LSM9DS0.h"
 #include "lib/Sparkfun_TB6612_Edison.h"
-#include "SparkFunADS1015.h"
+#include "lib/SparkFunADS1015.h"
 #include <buzzer.h>
 
 struct TDVect {
