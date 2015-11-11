@@ -4,11 +4,10 @@
 int main() {
 	Hardware fido;
 
+	fido.setMotors(100,100);
+	sleep(1);
+	fido.setMotors(-100,-100);
+	sleep(1);
 
-	while (true) {
-		double fun = fido.getAccel().zComp;
-		std::cout << fun << "\n";
-		sleep(1);
-	}
-	return 0;
+	return fido.safeClose();
 }

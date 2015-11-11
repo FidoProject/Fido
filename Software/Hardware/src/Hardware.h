@@ -69,6 +69,9 @@ public:
 	// Set the LED strip to an RGB value (0-1)
 	void setLed(double r, double g, double b);
 
+	// Turns off motors and buzzers at end of program.
+	int safeClose();
+
 	// Destructs the hardware safely
 	virtual ~Hardware();
 private:

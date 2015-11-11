@@ -59,8 +59,8 @@ TDVect Hardware::getCompass() {
 
 void Hardware::setMotors(int motorOne, int motorTwo) {
 	motors.shortBrake(motorOne==0,motorTwo==0);
-	double scaleOne = motorOne/100.0;
-	double scaleTwo = motorTwo/100.0;
+	double scaleOne = motorOne/-100.0;
+	double scaleTwo = motorTwo/-100.0;
 	motors.diffDrive(scaleOne,scaleTwo);
 }
 
@@ -92,9 +92,15 @@ double Hardware::getTemperature() {
 	return imu->temperature/4096.0;
 }
 
+int Hardware::safeClose() {
+	for (int i=0; i<3; i++) {
+		setMotors(0,0);
+		buzz->stopSound();
+	} return 1;
+}
+
 Hardware::~Hardware() {
-	buzz->stopSound();
-	motors.standby(true);
+	safeClose();
 
 	delete buzz;
 	delete adc_i2c;
