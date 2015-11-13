@@ -74,11 +74,19 @@ double Hardware::getVis() {
 }
 
 double Hardware::getMicrophone() {
-	return adc->getRawResult(1)/2047.0;
+	return adc->getRawResult(2)/2047.0;
+}
+
+double Hardware::getLoudness(int samples) {
+	double x = 0;
+	for (int i=0; i<samples; i++) {
+		double y = getMicrophone();
+		x = (y>x)?y:x;
+	} return x;
 }
 
 double Hardware::getIR() {
-	return adc->getRawResult(2)/2047.0;
+	return adc->getRawResult(1)/2047.0;
 }
 
 void Hardware::setLed(double r, double g, double b) {
@@ -96,6 +104,7 @@ int Hardware::safeClose() {
 	for (int i=0; i<3; i++) {
 		setMotors(0,0);
 		buzz->stopSound();
+		setLed(0,0,0);
 	} return 1;
 }
 
