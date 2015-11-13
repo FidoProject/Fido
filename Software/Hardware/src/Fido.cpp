@@ -4,7 +4,10 @@
 int main() {
 	Hardware fido;
 
-	while(true) std::cout << fido.getLoudness(20) << "\n";
+	while(true) {
+		std::cout << fido.getVis() << "\n";
+		usleep(100000);
+	}
 
 	return fido.safeClose();
 }
