@@ -5,11 +5,14 @@
 #include <fstream>
 
 namespace net {
+	// A data point to be interpolated
+	// Outputted by a neural network
 	struct Wire {
 	    std::vector<double> action;
 	    double reward;
 	};
 
+	// Defines the functionality of a Wire Fitted Interpolator to be used by the WireFitQLearn class
 	class Interpolator {
 	public:
 
