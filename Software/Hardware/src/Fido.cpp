@@ -4,10 +4,10 @@
 int main() {
 	Hardware fido;
 
-	fido.setMotors(100,100);
-	sleep(1);
-	fido.setMotors(-100,-100);
-	sleep(1);
+	while(true) {
+		std::cout << fido.getVis() << "\n";
+		usleep(100000);
+	}
 
 	return fido.safeClose();
 }

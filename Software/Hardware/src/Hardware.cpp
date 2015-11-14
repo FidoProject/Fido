@@ -70,15 +70,23 @@ void Hardware::chirp(double volume, int frequency, int time) {
 }
 
 double Hardware::getVis() {
-	return adc->getRawResult(0)/2047.0;
+	return adc->getRawResult(3)/2047.0;
 }
 
 double Hardware::getMicrophone() {
-	return adc->getRawResult(1)/2047.0;
+	return adc->getRawResult(2)/2047.0;
+}
+
+double Hardware::getLoudness(int samples) {
+	double x = 0;
+	for (int i=0; i<samples; i++) {
+		double y = getMicrophone();
+		x = (y>x)?y:x;
+	} return x;
 }
 
 double Hardware::getIR() {
-	return adc->getRawResult(2)/2047.0;
+	return adc->getRawResult(1)/2047.0;
 }
 
 void Hardware::setLed(double r, double g, double b) {
@@ -93,10 +101,11 @@ double Hardware::getTemperature() {
 }
 
 int Hardware::safeClose() {
-	for (int i=0; i<3; i++) {
-		setMotors(0,0);
-		buzz->stopSound();
-	} return 1;
+	setMotors(0,0);
+	buzz->stopSound();
+	setLed(0,0,0);
+
+	usleep(100000);
 }
 
 Hardware::~Hardware() {

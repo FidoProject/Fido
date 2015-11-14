@@ -59,6 +59,9 @@ public:
 	// Returns a sound pressure value from 0-1
 	double getMicrophone();
 
+	// Returns a loudness value from 0-1
+	double getLoudness(int samples);
+
 	// Returns a temperature value from 0-1
 	double getTemperature();
 
