@@ -21,6 +21,12 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
+/* The primary activity of the app. Allows a user to connect to the 
+ * 
+ *
+ *
+ */
+
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
     private final static String FIDO_BLUETOOTH_NAME = "Fido";
@@ -33,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private InputStream in = null;
     private OutputStream out = null;
 
+
+    // Called when the activity is initiated.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = getBluetoothAdapter();
 
+        // Setup a listener for the connect button
+        // When the user presses the button, look for Fido and attempt to connect to Fido
         ((Button) findViewById(R.id.connectButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 findFido();
@@ -48,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Get a the default Bluetooth adapter. If the user has not enable bluetooth, ask them to enable bluetooth
     public BluetoothAdapter getBluetoothAdapter() {
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (!adapter.isEnabled()) {
@@ -58,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         return adapter;
     }
 
+    // Looks for Fido among paired devices and sets the instance variable fido to the found Bluetooth device
+    // If Fido cannot be found, the user is alerted.
     public void findFido() {
         if (adapter == null || fido != null) return;
 
@@ -91,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // If the instance variable fido is set, attempts to connect to Fido over a bluetooth socket.
+    // Initializes the out and in ivars, which contain the OutputStream and InputStream of the socket respectively.
     private void connectToFido() {
         if(fido == null) return;
 
@@ -112,14 +127,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void sendToFido(String message) {
+    // Sends a String to Fido
+    private void sendString(String message) {
         try {
             byte[] buffer = message.getBytes();
             out.write(buffer);
         } catch(Exception e) {}
     }
 
-    private String getFromFido(int size) {
+    // Gets a String from Fido
+    private String getString(int size) {
         try {
             byte[] buffer = new byte[size];
             in.read(buffer);
@@ -129,18 +146,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    // Is called when a request for bluetooth finishes
+    // If the user didnt authorize bluetooth use, the app requests bluetooth access again.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_ENABLE_BT && resultCode != REQUEST_ENABLE_BT) {
             adapter = getBluetoothAdapter();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 }
