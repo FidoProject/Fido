@@ -19,7 +19,7 @@ Hardware::Hardware() {
     adc->setRange(_4_096V);
 
     /// init buzzer
-    buzz = new upm::Buzzer(BUZZ_PIN);
+    //buzz = new upm::Buzzer(BUZZ_PIN);
 
     /// init RGB strip
     pwmR = new mraa::Pwm(LED_R_PIN);
@@ -65,8 +65,8 @@ void Hardware::setMotors(int motorOne, int motorTwo) {
 }
 
 void Hardware::chirp(double volume, int frequency, int time) {
-	buzz->setVolume(volume);
-	buzz->playSound(frequency,time);
+	//buzz->setVolume(volume);
+	//buzz->playSound(frequency,time);
 }
 
 double Hardware::getVis() {
@@ -102,7 +102,7 @@ double Hardware::getTemperature() {
 
 int Hardware::safeClose() {
 	setMotors(0,0);
-	buzz->stopSound();
+	//buzz->stopSound();
 	setLed(0,0,0);
 
 	usleep(100000);
@@ -111,7 +111,7 @@ int Hardware::safeClose() {
 Hardware::~Hardware() {
 	safeClose();
 
-	delete buzz;
+	//delete buzz;
 	delete adc_i2c;
 	delete adc;
 	delete imu;
