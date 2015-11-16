@@ -1,0 +1,75 @@
+The human brain is composed of billions of neurons, interconnected electrically excitable cells that form the basis of intelligence. Each neuron has dendrites that receive electrical signals from other neurons. If the sum of these electrical signals is greater than a certain threshold value, the neuron fires, propagating a voltage down its axon and out of its synapses. These synapses can be considered the output of the neuron and are themselves connected to the dendrites of other neurons. The interconnections of these neurons form a massive network, where a huge number of inputs are processed in parallel to a set of outputs. The purpose of artificial neural networks is to simulate the mathematical properties of these neurons in order to approximate complex functions.
+
+
+\subsection{Single Artificial Neuron}
+
+\begin{figure}[ht]
+	\centering
+	\input{Figures/Neuron.tex}
+	\caption{Single Neuron Diagram}
+\end{figure}
+
+An artificial neuron is simply a mathematical model of a biological neuron, and therefore its functionality is very similar. Each artificial neuron has multiple inputs, each one the output of a different neuron. In addition, each neuron has a weight for each input, a bias term, an activation function, and one output. The output of one neuron becomes the input of other connected neurons. The output of a neuron is expressed mathematically for $n$ inputs $x$ and weights $w$, a bias term $b$, and activation function $O(x)$:
+
+\begin{align*}
+	\text{activation} = \sum_{i=0}^{n}x_i w_i + b\\
+	\text{output} = O(\text{activation})
+	\,.
+\end{align*}
+
+A weight is a positive or negative number that governs the impact of of its respective input on the neuron's single output. The bias term is a number added to the summation of weights and inputs, allowing us to make affine transformations on the domain of the activation function. 
+
+In biologically inspired neurons, the activation function is a binary step function. If the activation function's input is less than a certain threshold, the output is zero. If it is greater than the threshold, the output is one. However, a binary output can be somewhat limiting for many applications of neural networks. Many of Fido's outputs are gradient rather than binary; as an example, Fido can set the brightness of a light-emitting diode. Because of this, alternate activation functions with gradient outputs are used. One such function is the sigmoid function. In addition to being continuous, the sigmoid function is differentiable, allowing the network to be trained, and nonlinear, allowing the network to model a broader range of functions. The sigmoid function is expressed as such:
+
+\begin{equation}
+	O(a) = \cfrac{1}{1+e^{-\frac{a}{p}}}
+	\,,
+\end{equation}
+
+\noindent for each output $O$, activation $a$, and constant $p$. The sigmoid activation function can also be graphed as below.
+
+\begin{figure}[ht]
+	\centering
+	\input{Figures/sigmoidFunction.tex}
+	\caption{Sigmoid Function Graph}
+\end{figure}
+
+\subsection{Feed-forward Neural Network}
+
+A traditional method of arranging artificial neurons in a neural network is called a feed-forward network. Neurons are connected as previously described: the output of each neuron is connected to one of the inputs of another neuron. These neurons are organized into layers, as described in Figure \ref{fig:feedforward}.
+
+\begin{figure}[ht]
+	\centering
+	\input{Figures/feedForward.tex}
+	\caption{Single Output Feed-forward Network}
+	\label{fig:feedforward}
+\end{figure}
+
+The output of each neuron in a layer becomes an input of every neuron in the next layer. In this way, the original inputs of the neural network are ``fed forward'' layer by layer, starting from the first layer (the input layer), passing through any number of middle layers (hidden layers), and ending with the last layer (the output layer). The outputs of the neurons in the output layer are the outputs of the whole network.
+
+Fido is a feed-forward network. Sensor inputs such as light and sound are sent into the input layer. The outputs of output layer neurons are used to change the speed of Fido's motors, the color of Fido's LEDs, and the sound of Fido's buzzers.
+
+\subsection{Back Propagation}
+
+Supervised learning is the modification of the weights of a neural network's neurons in order to reach a specific output from a specific set of inputs. One such method of adjusting neural networks weights is called back propagation \cite{werbos}.
+
+\begin{figure}[ht]
+	\centering
+	\input{Figures/Backprop.tex}
+	\caption{Single Branch in a Back Propagation Neural Network}
+	\label{fig:backprop}
+\end{figure}
+
+Neural networks learning through back propagation are trained through example.  Example inputs (known as training sets) are linked to a particular target output, forming a training pair.  The first step of training is to pass in an arbitrary training set to a neural network with randomly generated weights.  The error $\delta$ for an output neuron is defined as the difference between the actual output and the target output for that training set. As an example we will use the single connection described in Figure \ref{fig:backprop}. The neural network in this figure has only an input layer consisting of Neuron $A$ and an output layer consisting of Neurons $A$ and $B$. $W_{AB}$  and $W_{AC}$ are the weights between the neurons. We first determine the Neuron $B$ error $\delta_B$ as $\text{Target}_B - \text{Output}_B$.   Next we modify weight $W_{AB}$ as follows, defining $W_{AB}^{+}$ as the newly trained weight:
+
+\begin{equation}
+	W_{AB}^{+} = W_{AB} + (\delta_B \text{Output}_A)\,.
+\end{equation}
+
+The same approach could be taken for Neuron $C$.  However, this method cannot calculate an improved weight for hidden layer neurons such as Neuron $A$, as there is no predefined target.  Therefore we must calculate the error of $A$ indirectly by back propagating from the two output layer neurons, for which the error is already known:
+
+\begin{equation}
+	\delta_A = W_{AB}\delta_B + W_{AC}\delta_C \,.
+\end{equation}
+
+Once the error for Neuron $A$ is obtained, its trained weights can be calculated in the same fashion as done for Neuron $B$.  This pattern can be repeated throughout a larger neural network in order to converge upon the network's target output.

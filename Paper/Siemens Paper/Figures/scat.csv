@@ -1,0 +1,6 @@
+time,rewards,task
+2,48,flash an LED
+1.2,72,drive to emitter
+1.8,82,float to emitter
+2.4,111,drive in a shape
+2.9,104,line following
