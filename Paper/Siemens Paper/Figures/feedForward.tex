@@ -1,0 +1,29 @@
+\def\layersep{2.5cm}
+\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep,font=\sffamily]
+    \tikzstyle{every pin edge}=[<-,shorten <=1pt]
+    \tikzstyle{neuron}=[circle,line width=0.3mm,draw=black,minimum size=17pt,inner sep=0pt]
+    \tikzstyle{annot} = [text width=4em, text centered]
+
+    \foreach \name / \y in {1,...,4}
+        \node[neuron, pin=left:Input \y] (I-\name) at (0,-\y) {};
+
+    \foreach \name / \y in {1,...,5}
+        \path[yshift=0.5cm]
+            node[neuron] (H-\name) at (\layersep,-\y cm) {};
+
+    \node[neuron,pin={[pin edge={->}]right:Output}, right of=H-3] (O) {};
+
+    \foreach \source in {1,...,4}
+        \foreach \dest in {1,...,5}
+            \path (I-\source) edge (H-\dest);
+
+    \foreach \source in {1,...,5}
+        \path (H-\source) edge (O);
+
+    %\draw[->] (5,-2.9) -- (5,-5) -- (1,-5) -- (1,-4.5);
+    %\node (1,-4.5) {Error back propagation}
+
+    \node[annot,above of=H-1, node distance=1cm] (hl) {Hidden layer};
+    \node[annot,left of=hl] {Input layer};
+    \node[annot,right of=hl] {Output layer};
+\end{tikzpicture}

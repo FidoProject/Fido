@@ -1,0 +1,20 @@
+\footnotesize
+\begin{tikzpicture}[font=\sffamily]
+\begin{axis}[
+    	symbolic x coords={flash,
+                           float,
+    					   drive,
+    					   line follow},
+    	ylabel={reward iterations},
+    	width = 14cm, height = 7cm,
+        grid=major,grid style={dashed, gray!30},
+        ymin=0,xtick=data]
+    
+    \addplot[ybar,pattern=north west lines] coordinates {
+        (flash,6)
+        (float,14)
+        (drive,17)
+        (line follow, 21)
+    };
+\end{axis}
+\end{tikzpicture}

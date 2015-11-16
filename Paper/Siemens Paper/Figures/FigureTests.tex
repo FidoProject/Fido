@@ -1,0 +1,43 @@
+\documentclass[a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,graphicx,tikz,circuitikz,pgfplots,filecontents,pgfplotstable,booktabs}
+
+\pgfplotsset{compat=1.8}
+\usetikzlibrary{decorations.pathmorphing}
+
+\usepackage[justification=centering]{caption}
+\usetikzlibrary{arrows,fit,patterns}
+
+\usetikzlibrary{matrix}
+
+
+\title{Test Document for \LaTeX \ Figures}
+
+\author{Joshua Gruenstein and Michael Truell}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Figures}
+\centering
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{@{}lccc@{}}
+		\toprule
+		Task        & Learning Iterations & Action Selection (ms) & Training Time (ms) \\ \midrule
+		Flash       & 6                   & 0.26                  & 5.97               \\
+		Float       & 14                  & 0.94                  & 5.60               \\
+		Drive       & 17                  & 0.76                  & 11.09              \\
+		Line Follow & 20                  & yolo                  & yolo               \\ \bottomrule
+	\end{tabular}
+	\caption{ADD TABLE CAPTION HERE}
+\end{table}
+
+\end{document}
+
+\end{document}
