@@ -62,6 +62,7 @@ void Hardware::setMotors(int motorOne, int motorTwo) {
 	double scaleOne = motorOne/-100.0;
 	double scaleTwo = motorTwo/-100.0;
 	motors.diffDrive(scaleOne,scaleTwo);
+	std::cout << "motors got set";
 }
 
 void Hardware::chirp(double volume, int frequency, int time) {
@@ -93,6 +94,7 @@ void Hardware::setLed(double r, double g, double b) {
 	pwmR->write(r);
 	pwmG->write(g);
 	pwmB->write(b);
+	std::cout << "Got set";
 }
 
 double Hardware::getTemperature() {
