@@ -90,7 +90,7 @@ double Hardware::getIR() {
 	return adc->getRawResult(1)/2047.0;
 }
 
-void Hardware::setLed(double r, double g, double b) {
+void Hardware::setLED(double r, double g, double b) {
 	pwmR->write(r);
 	pwmG->write(g);
 	pwmB->write(b);

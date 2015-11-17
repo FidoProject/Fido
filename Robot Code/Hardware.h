@@ -11,7 +11,7 @@
 #include "lib/SFE_LSM9DS0.h"
 #include "lib/Sparkfun_TB6612_Edison.h"
 #include "lib/SparkFunADS1015.h"
-#include <buzzer.h>
+//#include <buzzer.h>
 
 struct TDVect {
 	// Components of 3d vector
@@ -70,7 +70,7 @@ public:
 	double getIR();
 
 	// Set the LED strip to an RGB value (0-1)
-	void setLed(double r, double g, double b);
+	void setLED(double r, double g, double b);
 
 	// Turns off motors and buzzers at end of program.
 	int safeClose();

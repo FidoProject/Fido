@@ -3,24 +3,13 @@
 
 #include "FidoKin/Robby.h"
 #include "FidoKin/Emitter.h"
+#include "Driver.h"
 
 #include <thread>
 #include <SFML/Graphics.hpp>
 
-// Three dimensional vector (used with IMU).
-struct TDVect {
-	// Components of 3d vector
-	double xComp, yComp, zComp;
 
-	// Get 3d vector as radius, xy angle, and z angle.
-	void getRTP(double *r, double *xy, double *z) {
-		*r = sqrt(pow(xComp, 2) + pow(yComp, 2) + pow(zComp, 2));
-		*xy = atan2(xComp, yComp);
-		*z = acos(zComp / *r);
-	}
-};
-
-class Simlink {
+class Simlink : public Driver {
 public:
     // Initializes the simulator
     Simlink();
@@ -37,14 +26,14 @@ public:
      */
     void setLED(int r, int g, int b, int i);
     
-    // Return sound pressure from 0-100.
-    int getMicrophone();
+    // Return sound pressure from 0-1.
+    double getMicrophone();
     
-    // Return IR intensity from 0-100.
-    int getIR();
+    // Return IR intensity from 0-1.
+    double getIR();
     
-    // Return visible light intensity from 0-100.
-    int getVis();
+    // Return visible light intensity from 0-1.
+    double getVis();
     
     /* Buzz at a volume and frequency from 0-100 for an abritrary duration.
      *
@@ -54,15 +43,13 @@ public:
      */
     void chirp(int volume, int frequency);
     
-    /* Set motor values from -100 to 100
-     *
-     * Positive is forwards, negative is reverse,
-     * zero is stopped.
-     */
-    void setMotors(int motorOne, int motorTwo, double speed, double deltaTime);
-    
-    // Stop the motors.
-    void stop();
+	/* Set motor values from -100 to 100
+	*
+	* Positive is forwards, negative is reverse,
+	* zero is stopped.
+	*/
+	void setMotors(int motorOne, int motorTwo);
+
     
     // Get the current battery level (0-100).
     int getBattery();
@@ -82,7 +69,8 @@ public:
     TDVect getGyro();
 
 	// Gets the current temperature value from 0-100
-	int getTemperature();
+	
+	double getTemperature();
 
 	// Places the robot in a random position
 	void placeRobotInRandomPosition();
@@ -96,11 +84,10 @@ public:
 	// Gets the displacement of the robot from the emitter in terms of x and y components
 	void getRobotDisplacementFromEmitter(double *x, double *y);
 
+	// Draws a line on the screen of the simulator. FOR DEBUGGING PURPOSES
 	void drawLine(sf::Vector2f p1, sf::Vector2f p2);
 
-	Robby robot;
-	Emitter emitter;
-	int visVal;
+	
 private:
 	void mainWindowHandler();
 
@@ -140,6 +127,10 @@ private:
 	bool dodraw = false;
 
 	bool keepWindowsOpen;
+	
+	Robby robot;
+	Emitter emitter;
+	int visVal;
 };
 
 #endif /* defined(__FidoSim__Simlink__) */

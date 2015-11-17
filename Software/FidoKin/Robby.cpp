@@ -16,7 +16,8 @@ sf::RectangleShape(sf::Vector2f(width,height)) {
 }
 
 /// Creds to http://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
-double Robby::go(int motLeft,int motRight,double speed,double deltaTime) {
+double Robby::go(int motLeft,int motRight) {
+
     double mLeft = -(((double)motLeft)/200)*speed;
     double mRight = -(((double)motRight)/200)*speed;
     
