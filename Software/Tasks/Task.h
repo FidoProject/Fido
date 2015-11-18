@@ -8,10 +8,6 @@ class Simlink;
 // A virtual class that may be subclassed to implement a task to be carried out by WireFitRobot
 class Task {
 public:
-	Simlink *simulator;
-
-	virtual void init(Simlink *simulator_) = 0;
-
 	virtual void getRobotParameters(int *stateSize, 
 									int *actionDimensions, 
 									int *numberOfActions, 

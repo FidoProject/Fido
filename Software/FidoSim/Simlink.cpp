@@ -211,16 +211,16 @@ TDVect Simlink::getCompass() {
     return imu.compass;
 }
 
-double Simlink::getMicrophone() {
-    return (double)micVal/100.0;
+int Simlink::getMicrophone() {
+    return micVal;
 }
 
-double Simlink::getIR() {
-    return (double)irVal;
+int Simlink::getIR() {
+    return irVal;
 }
 
-double Simlink::getVis() {
-    return (double)visVal;
+int Simlink::getVis() {
+    return visVal;
 }
 
 int Simlink::getBattery() {
@@ -233,13 +233,13 @@ void Simlink::setLED(int r, int g, int b, int i) {
     led.b = b * i/100;
 }
 
-void Simlink::setMotors(int motorOne, int motorTwo) {
+void Simlink::setMotors(int motorOne, int motorTwo, double speed, double deltaTime) {
     motors.motorOne = motorOne;
     motors.motorTwo = motorTwo;
 
 	sf::Vector2f previousRobotPosition = robot.getPosition();
 
-	robot.go(motors.motorOne, motors.motorTwo);
+	robot.go(motors.motorOne, motors.motorTwo, speed, deltaTime);
 
 	sf::Vector2f newRobotPosition = robot.getPosition();
 	if (newRobotPosition.x < 500 + robot.getGlobalBounds().height / 2
@@ -258,8 +258,8 @@ void Simlink::chirp(int volume, int frequency) {
     piezo.volume = 0;
 }
 
-double Simlink::getTemperature() {
-	return (double)tempVal/100.0;
+int Simlink::getTemperature() {
+	return tempVal;
 }
 
 void Simlink::placeRobotInRandomPosition() {

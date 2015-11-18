@@ -5,9 +5,6 @@
 
 class Robby : public sf::RectangleShape {
 public:
-	const double deltaTime = 1;
-	const double speed = 2;
-
     /* Construct a robot of a certain width
      * and height.
      */
@@ -20,7 +17,7 @@ public:
      * Speed is ~1.
 	 * DeltaTime is in milliseconds.
      */
-    double go(int motLeft, int motRight);
+    double go(int motLeft, int motRight, double speed, double deltaTime);
     
     /* In testing method which simulates
      * acceleration in the kinematic model.

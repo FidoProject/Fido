@@ -1,19 +1,19 @@
-#ifndef DRIVETOEMITTER_H
-#define DRIVETOEMITTER_H
+#ifndef STAYSTILL_H
+#define STAYSTILL_H
 
 #include "Task.h"
 
-class Simlink;
+class Hardware;
 
-class DriveToEmitter : public Task {
+class StayStill : public Task {
 public:
-	Simlink *simulator;
-	const double maxDistance = 3000, allowableDistance = 110;
+
+	Hardware *hardware;
+
 	const int speed = 3, deltaTime = 20;
-	double turnsStill = 0, turnsAway = 0;
 
-	DriveToEmitter(Simlink *simulator_);
-
+	StayStill(Hardware *hardware_);
+	
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
 							int *numberOfActions, 

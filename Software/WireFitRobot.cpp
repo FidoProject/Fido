@@ -10,7 +10,6 @@
 WireFitRobot::WireFitRobot(Task *task_) {
 	task = task_;
 
-	task->init(&simulator);
 	task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &boltzmanExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
 
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
@@ -41,8 +40,6 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 
 	/// Constant definitions
 	int historyLength = 10, numberOfRepetitions = 2, sleepTime = 0;
-
-	///simulator.closeWindow();
 
 	for (int a = 0; a < numberOfTimes; a++) {
 		oldStates.clear();

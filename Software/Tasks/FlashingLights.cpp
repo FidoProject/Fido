@@ -2,9 +2,7 @@
 
 #include "Simlink.h"
 
-FlashingLights::FlashingLights() {};
-
-void FlashingLights::init(Simlink *simulator_) {
+void FlashingLights(Simlink *simulator_) {
 	simulator = simulator_;
 };
 

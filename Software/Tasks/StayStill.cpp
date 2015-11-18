@@ -1,14 +1,14 @@
-#include "MakeShape.h"
+#include "StayStill.h"
 
 #include <algorithm>
-#include "Simlink.h"
+#include "Hardware.h"
 
-
-void MakeShape(Simlink *simulator_) {
-	simulator = simulator_;
+StayStill::StayStill(Hardware *hardware_) {
+	hardware = hardware_
 };
 
-void MakeShape::getRobotParameters(int *stateSize,
+
+void StayStill::getRobotParameters(int *stateSize,
 						int *actionDimensions,
 						int *numberOfActions,
 						int *neuronsPerLayer,
@@ -25,21 +25,22 @@ void MakeShape::getRobotParameters(int *stateSize,
 	*baseOfDimensions = 6;
 }
 
-std::vector<double> MakeShape::getState() {
+std::vector<double> StayStill::getState() {
+	return {0.5};
+}
+
+double StayStill::performAction(const std::vector<double> &action) {
+	hardware.setMotors(action[0], action[1]);
+
+	sleep(2);
+
+	return hardware.getLoudness(20);
 	
 }
 
-double MakeShape::performAction(const std::vector<double> &action) {
-	simulator->robot.go(action[0] * 100, action[1] * 100, speed, deltaTime);
-
-	return 0;
-	
-}
-
-bool MakeShape::isTaskDone() {
+bool StayStill::isTaskDone() {
 	return false;
 }
 
-void MakeShape::reset() {
-	simulator->placeRobotInRandomPosition();
+void StayStill::reset() {
 }

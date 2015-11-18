@@ -9,9 +9,8 @@ class FlashingLights : public Task {
 public:
 	Simlink *simulator;
 
-	FlashingLights();
+	FlashingLights(Simulator *simulator_);
 
-	void init(Simlink *simulator_);
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
 							int *numberOfActions, 

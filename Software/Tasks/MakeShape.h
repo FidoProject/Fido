@@ -12,9 +12,8 @@ public:
 
 	const int speed = 3, deltaTime = 20;
 
-	MakeShape();
-
-	void init(Simlink *simulator_);
+	MakeShape(Simlink *simulator_);
+	
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
 							int *numberOfActions, 

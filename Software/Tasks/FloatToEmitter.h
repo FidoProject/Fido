@@ -11,9 +11,8 @@ public:
 	const double maxDistance = 982, allowableDistance = 70;
 	double turnsStill = 0, turnsAway = 0;
 
-	FloatToEmitter();
-
-	void init(Simlink *simulator_);
+	FloatToEmitter(Simlink *simulator_);
+	
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
 							int *numberOfActions, 

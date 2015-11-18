@@ -15,9 +15,8 @@ public:
 	const int speed = 2, deltaTime = 20;
 	sf::Vector2f p1, p2;
 
-	LineFollow();
-
-	void init(Simlink *simulator_);
+	LineFollow(Simlink *simulator_);
+	
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
 							int *numberOfActions, 

@@ -13,7 +13,6 @@ class Task;
 class WireFitRobot {
 public:
 	net::WireFitQLearn learner;
-	Simlink simulator;
 	Task *task;
 	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
 	int stateSize, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, numberOfActions, actionDimensions;

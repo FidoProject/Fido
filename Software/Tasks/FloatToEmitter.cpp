@@ -2,9 +2,7 @@
 
 #include "Simlink.h"
 
-FloatToEmitter::FloatToEmitter() {};
-
-void FloatToEmitter::init(Simlink *simulator_) {
+void FloatToEmitter(Simlink *simulator_) {
 	simulator = simulator_;
 };
 
