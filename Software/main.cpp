@@ -19,7 +19,7 @@
 int main() {
     srand(time(NULL));  
 
-	WireFitRobot robot(new DriveToEmitter());
+	WireFitRobot robot(new DriveToEmitter(new Simlink()));
 	robot.test(20, 5000);
 
 	//Robot robot(new FloatToEmitter());

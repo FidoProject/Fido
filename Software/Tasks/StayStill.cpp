@@ -4,7 +4,7 @@
 #include "Hardware.h"
 
 StayStill::StayStill(Hardware *hardware_) {
-	hardware = hardware_
+	hardware = hardware_;
 };
 
 
@@ -30,11 +30,11 @@ std::vector<double> StayStill::getState() {
 }
 
 double StayStill::performAction(const std::vector<double> &action) {
-	hardware.setMotors(action[0], action[1]);
+	hardware->setMotors((int)(action[0]*100), (int)(action[1]*100));
 
 	sleep(2);
 
-	return hardware.getLoudness(20);
+	return hardware->getLoudness(20);
 	
 }
 
