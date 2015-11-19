@@ -21,14 +21,13 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-/* The primary activity of the app. Allows a user to connect to the 
- * 
- *
+/* The primary activity of the app. Allows a user to connect to the Fido robot
  *
  */
 
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
+    private final static int REQUEST_ENABLE_DISCOVER = 2;
     private final static String FIDO_BLUETOOTH_NAME = "Fido";
     private final UUID FIDO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        adapter = getBluetoothAdapter();
+        enableDiscoverability();
 
         // Setup a listener for the connect button
         // When the user presses the button, look for Fido and attempt to connect to Fido
@@ -67,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
         return adapter;
+    }
+
+    public void enableDiscoverability() {
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3600);
+        startActivityForResult(discoverableIntent, REQUEST_ENABLE_DISCOVER);
     }
 
     // Looks for Fido among paired devices and sets the instance variable fido to the found Bluetooth device
@@ -152,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_ENABLE_BT && resultCode != REQUEST_ENABLE_BT) {
             adapter = getBluetoothAdapter();
+        }
+        if(requestCode == REQUEST_ENABLE_DISCOVER && resultCode == Activity.RESULT_CANCELED) {
+            enableDiscoverability();
         }
     }
 }
