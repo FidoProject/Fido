@@ -21,6 +21,9 @@ public:
 	// Initializes a robot object
 	WireFitRobot(Task *task_);
 
+	// Runs one iteration of a task (samples the state, performs action, gets reward, trains on reward)
+	void runIteration();
+	
 	// Function for testing the robot on different tasks. Returns a vector containing the number of reward iterations it took to converge on a solution each trial
 	std::vector<int> test(int numberOfTimes, int maxIterations);
 

@@ -29,14 +29,9 @@ WireFitRobot::WireFitRobot(Task *task_) {
 
 std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	/// Vector Declarations
-	std::vector< std::vector<double> > actions;
-	std::vector< std::vector<double> > oldStates;
-	std::vector<double> immediateRewards;
-	std::vector< std::vector<double> > newStates;
-	std::vector<double> elapsedTimes;
+	std::vector< std::vector<double> > actions, oldStates, newStates;
+	std::vector<double> immediateRewards, elapsedTimes, boltz, train;
 	std::vector<int> results(numberOfTimes);
-	std::vector<double> boltz;
-	std::vector<double> train;
 
 	/// Constant definitions
 	int historyLength = 10, numberOfRepetitions = 2, sleepTime = 0;
@@ -84,6 +79,7 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 			/// Learning criteria
 			if (task->isTaskDone()) break;
 
+			// Train on past data. If a < 0 is the exit condition of the for loop, this is essentially commented out
 			for (int a = 0; a < 0; a++) {
 				action = learner.chooseBoltzmanAction(task->getState(), minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 				task->performAction(action);
@@ -108,6 +104,14 @@ std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
 	printStats(train);
 
 	return results;
+}
+
+void WireFitRobot::runIteration() {
+	std::vector<double> state = task->getState();
+	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+	double reward = task->performAction(action);
+	std::std::vector<double> newState = task->getState();
+	learner.applyReinforcementToLastAction(reward, newState, 0);
 }
 
 void WireFitRobot::hyperParameterTest() {

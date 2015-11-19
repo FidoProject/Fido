@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
 
 #include "NeuralNet.h"
 
