@@ -13,7 +13,7 @@ class WireFitRobot {
 public:
 	net::WireFitQLearn learner;
 	Task *task;
-	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
+	double startingExplorationLevel, currentExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
 	int stateSize, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, numberOfActions, actionDimensions;
 	std::vector<double> minAction, maxAction;
 

@@ -156,34 +156,6 @@ void WireFitQLearn::resetControlPoints() {
 	network = temp;
 }
 
-void WireFitQLearn::repeated(const std::vector< std::vector<double> > &actions,
-	const std::vector< std::vector<double> > &oldStates,
-	const std::vector<double> &immediateRewards,
-	const std::vector< std::vector<double> > &newStates,
-	const std::vector<double> &elapsedTimes,
-	int numberOfIterations) {
-
-	if(actions.size() != oldStates.size() || oldStates.size() != immediateRewards.size() || immediateRewards.size() != newStates.size() || newStates.size() != elapsedTimes.size()) {
-		std::cout << "Varying lengths of historical data vectors\n";
-		throw 1;
-	}
-
-	for(int a = 0; a < numberOfIterations; a++) {
-		for(int b = 0; b < actions.size(); b++) {
-			std::vector<Wire> controlWires = getWires(oldStates[b]);
-			double qValue = getQValue(immediateRewards[b], oldStates[b], newStates[b], actions[b], elapsedTimes[b], controlWires);
-
-			Wire correctWire = { actions[b], qValue };
-			std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
-
-			std::vector< std::vector<double> > input(1, oldStates[b]);
-			std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
-
-			backprop.trainOnData(network, input, correctOutput);
-		}
-	}
-}
-
 
 void WireFitQLearn::storeWireFitQLearn(std::string filename) {
     std::ofstream output;

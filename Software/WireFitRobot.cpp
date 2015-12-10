@@ -10,7 +10,7 @@
 WireFitRobot::WireFitRobot(Task *task_) {
 	task = task_;
 
-	task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &boltzmanExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
+	task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &startingExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
 
 	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
@@ -28,87 +28,30 @@ WireFitRobot::WireFitRobot(Task *task_) {
 }
 
 std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
-	/// Vector Declarations
-	std::vector< std::vector<double> > actions, oldStates, newStates;
-	std::vector<double> immediateRewards, elapsedTimes, boltz, train;
 	std::vector<int> results(numberOfTimes);
 
-	/// Constant definitions
-	int historyLength = 10, numberOfRepetitions = 2, sleepTime = 0;
-
 	for (int a = 0; a < numberOfTimes; a++) {
-		oldStates.clear();
-		actions.clear();
-		immediateRewards.clear();
-		newStates.clear();
-		elapsedTimes.clear();
-
 		resetRobot();
 
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
-			boltzmanExplorationLevel *= explorationDevaluationPerTimestep;
-
-			/// Get state and perform action
-			oldStates.push_back(task->getState());
-
-			clock_t begin = clock();
-			std::vector<double> action = learner.chooseBoltzmanAction(oldStates[oldStates.size() - 1], minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
-			clock_t end = clock();
-			double millis = double(end - begin) / (CLOCKS_PER_SEC);
-			boltz.push_back(millis);
-			
-			actions.push_back(action);
-
-			double reward = task->performAction(action);
-
-			/// Record state and reward
-			immediateRewards.push_back(reward);
-			newStates.push_back(task->getState());
-			elapsedTimes.push_back(1);
-
-			begin = clock();
-			///  Train model on reward
-			learner.applyReinforcementToLastAction(immediateRewards[immediateRewards.size() - 1], newStates[newStates.size() - 1], elapsedTimes[elapsedTimes.size() - 1]);
-			//learner.repeated(actions, oldStates, immediateRewards, newStates, elapsedTimes, numberOfRepetitions);
-			end = clock();
-			millis = double(end - begin) / (CLOCKS_PER_SEC);
-			train.push_back(millis);
-			
-
-			/// Learning criteria
+			runIteration();
 			if (task->isTaskDone()) break;
-
-			// Train on past data. If a < 0 is the exit condition of the for loop, this is essentially commented out
-			for (int a = 0; a < 0; a++) {
-				action = learner.chooseBoltzmanAction(task->getState(), minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
-				task->performAction(action);
-			}
-
-			/// Erase history past allowable timesteps
-			if (iter >= historyLength) {
-				actions.erase(actions.begin());
-				oldStates.erase(oldStates.begin());
-				immediateRewards.erase(immediateRewards.begin());
-				newStates.erase(newStates.begin());
-				elapsedTimes.erase(elapsedTimes.begin());
-			}
 		}
-		///sf::sleep(sf::milliseconds(sleepTime));
+
 		results[a] = iter;
 		std::cout << "iter: " << iter << "\n";
 	}
 
 	printStats(std::vector<double>(results.begin(), results.end()));
-	printStats(boltz);
-	printStats(train);
-
 	return results;
 }
 
 void WireFitRobot::runIteration() {
+	currentExplorationLevel *= explorationDevaluationPerTimestep;
+
 	std::vector<double> state = task->getState();
-	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
+	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, currentExplorationLevel);
 	double reward = task->performAction(action);
 	std::vector<double> newState = task->getState();
 	learner.applyReinforcementToLastAction(reward, newState, 0);
@@ -122,7 +65,7 @@ void WireFitRobot::hyperParameterTest() {
 
 	while(hpLayers <= maxLayers) {
 		/// Setup Robot
-		task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &boltzmanExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
+		task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &startingExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
 
 		net::NeuralNet * network = new net::NeuralNet(stateSize, hpNumberOfActions * (actionDimensions + 1), hpLayers, hpNeuronsPerLayer, "sigmoid");
 		network->setOutputActivationFunction("simpleLinear");
@@ -160,6 +103,7 @@ void WireFitRobot::hyperParameterTest() {
 void WireFitRobot::resetRobot() {
 	learner.resetControlPoints();
 	task->reset();
+	currentExplorationLevel = startingExplorationLevel;
 }
 
 bool sortFunction(double a, double b) {

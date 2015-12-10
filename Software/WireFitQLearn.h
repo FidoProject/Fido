@@ -68,13 +68,6 @@ namespace net {
 
 		// Resets the neural network of object so that a random set of control points are outputted
 		void resetControlPoints();
-
-		void repeated(const std::vector< std::vector<double> > &actions, 
-			const std::vector< std::vector<double> > &oldStates, 
-			const std::vector<double> &immediateRewards, 
-			const std::vector< std::vector<double> > &newStates,
-			const std::vector<double> &elapsedTimes,
-			int numberOfIterations);
         
         // Stores the WireFitQLearn object in a file
         void storeWireFitQLearn(std::string filename);
