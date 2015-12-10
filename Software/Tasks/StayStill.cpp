@@ -1,7 +1,8 @@
 #include "StayStill.h"
 
 #include <algorithm>
-#include "Hardware.h"
+
+#include "../../Robot Code/Hardware.h"
 
 StayStill::StayStill(Hardware *hardware_) {
 	hardware = hardware_;
@@ -19,14 +20,16 @@ void StayStill::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 3, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
+	*stateSize = 1, *actionDimensions = 2, *numberOfActions = 4, *neuronsPerLayer = 4, *numberOfLayers = 3;
 	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
 	*baseOfDimensions = 6;
 }
 
 std::vector<double> StayStill::getState() {
-	return {0.5};
+	std::vector<double> state;
+	state.push_back(0.5);
+	return state;
 }
 
 double StayStill::performAction(const std::vector<double> &action) {
@@ -34,8 +37,13 @@ double StayStill::performAction(const std::vector<double> &action) {
 
 	sleep(2);
 
-	return hardware->getLoudness(20);
-	
+	double loudness = hardware->getLoudness(20);
+	std::cout << "Loud: " << loudness << "\n";
+
+	hardware->setMotors(0, 0);
+	sleep(2);
+
+	return loudness;
 }
 
 bool StayStill::isTaskDone() {

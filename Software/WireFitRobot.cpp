@@ -110,7 +110,7 @@ void WireFitRobot::runIteration() {
 	std::vector<double> state = task->getState();
 	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, boltzmanExplorationLevel);
 	double reward = task->performAction(action);
-	std::std::vector<double> newState = task->getState();
+	std::vector<double> newState = task->getState();
 	learner.applyReinforcementToLastAction(reward, newState, 0);
 }
 
@@ -162,6 +162,10 @@ void WireFitRobot::resetRobot() {
 	task->reset();
 }
 
+bool sortFunction(double a, double b) {
+	return a > b;
+}
+
 void WireFitRobot::printStats(std::vector<double> data) {
 	double mean = 0, median = 0;
 
@@ -177,8 +181,7 @@ void WireFitRobot::printStats(std::vector<double> data) {
 		mean += (double)data[a] / (double)data.size();
 	}
 
-	auto sortfunction = [](double a, double b) -> bool { return a > b; };
-	std::sort(data.begin(), data.end(), sortfunction);
+	std::sort(data.begin(), data.end(), sortFunction);
 
 	median = data[data.size() / 2];
 

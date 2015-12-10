@@ -6,6 +6,7 @@
 #include <vector>
 #include <math.h>
 #include <string>
+#include <fstream>
 
 using namespace net;
 
@@ -36,7 +37,8 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 }
 
 NeuralNet::NeuralNet(std::string filename) { 
-	std::ifstream input(filename);
+	std::ifstream input;
+	input.open(filename.c_str(), std::ifstream::in);
 	initWithStream(&input);
 	input.close();
 }
@@ -46,7 +48,8 @@ NeuralNet::NeuralNet(std::ifstream *input) {
 }
 
 void NeuralNet::storeNet(std::string filename) {
-	std::ofstream output(filename);
+	std::ofstream output;
+	output.open(filename.c_str(), std::ios::app);
 	storeNetWithStream(&output);
 	output.close();
 }

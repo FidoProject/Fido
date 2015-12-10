@@ -1,13 +1,18 @@
 #include "WireFitQLearn.h"
 
 #include <random>
-#include <chrono>
 #include <iostream>
-#include <stdlib.h>
-#include <SFML/Graphics.hpp>
+#include <thread>
+#include <ctime>
+#include <iomanip>
+#include <chrono>
+#include <algorithm>
+#include <random>
 
 #include "Interpolator.h"
 #include "NeuralNet.h"
+#include "Backpropagation.h"
+
 
 using namespace net;
 
@@ -36,7 +41,8 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator
 }
 
 WireFitQLearn::WireFitQLearn(std::string filename) {
-    std::ifstream input(filename);
+    std::ifstream input;
+    input.open(filename.c_str(), std::ifstream::in);
     if(input.is_open()) {
         input >> learningRate >> devaluationFactor;
         input >> actionDimensions >> numberOfWires;
@@ -136,7 +142,12 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
 
 	updateBias(oldReward, newRewardForLastAction);
 
-    backprop.trainOnData(network, {lastState}, {getRawOutput(newContolWires)});
+
+	std::vector< std::vector<double> > input(1, lastState);
+
+	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
+
+    backprop.trainOnData(network, input, correctOutput);
 }
 
 void WireFitQLearn::resetControlPoints() {
@@ -165,55 +176,18 @@ void WireFitQLearn::repeated(const std::vector< std::vector<double> > &actions,
 			Wire correctWire = { actions[b], qValue };
 			std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
-			backprop.trainOnData(network, { oldStates[b] }, { getRawOutput(newContolWires) });
+			std::vector< std::vector<double> > input(1, oldStates[b]);
+			std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
+
+			backprop.trainOnData(network, input, correctOutput);
 		}
 	}
 }
 
-void WireFitQLearn::shuffle(const std::vector< std::vector<double> > &actions,
-		const std::vector< std::vector<double> > &oldStates,
-		const std::vector<double> &immediateRewards,
-		const std::vector< std::vector<double> > &newStates,
-		const std::vector<double> &elapsedTimes,
-		int numberOfIterations) {
-	
-	if (actions.size() != oldStates.size() || oldStates.size() != immediateRewards.size() || immediateRewards.size() != newStates.size() || newStates.size() != elapsedTimes.size()) {
-		std::cout << "Varying lengths of historical data vectors\n";
-		throw 1;
-	}
-
-	/// Struct for holding a historical data point
-	struct DataPoint {
-		std::vector<double> action;
-		std::vector<double> oldState;
-		double immediateReward;
-		std::vector<double> newState;
-		double elapsedTime;
-	};
-
-	/// Organize the vectors given as parameters into a vector of DataPoints so the data can be shuffled
-	std::vector<DataPoint> dataPoints(actions.size());
-	for (int a = 0; a < actions.size(); a++) dataPoints[a] = {actions[a], oldStates[a], immediateRewards[a], newStates[a], elapsedTimes[a]};
-
-	for (int a = 0; a < numberOfIterations; a++) {
-		// obtain a time-based seed:
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::shuffle(dataPoints.begin(), dataPoints.end(), std::default_random_engine(seed));
-
-		for (int b = 0; b < dataPoints.size(); b++) {
-			std::vector<Wire> controlWires = getWires(dataPoints[b].oldState);
-			double qValue = getQValue(dataPoints[b].immediateReward, dataPoints[b].oldState, dataPoints[b].newState, dataPoints[b].action, dataPoints[b].elapsedTime, controlWires);
-
-			Wire correctWire = { dataPoints[b].action, qValue };
-			std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
-
-			backprop.trainOnData(network, { dataPoints[b].oldState }, { getRawOutput(newContolWires) });
-		}
-	}
-}
 
 void WireFitQLearn::storeWireFitQLearn(std::string filename) {
-    std::ofstream output(filename);
+    std::ofstream output;
+    output.open(filename.c_str(), std::ios::app);
     if(output.is_open()) {
         output << learningRate << " " << devaluationFactor << "\n";
         output << actionDimensions << " " << numberOfWires << "\n";
@@ -380,7 +354,7 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
 }
 
 
-void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction) {
+/*void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction) {
 	double xSize = 1000, ySize = 800;
 	sf::RenderWindow window(sf::VideoMode(xSize, ySize), "Interpolator Graph");
 	double numberOfDots = 100;
@@ -438,7 +412,7 @@ void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWi
 				window.close();
 		}
 	}
-}
+}*/
 
 void WireFitQLearn::updateBias(double oldReward, double correctReward) {
 	rewardIterations++;

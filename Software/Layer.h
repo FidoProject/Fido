@@ -60,7 +60,7 @@ namespace net {
 
 		std::string getActivationFunctionName() {
 			std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
-			for (auto a = nameMap.begin(); a != nameMap.end(); ++a) if (a->second == activationFunction) return a->first;
+			for (std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if (a->second == activationFunction) return a->first;
 
 			throw 1;
 		}

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <math.h>
 
 using namespace net;
 
@@ -38,14 +39,14 @@ void LSInterpolator::storeInterpolator(std::ofstream *out) {
 
 double LSInterpolator::getReward(const std::vector<Wire> &controlWires, const std::vector<double> &action) {
 	double maxReward = -9999999;
-	for (auto a = controlWires.begin(); a != controlWires.end(); ++a) if (a->reward > maxReward) maxReward = a->reward;
+	for (std::vector<Wire>::const_iterator a = controlWires.begin(); a != controlWires.end(); ++a) if (a->reward > maxReward) maxReward = a->reward;
 
     return weightedSum(controlWires, action, maxReward) / normalize(controlWires, action, maxReward);
 }
 
 double LSInterpolator::rewardDerivative(const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires) {
 	double maxReward = -9999999;
-    for(auto a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxReward) maxReward = a->reward;
+    for(std::vector<Wire>::const_iterator a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxReward) maxReward = a->reward;
     
     double norm = normalize(controlWires, action, maxReward), wsum = weightedSum(controlWires, action, maxReward), distance = distanceBetweenWireAndAction(wire, action, maxReward);
     
@@ -54,7 +55,7 @@ double LSInterpolator::rewardDerivative(const std::vector<double> &action, const
 
 double LSInterpolator::actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires) {
 	double maxReward = -9999999;
-    for(auto a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxReward) maxReward = a->reward;
+    for(std::vector<Wire>::const_iterator a = controlWires.begin(); a != controlWires.end(); ++a) if(a->reward > maxReward) maxReward = a->reward;
     
     double norm = normalize(controlWires, action, maxReward), wsum = weightedSum(controlWires, action, maxReward), distance = distanceBetweenWireAndAction(wire, action, maxReward);
     
@@ -73,7 +74,7 @@ double LSInterpolator::distanceBetweenWireAndAction(const Wire &wire, const std:
 
 double LSInterpolator::weightedSum(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward) {
 	double answer = 0;
-    for(auto a = wires.begin(); a != wires.end(); ++a) {
+    for(std::vector<Wire>::const_iterator a = wires.begin(); a != wires.end(); ++a) {
         answer += a->reward / distanceBetweenWireAndAction(*a, action, maxReward);
     }
     
@@ -82,7 +83,7 @@ double LSInterpolator::weightedSum(const std::vector<Wire> &wires, const std::ve
 
 double LSInterpolator::normalize(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward) {
 	double answer = 0;
-    for(auto a = wires.begin(); a != wires.end(); ++a) {
+    for(std::vector<Wire>::const_iterator a = wires.begin(); a != wires.end(); ++a) {
         answer += 1.0 / distanceBetweenWireAndAction(*a, action, maxReward);
     }
     

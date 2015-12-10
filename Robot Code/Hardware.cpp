@@ -105,7 +105,7 @@ double Hardware::getTemperature() {
 int Hardware::safeClose() {
 	setMotors(0,0);
 	//buzz->stopSound();
-	setLed(0,0,0);
+	//setLed(0,0,0);
 
 	usleep(100000);
 }

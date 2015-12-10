@@ -1,6 +1,6 @@
 # Fido
 
-## Due Monday B Period
+## Tomorrow
 - BLE App
   - Android code
   - Robot code

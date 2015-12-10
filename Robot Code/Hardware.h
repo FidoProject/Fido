@@ -82,7 +82,7 @@ private:
 	tb6612 motors;
 	mraa::I2c *adc_i2c;
 	ads1015 *adc;
-	upm::Buzzer *buzz;
+	//upm::Buzzer *buzz;
 	mraa::Pwm* pwmR;
 	mraa::Pwm* pwmG;
 	mraa::Pwm* pwmB;

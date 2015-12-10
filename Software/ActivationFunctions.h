@@ -1,6 +1,9 @@
 #ifndef ACTIVATIONFUNCTIONS_H
 #define ACTIVATIONFUNCTIONS_H
 
+#include <stdio.h>
+#include <math.h>
+
 namespace net {
     // Defines the type for an activation function for the neurons of a neural net
     typedef double(*ActivationFunction)(double);

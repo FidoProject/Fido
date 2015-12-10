@@ -28,7 +28,8 @@ Backpropagation::Backpropagation() {
 }
 
 Backpropagation::Backpropagation(std::string filename) { 
-	std::ifstream input(filename);
+	std::ifstream input;
+	input.open(filename.c_str(), std::ifstream::in);
 	initWithStream(&input);
 	input.close();
 }
@@ -38,7 +39,8 @@ Backpropagation::Backpropagation(std::ifstream *input) {
 }
 
 void Backpropagation::storeBackpropagation(std::string filename) {
-	std::ofstream output(filename);
+	std::ofstream output;
+	output.open(filename.c_str(), std::ios::app);
 	storeBackpropagationWithStream(&output);
 	output.close();
 }
@@ -155,14 +157,14 @@ void Backpropagation::setDerivedOutputActivationFunction(std::string name) {
 
 std::string Backpropagation::getDerivedHiddenActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
-	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunctionDerivative) return a->first;
+	for(std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunctionDerivative) return a->first;
     
     throw 1;
 }
 
 std::string Backpropagation::getDerivedOutputActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
-	for(auto a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunctionDerivative) return a->first;
+	for(std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunctionDerivative) return a->first;
     
     throw 1;
 }

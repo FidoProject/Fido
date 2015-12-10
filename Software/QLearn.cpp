@@ -30,7 +30,8 @@ QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, do
 }
 
 QLearn::QLearn(std::string filename) {
-	std::ifstream input(filename);
+	std::ifstream input;
+	input.open(filename.c_str(), std::ifstream::in);
 	if(input.is_open()) {
 		input >> learningRate >> devaluationFactor >> numberOfActions >> lastAction >> lastReward;
 		backprop = Backpropagation(&input);
@@ -91,7 +92,10 @@ void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> n
 	double feedback = (reward + (devaluationFactor*highestReward(newState)));
 	double targetValueForLastState = ((1 - learningRate) * lastReward) + (learningRate*feedback);
 
-	backprop.trainOnData(networks[lastAction], { lastState }, { { targetValueForLastState } });
+	std::vector< std::vector<double> > input(1, lastState);
+	std::vector< std::vector<double> > correctOutput(1, std::vector<double>(1, targetValueForLastState));
+
+	backprop.trainOnData(networks[lastAction], input, correctOutput);
 }
 
 void QLearn::getBestActionAndReward(std::vector<double> state, unsigned int *bestAction, double *bestReward) {
@@ -124,11 +128,12 @@ int QLearn::bestAction(std::vector<double> state) {
 }
 
 void QLearn::storeQLearn(std::string filename) {
-	std::ofstream output(filename);
+	std::ofstream output;
+	output.open(filename.c_str(), std::ios::app);
 	if(output.is_open()) {
 		output << learningRate << " " << devaluationFactor << " " << numberOfActions << " " << lastAction << " " << lastReward << "\n";
 		backprop.storeBackpropagationWithStream(&output);
-		for(auto a = networks.begin(); a != networks.end(); ++a) (*a)->storeNetWithStream(&output);
+		for(std::vector<net::NeuralNet *>::iterator a = networks.begin(); a != networks.end(); ++a) (*a)->storeNetWithStream(&output);
 
 		output.close();
 	} else {
