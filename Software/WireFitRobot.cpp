@@ -27,7 +27,7 @@ WireFitRobot::WireFitRobot(Task *task_) {
 	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 }
 
-std::vector<int> WireFitRobot::test(int numberOfTimes, int maxIterations) {
+std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
 	std::vector<int> results(numberOfTimes);
 
 	for (int a = 0; a < numberOfTimes; a++) {
@@ -83,7 +83,7 @@ void WireFitRobot::hyperParameterTest() {
 		learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, hpNumberOfActions);
 
 		/// Carry out test
-		std::vector<int> results = test(numberOfTimes, maxIterations);
+		std::vector<int> results = runTrials(numberOfTimes, maxIterations);
 		std::cout << "l: " << hpNeuronsPerLayer << "; a: " << hpNumberOfActions << "; n-per-l: " << hpNeuronsPerLayer << "; ";
 		printStats(std::vector<double>(results.begin(), results.end()));
 
