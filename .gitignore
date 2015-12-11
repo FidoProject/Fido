@@ -50,6 +50,7 @@
 *.synctex.gz
 *.nav
 *.snm
+*.fls
 
 ###########
 ## Eagle ##
