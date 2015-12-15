@@ -31,7 +31,13 @@ int main() {
 			}
 		}
 	}*/
-
+	Hardware hardware;
+	while(true) {
+		TDVect gyro = hardware.getAccel();
+		std::cout << gyro.xComp << ", " << gyro.yComp << ", " << gyro.zComp << "\n" << std::flush;
+		//std::cout << "y: " << atan(gyro.yComp / sqrt(pow(gyro.xComp, 2) + pow(gyro.zComp, 2))) << "\n" << std::flush;
+		usleep(100000);
+	}
 	return 0;
 	//Hardware hardware;
 	//return hardware.safeClose();

@@ -43,8 +43,8 @@ TDVect Hardware::getAccel() {
 	TDVect returnVect;
 	imu->readAccel();
 	returnVect.xComp = imu->calcAccel(imu->ax);
-	returnVect.yComp = imu->calcAccel(imu->ax);
-	returnVect.zComp = imu->calcAccel(imu->ax);
+	returnVect.yComp = imu->calcAccel(imu->ay);
+	returnVect.zComp = imu->calcAccel(imu->az);
 	return returnVect;
 }
 
