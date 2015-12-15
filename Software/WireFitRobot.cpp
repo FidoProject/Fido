@@ -40,7 +40,6 @@ std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
 		}
 
 		results[a] = iter;
-		std::cout << "iter: " << iter << "\n";
 	}
 
 	printStats(std::vector<double>(results.begin(), results.end()));

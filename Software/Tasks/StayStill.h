@@ -9,10 +9,13 @@ class StayStill : public Task {
 public:
 
 	Hardware *hardware;
+	int iterations, action, layers;
+	double explorationConstant;
+	bool isDone;
 
 	const int speed = 3, deltaTime = 20;
 
-	StayStill(Hardware *hardware_);
+	StayStill(Hardware *hardware_,int action_, double explorationConstant_, int layers_);
 	
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
