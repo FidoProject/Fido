@@ -11,7 +11,6 @@ Robot::Robot(Task *task_) {
 
 	int dummy;
 
-	task->init(&simulator);
 	task->getRobotParameters(&stateSize, &actionDimensions, &dummy, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &boltzmanExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
 
 	net::NeuralNet * network = new net::NeuralNet(stateSize, 1, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");

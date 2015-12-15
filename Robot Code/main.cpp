@@ -3,8 +3,12 @@
 #include "../Software/Tasks/StayStill.h"
 #include "BluetoothFido.h"
 #include "Hardware.h"
+#include "../Software/Tasks/Balance.h"
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+
+#define RAD_TO_DEG (180.0/M_PI)
 
 using namespace std;
 
@@ -31,12 +35,24 @@ int main() {
 			}
 		}
 	}*/
-	Hardware hardware;
+	/*Hardware hardware;
 	while(true) {
 		TDVect gyro = hardware.getAccel();
-		std::cout << gyro.xComp << ", " << gyro.yComp << ", " << gyro.zComp << "\n" << std::flush;
-		//std::cout << "y: " << atan(gyro.yComp / sqrt(pow(gyro.xComp, 2) + pow(gyro.zComp, 2))) << "\n" << std::flush;
+		//std::cout << gyro.xComp << ", " << gyro.yComp << ", " << gyro.zComp << "\n" << std::flush;
+		//double pitch = atan(-gyro.xComp / sqrt(gyro.yComp * gyro.yComp + gyro.zComp * gyro.zComp)) * RAD_TO_DEG;
+		double pitch = atan2(-gyro.xComp, gyro.zComp) * RAD_TO_DEG;
+		std::cout << "y: " << pitch << "\n" << std::flush;
 		usleep(100000);
+	}*/
+	Hardware *hardware = new Hardware();
+	//hardware->safeClose();
+	Balance *balance = new Balance(hardware, 0, 0, 0);
+	//WireFitRobot robot(balance);
+	//robot.runTrials(1, 1000000);
+	balance->setupKalman();
+	while(true) {
+		balance->runKalman();
+		usleep(50000);
 	}
 	return 0;
 	//Hardware hardware;

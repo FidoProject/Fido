@@ -1,16 +1,21 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
+#ifdef _WIN32
+
+#else
 #include <unistd.h>
+#include "mraa.hpp"
+#include "lib/SFE_LSM9DS0.h"
+#include "lib/Sparkfun_TB6612_Edison.h"
+#include "lib/SparkFunADS1015.h"
+#endif
+
 #include <signal.h>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
-#include "mraa.hpp"
-#include "lib/SFE_LSM9DS0.h"
-#include "lib/Sparkfun_TB6612_Edison.h"
-#include "lib/SparkFunADS1015.h"
 //#include <buzzer.h>
 
 struct TDVect {

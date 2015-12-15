@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "Simlink.h"
 
-void LineFollow(Simlink *simulator_) {
+LineFollow::LineFollow(Simlink *simulator_) {
 	simulator = simulator_;
 };
 

@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Gets a String from Fido
-    private String getString(int size) {
+    private String getStringFromFido(int size) {
         try {
             byte[] buffer = new byte[size];
             in.read(buffer);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == REQUEST_ENABLE_BT && resultCode != REQUEST_ENABLE_BT) {
             adapter = getBluetoothAdapter();
         }
-        if(requestCode == REQUEST_ENABLE_DISCOVER && resultCode == Activity.RESULT_CANCELED) {
+        if(requestCode == REQUEST_ENABLE_DISCOVER && resultCode == this.RESULT_CANCELED) {
             enableDiscoverability();
         }
     }

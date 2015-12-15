@@ -2,7 +2,7 @@
 
 #include "Simlink.h"
 
-void DriveToEmitter(Simlink *simulator_) {
+DriveToEmitter::DriveToEmitter(Simlink *simulator_) {
 	simulator = simulator_;
 };
 

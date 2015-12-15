@@ -2,10 +2,7 @@
 
 #include <algorithm>
 
-#include "../../Robot Code/Hardware.h"
-
-StayStill::StayStill(Hardware *hardware_, int action_, double explorationConstant_, int layers_) {
-	hardware = hardware_;
+StayStill::StayStill(int action_, double explorationConstant_, int layers_) {
 	isDone = false;
 	iterations = 0;
 	action = action_;
@@ -25,8 +22,8 @@ void StayStill::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 0.5, *explorationConstantDevaluation = 1;
+	*stateSize = 1, *actionDimensions = 1, *numberOfActions = action, *neuronsPerLayer = 10, *numberOfLayers = layers;
+	*beginningExplorationConstant = explorationConstant, *explorationConstantDevaluation = 1;
 	*minAction = { 0 }, *maxAction = { 1 };
 	*baseOfDimensions = 6;
 }

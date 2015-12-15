@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="Connect"
             android:id="@+id/connectButton"
-            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="117dp" />
     </RelativeLayout>
