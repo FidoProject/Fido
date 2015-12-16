@@ -2,7 +2,7 @@ Fido was implemented in the C++ programming language with minimal use of the sta
 
 \subsection{Simulation}
 
-An asynchronous simulator was created using C++ and the SFML graphics library in order to test Fido's performance.  Multiple inputs were modeled for simulation with outlets for control both by a human operator using sliders and by programmed handlers using a bridge class.  Sensors included a microphone, light sensor, infrared light sensor, inertial measurement unit, and three axes of radio receivers allowing measurement from a radio beacon.  Multiple tasks were trained using both operator input and autonomous ``taskmaster'' programs to regulate positive and negative feedback.
+An asynchronous simulator was created using C++ and the SFML graphics library in order to efficiently test Fido's performance on different types of robots.  Multiple inputs were modeled for simulation with outlets for control both by a human operator using sliders and by programmed handlers using a bridge class.  Sensors included a microphone, light sensor, infrared light sensor, inertial measurement unit, and three axes of radio receivers allowing measurement from a radio beacon.  Multiple tasks were trained using both operator input and autonomous ``taskmaster'' programs to regulate positive and negative feedback.
 
 
 \begin{figure}
@@ -16,6 +16,13 @@ Fido's outputs were chosen similarly.  A buzzer of varying tone and frequency ca
 The black rectangle in the upper right corner of the simulator is the robot, having been moved as part of training.  The red dot near the rectangle is a graphical representation of a radio beacon.  As adjusting sliders to represent the location of a radio beacon relative to the robot would be impractical, we decided to implement a beacon that could be placed and dragged by right clicking on the simulator.  Simulated sensor readings of beacon strength on two axes are gathered using an inverse square law, as applies to radio waves in general.  These readings are then displayed in the sliders and can be manually altered as well.  The radio beacon can be removed by a human operator by pressing the ``p'' key in the simulator environment.  This was especially helpful in the task of training Fido to follow a radio beacon.
 
 \subsection{Hardware}
+
+\begin{figure}
+	\centering
+	\includegraphics[height=7cm]{Figures/Prototype.jpg}
+	\caption{Fido Hardware Implementation with Head-Cap Removed}
+\end{figure}
+
 
 A hardware implementation of Fido was created to test real-life trainability and applicability.   As the implementation's ``brain'' we chose the Intel Edison embedded Linux board.  Although Fido was designed to run on microcontrollers without the standard library, a Linux board was chosen to reduce prototyping time.  However, segments of Fido's code-base have been tested on a Cortex-M4 microcontroller.   The hardware implementation was also given a selection of inputs and outputs: an inertial measurement unit, a light sensor, a microphone, and differential drive.   The chassis was modeled in AutoCAD and 3D printed through the Horace Mann School computer science department.
 

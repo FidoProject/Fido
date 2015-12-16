@@ -1,6 +1,6 @@
 \subsection{Data Collection from Simulation}
 
-To test Fido's effectiveness at learning with limited feedback, Fido was first trained on a number of different tasks through our simulator using reward values delegated by our software. Data was collected regarding Fido's latency and number of reward iterations needed for convergence.
+To test Fido's effectiveness at learning with limited feedback, Fido was first trained on a number of different tasks through our simulator using reward values delegated through software. Data was collected regarding Fido's latency and number of reward iterations needed for convergence.
 
 \subsubsection{Simulation Experiments}
 
@@ -34,21 +34,29 @@ The data collected through the simulator demonstrates the prowess of the Fido co
 
 \subsection{Data Collection in Person}
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=7cm]{Figures/AppShot.png}
+	\caption{Android Training Application Screenshot}
+\end{figure}
+
 Data was next collected from Fido's hardware implementation to gage performance with human given feedback in real world situations.  Tasks were configured through the Android application previously discussed, allowing easy setting of hyper parameters such as neural network structure.  The Android application also allowed for a more direct form of administering positive and negative reinforcement. 
 
 \subsubsection{Physical Experiments}
+
+The first task given to Fido's hardware implementation was ``Stay Still,'' and as the name suggests Fido's sole responsibility for this task was to not move.  Fido's feed-forward neural network had 4 hidden layers each with 10 neurons and outputted 4 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at $0.5$.
+
 \subsubsection{Physical Findings}
 
-Ten trials were done for each task to gather the data shown in Table \ref{tab:data2}.  As with the simulation, reward iterations values shown are the medians of the data collected while time data shown is the mean of the data collected.
+25 trials were done for each task to gather the data shown in Table \ref{tab:data2}.  As with the simulation, reward iterations values shown are the medians of the data collected while time data shown is the mean of the data collected.
 
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{@{}lccc@{}}
 		\toprule
-		Task        & Learning Iterations & Action Selection (ms) & Training Time (ms) \\ \midrule
-		Stay Still       & 6                   & 0.                  & 6               \\
-		Drive to Point       & 14                  & 1                  & 6               \\
-		Balance       & 17                  & 1                  & 11              \\
+		Task             & Learning Iterations & Action Selection (ms) & Training Time (ms) \\ \midrule
+		Stay Still       & 3                   & 0.                    & 6                  \\
+		Drive to Point   & 14                  & 1                     & 6                  \\
 	\end{tabular}
 	\caption{Number of Learning Iterations, Action Selection Time, and Training Time Per Iteration for Fido Hardware Tasks}
 	\label{tab:data2}
