@@ -21,24 +21,40 @@ void RealDriveToPoint::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 4;
+	*stateSize = 3, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
 	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
-	*minAction = { -0.6 }, *maxAction = { 0.6};
-	*baseOfDimensions = 2;
+	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
+	*baseOfDimensions = 6;
 }
 
 std::vector<double> RealDriveToPoint::getState() {
 	std::vector<double> state;
 
+	double x, y;
+	std::cout << "x: ";
+	std::cin >> x;
+	std::cout << "y: ";
+	std::cin >> y;
+
+	double rotation;
+	std::cout << "rotation: ";
+	std::cin >> rotation;
+
+	state.push_back(x/(x+y));
+	state.push_back(y/(x+y));
+	state.push_back(rotation / (double)360.0);
 	return state;
 }
 
 double RealDriveToPoint::performAction(const std::vector<double> &action) {
 	hardware->setMotors(action[0]*100, action[1]*100);
-	usleep(2000000);
+	usleep(2500000);
 	hardware->setMotors(0, 0);
+
 	double reward;
+	std::cout << "reward: ";
 	std::cin >> reward;
+
 	return reward;
 }
 

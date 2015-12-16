@@ -32,7 +32,7 @@ void Balance::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 4;
+	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 3, *neuronsPerLayer = 8, *numberOfLayers = 3;
 	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
 	*minAction = { -0.6 }, *maxAction = { 0.6};
 	*baseOfDimensions = 2;

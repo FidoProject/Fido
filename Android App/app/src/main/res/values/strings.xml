@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">FidoApp</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="spinnerArray">
+        <item>Stay Still</item>
+        <item>Balance</item>
+        <item>Drive to Point</item>
+    </string-array>
 </resources>

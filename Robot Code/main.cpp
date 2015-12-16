@@ -3,7 +3,7 @@
 #include "../Software/Tasks/StayStill.h"
 #include "BluetoothFido.h"
 #include "Hardware.h"
-#include "../Software/Tasks/Balance.h"
+#include "../Software/Tasks/RealDriveToPoint.h"
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
@@ -45,11 +45,13 @@ int main() {
 		usleep(100000);
 	}*/
 	Hardware *hardware = new Hardware();
-	//hardware->safeClose();
-	Balance *balance = new Balance(hardware);
-	WireFitRobot robot(balance);
-	robot.runTrials(1, 1000000);
-	return 0;
+	hardware->safeClose();
+	hardware->setMotors(100, 100);
+	sleep(20);
+	hardware->safeClose();
+	//RealDriveToPoint *balance = new RealDriveToPoint(hardware);
+	//WireFitRobot robot(balance);
+	//robot.runTrials(1, 1000000);
 	//Hardware hardware;
 	//return hardware.safeClose();
 }
