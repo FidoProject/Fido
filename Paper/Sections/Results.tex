@@ -44,7 +44,9 @@ Data was next collected from Fido's hardware implementation to gage performance 
 
 \subsubsection{Physical Experiments}
 
-The first task given to Fido's hardware implementation was ``Stay Still,'' and as the name suggests Fido's sole responsibility for this task was to not move.  Fido's feed-forward neural network had 4 hidden layers each with 10 neurons and outputted 4 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at $0.5$.
+The first task given to Fido's hardware implementation was ``Stay Still,'' and as the name suggests Fido's sole responsibility for this task was to not move. Fido's feed-forward neural network had 3 hidden layers each with 10 neurons and outputted 3 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at $0.5$. Fido was then given a reward value equal to $1 - 2|m|$ where $m$ was the speed of Fido's motors ranging from -1 to 1.
+
+Fido's hardware implementation tested on one more task, ``Drive to Point.'' As on the simulator, Fido was tasked with moving to a point by controlling a differential drive system. At the start of each trial, Fido and the point were placed randomly on a smooth, hardwood surface within 0.75 meters of one another. Fido was told the ratio of its $x$ displacement to its $y$ displacement from its target point as well as its rotation. Every fourth action that Fido made was chosen as a reward iteration, and Fido was given a reward value corresponding to its last action. This reward value was chosen by the tester based on whether Fido moved toward the point or not. Fido completed each trial when it was within 10 cm of the point. Fido's feed-forward neural network had 4 hidden layers each with 10 neurons and outputted 5 wires to the wire-fitted interpolator. The exploration constant in equation \ref{equ::boltzmann} was held at 0.2.
 
 \subsubsection{Physical Findings}
 
