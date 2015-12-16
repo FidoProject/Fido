@@ -55,9 +55,11 @@ The first task given to Fido's hardware implementation was ``Stay Still,'' and a
 	\begin{tabular}{@{}lccc@{}}
 		\toprule
 		Task             & Learning Iterations & Action Selection (ms) & Training Time (ms) \\ \midrule
-		Stay Still       & 2                   & 1.                    & 43.5                  \\
-		Drive to Point   & 14                  & 1                     & 6                  \\
+		Stay Still       & 2                   & 1                    & 43.5                  \\
+		Drive to Point   & 18                  & 4                     & 65                  \\
 	\end{tabular}
 	\caption{Number of Learning Iterations, Action Selection Time, and Training Time Per Iteration for Fido Hardware Tasks}
 	\label{tab:data2}
 \end{table}
+
+Performance was slower on the hardware implementation than in simulation due to the limited computation power of the Intel Edison compute model compared to modern desktop computers.  However, the results still demonstrated Fido's real world applicability through its ability to perform outside of a simulation environment.
