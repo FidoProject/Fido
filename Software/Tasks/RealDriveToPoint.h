@@ -1,19 +1,18 @@
-#ifndef BALANCE_H
-#define BALANCE_H
+#ifndef REALDRIVETOPOINT_H
+#define REALDRIVETOPOINT_H
 
 #include "Task.h"
 
 class Hardware;
 
-class Balance : public Task {
+class RealDriveToPoint : public Task {
 public:
 
 	Hardware *hardware;
-	double lastState;
 
 	const int speed = 3, deltaTime = 20;
 
-	Balance(Hardware *hardware_);
+	RealDriveToPoint(Hardware *hardware_);
 
 	void getRobotParameters(int *stateSize,
 							int *actionDimensions,
@@ -29,15 +28,6 @@ public:
 	double performAction(const std::vector<double> &action);
 	bool isTaskDone();
 	void reset();
-
-	double deltat;
-	unsigned long lastUpdate;
-
-	float q[4] = {1.0f, 0.0f, 0.0f, 0.0f};
-
-	double runKalman();
-	void setupKalman();
-	void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz);
 };
 
 #endif

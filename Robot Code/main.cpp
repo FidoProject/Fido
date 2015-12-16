@@ -46,14 +46,9 @@ int main() {
 	}*/
 	Hardware *hardware = new Hardware();
 	//hardware->safeClose();
-	Balance *balance = new Balance(hardware, 0, 0, 0);
-	//WireFitRobot robot(balance);
-	//robot.runTrials(1, 1000000);
-	balance->setupKalman();
-	while(true) {
-		balance->runKalman();
-		usleep(50000);
-	}
+	Balance *balance = new Balance(hardware);
+	WireFitRobot robot(balance);
+	robot.runTrials(1, 1000000);
 	return 0;
 	//Hardware hardware;
 	//return hardware.safeClose();

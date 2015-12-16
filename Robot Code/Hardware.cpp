@@ -62,7 +62,6 @@ void Hardware::setMotors(int motorOne, int motorTwo) {
 	double scaleOne = motorOne/-100.0;
 	double scaleTwo = motorTwo/-100.0;
 	motors.diffDrive(scaleOne,scaleTwo);
-	std::cout << "motors got set";
 }
 
 void Hardware::chirp(double volume, int frequency, int time) {

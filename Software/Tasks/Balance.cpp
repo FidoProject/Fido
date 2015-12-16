@@ -14,13 +14,10 @@
 #define GyroMeasDrift PI * (0.0f / 180.0f)
 #define beta sqrt(3.0f / 4.0f) * GyroMeasError
 
-Balance::Balance(Hardware *hardware_, int action_, double explorationConstant_, int layers_) {
+Balance::Balance(Hardware *hardware_) {
 	hardware = hardware_;
-	iterations = 0;
-	action = action_;
-	explorationConstant = explorationConstant_;
-	layers = layers_;
 	lastState = 0;
+	setupKalman();
 };
 
 
@@ -35,23 +32,15 @@ void Balance::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 6, *neuronsPerLayer = 10, *numberOfLayers = 6;
-	*beginningExplorationConstant = 0.4, *explorationConstantDevaluation = 1;
-	*minAction = { -0.7 }, *maxAction = { 0.7 };
-	*baseOfDimensions = 6;
+	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 4;
+	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
+	*minAction = { -0.6 }, *maxAction = { 0.6};
+	*baseOfDimensions = 2;
 }
 
 std::vector<double> Balance::getState() {
 	std::vector<double> state;
-	TDVect gyro = hardware->getAccel();
-	//std::cout << gyro.xComp << ", " << gyro.yComp << ", " << gyro.zComp << "\n" << std::flush;
-	//double pitch = atan(-gyro.xComp / sqrt(gyro.yComp * gyro.yComp + gyro.zComp * gyro.zComp)) * RAD_TO_DEG;
-	double pitch = atan2(-gyro.xComp, gyro.zComp) * RAD_TO_DEG;
-	if(pitch < 0) pitch = -180 - pitch;
-	else pitch = 180 - pitch;
-	pitch -= 7;
-	double stateValue = pitch/(double)40.0;
-	//std::cout << "p: " << pitch << "; st: " << stateValue << "\n";
+	double stateValue = runKalman() /(double)33.0;
 
 	state.push_back(stateValue);
 
@@ -62,8 +51,8 @@ double Balance::performAction(const std::vector<double> &action) {
 	lastState = getState()[0];
 	hardware->setMotors(action[0]*100, action[0]*100);
 	usleep(20000);
-	std::cout << "reward: " << 1 - 2*std::abs(getState()[0]) << "\n";
-	return std::abs(lastState) - std::abs(getState()[0]) / 1.5;
+	double reward = (std::abs(lastState) - std::abs(getState()[0])) / 0.2;
+	return reward;
 }
 
 bool Balance::isTaskDone() {
@@ -71,7 +60,7 @@ bool Balance::isTaskDone() {
 }
 
 void Balance::reset() {
-	iterations = 0;
+	setupKalman();
 	lastState = 0;
 }
 
@@ -85,7 +74,7 @@ void Balance::setupKalman() {
 	lastUpdate = timeMicros();
 }
 
-void Balance::runKalman() {
+double Balance::runKalman() {
 	TDVect accel = hardware->getAccel();
 	TDVect gyro = hardware->getGyro();
 	TDVect comp = hardware->getCompass();
@@ -106,7 +95,8 @@ void Balance::runKalman() {
 	pitch *= 180.0f / PI;
 	yaw *= 180.0f / PI;
 
-	std::cout << "p: " << pitch << "\n";
+	return pitch;
+
 }
 void Balance::MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz)
 {
