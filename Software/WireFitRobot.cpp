@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <time.h>
 
 #include "LSInterpolator.h"
 #include "Tasks/Task.h"
@@ -29,13 +30,29 @@ WireFitRobot::WireFitRobot(Task *task_) {
 
 std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
 	std::vector<int> results(numberOfTimes);
+	std::vector<double> boltz, train;
 
 	for (int a = 0; a < numberOfTimes; a++) {
 		resetRobot();
 
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
-			runIteration();
+			currentExplorationLevel *= explorationDevaluationPerTimestep;
+
+			std::vector<double> state = task->getState();
+			clock_t begin = clock();
+			std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, currentExplorationLevel);
+			clock_t end = clock();
+			boltz.push_back(double(end - begin) / (CLOCKS_PER_SEC));
+
+			double reward = task->performAction(action);
+			std::vector<double> newState = task->getState();
+
+			begin = clock();
+			learner.applyReinforcementToLastAction(reward, newState, 0);
+			end = clock();
+			train.push_back(double(end - begin) / (CLOCKS_PER_SEC));
+
 			if (task->isTaskDone()) break;
 		}
 
@@ -43,6 +60,8 @@ std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
 	}
 
 	printStats(std::vector<double>(results.begin(), results.end()));
+	printStats(boltz);
+	printStats(train);
 	return results;
 }
 

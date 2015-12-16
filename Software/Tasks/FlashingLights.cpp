@@ -31,7 +31,7 @@ std::vector<double> FlashingLights::getState() {
 double FlashingLights::performAction(const std::vector<double> &action) {
 	simulator->setLED(action[0] * 255, 0, 0, 100);
 
-	if (abs(action[0] - simulator->getVis() / 100.0) < 0.02) isDone = true;
+	if (abs(action[0] - (simulator->getVis() / 100.0)) < 0.05) isDone = true;
 	
 	return 1 - abs(action[0] - simulator->getVis() / 100.0);
 }

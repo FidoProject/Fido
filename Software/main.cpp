@@ -20,9 +20,10 @@
 int main() {
     srand(time(NULL));  
 
-	StayStill *still = new StayStill(3, 0.4, 3);
+	DriveToEmitter *still = new DriveToEmitter(new Simlink());
 	WireFitRobot robot(still);
-	robot.runTrials(50, 100);
+	std::cout << "start\n";
+	robot.runTrials(25, 200);
 
 	delete still;
 
