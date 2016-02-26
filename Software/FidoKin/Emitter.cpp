@@ -6,7 +6,7 @@
 #include <math.h>
 
 #include "Robby.h"
-#include "Simlink.h"
+#include "../FidoSim/Simlink.h"
 
 Emitter::Emitter(int str):sf::CircleShape(0) {
     setFillColor(sf::Color(255,0,0));

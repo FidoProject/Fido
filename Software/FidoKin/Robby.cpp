@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "Simlink.h"
+#include "../FidoSim/Simlink.h"
 
 Robby::Robby(float x, float y, float width, float height):
 sf::RectangleShape(sf::Vector2f(width,height)) {

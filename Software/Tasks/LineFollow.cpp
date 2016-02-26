@@ -1,7 +1,7 @@
 #include "LineFollow.h"
 
 #include <algorithm>
-#include "Simlink.h"
+#include "../FidoSim/Simlink.h"
 
 LineFollow::LineFollow(Simlink *simulator_) {
 	simulator = simulator_;

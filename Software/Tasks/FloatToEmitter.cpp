@@ -1,6 +1,6 @@
 #include "FloatToEmitter.h"
 
-#include "Simlink.h"
+#include "../FidoSim/Simlink.h"
 
 FloatToEmitter::FloatToEmitter(Simlink *simulator_) {
 	simulator = simulator_;

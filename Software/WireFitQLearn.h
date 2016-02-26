@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "BackPropagation.h"
+#include "Backpropagation.h"
 
 namespace net {
 

@@ -1,6 +1,6 @@
 #include "DriveToEmitter.h"
 
-#include "Simlink.h"
+#include "../FidoSim/Simlink.h"
 
 DriveToEmitter::DriveToEmitter(Simlink *simulator_) {
 	simulator = simulator_;

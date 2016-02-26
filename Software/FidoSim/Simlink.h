@@ -1,11 +1,12 @@
 #ifndef __FidoSim__Simlink__
 #define __FidoSim__Simlink__
 
-#include "FidoKin/Robby.h"
-#include "FidoKin/Emitter.h"
+#include "../FidoKin/Robby.h"
+#include "../FidoKin/Emitter.h"
 
 #include <thread>
 #include <SFML/Graphics.hpp>
+#include <math.h>
 
 // Three dimensional vector (used with IMU).
 struct TDVect {

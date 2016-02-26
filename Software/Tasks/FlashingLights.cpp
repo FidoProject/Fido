@@ -1,6 +1,6 @@
 #include "FlashingLights.h"
 
-#include "Simlink.h"
+#include "../FidoSim/Simlink.h"
 
 FlashingLights::FlashingLights(Simlink *simulator_) {
 	simulator = simulator_;
