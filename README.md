@@ -1,12 +1,17 @@
 # Fido
 
-## Tomorrow
-- BLE App
-  - Android code
-  - Robot code
-- Hardware
-  - Drivers
-  - Assembled version of Fido
+## Today TODO
+- Plan out presentation
+  - Decide factors in other categories 
+- Demo Videos
+  - Finish Android App
+  - Record training and executing tasks
+  - Record simulator
+  - Edit video
+- Poster
+  - Content
+  - LaTeX Bullsh*t
+
 
 ## Future TODO
 - Implement more tasks
