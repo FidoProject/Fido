@@ -36,12 +36,10 @@
 \begin{columns}[t]
 
 \begin{column}{\sepwid}\end{column}
-
 \begin{column}{\onecolwid}
 
-
 	\begin{alertblock}{Control System Objectives}
-		Fido was created to fulfill the following two goals:
+		Fido was created to fulfill the following goals:
 		\begin{itemize}
 			\item \textbf{Trainability}: Allow both human and autonomous training rather than reprogramming
 			\item \textbf{Universality}: Run on any robot, even without prior knowledge of the host
@@ -49,15 +47,22 @@
 		These goals were achieved through the training of artificial neural networks with a wire-fitted moving least squares interpolator following the Q-learning reinforcement algorithm and an action selection policy that utilizes a Boltzmann distribution of probability.
 	\end{alertblock}
 
+	\begin{block}{Implementation}
+		Fido was programmed in C++, with no external dependencies.  However, the simulator does use the SFML graphics library.  The hardware implementation uses the Intel Edison embedded platform, a 3D printed chassis and a differential drive system.
 
-\begin{figure}
-	\centering
-	\includegraphics[width=\linewidth]{Figures/FeedForwardRendered}
-	\caption{Single Output Feed-forward Neural Network}
-	\label{fig:feedforward}
-\end{figure}
+		\begin{figure}
+			\centering
+			\fbox{\includegraphics[width=.75\linewidth]{Figures/Screenshot.png}}
+			\caption{Fido Simulator Graphical User Interface}
+		\end{figure}
 
-%----------------------------------------------------------------------------------------
+		\begin{figure}
+			\centering
+			\includegraphics[width=.77\linewidth]{Figures/Prototype.jpg}
+			\caption{Fido Hardware Implementation}
+		\end{figure}
+	\end{block}
+
 
 \end{column}
 
@@ -87,29 +92,30 @@
 
 	\end{block}
 
-\begin{alertblock}{Important Result}
-
-Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed commodo molestie porta. Sed ultrices scelerisque sapien ac commodo. Donec ut volutpat elit.
-
-\end{alertblock} 
-
-%----------------------------------------------------------------------------------------
-
 \begin{columns}[t,totalwidth=\twocolwid]
 
-\begin{column}{\onecolwid}\begin{block}{Simulation}
+\begin{column}{\onecolwid}\begin{block}{Neural Network}
 
-	Hello.
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{Figures/FeedForwardRendered}
+		\caption{Single Output Feed-forward Neural Network}
+		\label{fig:feedforward}
+	\end{figure}
 
 \end{block}\end{column}
 
-\begin{column}{\onecolwid}\begin{block}{Hardware Implementation}
+\begin{column}{\onecolwid}\begin{block}{Action Selection Policy}
 	
-	Hi.
+	Boltzmann stuff
 
 \end{block}\end{column} 
 
 \end{columns} 
+
+	\begin{block}{Results}
+		Results go here...
+	\end{block}
 
 \end{column}
 
