@@ -71,31 +71,18 @@
 \begin{column}{\twocolwid}
 
 	\begin{block}{Learning Algorithm}
-
-		\begin{figure}
-			\centering
-			\includegraphics[width=.77\linewidth]{Figures/diagramRendered.png}
-			\caption{Control System Diagram}
-		\end{figure}
-
-		The following materials were required to complete the research:
-
-		\begin{itemize}
-		\item Curabitur pellentesque dignissim
-		\item Eu facilisis est tempus quis
-		\item Duis porta consequat lorem
-		\item Eu facilisis est tempus quis
-		\end{itemize}
-
-		The materials were prepared according to the steps outlined below:
-
-		\begin{enumerate}
-		\item Curabitur pellentesque dignissim
-		\item Eu facilisis est tempus quis
-		\item Duis porta consequat lorem
-		\item Curabitur pellentesque dignissim
-		\end{enumerate}
-
+		\begin{columns}[t,totalwidth=\twocolwid]
+			\begin{column}{\onecolwid}
+				General overview type stuff...
+			\end{column}
+			\begin{column}{\onecolwid}
+				\begin{figure}
+					\centering
+					\includegraphics[width=\linewidth]{Figures/diagramRendered.png}
+					\caption{Control System Diagram}
+				\end{figure}
+			\end{column}
+		\end{columns}
 	\end{block}
 
 \begin{columns}[t,totalwidth=\twocolwid]
@@ -104,7 +91,7 @@
 
 	\begin{figure}
 		\centering
-		\includegraphics[width=\linewidth]{Figures/FeedForwardRendered}
+		\includegraphics[width=.8\linewidth]{Figures/FeedForwardRendered}
 		\caption{Single Output Feed-forward Neural Network}
 		\label{fig:feedforward}
 	\end{figure}
@@ -120,7 +107,36 @@
 \end{columns} 
 
 	\begin{block}{Results}
-		Results go here...
+		Results were gathered both in simulation and from the hardware implementation for a variety of tasks.  In simulation Fido was evaluated setting an LED proportionally to light intensity (``Flash''), driving to a point with a holonomic drive system (``Float'') and a differential drive system (``Drive''), and line following.
+
+		\begin{table}[ht]
+			\centering
+			\begin{tabular}{@{}lccc@{}}
+				\toprule
+				Task        & Learning Iterations & Action Selection (ms) & Training Time (ms) \\ \midrule
+				Flash       & 6                   & 0.                  & 6               \\
+				Float       & 14                  & 1                  & 6               \\
+				Drive       & 17                  & 1                  & 11              \\
+				Line Follow & 21                  & 2                  & 10.               \\ \bottomrule
+			\end{tabular}
+			\caption{Number of Learning Iterations, Action Selection Time, and Training Time Per Iteration for Fido Simulation Tasks}
+			\label{tab:data}
+		\end{table}
+
+		In hardware Fido was tasked with staying still, and driving to a point.
+
+		\begin{table}[ht]
+			\centering
+			\begin{tabular}{@{}lccc@{}}
+				\toprule
+				Task             & Learning Iterations & Action Selection (ms) & Training Time (ms) \\ \midrule
+				Stay Still       & 3                   & 1                    & 43.5                  \\
+				Drive to Point   & 18                  & 4                     & 65                  \\
+			\end{tabular}
+			\caption{Number of Learning Iterations, Action Selection Time, and Training Time Per Iteration for Fido Hardware Tasks}
+			\label{tab:data2}
+		\end{table}
+
 	\end{block}
 
 \end{column}
