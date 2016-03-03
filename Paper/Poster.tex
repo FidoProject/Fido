@@ -73,7 +73,14 @@
 	\begin{block}{Learning Algorithm}
 		\begin{columns}[t,totalwidth=\twocolwid]
 			\begin{column}{\onecolwid}
-				General overview type stuff...
+				\begin{itemize}
+					\item From a macro perspective, Fido can be viewed as a ``black box:'' inputs go in and outputs go out, Fido must optimize the relationship of inputs to outputs to maximize reward
+					\item  \textbf{Reward system:} Trying to determine the expected reward for an action in a given state based on past reward received
+					\begin{itemize}
+						\item Must have a scalable, performance-optimized way of storing past state-reward sets and detecting patterns
+						\item Cannot just pick the action with the greatest expected reward: must ``explore'' to be trainable and re-trainable
+					\end{itemize}
+				\end{itemize}
 			\end{column}
 			\begin{column}{\onecolwid}
 				\begin{figure}
@@ -107,7 +114,7 @@
 \end{columns} 
 
 	\begin{block}{Results}
-		Results were gathered both in simulation and from the hardware implementation for a variety of tasks.  In simulation Fido was evaluated setting an LED proportionally to light intensity (``Flash''), driving to a point with a holonomic drive system (``Float'') and a differential drive system (``Drive''), and line following.
+		Results were gathered both in simulation and from the hardware implementation for a variety of tasks.  In simulation Fido was evaluated setting an LED proportionally to light intensity (``Flash''), driving to a point with a direct XY-control drive system (``Float'') and a differential drive system (``Drive''), and line following.
 
 		\begin{table}[ht]
 			\centering
@@ -123,7 +130,7 @@
 			\label{tab:data}
 		\end{table}
 
-		In hardware Fido was tasked with staying still, and driving to a point.
+		In hardware Fido was tasked with staying still and driving to a point.
 
 		\begin{table}[ht]
 			\centering
