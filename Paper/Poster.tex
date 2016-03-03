@@ -110,7 +110,16 @@
 
 \begin{column}{\onecolwid}\begin{block}{Reinforcement Learning}
 	\begin{itemize}
-		\item Cannot just pick the action with the greatest expected reward: must ``explore'' to be trainable and re-trainable
+		\item \textbf{Q-Learning:} Algorithm that learns a function that inputs a state-action pair and outputs the expected utility (\textbf{Q-value})
+		\item Ordinarily Q function is modeled by storing state-action pairs in a table
+		\begin{itemize}
+			\item Is impractical for large state spaces, use a function approximator instead: \textbf{Artificial Neural Networks}
+		\end{itemize}
+		\item Q-learning is also usually discrete: no relation made between states or actions
+		\begin{itemize}
+			\item Can be made more efficient by coupling a wire-fitted interpolator with our neural network: \textbf{Wire-Fitted Q-Learning}
+		\end{itemize}
+		\item Cannot just pick the action with the greatest expected reward: must ``explore'' to be trainable and re-trainable: \textbf{Boltzmann Probability Distribution Selection Policy}
 	\end{itemize}
 
 
@@ -155,7 +164,6 @@
 	\begin{block}{Future Development}
 		We would like to experiment with dynamic optimization of hyperparameters, changing factors such as neural network architecture and Boltzman temperature constant to best fit the task at hand.  We also plan to package Fido as a machine learning library for embedded electronics and robotics, and build a microcontroller-based hardware implementation to further optimize for resource-limited environments.
 	\end{block}
-
 
 	\begin{block}{References}
 		\nocite{*}
