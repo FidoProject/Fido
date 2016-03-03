@@ -78,11 +78,11 @@
 					\item  \textbf{Reward system:} Trying to determine the expected reward for an action in a given state based on past reward received
 					\begin{itemize}
 						\item Must have a scalable, performance-optimized way of storing past state-reward sets and detecting patterns
-						\item Cannot just pick the action with the greatest expected reward: must ``explore'' to be trainable and re-trainable
 					\end{itemize}
 				\end{itemize}
 			\end{column}
 			\begin{column}{\onecolwid}
+				\vspace{1cm}
 				\begin{figure}
 					\centering
 					\includegraphics[width=\linewidth]{Figures/diagramRendered.png}
@@ -94,20 +94,24 @@
 
 \begin{columns}[t,totalwidth=\twocolwid]
 
-\begin{column}{\onecolwid}\begin{block}{Reinforcement Learning}
-
+\begin{column}{\onecolwid}\begin{block}{Artificial Neural Networks}
+	\begin{itemize}
+		\item Function approximators modeled after nature with the capability to take in a large number of inputs, parallelly process them, and produce a set of outputs
+	\end{itemize}
+	\vspace{-1cm}
 	\begin{figure}
 		\centering
 		\includegraphics[width=.8\linewidth]{Figures/FeedForwardRendered}
 		\caption{Single Output Feed-forward Neural Network}
 		\label{fig:feedforward}
 	\end{figure}
-
 \end{block}\end{column}
 
-\begin{column}{\onecolwid}\begin{block}{Action Selection Policy}
-	
-	Boltzmann stuff
+\begin{column}{\onecolwid}\begin{block}{Reinforcement Learning}
+	\begin{itemize}
+		\item Cannot just pick the action with the greatest expected reward: must ``explore'' to be trainable and re-trainable
+	\end{itemize}
+
 
 \end{block}\end{column} 
 
