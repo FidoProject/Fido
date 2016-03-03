@@ -98,13 +98,14 @@
 	\begin{itemize}
 		\item Function approximators modeled after nature with the capability to take in a large number of inputs, parallelly process them, and produce a set of outputs
 	\end{itemize}
-	\vspace{-1cm}
+	\vspace{-1.2cm}
 	\begin{figure}
 		\centering
 		\includegraphics[width=.8\linewidth]{Figures/FeedForwardRendered}
 		\caption{Single Output Feed-forward Neural Network}
 		\label{fig:feedforward}
 	\end{figure}
+	\vspace{-3cm}
 \end{block}\end{column}
 
 \begin{column}{\onecolwid}\begin{block}{Reinforcement Learning}
@@ -118,7 +119,7 @@
 \end{columns} 
 
 	\begin{block}{Results}
-		Results were gathered both in simulation and from the hardware implementation for a variety of tasks.  In simulation Fido was evaluated setting an LED proportionally to light intensity (``Flash''), driving to a point with a direct XY-control drive system (``Float'') and a differential drive system (``Drive''), and line following.
+		Results were gathered both from simulation and hardware for a variety of tasks.  In simulation Fido was evaluated setting an LED  to measured light intensity (``Flash''), driving to a point with a direct XY-control drive system (``Float'') and a differential drive system (``Drive''), and line following.
 
 		\begin{table}[ht]
 			\centering
@@ -130,12 +131,9 @@
 				Drive       & 17                  & 1                  & 11              \\
 				Line Follow & 21                  & 2                  & 10.               \\ \bottomrule
 			\end{tabular}
-			\caption{Number of Learning Iterations, Action Selection Time, and Training Time Per Iteration for Fido Simulation Tasks}
-			\label{tab:data}
 		\end{table}
-
+		\vspace{.5cm}
 		In hardware Fido was tasked with staying still and driving to a point.
-
 		\begin{table}[ht]
 			\centering
 			\begin{tabular}{@{}lccc@{}}
@@ -144,8 +142,6 @@
 				Stay Still       & 3                   & 1                    & 43.5                  \\
 				Drive to Point   & 18                  & 4                     & 65                  \\
 			\end{tabular}
-			\caption{Number of Learning Iterations, Action Selection Time, and Training Time Per Iteration for Fido Hardware Tasks}
-			\label{tab:data2}
 		\end{table}
 
 	\end{block}
