@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+	\tikzstyle{thickArrow}=[shorten >=3pt,shorten <= 3pt,line width=1.5mm,draw=gray,-triangle 45,postaction={draw, line width=3.5mm, shorten >=15pt, -}, rounded corners]
+	\tikzstyle{block} = [rectangle, draw, fill=blue!20,
+    text width=5em, text centered, rounded corners, minimum height=4em]
+
+    % blocks
+    \node [block] (network) at (0,2) {neural network};
+    \node [block] (action) at (4.5,2) {action selection};
+
+    % arrows
+    \draw [thickArrow] (network)--(action);
+    \draw [thickArrow] (action)--(8,2);
+    \draw [thickArrow] (-3.5,2)--(network);
+    \draw [thickArrow] (3.5,0)--(0,0)--(network);
+    \draw [thickArrow] (5.5,0)--(3.5,0);
+
+    \draw [->,shorten >=3pt,dashed,rounded corners] (-2.5,1.6)--(-2.5,-0.7)--(6,-0.7)--(6,0)--(5.5,0);
+
+    % labels
+    \node[white] (inputs) at (-2.5,2) {\footnotesize inputs};
+    \node[white] (interpolator) at (2.15,2) {\footnotesize interpolator};
+    \node[white] (reward) at (4.6,.01) {\footnotesize reward};
+    \node[white] (qlearn) at (1.7,.01) {\footnotesize q-learning update};
+    \node[white] (outputs) at (6.5,2) {\footnotesize outputs};
+\end{tikzpicture}
