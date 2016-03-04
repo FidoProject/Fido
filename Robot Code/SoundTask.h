@@ -25,7 +25,8 @@ public:
 							double *baseOfDimensions);
 
 	std::vector<double> getState();
-	double performAction(const std::vector<double> &action);
+	void performAction(const std::vector<double> &action);
+	double getReward();
 	bool isTaskDone();
 	void reset();
 };

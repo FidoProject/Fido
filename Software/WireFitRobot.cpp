@@ -68,11 +68,16 @@ std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
 void WireFitRobot::runIteration() {
 	currentExplorationLevel *= explorationDevaluationPerTimestep;
 
-	std::vector<double> state = task->getState();
-	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, currentExplorationLevel);
-	double reward = task->performAction(action);
+	performAction();
+	double reward = task->getReward();
 	std::vector<double> newState = task->getState();
 	learner.applyReinforcementToLastAction(reward, newState, 0);
+}
+
+void WireFitRobot::performAction() {
+	std::vector<double> state = task->getState();
+	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, currentExplorationLevel);
+	task->performAction(action);
 }
 
 void WireFitRobot::hyperParameterTest() {

@@ -7,6 +7,9 @@
 #include <time.h>
 #include <math.h>
 
+#include <chrono>
+#include <thread>
+
 #define RAD_TO_DEG (180.0/M_PI)
 
 using namespace std;
@@ -18,6 +21,9 @@ int main() {
 
 	WireFitRobot robot(new SoundTask(new Hardware(), new Connection()));
 	robot.runTrials(1, 1000);
+	for(int a = 0; a < 100; a++) {
+		robot.performAction();
+	}
 
 	std::cout << "Ended";
 

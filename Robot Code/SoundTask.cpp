@@ -19,29 +19,39 @@ void SoundTask::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 2, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 3;
-	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
-	*minAction = { 0, 0 }, *maxAction = { 1, 1 };
-	*baseOfDimensions = 6;
+	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 3;
+	*beginningExplorationConstant = 0.1, *explorationConstantDevaluation = 1;
+	*minAction = { 0 }, *maxAction = { 1 };
+	*baseOfDimensions = 3;
 
 	isDone = false;
 }
 
 std::vector<double> SoundTask::getState() {
-	return {hardware->getLoudness(100)};
+	double loudness = (hardware->getLoudness(100) - 0.4)/0.5;
+	std::cout << "State: " << loudness << "\n";
+	return {loudness};
 }
 
-double SoundTask::performAction(const std::vector<double> &action) {
-	hardware->setMotors(action[0]*100, action[1]*100);
+void SoundTask::performAction(const std::vector<double> &action) {
+	std::cout << "Action: " << action[0] << " " << action[0] << "\n";
+	hardware->setMotors(action[0]*100, action[0]*100);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	hardware->setMotors(0, 0);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
 
+double SoundTask::getReward() {
 	double reward = connection->getReward();
-	if(reward == -2) isDone = true;
+	std::cout << "Reward: " << reward << "\n";
+	if(reward == -2) {
+		isDone = true;
+		return 0;
+	}
+	return reward;
 }
 
 bool SoundTask::isTaskDone() {

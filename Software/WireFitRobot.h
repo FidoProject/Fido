@@ -23,6 +23,10 @@ public:
 	// Runs one iteration of a task (samples the state, performs action, gets reward, trains on reward)
 	void runIteration();
 	
+	// Gets the current state and performs the an action using a boltzmann action selection policy.
+	// Does not ask for reward.
+	void performAction();
+
 	// Function for testing the robot on a task. Returns a vector containing the number of reward iterations it took to converge on a solution for each trial
 	std::vector<int> runTrials(int numberOfTimes, int maxIterations);
 
