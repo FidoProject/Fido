@@ -21,7 +21,7 @@
 \setlength{\threecolwid}{0.708\paperwidth}
 \setlength{\topmargin}{-0.5in}
 
-\title{Fido: A Universal Robot Control System using\\Reinforcement Learning with Limited Feedback}
+\title{Fido: A Universal Robot Control System Using\\Reinforcement Learning with Limited Feedback}
 \author{Joshua Gruenstein \and Michael Truell}
 \institute{Horace Mann School}
 
@@ -110,15 +110,17 @@
 
 \begin{column}{\onecolwid}\begin{block}{Reinforcement Learning}
 	\begin{itemize}
-		\item \textbf{Q-Learning:} Develops a function that intakes a state-action pair and outputs the expected utility
-		\item Ordinarily the Q-function is modeled by storing state-action pairs in a table
+		\item \textbf{Q-Learning:} Develops a function that intakes a state-action pair and outputs expected utility
+		\item Ordinarily, the Q-function is modeled by storing state-action pairs in a table
 		\begin{itemize}
 			\item Is impractical for large state spaces, use a function approximator instead: \textbf{Artificial Neural Networks}
+			\item Usually discrete: no relation made between states or actions
 		\end{itemize}
-		\item Usually discrete: no relation made between states or actions
-		\begin{itemize}
-			\item Can be optimized by coupling a wire-fitted interpolator with our neural network (\textbf{Wire-Fitted Q-Learning})
-		\end{itemize}
+
+		\item Can be optimized by coupling a wire-fitted interpolator with our neural network (\textbf{Wire-Fitted Q-Learning}).
+
+		\item \textbf{Action selection:} The selection of an action based on a genereated reward function.
+
 		\item Cannot just pick the action with the greatest expected utility: must ``explore'' to be trainable and re-trainable
 		\begin{itemize}
 			\item Use a \textbf{Boltzmann Probability Distribution} selection policy
@@ -131,7 +133,7 @@
 \end{columns} 
 
 	\begin{block}{Results}
-		Results were gathered both from simulation and hardware for a variety of tasks.  In simulation Fido was evaluated setting an LED  to measured light intensity (``Flash''), driving to a point with a direct XY-control drive system (``Float'') and a differential drive system (``Drive''), and line following.
+		Results were gathered both from simulation and hardware for a variety of tasks.  In simulation, Fido tasked with setting an LED proportional to measured sound intensity (``Flash''), driving to a point with a direct XY-control drive system (``Float'') and a differential drive system (``Drive''), and line following (``Line'').
 
 		\begin{table}[ht]
 			\centering
@@ -141,11 +143,11 @@
 				Flash       & 6                   & 0.                  & 6               \\
 				Float       & 14                  & 1                  & 6               \\
 				Drive       & 17                  & 1                  & 11              \\
-				Line Follow & 21                  & 2                  & 10.               \\ \bottomrule
+				Line        & 21                  & 2                  & 10.               \\ \bottomrule
 			\end{tabular}
 		\end{table}
 		\vspace{.5cm}
-		In hardware Fido was tasked with staying still and driving to a point.
+		In hardware, Fido was tasked with staying still or moving based on measured sound intensity and driving to a speaker using the robot's differential drive.
 		\begin{table}[ht]
 			\centering
 			\begin{tabular}{@{}lccc@{}}
