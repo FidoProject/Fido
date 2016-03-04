@@ -114,20 +114,20 @@
 		\item Ordinarily, the Q-function is modeled by storing state-action pairs in a table
 		\begin{itemize}
 			\item Is impractical for large state spaces, use a function approximator instead: \textbf{Artificial Neural Networks}
-			\item Usually discrete: no relation made between states or actions
 		\end{itemize}
 
-		\item Can be optimized by coupling a wire-fitted interpolator with our neural network (\textbf{Wire-Fitted Q-Learning}).
-
-		\item \textbf{Action selection:} The selection of an action based on a genereated reward function.
+		\item Usually discrete: no relation made between states or actions
+		
+		\begin{itemize}
+			\item Can be optimized by coupling a wire-fitted interpolator with our neural network (\textbf{Wire-Fitted Q-Learning})
+		\end{itemize}
 
 		\item Cannot just pick the action with the greatest expected utility: must ``explore'' to be trainable and re-trainable
 		\begin{itemize}
 			\item Use a \textbf{Boltzmann Probability Distribution} selection policy
 		\end{itemize}
 	\end{itemize}
-
-
+	\vspace{-1.25cm}
 \end{block}\end{column} 
 
 \end{columns} 
