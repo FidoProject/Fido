@@ -1,16 +1,12 @@
-angular.module('Fido.controllers', ["cordova-plugin-bluetooth-serial"])
+angular.module('Fido.controllers', ['ngCordova', 'Fido.services'])
 
-.controller('LoginCtrl', function($scope, $cordovaBarcodeScanner,$location) {
-	bluetoothSerial.discoverUnpaired(function(devices) {
-		console.log(devices);
-	}, function() {
-		console.log("fail")
-	});
-	$scope.connectToFido = function() {
-
-	};
+.controller('LoginCtrl', function($scope, $window, $ionicPlatform, $fidoConnection) {
+		$ionicPlatform.ready(function() {
+			console.log("Ready");
+			$fidoConnection.init();
+		});
 })
 
-.controller('TestCtrl', function($scope, $cordovaBarcodeScanner,$location) {
-	
+.controller('TestCtrl', function($scope) {
+		
 });
