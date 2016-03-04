@@ -1,6 +1,6 @@
 angular.module('Fido.controllers', ['ngCordova', 'Fido.services'])
 
-.controller('LoginCtrl', function($scope, $ionicPlatform, $fidoConnection, $location) {
+.controller('LoginCtrl', function($scope, $ionicPlatform, $fidoConnection, $state) {
 	$scope.connectToFido = function() {
 		$ionicPlatform.ready(function() {
 			console.log("Ready");
@@ -9,8 +9,7 @@ angular.module('Fido.controllers', ['ngCordova', 'Fido.services'])
 			$fidoConnection.connect(function() {
 				console.log("Did connect");
 				console.log("Move to location");
-				$fidoConnection.sendReward(1);
-				$location.path('/train');
+				$state.transitionTo('train');
 			}, function() {
 				console.log("Failed to connect");
 			});

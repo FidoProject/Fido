@@ -1,5 +1,5 @@
 var FIDO_IP = "192.168.0.19";
-var FIDO_PORT = 2005;
+var FIDO_PORT = 2007;
 
 var RESET = 1;
 var BEGIN = 2;
