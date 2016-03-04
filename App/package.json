@@ -21,7 +21,10 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "cordova-plugin-bluetooth-serial"
+    "cordova-plugin-bluetooth-serial",
+    "cz.blocshop.socketsforcordova"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }
