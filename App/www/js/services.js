@@ -1,5 +1,5 @@
-var FIDO_IP = "localhost";
-var FIDO_PORT = 80;
+var FIDO_IP = "192.168.0.19";
+var FIDO_PORT = 2005;
 
 var RESET = 1;
 var BEGIN = 2;
@@ -46,17 +46,17 @@ angular.module('Fido.services', ['ngCordova'])
 		socket.close();
 	};
 	var resetModel = function() {
-		socket.sendNumber(RESET);
+		sendNumber(RESET);
 	};
 	var beginLearning = function() {
-		socket.sendNumber(BEGIN);
+		sendNumber(BEGIN);
 	};
 	var stopLearning = function() {
-		socket.sendNumber(STOP);
+		sendNumber(STOP);
 	};
 	var sendReward = function(rewardVal) {
-		socket.sendNumber(REWARD);
-		socket.sendNumber(rewardVal);
+		sendNumber(REWARD);
+		sendNumber(rewardVal);
 	};
 	return {
 		init: init,

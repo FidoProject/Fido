@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <string>
 
 Connection::Connection()  {
     int tempSockfd, portno;
@@ -26,15 +27,31 @@ Connection::Connection()  {
     		std::cout << "ERROR on binding";
     listen(tempSockfd,5);
     clilen = sizeof(cli_addr);
+    std::cout << "Waiting for connection\n";
     socketFd = accept(tempSockfd,
                 (struct sockaddr *) &cli_addr,
                 &clilen);
+
+    std::cout << "Recieved connection\n";
     if (socketFd < 0)
     	std::cout << "ERROR on accept";
 }
 
-double Connection::getReward() {
+Connection::~Connection() {
+	disconnect();
+}
 
+double Connection::getReward() {
+	std::string currentLine = getString();
+	std::cout << "lineL " << currentLine << "\n";
+	while(currentLine.compare("4") != 0) {
+		std::cout << "line: " << currentLine << "\n";
+	}
+	return atof(getString().c_str());
+}
+
+void Connection::disconnect() {
+	close(socketFd);
 }
 
 std::string Connection::getString() {
@@ -44,6 +61,8 @@ std::string Connection::getString() {
 	// Keep reading char by char until a newline
 	while(true) {
 		read(socketFd, &buffer, 1);
+
+		std::cout << buffer;
 
 		if (buffer == '\n') break;
 		else newString += buffer;

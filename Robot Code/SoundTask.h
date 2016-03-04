@@ -2,13 +2,15 @@
 #define SoundTask_H
 
 #include "../Software/Tasks/Task.h"
+#include "Hardware.h"
+#include "Connection.h"
 
 class SoundTask : public Task {
 public:
 	Hardware *hardware;
+	Connection *connection;
 
-
-	SoundTask(Hardware *hardware_);
+	SoundTask(Hardware *hardware_, Connection *connection_);
 
 	void getRobotParameters(int *stateSize,
 							int *actionDimensions,

@@ -1,7 +1,8 @@
 #include "SoundTask.h"
 
-SoundTask::SoundTask(Hardware *hardware_) {
+SoundTask::SoundTask(Hardware *hardware_, Connection *connection_) {
 	hardware = hardware_;
+	connection = connection_;
 };
 
 void SoundTask::getRobotParameters(int *stateSize,
@@ -22,13 +23,13 @@ void SoundTask::getRobotParameters(int *stateSize,
 }
 
 std::vector<double> SoundTask::getState() {
-	return hardware->getMicrophone();
+	return {hardware->getMicrophone()};
 }
 
 double SoundTask::performAction(const std::vector<double> &action) {
 	hardware->setMotors(action[0]*100, action[1]*100);
 
-	return connection.getReward();
+	return connection->getReward();
 }
 
 bool SoundTask::isTaskDone() {

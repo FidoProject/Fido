@@ -5,11 +5,13 @@
 
 class Connection {
 public:
-	const int PORT = 80;
+	const int PORT = 2005;
 	int socketFd;
 
 	Connection();
+	~Connection();
 	double getReward();
+	void disconnect();
 private:
 	std::string getString();
 };
