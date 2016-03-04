@@ -9,6 +9,7 @@ class SoundTask : public Task {
 public:
 	Hardware *hardware;
 	Connection *connection;
+	bool isDone;
 
 	SoundTask(Hardware *hardware_, Connection *connection_);
 

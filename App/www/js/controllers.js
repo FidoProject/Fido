@@ -26,5 +26,9 @@ angular.module('Fido.controllers', ['ngCordova', 'Fido.services'])
 	$scope.punish = function() {
 		console.log("punish")
 		$fidoConnection.sendReward(-1);
-	}
+	};
+	$scope.end = function() {
+		console.log("end")
+		$fidoConnection.sendReward(-2);
+	};
 });

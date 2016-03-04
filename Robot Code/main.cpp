@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Hardware.h"
 #include "Connection.h"
+#include "SoundTask.h"
+#include "../Software/WireFitRobot.h"
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
@@ -14,13 +16,12 @@ int main() {
 
 	std::cout << "Started\n";
 
-	Hardware hardware;
-	Connection connection;
+	WireFitRobot robot(new SoundTask(new Hardware(), new Connection()));
+	robot.runTrials(1, 1000);
 
-	std::cout << "Connected\n";
-	std::cout << "Reward: " << connection.getReward() << "\n";
+	std::cout << "Ended";
 
-	connection.disconnect();
+	((SoundTask *)robot.task)->hardware->safeClose();
 
-	return hardware.safeClose();
+	return 0;
 }
