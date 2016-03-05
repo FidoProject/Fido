@@ -1,16 +1,25 @@
 <ion-view view-title="Login">
 	<ion-content class="padding" style="overflow: hidden;">
-		<button ng-click="reward()" class="button button-positive">
-			Reward
-		</button>
-		<button ng-click="neutral()" class="button button-positive">
-			Neutral
-		</button>
-		<button ng-click="punish()" class="button button-positive">
-			Hurt
-		</button>
-		<button ng-click="end()" class="button button-positive">
+		<button ng-click="$fidoConnection.sendReward(1)" class="button button-positive">
+			Very Good
+		</button> <br>
+		<button ng-click="$fidoConnection.sendReward(0.5)" class="button button-positive">
+			Good
+		</button> <br>
+		<button ng-click="$fidoConnection.sendReward(0)" class="button button-positive">
+			 Neutral
+		</button> <br>
+		<button ng-click="$fidoConnection.sendReward(-0.5)" class="button button-positive">
+			Bad
+		</button> <br>
+		<button ng-click="$fidoConnection.sendReward(-1)" class="button button-positive">
+			Very Bad
+		</button> <br>
+
+		<br>
+		<button ng-click="$fidoConnection.sendReward(-2)" class="button button-positive">
 			End
-		</button>
+		</button> <br>
+		
 	</ion-content>
 </ion-view>
