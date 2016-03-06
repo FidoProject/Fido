@@ -4,8 +4,9 @@
 
 #include <iostream>
 
-FlashingLights::FlashingLights(Simlink *simulator_) {
-	simulator = simulator_;
+FlashingLights::FlashingLights(Hardware *hardware_, Connection *connection_) {
+	hardware = hardware_;
+	connection = connection_;
 };
 
 void FlashingLights::getRobotParameters(int *stateSize,
@@ -26,48 +27,24 @@ void FlashingLights::getRobotParameters(int *stateSize,
 }
 
 std::vector<double> FlashingLights::getState() {
-	return { lastState };
+	return { (hardware->visVal() - 0.3) / 0.3 };
 }
 
 double FlashingLights::performAction(const std::vector<double> &action) {
 	simulator->setLED(action[0] * 255, 0, 0, 100);
 	std::cout << "Action: " << action[0] << "; ";
-	std::cout << "State: " << lastState << "; ";
+	std::cout << "State: " << getState() << "; ";
 
-	float differenceFromState = fabs(action[0] - lastState);
-
-	if(differences.size() < 5) {
-		differences.push_back(differenceFromState);
-	} else {
-		differences.erase(differences.begin());
-		differences.push_back(differenceFromState);
-
-		avg = 0;
-		for(int a = 0; a < differences.size(); a++) avg += differences[a];
-		avg /= (float)differences.size();
-
-		if(avg <= 0.21) {
-			isDone = true;
-		}
-	}
-
+	float differenceFromState = fabs(action[0] - getState());
 	double reward = 1 - 2*differenceFromState;
 	std::cout << "Avg: " << avg << "; Reward: " << reward << "; ";
-
-	lastState = int(lastState == 0);
 
 	return reward;
 }
 
 bool FlashingLights::isTaskDone() {
-	return isDone;
+	return false;
 }
 
 void FlashingLights::reset() {
-	simulator->visVal = ((double)rand() / (double)RAND_MAX) * 100;
-	isDone = false;
-	avg = 0;
-	differences = std::vector<float>(0);
-	lastState = 0;
-	times = 0;
 }

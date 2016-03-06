@@ -7,13 +7,10 @@ class Simlink;
 
 class FlashingLights : public Task {
 public:
-	Simlink *simulator;
-	int len, times;
-	float avg;
-	int lastState;
-	std::vector<float> differences;
+	Hardware *hardware;
+	Connection *connection;
 
-	FlashingLights(Simlink *simulator_);
+	FlashingLights(Hardware *hardware_, Connection *connection_);
 
 	void getRobotParameters(int *stateSize, 
 							int *actionDimensions, 
@@ -29,8 +26,6 @@ public:
 	double performAction(const std::vector<double> &action);
 	bool isTaskDone();
 	void reset();
-
-	bool isDone = false;
 };
 
 #endif
