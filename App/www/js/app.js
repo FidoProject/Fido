@@ -37,6 +37,12 @@ angular.module('Fido', ['ionic', 'ngCordova', 'Fido.controllers'])
 		controller: 'LoginCtrl'
 	})
 
+	.state('config', {
+		url: '/config',
+		templateUrl: 'templates/config.html',
+		controller: 'ConfigCtrl'
+	})
+
 	.state('train', {
 		url: '/train',
 		templateUrl: 'templates/train.html',

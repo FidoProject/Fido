@@ -26,6 +26,10 @@ angular.module('Fido.services', ['ngCordova'])
 		};
 	};
 
+	var config = function(settings) {
+		sendString("MODEL: " + settings.model);
+	};
+
 	var sendString = function(string) {
 		string += "\n";
 		var data = new Uint8Array(string.length);
@@ -34,6 +38,7 @@ angular.module('Fido.services', ['ngCordova'])
 		}
 		socket.write(data);
 	};
+
 	var sendNumber = function(num) {
 		sendString(num+"");
 	};
@@ -41,23 +46,29 @@ angular.module('Fido.services', ['ngCordova'])
 	var connect = function(success, failure) {
 		socket.open(FIDO_IP, FIDO_PORT, success, failure);
 	};
+
 	var disconnect = function() {
 		socket.shutdownWrite();
 		socket.close();
 	};
+
 	var resetModel = function() {
 		sendNumber(RESET);
 	};
+
 	var beginLearning = function() {
 		sendNumber(BEGIN);
 	};
+
 	var stopLearning = function() {
 		sendNumber(STOP);
 	};
+
 	var sendReward = function(rewardVal) {
 		sendNumber(REWARD);
 		sendNumber(rewardVal);
 	};
+	
 	return {
 		init: init,
 		connect: connect,
