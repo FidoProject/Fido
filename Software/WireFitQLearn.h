@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "Learner.h"
 #include "Backpropagation.h"
 
 namespace net {
@@ -18,7 +17,7 @@ namespace net {
      * to turn descrete action vectors paired with rewards, 
      * to a continuous function that pair an action vector with a reward.
      */
-    class WireFitQLearn : public Learner{
+    class WireFitQLearn {
     public:
         NeuralNet *network;
         Interpolator *interpolator;

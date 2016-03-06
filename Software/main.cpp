@@ -21,15 +21,11 @@ int main() {
     srand(time(NULL));  
 
 	FlashingLights *still = new FlashingLights(new Simlink());
-	WireFitRobot robot(still);
+	Robot robot(still);
 	std::cout << "start\n";
-	robot.runTrials(50, 200);
+	robot.run(100, 100);
 	std::cout << "end\n";
 
 	delete still;
-	
-	while (true) {
 
-	}
-
-} 
+}

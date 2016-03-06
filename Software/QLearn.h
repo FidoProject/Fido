@@ -3,14 +3,13 @@
 
 #include <vector>
 
-#include "Learner.h"
 #include "Backpropagation.h"
 
 namespace net {
 	
 	class NeuralNet;
 
-	class QLearn : public Learner {
+	class QLearn {
 	public:
 		std::vector<NeuralNet *> networks;
 		Backpropagation backprop;
@@ -18,6 +17,7 @@ namespace net {
 		double learningRate, devaluationFactor;
         double lastReward;
 		std::vector<double> lastState;
+		std::vector< std::vector< std::pair<std::vector<double>, double> > > history;
 
 		/* Initializes a QLearn object with a model network and the values of learning rate and devaluationFactor.
 		 *

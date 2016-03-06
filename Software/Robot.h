@@ -1,5 +1,5 @@
-#ifndef ROBOT_H
-#define ROBOT_H
+#ifndef ROBOTN_H
+#define ROBOTN_H
 
 #include "FidoSim/Simlink.h"
 #include "QLearn.h"
@@ -13,11 +13,11 @@ class Task;
 class Robot {
 public:
 	net::QLearn learner;
-	Simlink simulator;
 	Task *task;
-	double boltzmanExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
+	double startingExplorationLevel, currentExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
 	int stateSize, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, actionDimensions;
 	std::vector<double> minAction, maxAction;
+	std::vector< std::vector<double> > possibleActions;
 
 	// Initializes a robot object
 	Robot(Task *task_);
@@ -27,6 +27,7 @@ public:
 
 private:
 	std::vector<double> getAction(int action);
+	void resetRobot();
 
 };
 

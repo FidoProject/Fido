@@ -8,8 +8,10 @@ class Simlink;
 class FlashingLights : public Task {
 public:
 	Simlink *simulator;
-	int len;
+	int len, times;
 	float avg;
+	int lastState;
+	std::vector<float> differences;
 
 	FlashingLights(Simlink *simulator_);
 

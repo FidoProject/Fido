@@ -19,31 +19,44 @@ void FlashingLights::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
+	*stateSize = 1, *actionDimensions = 1, *neuronsPerLayer = 8, *numberOfLayers = 2;
+	*beginningExplorationConstant = 0.5, *explorationConstantDevaluation = 1;
 	*minAction = { 0 }, *maxAction = { 1 };
-	*baseOfDimensions = 11;
+	*baseOfDimensions = 2;
 }
 
 std::vector<double> FlashingLights::getState() {
-	simulator->visVal = ((double)rand() / (double)RAND_MAX) * 100;
-	return{ simulator->getVis() / 100.0 };
+	return { lastState };
 }
 
 double FlashingLights::performAction(const std::vector<double> &action) {
 	simulator->setLED(action[0] * 255, 0, 0, 100);
-	std::cout << avg << " " << fabs(action[0] - (simulator->getVis() / 100.0)) << "\n"; std::cout.flush();
-	len++;
-	if (len == 1) {
-		avg = fabs(action[0] - (simulator->getVis() / 100.0));
+	std::cout << "Action: " << action[0] << "; ";
+	std::cout << "State: " << lastState << "; ";
+
+	float differenceFromState = fabs(action[0] - lastState);
+
+	if(differences.size() < 5) {
+		differences.push_back(differenceFromState);
 	} else {
-		avg -= avg/(float)len;
-		avg += fabs(action[0] - (simulator->getVis() / 100.0))/(float)len;
+		differences.erase(differences.begin());
+		differences.push_back(differenceFromState);
+
+		avg = 0;
+		for(int a = 0; a < differences.size(); a++) avg += differences[a];
+		avg /= (float)differences.size();
+
+		if(avg <= 0.21) {
+			isDone = true;
+		}
 	}
 
-	if(len >= 3 && avg < 0.05) isDone = true;
-	
-	return 1 - abs(action[0] - simulator->getVis() / 100.0);
+	double reward = 1 - 2*differenceFromState;
+	std::cout << "Avg: " << avg << "; Reward: " << reward << "; ";
+
+	lastState = int(lastState == 0);
+
+	return reward;
 }
 
 bool FlashingLights::isTaskDone() {
@@ -53,6 +66,8 @@ bool FlashingLights::isTaskDone() {
 void FlashingLights::reset() {
 	simulator->visVal = ((double)rand() / (double)RAND_MAX) * 100;
 	isDone = false;
-	len = 0;
 	avg = 0;
+	differences = std::vector<float>(0);
+	lastState = 0;
+	times = 0;
 }

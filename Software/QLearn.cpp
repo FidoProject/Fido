@@ -4,6 +4,9 @@
 #include <iostream>
 #include <fstream>
 
+#include <chrono>
+#include <thread>
+
 #include "NeuralNet.h"
 
 using namespace net;
@@ -17,6 +20,8 @@ QLearn::QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learni
     lastReward = -1;
 
 	for(int a = 0; a < numberOfActions; a++) networks.push_back(new net::NeuralNet(modelNetwork));
+
+	history = std::vector< std::vector< std::pair<std::vector<double>, double> > >(numberOfActions, std::vector< std::pair<std::vector<double>, double> >(0));
 }
 
 QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
@@ -27,6 +32,8 @@ QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, do
 	numberOfActions = (int)networks.size();
 	lastAction = -1;
     lastReward = -1;
+
+    history = std::vector< std::vector< std::pair<std::vector<double>, double> > >(numberOfActions, std::vector< std::pair<std::vector<double>, double> >(0));
 }
 
 QLearn::QLearn(std::string filename) {
@@ -83,17 +90,25 @@ unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, doub
 	/// Incase a floating point error resulted in no action
 	lastAction = (unsigned int)networks.size() - 1;
 	lastState = currentState;
-	return (unsigned int)networks.size() - 1;
+	return lastAction;
 }
 
 void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState) {
 	if(lastAction == -1) return;
     
-	double feedback = (reward + (devaluationFactor*highestReward(newState)));
-	double targetValueForLastState = ((1 - learningRate) * lastReward) + (learningRate*feedback);
+    double lr = networks[lastAction]->getOutput(lastState)[0];
+	//double feedback = (reward + (devaluationFactor*highestReward(newState)));
+	//double targetValueForLastState = ((1 - learningRate) * lastReward) + (learningRate*feedback);
+	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*highestReward(newState))-lr);
+	
+	if(history.size() < 10) history[lastAction].push_back(std::pair<std::vector<double>, double>(lastState, targetValueForLastState));	
 
-	std::vector< std::vector<double> > input(1, lastState);
-	std::vector< std::vector<double> > correctOutput(1, std::vector<double>(1, targetValueForLastState));
+	std::vector< std::vector<double> > input = std::vector< std::vector<double> >(history[lastAction].size());
+	for(int a = 0; a < history[lastAction].size(); a++) input[a] = history[lastAction][a].first;
+	std::vector< std::vector<double> > correctOutput = std::vector< std::vector<double> >(history[lastAction].size());
+	for(int a = 0; a < history[lastAction].size(); a++) correctOutput[a] = { history[lastAction][a].second };
+
+	std::cout << "; LastState: " << lastState[0] << "; targetValueForLastState: " << targetValueForLastState << "; lastReward: " << lr << "\n";
 
 	backprop.trainOnData(networks[lastAction], input, correctOutput);
 }
