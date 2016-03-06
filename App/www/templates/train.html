@@ -1,40 +1,24 @@
 <ion-view view-title="Training">
+	<ion-nav-buttons side="right">
+		<button ng-click="$fidoConnection.sendReward(-2)" class="button">
+			Stop Training
+		</button>
+	</ion-nav-buttons>
 	<ion-content class="padding" style="overflow: hidden;">
-		<button ng-click="$fidoConnection.sendReward(1)" class="button button-large button-block button-balanced">
-			Super Good
-		</button>
-		<button ng-click="$fidoConnection.sendReward(0.66)" class="button button-large button-block button-balanced">
-			Very Good
-		</button>
-		<button ng-click="$fidoConnection.sendReward(0.33)" class="button button-large button-block button-balanced">
-			Good
-		</button>
+		<button ng-click="$fidoConnection.sendReward(1)" class="button button-block button-balanced">1.0</button>
+		<button ng-click="$fidoConnection.sendReward(0.8)" class="button button-block button-balanced">0.8</button>
+		<button ng-click="$fidoConnection.sendReward(0.6)" class="button button-block button-balanced">0.6</button>
+		<button ng-click="$fidoConnection.sendReward(0.4)" class="button button-block button-balanced">0.4</button>
+		<button ng-click="$fidoConnection.sendReward(0.2)" class="button button-block button-balanced">0.2</button>
 
-		<br />
+		<br /><button ng-click="$fidoConnection.sendReward(0)" class="button button-block button-large button-positive">
+			0.0
+		</button><br />
 
-		<button ng-click="$fidoConnection.sendReward(0)" class="button button-large button-block button-positive">
-			 Neutral
-		</button>
-
-		<br />
-
-		<button ng-click="$fidoConnection.sendReward(-0.33)" class="button button-large button-block button-assertive">
-			Bad
-		</button>
-
-		<button ng-click="$fidoConnection.sendReward(-0.66)" class="button button-large button-block button-assertive">
-			Very Bad
-		</button>
-
-		<button ng-click="$fidoConnection.sendReward(-1)" class="button button-large button-block button-assertive">
-			Super Bad
-		</button>
-
-		<div class="bar bar-footer" style="margin-bottom:20px">
-			<button ng-click="$fidoConnection.sendReward(-2)" class="button button-block button-large button-dark">
-				End
-			</button>
-		</div>
-		
+		<button ng-click="$fidoConnection.sendReward(-0.2)" class="button button-block button-assertive">-0.2</button>
+		<button ng-click="$fidoConnection.sendReward(-0.4)" class="button button-block button-assertive">-0.4</button>
+		<button ng-click="$fidoConnection.sendReward(-0.6)" class="button button-block button-assertive">-0.6</button>
+		<button ng-click="$fidoConnection.sendReward(-0.8)" class="button button-block button-assertive">-0.6</button>
+		<button ng-click="$fidoConnection.sendReward(-1.0)" class="button button-block button-assertive">-1.0</button>
 	</ion-content>
 </ion-view>
