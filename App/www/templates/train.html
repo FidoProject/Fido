@@ -1,25 +1,40 @@
-<ion-view view-title="Login">
+<ion-view view-title="Training">
 	<ion-content class="padding" style="overflow: hidden;">
-		<button ng-click="$fidoConnection.sendReward(1)" class="button button-positive">
+		<button ng-click="$fidoConnection.sendReward(1)" class="button button-large button-block button-balanced">
+			Super Good
+		</button>
+		<button ng-click="$fidoConnection.sendReward(0.66)" class="button button-large button-block button-balanced">
 			Very Good
-		</button> <br>
-		<button ng-click="$fidoConnection.sendReward(0.5)" class="button button-positive">
+		</button>
+		<button ng-click="$fidoConnection.sendReward(0.33)" class="button button-large button-block button-balanced">
 			Good
-		</button> <br>
-		<button ng-click="$fidoConnection.sendReward(0)" class="button button-positive">
-			 Neutral
-		</button> <br>
-		<button ng-click="$fidoConnection.sendReward(-0.5)" class="button button-positive">
-			Bad
-		</button> <br>
-		<button ng-click="$fidoConnection.sendReward(-1)" class="button button-positive">
-			Very Bad
-		</button> <br>
+		</button>
 
-		<br>
-		<button ng-click="$fidoConnection.sendReward(-2)" class="button button-positive">
-			End
-		</button> <br>
+		<br />
+
+		<button ng-click="$fidoConnection.sendReward(0)" class="button button-large button-block button-positive">
+			 Neutral
+		</button>
+
+		<br />
+
+		<button ng-click="$fidoConnection.sendReward(-0.33)" class="button button-large button-block button-assertive">
+			Bad
+		</button>
+
+		<button ng-click="$fidoConnection.sendReward(-0.66)" class="button button-large button-block button-assertive">
+			Very Bad
+		</button>
+
+		<button ng-click="$fidoConnection.sendReward(-1)" class="button button-large button-block button-assertive">
+			Super Bad
+		</button>
+
+		<div class="bar bar-footer" style="margin-bottom:20px">
+			<button ng-click="$fidoConnection.sendReward(-2)" class="button button-block button-large button-dark">
+				End
+			</button>
+		</div>
 		
 	</ion-content>
 </ion-view>
