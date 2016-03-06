@@ -27,7 +27,7 @@ angular.module('Fido.services', ['ngCordova'])
 	};
 
 	var config = function(settings) {
-		sendString("MODEL: " + settings.model);
+		sendNumber(settings.model === 'discrete' ? 5:6);
 	};
 
 	var sendString = function(string) {
@@ -68,7 +68,7 @@ angular.module('Fido.services', ['ngCordova'])
 		sendNumber(REWARD);
 		sendNumber(rewardVal);
 	};
-	
+
 	return {
 		init: init,
 		connect: connect,
