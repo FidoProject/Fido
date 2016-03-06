@@ -2,6 +2,8 @@
 
 #include "../FidoSim/Simlink.h"
 
+#include <iostream>
+
 FlashingLights::FlashingLights(Simlink *simulator_) {
 	simulator = simulator_;
 };
@@ -17,10 +19,10 @@ void FlashingLights::getRobotParameters(int *stateSize,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
 
-	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 4, *neuronsPerLayer = 10, *numberOfLayers = 3;
+	*stateSize = 1, *actionDimensions = 1, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
 	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
 	*minAction = { 0 }, *maxAction = { 1 };
-	*baseOfDimensions = 6;
+	*baseOfDimensions = 11;
 }
 
 std::vector<double> FlashingLights::getState() {
@@ -30,8 +32,16 @@ std::vector<double> FlashingLights::getState() {
 
 double FlashingLights::performAction(const std::vector<double> &action) {
 	simulator->setLED(action[0] * 255, 0, 0, 100);
+	std::cout << avg << " " << fabs(action[0] - (simulator->getVis() / 100.0)) << "\n"; std::cout.flush();
+	len++;
+	if (len == 1) {
+		avg = fabs(action[0] - (simulator->getVis() / 100.0));
+	} else {
+		avg -= avg/(float)len;
+		avg += fabs(action[0] - (simulator->getVis() / 100.0))/(float)len;
+	}
 
-	if (abs(action[0] - (simulator->getVis() / 100.0)) < 0.05) isDone = true;
+	if(len >= 3 && avg < 0.05) isDone = true;
 	
 	return 1 - abs(action[0] - simulator->getVis() / 100.0);
 }
@@ -43,4 +53,6 @@ bool FlashingLights::isTaskDone() {
 void FlashingLights::reset() {
 	simulator->visVal = ((double)rand() / (double)RAND_MAX) * 100;
 	isDone = false;
+	len = 0;
+	avg = 0;
 }

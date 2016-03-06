@@ -20,15 +20,13 @@
 int main() {
     srand(time(NULL));  
 
-	DriveToEmitter *still = new DriveToEmitter(new Simlink());
+	FlashingLights *still = new FlashingLights(new Simlink());
 	WireFitRobot robot(still);
 	std::cout << "start\n";
-	robot.runTrials(25, 200);
+	robot.runTrials(50, 200);
+	std::cout << "end\n";
 
 	delete still;
-
-	//Robot robot(new FloatToEmitter());
-	//robot.run(100, 3000);
 	
 	while (true) {
 

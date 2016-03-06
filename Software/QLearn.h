@@ -3,13 +3,14 @@
 
 #include <vector>
 
+#include "Learner.h"
 #include "Backpropagation.h"
 
 namespace net {
 	
 	class NeuralNet;
 
-	class QLearn {
+	class QLearn : public Learner {
 	public:
 		std::vector<NeuralNet *> networks;
 		Backpropagation backprop;

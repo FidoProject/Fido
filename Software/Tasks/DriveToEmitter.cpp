@@ -1,6 +1,7 @@
 #include "DriveToEmitter.h"
 
 #include "../FidoSim/Simlink.h"
+#include <iostream>
 
 DriveToEmitter::DriveToEmitter(Simlink *simulator_) {
 	simulator = simulator_;
@@ -18,7 +19,7 @@ void DriveToEmitter::getRobotParameters(int *stateSize,
 						double *baseOfDimensions) {
 
 	*stateSize = 3, *actionDimensions = 2, *numberOfActions = 5, *neuronsPerLayer = 10, *numberOfLayers = 4;
-	*beginningExplorationConstant = 0.2, *explorationConstantDevaluation = 1;
+	*beginningExplorationConstant = 0.5, *explorationConstantDevaluation = 1;
 	*minAction = { -1, -1 }, *maxAction = { 1, 1 };
 	*baseOfDimensions = 6;
 }
@@ -57,7 +58,7 @@ double DriveToEmitter::performAction(const std::vector<double> &action) {
 }
 
 bool DriveToEmitter::isTaskDone() {
-	if (simulator->getDistanceOfRobotFromEmitter() < allowableDistance) {
+	if (simulator->getDistanceOfRobotFromEmitter() < 80) {
 		return true;
 	} else {
 		return false;
@@ -68,7 +69,7 @@ void DriveToEmitter::reset() {
 	do {
 		simulator->placeEmitterInRandomPosition();
 		simulator->placeRobotInRandomPosition();
-	} while(simulator->getDistanceOfRobotFromEmitter() < allowableDistance);
+	} while(simulator->getDistanceOfRobotFromEmitter() < 80);
 
 
 }

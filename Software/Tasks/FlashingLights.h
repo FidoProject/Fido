@@ -8,6 +8,8 @@ class Simlink;
 class FlashingLights : public Task {
 public:
 	Simlink *simulator;
+	int len;
+	float avg;
 
 	FlashingLights(Simlink *simulator_);
 

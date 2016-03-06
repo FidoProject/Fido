@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <time.h>
+#include <chrono>
+#include <thread>
 
 #include "LSInterpolator.h"
 #include "Tasks/Task.h"
@@ -37,7 +39,11 @@ std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
 
 		int iter;
 		for (iter = 0; iter < maxIterations; iter++) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(15));
+			//std::cout << currentExplorationLevel << "; "; std::cout.flush();
+
 			currentExplorationLevel *= explorationDevaluationPerTimestep;
+			if(currentExplorationLevel < 0.1) currentExplorationLevel = 0.1;
 
 			std::vector<double> state = task->getState();
 			clock_t begin = clock();
@@ -68,16 +74,11 @@ std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
 void WireFitRobot::runIteration() {
 	currentExplorationLevel *= explorationDevaluationPerTimestep;
 
-	performAction();
-	double reward = task->getReward();
-	std::vector<double> newState = task->getState();
-	learner.applyReinforcementToLastAction(reward, newState, 0);
-}
-
-void WireFitRobot::performAction() {
 	std::vector<double> state = task->getState();
 	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, currentExplorationLevel);
-	task->performAction(action);
+	double reward = task->performAction(action);
+	std::vector<double> newState = task->getState();
+	learner.applyReinforcementToLastAction(reward, newState, 0);
 }
 
 void WireFitRobot::hyperParameterTest() {
