@@ -1,8 +1,7 @@
 #include "FlashingLights.h"
 
-#include "../FidoSim/Simlink.h"
-
 #include <iostream>
+#include <math.h>
 
 FlashingLights::FlashingLights(Hardware *hardware_, Connection *connection_) {
 	hardware = hardware_;
@@ -27,24 +26,34 @@ void FlashingLights::getRobotParameters(int *stateSize,
 }
 
 std::vector<double> FlashingLights::getState() {
-	return { (hardware->visVal() - 0.3) / 0.3 };
+	return { (hardware->getVis() - 0.26) / 0.3 };
 }
 
 double FlashingLights::performAction(const std::vector<double> &action) {
-	simulator->setLED(action[0] * 255, 0, 0, 100);
 	std::cout << "Action: " << action[0] << "; ";
-	std::cout << "State: " << getState() << "; ";
+	std::cout << "State: " << getState()[0] << "; ";
 
-	float differenceFromState = fabs(action[0] - getState());
-	double reward = 1 - 2*differenceFromState;
-	std::cout << "Avg: " << avg << "; Reward: " << reward << "; ";
+	//float differenceFromState = fabs(action[0] - getState());
+	//double reward = 1 - 2*differenceFromState;
 
-	return reward;
+	hardware->setMotors(action[0]*100, action[0]*100);
+
+	if(isDone == false) {
+		double reward = connection->getReward();
+		if(reward < -1.1 || reward > 1.1) {
+			isDone = true;
+			return 0;
+		}
+
+		return reward;
+	}
+	return 0;
 }
 
 bool FlashingLights::isTaskDone() {
-	return false;
+	return isDone;
 }
 
 void FlashingLights::reset() {
+	isDone = false;
 }

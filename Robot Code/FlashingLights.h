@@ -2,6 +2,8 @@
 #define FLASHINGLIGHTS_H
 
 #include "Task.h"
+#include "Hardware.h"
+#include "Connection.h"
 
 class Simlink;
 
@@ -9,6 +11,7 @@ class FlashingLights : public Task {
 public:
 	Hardware *hardware;
 	Connection *connection;
+	bool isDone;
 
 	FlashingLights(Hardware *hardware_, Connection *connection_);
 

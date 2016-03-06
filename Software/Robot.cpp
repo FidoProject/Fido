@@ -7,7 +7,7 @@
 #include <thread>
 
 #include "LSInterpolator.h"
-#include "Tasks/Task.h"
+#include "Task.h"
 #include "NeuralNet.h"
 #include "WireFitRobot.h"
 
@@ -67,9 +67,9 @@ void Robot::run(int trials, int numberOfTimeSteps) {
 			std::vector<double> action = getAction(learner.chooseBoltzmanAction(state, currentExplorationLevel));
 			double reward = task->performAction(action);
 
-			learner.applyReinforcementToLastAction(reward, task->getState());
-
 			if (task->isTaskDone() == true) break;
+
+			learner.applyReinforcementToLastAction(reward, task->getState());
 
 			// Perform an action a number of times before a reward iteration
 			//for (int a = 0; a < 6; a++) {
@@ -83,6 +83,14 @@ void Robot::run(int trials, int numberOfTimeSteps) {
 
 	// Print stats about the number of reward iterations
 	WireFitRobot::printStats(std::vector<double>(results.begin(), results.end()));
+}
+
+void Robot::performAction() {
+	std::cout << "Perform action\n";
+	currentExplorationLevel *= explorationDevaluationPerTimestep;
+	std::vector<double> state = task->getState();
+	std::vector<double> action = getAction(learner.chooseBoltzmanAction(state, currentExplorationLevel));
+	task->performAction(action);
 }
 
 std::vector<double> Robot::getAction(int action) {

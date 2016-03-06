@@ -1,7 +1,6 @@
 #ifndef ROBOTN_H
 #define ROBOTN_H
 
-#include "FidoSim/Simlink.h"
 #include "QLearn.h"
 
 class Task;
@@ -24,6 +23,8 @@ public:
 
 	// Runs the robot for a specified number of time steps
 	void run(int trials, int numberOfTimeSteps);
+
+	void performAction();
 
 private:
 	std::vector<double> getAction(int action);

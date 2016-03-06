@@ -7,7 +7,7 @@
 #include <thread>
 
 #include "LSInterpolator.h"
-#include "Tasks/Task.h"
+#include "Task.h"
 #include "NeuralNet.h"
 
 WireFitRobot::WireFitRobot(Task *task_) {
@@ -15,7 +15,7 @@ WireFitRobot::WireFitRobot(Task *task_) {
 
 	task->getRobotParameters(&stateSize, &actionDimensions, &numberOfActions, &numberOfNeuronsPerHiddenLayer, &numberOfHiddenLayers, &startingExplorationLevel, &explorationDevaluationPerTimestep, &minAction, &maxAction, &baseOfDimensions);
 
-	/*net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
+	net::NeuralNet * network = new net::NeuralNet(stateSize, numberOfActions * (actionDimensions + 1), numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 
 	double backpropLearningRate = 0.1;
@@ -27,7 +27,7 @@ WireFitRobot::WireFitRobot(Task *task_) {
 
 	double learningRate = 0.95;
 	double devaluationFactor = 0.4;
-	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);*/
+	learner = net::WireFitQLearn(network, new net::LSInterpolator(), backprop, learningRate, devaluationFactor, actionDimensions, numberOfActions);
 }
 
 std::vector<int> WireFitRobot::runTrials(int numberOfTimes, int maxIterations) {
@@ -122,6 +122,13 @@ void WireFitRobot::hyperParameterTest() {
 			hpLayers++;
 		}
 	}
+}
+
+void WireFitRobot::performAction() {
+	currentExplorationLevel *= explorationDevaluationPerTimestep;
+	std::vector<double> state = task->getState();
+	std::vector<double> action = learner.chooseBoltzmanAction(state, minAction, maxAction, baseOfDimensions, currentExplorationLevel);
+	task->performAction(action);
 }
 
 void WireFitRobot::resetRobot() {

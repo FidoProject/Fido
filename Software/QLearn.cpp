@@ -108,7 +108,7 @@ void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> n
 	std::vector< std::vector<double> > correctOutput = std::vector< std::vector<double> >(history[lastAction].size());
 	for(int a = 0; a < history[lastAction].size(); a++) correctOutput[a] = { history[lastAction][a].second };
 
-	std::cout << "; LastState: " << lastState[0] << "; targetValueForLastState: " << targetValueForLastState << "; lastReward: " << lr << "\n";
+	//std::cout << "; LastState: " << lastState[0] << "; targetValueForLastState: " << targetValueForLastState << "; lastReward: " << lr << "\n";
 
 	backprop.trainOnData(networks[lastAction], input, correctOutput);
 }
