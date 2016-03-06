@@ -19,21 +19,21 @@ int main() {
 
 	std::cout << "Started\n";
 
-	Connection connection;
+	Connection *connection = new Connection();
 	int receiverNum;
 	do {
 		receiverNum = atoi(connection.getString());
 	} while(receiverNum != 5 && receiverNum != 6);
 	
 	if(receiverNum == 5) {
-		Robot robot(new FlashingLights(new Hardware(), new Connection()));
+		Robot robot(new FlashingLights(new Hardware(), connection));
 		robot.run(1, 1000);
 		while(true) {
 			robot.performAction();
 		}
 		((SoundTask *)robot.task)->hardware->safeClose();
 	} else {
-		WireFitRobot robot(new FlashingLights(new Hardware(), new Connection()));
+		WireFitRobot robot(new FlashingLights(new Hardware(), connection));
 		robot.runTrials(1, 1000);
 		while(true) {
 			robot.performAction();
