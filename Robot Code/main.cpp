@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Hardware.h"
 #include "Connection.h"
-#include "SoundTask.h"
+#include "FlashingLights.h"
 #include "../Software/WireFitRobot.h"
 #include <stdlib.h>
 #include <time.h>
@@ -19,15 +19,30 @@ int main() {
 
 	std::cout << "Started\n";
 
-	WireFitRobot robot(new SoundTask(new Hardware(), new Connection()));
-	robot.runTrials(1, 1000);
-	for(int a = 0; a < 100; a++) {
-		robot.performAction();
+	Connection connection;
+	int receiverNum;
+	do {
+		receiverNum = atoi(connection.getString());
+	} while(receiverNum != 5 && receiverNum != 6);
+	
+	if(receiverNum == 5) {
+		Robot robot(new FlashingLights(new Hardware(), new Connection()));
+		robot.run(1, 1000);
+		while(true) {
+			robot.performAction();
+		}
+		((SoundTask *)robot.task)->hardware->safeClose();
+	} else {
+		WireFitRobot robot(new FlashingLights(new Hardware(), new Connection()));
+		robot.runTrials(1, 1000);
+		while(true) {
+			robot.performAction();
+		}
+		((SoundTask *)robot.task)->hardware->safeClose();
 	}
 
-	std::cout << "Ended";
 
-	((SoundTask *)robot.task)->hardware->safeClose();
+	std::cout << "Ended";
 
 	return 0;
 }
