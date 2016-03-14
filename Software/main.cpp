@@ -23,7 +23,7 @@ int main() {
 	FlashingLights *still = new FlashingLights(new Simlink());
 	Robot robot(still);
 	std::cout << "start\n";
-	robot.run(100, 100);
+	robot.run(100, 300);
 	std::cout << "end\n";
 
 	delete still;

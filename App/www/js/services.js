@@ -1,5 +1,5 @@
 var FIDO_IP = "192.168.1.5";
-var FIDO_PORT = 2008;
+var FIDO_PORT = 2004;
 
 var RESET = 1;
 var BEGIN = 2;
@@ -27,7 +27,7 @@ angular.module('Fido.services', ['ngCordova'])
 	};
 
 	var config = function(settings) {
-		sendNumber(settings.model === 'discrete' ? 5:6);
+		sendNumber(settings.model === 'discrete' ? 5 : 6);
 	};
 
 	var sendString = function(string) {
@@ -76,6 +76,7 @@ angular.module('Fido.services', ['ngCordova'])
 		resetModel: resetModel,
 		beginLearning: beginLearning,
 		stopLearning: stopLearning,
-		sendReward: sendReward
+		sendReward: sendReward,
+		config: config
 	};
 });

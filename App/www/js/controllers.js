@@ -14,7 +14,7 @@ angular.module('Fido.controllers', ['ngCordova', 'Fido.services'])
 	};
 })
 
-.controller('ConfigCtrl', function($scope, $fidoConnection) {	
+.controller('ConfigCtrl', function($scope, $fidoConnection, $state) {	
 	$scope.settings = {
 		model: 'discrete'
 	};
