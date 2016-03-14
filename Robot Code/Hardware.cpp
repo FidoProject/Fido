@@ -1,4 +1,4 @@
-#include "Hardware.h"
+	#include "Hardware.h"
 
 #define BUZZ_PIN 14
 #define LED_R_PIN 20
@@ -9,6 +9,7 @@ Hardware::Hardware() {
 	/// init IMU
 	imu = new LSM9DS0(0x6B, 0x1D);
 	imu->begin();
+
 
 	/// init motors
 	motors.standby(false);
@@ -55,6 +56,23 @@ TDVect Hardware::getCompass() {
 	returnVect.yComp = imu->calcMag(imu->my);
 	returnVect.zComp = imu->calcMag(imu->mz);
 	return returnVect;
+}
+
+double Hardware::getHeading() {
+	imu->readMag();
+	imu->readAccel();
+
+	double xh,yh,ayf,axf;
+	ayf=imu->calcAccel(imu->ay)/57,0;
+	axf=imu->calcAccel(imu->ax)/57.0;
+	xh=imu->mx*cos(ayf)+imu->my*sin(ayf)*sin(axf)-imu->mz*cos(axf)*sin(ayf);
+	yh=imu->my*cos(axf)+imu->mz*sin(axf);
+
+	double var_compass=atan2((double)yh,(double)xh) * (180/M_PI)-90;
+	if (var_compass>0) var_compass -= 360;
+	var_compass += 360;
+
+	return var_compass;
 }
 
 void Hardware::setMotors(int motorOne, int motorTwo) {

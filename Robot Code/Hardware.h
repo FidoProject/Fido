@@ -45,6 +45,9 @@ public:
 	// Returns 3 axis of magnetism in Gauss
 	TDVect getCompass();
 
+	// Returns the current heading using compass values
+	double getHeading();
+
 	/* Sets the motors (-100 to 100).
 	 *
 	 * Zero shorts the motor to brake.
