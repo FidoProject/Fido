@@ -18,4 +18,12 @@ Now you may use Fido in your C++ projects, by including any of the header files 
 
 ## Example Code
 
+An example of creating and training a neural network using Fido.
+
+```
+
+```
+
 ## Contributing
+
+Send us a pull request. We will be happy to add you as a contributor and credit you in the README if you do so.
