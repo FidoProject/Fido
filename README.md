@@ -18,13 +18,12 @@ Now you may use Fido in your C++ projects, by including any of the header files 
 
 ## Example Code
 
-An example of creating and training a neural network using Fido.
+An example of creating and training a neural network to perform linear regression.
 
 ```cpp
 #include "Fido/Software/NeuralNet.h"
 #include "Fido/Software/Backpropagation.h"
 
-// Trains a neural network to perform linear regression
 int main() {
   // Creates a neural network with 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer, and a sigmoid activation function.
   net::NeuralNet neuralNetwork = NeuralNet(2, 1, 2, 4, "sigmoid");
