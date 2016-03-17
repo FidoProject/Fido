@@ -20,7 +20,7 @@ Now you may use Fido in your C++ projects, by including any of the header files 
 
 An example of creating and training a neural network using Fido.
 
-```
+```cpp
 #include "Fido/Software/NeuralNet.h"
 #include "Fido/Software/Backpropagation.h"
 
