@@ -11,7 +11,7 @@ $ git clone https://github.com/FidoProject/Fido.git
 
 Move to the Software directory and build the library using cmake.
 ```
-cd Fido/Software && make .
+cd Fido/Software && make
 ```
 
 Now you may use Fido in your C++ projects, by including any of the header files located in the Software directory.
@@ -21,7 +21,11 @@ Now you may use Fido in your C++ projects, by including any of the header files 
 An example of creating and training a neural network using Fido.
 
 ```
+#include "Fido/Software/NeuralNet.h"
 
+int main() {
+
+}
 ```
 
 ## Contributing
