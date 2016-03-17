@@ -37,6 +37,10 @@ int main() {
 }
 ```
 
+## Authors
+
+Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gruenstein](https://github.com/joshuagruenstein).
+
 ## Contributing
 
-Send us a pull request. We will be happy to add you as a contributor and credit you in the README.
+Send us a pull request or open issues. We will be happy to add you as a contributor and credit you in the README if you do either.
