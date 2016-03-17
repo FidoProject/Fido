@@ -39,4 +39,4 @@ int main() {
 
 ## Contributing
 
-Send us a pull request. We will be happy to add you as a contributor and credit you in the README if you do so.
+Send us a pull request. We will be happy to add you as a contributor and credit you in the README.
