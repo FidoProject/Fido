@@ -4,7 +4,17 @@ An open-source, highly modular C++ machine learning library for embedded electro
 
 ## Getting Started
 
-Clone the github repository. In the downloaded zip you will find header and source files.
+Clone the github repository.
+```
+$ git clone https://github.com/FidoProject/Fido.git
+```
+
+Move to the Software directory and build the library using cmake.
+```
+cd Fido/Software && make .
+```
+
+Now you may use Fido in your C++ projects, by including any of the header files located in the Software directory.
 
 ## Example Code
 
