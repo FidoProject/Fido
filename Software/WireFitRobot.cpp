@@ -7,7 +7,7 @@
 #include <thread>
 
 #include "LSInterpolator.h"
-#include "Task.h"
+#include "Tasks/Task.h"
 #include "NeuralNet.h"
 
 WireFitRobot::WireFitRobot(Task *task_) {
