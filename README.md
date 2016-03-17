@@ -42,4 +42,6 @@ Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gr
 
 ## Contributing
 
-Send us a pull request or open issues. We will be happy to add you as a contributor and credit you in the README if you do either.
+Send us a pull request. If you are looking for things to do, check out the repo's open issues. We will be happy to add you as a contributor and credit you in the README.
+
+If you find a bug or have any trouble with the library, please open an issue. We are happy to help you out.
