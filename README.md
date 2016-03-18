@@ -29,14 +29,14 @@ An example of creating and training a neural network to perform linear regressio
 int main() {
   // Creates a neural network with 
   // 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer, and a sigmoid activation function.
-  net::NeuralNet neuralNetwork = net::NeuralNet(2, 1, 2, 4, "sigmoid");
+  net::NeuralNet neuralNetwork = net::NeuralNet(1, 1, 2, 4, "sigmoid");
   std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
   std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
   
   // Create backpropagation object with 
-  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 5%, 
+  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 10%, 
   // and a maximum number of training iterations of 10000
-  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.05, 10000);
+  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.1, 10000);
   backprop.trainOnData(&neuralNetwork, input, correctOutput);
 }
 ```
