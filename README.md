@@ -98,7 +98,7 @@ Then run a robot that trains on that task.
 int main() {
   Robot robot = Robot(new StayStillTask(new Simlink()));
   // Run 10 trials. Stop each trial after 100 pieces of reward have been given to the roobt.
-  robot.run(1);
+  robot.run(10, 100);
 }
 ```
 
