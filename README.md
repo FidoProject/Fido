@@ -47,6 +47,10 @@ Send us a pull request. If you are looking for things to do, check out the repo'
 
 If you find a bug or have any trouble with the library, please open an issue. We are happy to help you out.
 
-## Authors
+### Authors
 
 Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gruenstein](https://github.com/joshuagruenstein).
+
+### Contributors
+
+Thank you to [Henry Wildermuth](https://github.com/FlyingGraysons) for his contributions.
