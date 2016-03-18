@@ -34,9 +34,9 @@ int main() {
   std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
   
   // Create backpropagation object with 
-  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 5%, 
+  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 10%, 
   // and a maximum number of training iterations of 10000
-  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.05, 10000);
+  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.1, 10000);
   backprop.trainOnData(&neuralNetwork, input, correctOutput);
 }
 ```
