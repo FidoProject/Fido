@@ -80,12 +80,12 @@ std::vector<double> StayStillTask::getState() {
 double StayStillTask::performAction(const std::vector<double> &action) {
   double motorVal = action[0], lightVal = getState()[0];
   simulator->setMotors(motorVal, motorVal, 1, 1); // Move robot
-  if((motorVal == 0 && lightVal > 0.5) || (motorVal == 1 && lightVal < 0.1)) return 1;
-  else return -1;
+  if((motorVal == 0 && lightVal > 0.5) || (motorVal == 1 && lightVal < 0.1)) return 1; // Did something right
+  else return -1; // Did something wrong
 }
 
 bool StayStillTask::isTaskDone() { 
-  return false;
+  return false; // Never stop training (until trial is stopped)
 }
 
 void StayStillTask::reset() {}
