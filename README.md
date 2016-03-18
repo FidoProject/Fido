@@ -53,4 +53,4 @@ Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gr
 
 ### Contributors
 
-Thank you to [Henry Wildermuth](https://github.com/FlyingGraysons) for his contributions.
+Thanks [Henry Wildermuth](https://github.com/FlyingGraysons) for his contributions.
