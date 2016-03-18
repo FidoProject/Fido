@@ -73,7 +73,7 @@ void StayStillTask::getRobotParameters(int *stateSize,
 }
 
 std::vector<double> StayStillTask::getState() { 
-  return { simulator.getVis() / 100.0 };
+  return { simulator.getVis() / 100.0 }; // Light intensity is robot's input
 }
 
 double StayStillTask::performAction(const std::vector<double> &action) {
