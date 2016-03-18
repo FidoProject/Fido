@@ -11,23 +11,17 @@ Clone the github repository.
 $ git clone https://github.com/FidoProject/Fido.git
 ```
 
-If you are on a unix machine, use the install script.
+If you are on a **Unix** machine, use the install script.
 ```
 $ cd Fido/ && bash install.sh
 ```
-This will also install the fcc compiler on your machine, which can be used just like g++, but automatically uses the Fido Library.  
-This can be used like `fcc in.cpp -o a.out`. Any gcc compiler options can be used.
 
-Else if not on a unix machine, use
+If you are on **Windows**, use
 ```
 $ cd Fido/Software && make && make lib
 ```
-And to compile with the fido library, use
-```
-$ g++ -std=c++11 in.cpp PATH_TO_FIDO_FOLDER/Software/fido-lib.a -o a.out
-```
-Where `in.cpp` is your source file (can be multiple), `PATH_TO_FIDO_FOLDER` is the path to the `Fido/` folder, and `a.out` is your output executable.
-Now you may use Fido in your C++ projects, by including any of the header files located in the Software directory.
+
+Done! To use Fido, just link the `fido-lib.a` file and include any headers from the `Software` directory.
 
 ## Example Code
 
@@ -44,14 +38,10 @@ int main() {
   net::NeuralNet neuralNetwork = net::NeuralNet(1, 1, 2, 4, "sigmoid");
   std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
   std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
-  
-  // Create backpropagation object with 
-  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 10%, 
 
   // Create backpropagation object with
   // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 5%,
   // and a maximum number of training iterations of 10000
-  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.1, 10000);
   net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.05, 10000);
   backprop.trainOnData(&neuralNetwork, input, correctOutput);
 
@@ -62,10 +52,7 @@ int main() {
   }
 }
 ```
-This code would be compiled with the command
-```
-$ fcc linear.cpp -o linear.o
-```
+
 ## Contributing
 
 Send us a pull request. If you are looking for things to do, check out the repo's open issues. We will be happy to add you as a contributor and credit you in the README.
