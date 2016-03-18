@@ -15,7 +15,7 @@ namespace net {
 		Backpropagation backprop;
 		unsigned int lastAction, numberOfActions;
 		double learningRate, devaluationFactor;
-        double lastReward;
+		double lastReward;
 		std::vector<double> lastState;
 		std::vector< std::vector< std::pair<std::vector<double>, double> > > history;
 

@@ -198,44 +198,44 @@ void Simlink::updateMainWindow() {
 }
 
 TDVect Simlink::getAccel() {
-    return imu.accel;
+	return imu.accel;
 }
 
 TDVect Simlink::getGyro() {
-    return imu.gyro;
+	return imu.gyro;
 }
 
 TDVect Simlink::getCompass() {
 	TDVect emitSense = emitter.sense(robot, 50);
 	imu.compass = { emitSense.xComp / 6.4, emitSense.yComp / 6.4, emitSense.zComp / 6.4 };
-    return imu.compass;
+	return imu.compass;
 }
 
 int Simlink::getMicrophone() {
-    return micVal;
+	return micVal;
 }
 
 int Simlink::getIR() {
-    return irVal;
+	return irVal;
 }
 
 int Simlink::getVis() {
-    return visVal;
+	return visVal;
 }
 
 int Simlink::getBattery() {
-    return batVal;
+	return batVal;
 }
 
 void Simlink::setLED(int r, int g, int b, int i) {
-    led.r = r * i/100;
-    led.g = g * i/100;
-    led.b = b * i/100;
+	led.r = r * i/100;
+	led.g = g * i/100;
+	led.b = b * i/100;
 }
 
 void Simlink::setMotors(int motorOne, int motorTwo, double speed, double deltaTime) {
-    motors.motorOne = motorOne;
-    motors.motorTwo = motorTwo;
+	motors.motorOne = motorOne;
+	motors.motorTwo = motorTwo;
 
 	sf::Vector2f previousRobotPosition = robot.getPosition();
 
@@ -251,11 +251,11 @@ void Simlink::setMotors(int motorOne, int motorTwo, double speed, double deltaTi
 } 
 
 void Simlink::chirp(int volume, int frequency) {
-    piezo.frequency = frequency;
-    piezo.volume = volume;
-    int endTime = 200 + clock();
-    while(clock() != endTime);
-    piezo.volume = 0;
+	piezo.frequency = frequency;
+	piezo.volume = volume;
+	int endTime = 200 + clock();
+	while(clock() != endTime);
+	piezo.volume = 0;
 }
 
 int Simlink::getTemperature() {

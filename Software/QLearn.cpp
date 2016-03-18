@@ -17,7 +17,7 @@ QLearn::QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learni
 	devaluationFactor = devaluationFactor_;
 	numberOfActions = numberOfActions_;
 	lastAction = -1;
-    lastReward = -1;
+	lastReward = -1;
 
 	for(int a = 0; a < numberOfActions; a++) networks.push_back(new net::NeuralNet(modelNetwork));
 
@@ -31,9 +31,9 @@ QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, do
 	devaluationFactor = devaluationFactor_;
 	numberOfActions = (int)networks.size();
 	lastAction = -1;
-    lastReward = -1;
+	lastReward = -1;
 
-    history = std::vector< std::vector< std::pair<std::vector<double>, double> > >(numberOfActions, std::vector< std::pair<std::vector<double>, double> >(0));
+	history = std::vector< std::vector< std::pair<std::vector<double>, double> > >(numberOfActions, std::vector< std::pair<std::vector<double>, double> >(0));
 }
 
 QLearn::QLearn(std::string filename) {
@@ -54,14 +54,14 @@ QLearn::QLearn(std::string filename) {
 QLearn::QLearn() { }
 
 unsigned int QLearn::chooseBestAction(std::vector<double> currentState) {
-    getBestActionAndReward(currentState, &lastAction, &lastReward);
+	getBestActionAndReward(currentState, &lastAction, &lastReward);
 	lastState = currentState;
 	return lastAction;
 }
 
 unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant) {
 	double determiner = (double)rand() / (double)RAND_MAX;
-    std::vector<double> rewards(networks.size());
+	std::vector<double> rewards(networks.size());
 	std::vector<double> exponentTerms(networks.size());
 	double sumOfExponentTerms = 0;
 
@@ -70,8 +70,8 @@ unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, doub
 	for(int a = 0; a < networks.size(); a++) {
 		double reward = networks[a]->getOutput(currentState)[0];
 		double exponentTerm = exp(reward / explorationConstant);
-        
-        rewards[a] = reward;
+		
+		rewards[a] = reward;
 		exponentTerms[a] = exponentTerm;
 		sumOfExponentTerms += exponentTerm;
 	}
@@ -81,7 +81,7 @@ unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, doub
 		sumOfProbabilities += (exponentTerms[a] / sumOfExponentTerms);
 		if(sumOfProbabilities >= determiner) {
 			lastAction = a;
-            lastReward = rewards[a];
+			lastReward = rewards[a];
 			lastState = currentState;
 			return a;
 		}
@@ -95,8 +95,8 @@ unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, doub
 
 void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState) {
 	if(lastAction == -1) return;
-    
-    double lr = networks[lastAction]->getOutput(lastState)[0];
+	
+	double lr = networks[lastAction]->getOutput(lastState)[0];
 	//double feedback = (reward + (devaluationFactor*highestReward(newState)));
 	//double targetValueForLastState = ((1 - learningRate) * lastReward) + (learningRate*feedback);
 	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*highestReward(newState))-lr);

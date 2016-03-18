@@ -29,10 +29,10 @@ public:
 	virtual void setLED(double r, double g, double b) = 0;
 
 	/* Buzz at a volume and frequency from 0-100 for a set duration.
-     *
-     * The frequency is mapped where 0=261Hz (middle C)
-     * and 100 is an octave higher at 523Hz.
-     */
+	 *
+	 * The frequency is mapped where 0=261Hz (middle C)
+	 * and 100 is an octave higher at 523Hz.
+	 */
 	virtual void chirp(double volume, int frequency, int time) = 0;
 
 	/// SENSORS
@@ -55,18 +55,18 @@ public:
 	virtual double getIR() = 0;
 
 	 // Returns the 3D acceleration vector in m/s^2.
-    virtual TDVect getAccel() = 0;
-    
-    // Returns the 3D magnetic field vector.
-    virtual TDVect getCompass() = 0;
-    
-    /* Returns the 3D rotational velocity vector.
-     *
-     * The TDVect math here is a little sketchy, but
-     * I trust you'll understand what's going on. The
-     * components of TDVect are xyz rad/s.
-     */
-    virtual TDVect getGyro() = 0;
+	virtual TDVect getAccel() = 0;
+	
+	// Returns the 3D magnetic field vector.
+	virtual TDVect getCompass() = 0;
+	
+	/* Returns the 3D rotational velocity vector.
+	 *
+	 * The TDVect math here is a little sketchy, but
+	 * I trust you'll understand what's going on. The
+	 * components of TDVect are xyz rad/s.
+	 */
+	virtual TDVect getGyro() = 0;
 };
 
 #endif

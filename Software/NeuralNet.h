@@ -27,15 +27,15 @@ namespace net {
 		
 		// Make a neural network with random weights but the same number of inputs, outputs, hidden layers, and neurons per hidden layer as the network given.
 		explicit NeuralNet(NeuralNet* otherNet);
-        
-        // Restores a neural network from the specified file
+		
+		// Restores a neural network from the specified file
 		explicit NeuralNet(std::string filename);
 
 		// Loads a neural network from a file using a stream
 		explicit NeuralNet(std::ifstream *input);
-        
-        // Stores a neural network in the specified file
-        void storeNet(std::string filename);
+		
+		// Stores a neural network in the specified file
+		void storeNet(std::string filename);
 
 		// Stores a neural network using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.
 		void storeNetWithStream(std::ofstream *output);
@@ -68,9 +68,9 @@ namespace net {
 
 		// Returns the output of each layer of neurons as an input is fed for just as it is fed forward in getOutput
 		std::vector< std::vector<double> > feedForward(std::vector<double> input);
-        
-        // Prints the weights of the neurons of the layers of the net
-        void printWeights();
+		
+		// Prints the weights of the neurons of the layers of the net
+		void printWeights();
 		
 		// Gets the number of hidden layers in the neural net. Returns the number of layers minus 1
 		int numberOfHiddenLayers();
@@ -87,7 +87,7 @@ namespace net {
 		// A two dimensional network of neurons.
 		std::vector< Layer > net;
 		
-    private:
+	private:
 		void initWithStream(std::ifstream *input);
 	};
 }
