@@ -191,3 +191,8 @@ int NeuralNet::numberOfOutputs() {
 void NeuralNet::setOutputActivationFunction(std::string name) {
 	net[net.size() - 1].setActivationFunctionWithName(name);
 }
+
+ostream& operator<<(ostream& os, const NeuralNetwork& nn)
+{
+    return nn.printWeights();
+}
