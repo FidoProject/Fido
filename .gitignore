@@ -189,3 +189,9 @@ Journal.html
 Gerbers.zip
 Software/Hardware/src
 FidoExec
+
+#############
+## Doxygen ##
+############
+html/
+latex/
