@@ -64,7 +64,6 @@ void StayStillTask::getRobotParameters(int *stateSize,
 						std::vector<double> *minAction,
 						std::vector<double> *maxAction,
 						double *baseOfDimensions) {
-  
   *stateSize = 1;
   *numberOfActions = 3, *neuronsPerLayer = 10, *numberOfLayers = 3;
   *beginningExplorationConstant = 0.15, *explorationConstantDevaluation = 1;
