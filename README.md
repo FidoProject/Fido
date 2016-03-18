@@ -37,7 +37,7 @@ int main() {
   // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 5%, 
   // and a maximum number of training iterations of 10000
   net::Backpropagation backprop = Backpropagation(0.1, 0.001, 0.05, 10000);
-  backprop.trainOnData(&network, input, correctOutput);
+  backprop.trainOnData(&neuralNetwork, input, correctOutput);
 }
 ```
 
