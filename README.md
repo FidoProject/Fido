@@ -11,12 +11,12 @@ Clone the github repository.
 $ git clone https://github.com/FidoProject/Fido.git
 ```
 
-If you are on a unix machine, use the install script.
+If you are on a **Unix** machine, use the install script.
 ```
 $ cd Fido/ && bash install.sh
 ```
 
-If you are not on a unix machine, use
+If you are on **Windows**, use
 ```
 $ cd Fido/Software && make && make lib
 ```
