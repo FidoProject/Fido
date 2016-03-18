@@ -95,6 +95,7 @@ void StayStillTask::reset() {}
 Then run a robot that trains on that task.
 
 ```cpp
+#include "StayStillTask.h"
 #include "Fido/Software/Robot.h"
 #include "Fido/Software/FidoSim/Simlink.h"
 int main() {
