@@ -34,8 +34,8 @@ namespace net {
 		// Loads a neural network from a file using a stream
 		explicit NeuralNet(std::ifstream *input);
         
-        // Stores a neural network in the specified file
-        void storeNet(std::string filename);
+        	// Stores a neural network in the specified file
+		 void storeNet(std::string filename);
 
 		// Stores a neural network using specified ofstream. Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.
 		void storeNetWithStream(std::ofstream *output);
@@ -86,6 +86,10 @@ namespace net {
 
 		// A two dimensional network of neurons.
 		std::vector< Layer > net;
+		
+		// Print function
+		
+		friend ostream& operator<<(ostream& os, const NeuralNetwork& nN);
 		
     private:
 		void initWithStream(std::ifstream *input);
