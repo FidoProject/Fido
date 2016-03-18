@@ -15,19 +15,13 @@ If you are on a unix machine, use the install script.
 ```
 $ cd Fido/ && bash install.sh
 ```
-This will also install the fcc compiler on your machine, which can be used just like g++, but automatically uses the Fido Library.  
-This can be used like `fcc in.cpp -o a.out`. Any gcc compiler options can be used.
 
-Else if not on a unix machine, use
+If you are not on a unix machine, use
 ```
 $ cd Fido/Software && make && make lib
 ```
-And to compile with the fido library, use
-```
-$ g++ -std=c++11 in.cpp PATH_TO_FIDO_FOLDER/Software/fido-lib.a -o a.out
-```
-Where `in.cpp` is your source file (can be multiple), `PATH_TO_FIDO_FOLDER` is the path to the `Fido/` folder, and `a.out` is your output executable.
-Now you may use Fido in your C++ projects, by including any of the header files located in the Software directory.
+
+Done! To use Fido, just link the `fido-lib.a` file and include any headers from the `Software` directory.
 
 ## Example Code
 
