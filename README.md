@@ -20,8 +20,6 @@ Now you may use Fido in your C++ projects, by including any of the header files 
 
 ## Example Code
 
-### Linear Regression 
-
 An example of creating and training a neural network to perform linear regression.
 
 ```cpp
