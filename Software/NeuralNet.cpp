@@ -36,7 +36,7 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 	randomizeWeights();
 }
 
-NeuralNet::NeuralNet(std::string filename) { 
+NeuralNet::NeuralNet(std::string filename) {
 	std::ifstream input;
 	input.open(filename.c_str(), std::ifstream::in);
 	initWithStream(&input);
@@ -163,17 +163,17 @@ void NeuralNet::initWithStream(std::ifstream *input) {
 }
 
 void NeuralNet::printWeights() {
-    std::cout << "Neuron weights: \n";
-    for(int a = 0; a < net.size(); a++) {
-        std::cout << "  Layer " << a << ":\n";
-        for(int b = 0; b < net[a].neurons.size(); b++) {
-            std::cout << "      Neuron " << b << ": ";
-            for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
-                std::cout << net[a].neurons[b].weights[c] << " ";
-            }
-            std::cout << "\n";
-        }
-    }
+	std::cout << "Neuron weights: \n";
+	for(int a = 0; a < net.size(); a++) {
+		std::cout << "  Layer " << a << ":\n";
+		for(int b = 0; b < net[a].neurons.size(); b++) {
+			std::cout << "      Neuron " << b << ": ";
+			for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+				std::cout << net[a].neurons[b].weights[c] << " ";
+			}
+			std::cout << "\n";
+		}
+	}
 }
 
 int NeuralNet::numberOfHiddenLayers() {
@@ -190,9 +190,4 @@ int NeuralNet::numberOfOutputs() {
 
 void NeuralNet::setOutputActivationFunction(std::string name) {
 	net[net.size() - 1].setActivationFunctionWithName(name);
-}
-
-ostream& operator<<(ostream& os, const NeuralNetwork& nn)
-{
-    return nn.printWeights();
 }
