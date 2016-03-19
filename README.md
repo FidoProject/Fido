@@ -4,7 +4,7 @@ An open-source, highly modular C++ machine learning library for embedded electro
 
 ## Getting Started
 
-The only dependency for the library is [SFML](http://www.sfml-dev.org/learn.php). However, this is optional if the full code is not needed.
+The only dependency for the library is [SFML](http://www.sfml-dev.org/learn.php)
 
 Clone the github repository.
 ```
@@ -14,11 +14,6 @@ $ git clone https://github.com/FidoProject/Fido.git
 If you are on a **Unix** machine, use the install script.
 ```
 $ cd Fido/ && bash install.sh
-```
-
-If you do not have **SFML** use the install script with the `-noSFML` argument
-```
-$ cd Fido/ && bash install.sh -noSFML
 ```
 
 If you are on **Windows**, use
@@ -39,8 +34,11 @@ An example of creating and training a neural network to perform linear regressio
 
 int main() {
   // Creates a neural network with
-  // 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer, and a sigmoid activation function.
+  // 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer,
+  // a sigmoid activation function for hidden layers, and a linear activation function on the final layer.
   net::NeuralNet neuralNetwork = net::NeuralNet(1, 1, 2, 4, "sigmoid");
+  neuralNetwork.setOutputActivationFunction("simpleLinear");
+  
   std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
   std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
 
