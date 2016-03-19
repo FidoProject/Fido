@@ -18,7 +18,7 @@ $ cd Fido/ && bash install.sh
 
 If you are on **Windows**, use
 ```
-$ cd Fido/Software && make && make lib
+$ cd Fido/ && install.bat
 ```
 
 Done! To use Fido, just link the `fido-lib.a` file and include any headers from the `Software` directory.
