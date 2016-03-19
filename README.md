@@ -4,7 +4,7 @@ An open-source, highly modular C++ machine learning library for embedded electro
 
 ## Getting Started
 
-The only dependency for the library is [SFML](http://www.sfml-dev.org/learn.php). However, this is optional if the full code is not needed.
+The only dependency for the library is [SFML](http://www.sfml-dev.org/learn.php)
 
 Clone the github repository.
 ```
@@ -14,11 +14,6 @@ $ git clone https://github.com/FidoProject/Fido.git
 If you are on a **Unix** machine, use the install script.
 ```
 $ cd Fido/ && bash install.sh
-```
-
-If you do not have **SFML** use the install script with the `-noSFML` argument
-```
-$ cd Fido/ && bash install.sh -noSFML
 ```
 
 If you are on **Windows**, use
