@@ -27,7 +27,7 @@ Backpropagation::Backpropagation() {
 	maxiumumIterations = 0;
 }
 
-Backpropagation::Backpropagation(std::string filename) { 
+Backpropagation::Backpropagation(std::string filename) {
 	std::ifstream input;
 	input.open(filename.c_str(), std::ifstream::in);
 	initWithStream(&input);
@@ -66,10 +66,10 @@ void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< st
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
-		
+
 		//std::cout << "Error Level: " << totalError << "; iter: " << iterations << "\n";
 	} while(totalError > targetErrorLevel && iterations < maxiumumIterations);
-	if(iterations >= maxiumumIterations-1) std::cout << "HIT MAX ITERATIONS";
+	if(iterations >= maxiumumIterations-1) std::cout << "HIT MAX ITERATIONS\n";
 }
 
 
@@ -95,7 +95,7 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 		const std::vector<double> &currentHiddenLayerOutput = outputs[layerIndex];
 		const std::vector<double> &lastLayerError = errors[errors.size() - 1];
 		const std::vector< std::vector<double> > &lastLayerWeights = weights[layerIndex + 1];
-		
+
 		for(int neuronIndex = 0; neuronIndex < network->net[layerIndex].neurons.size(); neuronIndex++) {
 			double errorsTimesWeights = 0;
 			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
@@ -110,7 +110,7 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	// Update weights
 	for(int errorIndex = 0; errorIndex < errors.size(); errorIndex++) {
 		int layerIndex = ((int)errors.size() - 1) - errorIndex;
-		
+
 		for(int neuronIndex = 0; neuronIndex < errors[errorIndex].size(); neuronIndex++) {
 			if(errorIndex == errors.size() - 1) {
 				for(int inputIndex = 0; inputIndex < input.size(); inputIndex++) {
@@ -131,7 +131,7 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 			weights[layerIndex][neuronIndex][weights[layerIndex][neuronIndex].size() - 1] += deltaWeight;
 			lastChangeInWeight[layerIndex][neuronIndex][weights[layerIndex][neuronIndex].size() - 1] = deltaWeight;
 		}
-		
+
 	}
 
 	network->setWeights3D(weights);
@@ -158,14 +158,14 @@ void Backpropagation::setDerivedOutputActivationFunction(std::string name) {
 std::string Backpropagation::getDerivedHiddenActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
 	for(std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunctionDerivative) return a->first;
-	
+
 	throw 1;
 }
 
 std::string Backpropagation::getDerivedOutputActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
 	for(std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunctionDerivative) return a->first;
-	
+
 	throw 1;
 }
 
