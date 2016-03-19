@@ -34,8 +34,11 @@ An example of creating and training a neural network to perform linear regressio
 
 int main() {
   // Creates a neural network with
-  // 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer, and a sigmoid activation function.
+  // 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer,
+  // a sigmoid activation function for hidden layers, and a linear activation function on the final layer.
   net::NeuralNet neuralNetwork = net::NeuralNet(1, 1, 2, 4, "sigmoid");
+  neuralNetwork.setOutputActivationFunction("simpleLinear");
+  
   std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
   std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
 
