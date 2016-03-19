@@ -14,7 +14,7 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 	learningRate = learningRate_;
 	momentumTerm = momentumTerm_;
 	targetErrorLevel = targetErrorLevel_;
-	maxiumumIterations = maximumIterations_;
+	maximumIterations = maximumIterations_;
 	hiddenActivationFunctionDerivative = sigmoidDerivative;
 	outputActivationFunctionDerivative = sigmoidDerivative;
 }
@@ -24,7 +24,7 @@ Backpropagation::Backpropagation() {
 	outputActivationFunctionDerivative = sigmoidDerivative;
 
 	learningRate = momentumTerm = targetErrorLevel = 0;
-	maxiumumIterations = 0;
+	maximumIterations = 0;
 }
 
 Backpropagation::Backpropagation(std::string filename) {
@@ -47,7 +47,7 @@ void Backpropagation::storeBackpropagation(std::string filename) {
 
 void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
 	if(output->is_open()) {
-		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maxiumumIterations << "\n";
+		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumIterations << "\n";
 		*output << getDerivedHiddenActivationFunctionName() << " " << getDerivedOutputActivationFunctionName() << "\n";
 	} else {
 		std::cout << "Could not store backprop\n";
@@ -68,8 +68,8 @@ void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< st
 		iterations++;
 
 		//std::cout << "Error Level: " << totalError << "; iter: " << iterations << "\n";
-	} while(totalError > targetErrorLevel && iterations < maxiumumIterations);
-	if(iterations >= maxiumumIterations-1) std::cout << "HIT MAX ITERATIONS\n";
+	} while(totalError > targetErrorLevel && iterations < maximumIterations);
+	if(iterations >= maximumIterations-1) std::cout << "HIT MAX ITERATIONS\n";
 }
 
 
@@ -171,7 +171,7 @@ std::string Backpropagation::getDerivedOutputActivationFunctionName() {
 
 void Backpropagation::initWithStream(std::ifstream *input) {
 	if(input->is_open()) {
-		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maxiumumIterations;
+		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumIterations;
 
 		std::string hiddenActivationFunctionDerivativeName, outputActivationFunctionDerivativeName;
 		*input >> hiddenActivationFunctionDerivativeName >> outputActivationFunctionDerivativeName;
