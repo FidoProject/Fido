@@ -3,7 +3,9 @@
 
 #include <vector>
 
-class net::NeuralNet;
+namespace net{
+	class NeuralNet;
+}
 
 namespace rl {
 
@@ -26,6 +28,8 @@ namespace rl {
 		 * this function updates the correct value for the longterm reward of the lastAction and trains the network in charge of the lastAction to output the corect reward value
 		 */
 		virtual void applyReinforcementToLastAction(double reward, State newState) = 0;
+
+		virtual void reset() = 0;
 	};
 };
 

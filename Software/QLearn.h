@@ -6,7 +6,9 @@
 #include "Learner.h"
 #include "Backpropagation.h"
 
-class net::NeuralNet;
+namespace net{
+	class NeuralNet;
+}
 
 namespace rl {
 
@@ -19,6 +21,8 @@ namespace rl {
 			network = network_;
 			action = action_;
 		}
+
+		Model() {}
 
 		void addToHistory(std::pair<State, double> entry) {
 			history.push_back(entry);
@@ -46,8 +50,7 @@ namespace rl {
 		*/
 		QLearn(std::vector<Model> models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_);
 
-		// Initializes a QLearn object with a file that contains a stored QLearn object
-		QLearn(std::string filename);
+		QLearn();
 
 		// Gets the action that the network deems most benificial for the currentState
 		Action chooseBestAction(State currentState);
@@ -64,10 +67,10 @@ namespace rl {
 		 */
 		void applyReinforcementToLastAction(double reward, State newState);
 
-		void storeQLearn(std::string filename);
+		void reset();
 	private:
 		net::Backpropagation backprop;
-		std::vector<Model> possibleActions;
+		std::vector<Model> models;
 		double learningRate, devaluationFactor;
 
 		State lastState;

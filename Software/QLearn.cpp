@@ -20,34 +20,22 @@ QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, dou
 	for(int a = 0; a < possibleActions_.size(); a++) models.push_back(Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
 }
 
-QLearn::QLearn(std::vector< std::pair< net::NeuralNet *, std::vector<double> > > models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, std::vector<double> > possibleActions_) {
+QLearn::QLearn(std::vector<Model> models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
 	models = models_;
 	backprop = backprop_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
-
 }
 
-QLearn::QLearn(std::string filename) {
-	std::ifstream input;
-	input.open(filename.c_str(), std::ifstream::in);
-	if(input.is_open()) {
-		input >> learningRate >> devaluationFactor >> numberOfActions;
-		backprop = net::Backpropagation(&input);
-		for(int a = 0; a < numberOfActions; a++) networks.push_back(new net::NeuralNet(&input));
-
-		input.close();
-	} else {
-		std::cout << "Could not retrieve qlearn from file\n";
-		throw 1;
-	}
+QLearn::QLearn() {
+	
 }
 
 Action QLearn::chooseBestAction(State currentState) {
 	lastState = currentState;
 
 	std::vector<double> rewards = getModelRewards(currentState);
-	lastModel = models[std::max_element(rewards.begin(), rewards.end()) - rewards.bein()];
+	lastModel = models[std::max_element(rewards.begin(), rewards.end()) - rewards.begin()];
 	return lastModel.action;
 }
 
@@ -63,7 +51,7 @@ Action QLearn::chooseBoltzmanAction(State currentState, double explorationConsta
 
 	std::vector<double> exponentTerms(models.size());
 	double sumOfExponentTerms = 0;
-	std::for_each(rewards.begin(), rewards.end(), [](double reward){
+	std::for_each(rewards.begin(), rewards.end(), [&](double reward){
 		double exponentTerm = exp(reward / explorationConstant);
 		exponentTerms.push_back(exponentTerm);
 		sumOfExponentTerms += exponentTerm;
@@ -82,14 +70,16 @@ Action QLearn::chooseBoltzmanAction(State currentState, double explorationConsta
 	/// Incase a floating point error resulted in no action
 	std::cout << "Floating point error when choosing an action using a Boltzmann selection policy! Choosing last action.";
 
-	lastModel = models[networks.size() - 1];
+	lastModel = models[models.size() - 1];
 	lastState = currentState;
 	return lastModel.action;
 }
 
 void QLearn::applyReinforcementToLastAction(double reward, State newState) {
-	if(lastAction == -1) return;
-	
+	if(lastState.size() == 0) {
+		std::cout << "Called applyReinforcementToLastAction before an action had been selected! Because of this, this function call will be ignored.";
+	}
+
 	double lr = lastModel.network->getOutput(lastState)[0];
 	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*getHighestReward(newState))-lr);
 	
@@ -98,41 +88,33 @@ void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 	std::vector< std::vector<double> > input;
 	std::vector< std::vector<double> > correctOutput;
 
-	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(input), [](const std::pair<State, double> &entry) {
+	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(input), [](std::pair<State, double> entry) {
 		return entry.first;
 	});
-	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(correctOutput), [](const std::pair<State, double> &entry) {
-		return entry.second;
+	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(correctOutput), [](std::pair<State, double> entry) {
+		std::vector<double> returnVal = {entry.second};
+		return returnVal;
 	});
 
-	backprop.trainOnData(networks[lastAction], input, correctOutput);
+	backprop.trainOnData(lastModel.network, input, correctOutput);
 }
 
-std::vector<double> getModelRewards(State state); {
+void QLearn::reset() {
+	std::for_each(models.begin(), models.end(), [&](Model model) {
+		model.network->randomizeWeights();
+	});
+}
+
+std::vector<double> QLearn::getModelRewards(State state) {
 	std::vector<double> rewards;
-	std::for_each(models.begin(), models.end(), [](Model model){
-		rewards.push_back(models[a].network->getOutput(state)[0]);
+	std::for_each(models.begin(), models.end(), [&](Model model){
+		rewards.push_back(model.network->getOutput(state)[0]);
 	});
 
 	return rewards;
 }
 
 double QLearn::getHighestReward(State state) {
-	std::std::vector<double> rewards = getModelRewards(state);
+	std::vector<double> rewards = getModelRewards(state);
 	return *std::max_element(rewards.begin(), rewards.end());
-}
-
-void QLearn::storeQLearn(std::string filename) {
-	std::ofstream output;
-	output.open(filename.c_str(), std::ios::app);
-	if(output.is_open()) {
-		output << learningRate << " " << devaluationFactor << " " << numberOfActions << "\n";
-		backprop.storeBackpropagationWithStream(&output);
-		for(std::vector<net::NeuralNet *>::iterator a = networks.begin(); a != networks.end(); ++a) (*a)->storeNetWithStream(&output);
-
-		output.close();
-	} else {
-		std::cout << "Could not store qlearn in file\n";
-		throw 1;
-	}
 }

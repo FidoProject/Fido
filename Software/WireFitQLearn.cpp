@@ -8,15 +8,29 @@
 #include <chrono>
 #include <algorithm>
 #include <random>
+#include <cfloat>
 
 #include "Interpolator.h"
 #include "NeuralNet.h"
-#include "Backpropagation.h"
 
+using namespace rl;
 
-using namespace net;
+WireFitQLearn::WireFitQLearn(net::NeuralNet *modelNetwork, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_, Action minAction_, Action maxAction_, int baseOfDimensions_) {
+	
+	if(modelNetwork->numberOfOutputs() != numberOfWires_ * (actionDimensions_+1)) {
+		std::cout << "Neural network incorrectly formatted!\n";
+		throw 1;
+	}
 
-WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator_, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_) {
+	if(minAction_.size() != actionDimensions_) {
+		std::cout << "Min action does not have same dimensions as action dimensions parameter!\n"; std::cout.flush();
+		throw 1;
+	}
+	if(maxAction_.size() != actionDimensions_) {
+		std::cout << "Max action does not have same dimensions as action dimensions parameter!\n"; std::cout.flush();
+		throw 1;
+	}
+
 	backprop = backprop_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
@@ -25,6 +39,8 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator
 	lastAction = std::vector<double>(actionDimensions);
 	network = modelNetwork;
 	interpolator = interpolator_;
+	minAction = minAction_;
+	maxAction = maxAction_;
 	
 	scalingFactorToMillis = 1;
 	biasMovingAverage = 0;
@@ -34,10 +50,11 @@ WireFitQLearn::WireFitQLearn(NeuralNet *modelNetwork, Interpolator *interpolator
 	controlPointsGDLearningRate = 0.1;
 	controlPointsGDMaxIterations = 10000;
 
-	if(network->numberOfOutputs() != numberOfWires * (actionDimensions+1)) {
-		std::cout << "Neural network incorrectly formatted!\n";
-		throw 1;
-	}
+	baseOfDimensions = baseOfDimensions_;
+}
+
+WireFitQLearn::WireFitQLearn() {
+
 }
 
 WireFitQLearn::WireFitQLearn(std::string filename) {
@@ -46,7 +63,7 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
 	if(input.is_open()) {
 		input >> learningRate >> devaluationFactor;
 		input >> actionDimensions >> numberOfWires;
-		input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> biasMovingAverage >> rewardIterations;
+		input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> biasMovingAverage >> rewardIterations >> baseOfDimensions;
 		
 		lastAction = std::vector<double>(actionDimensions);
 		for(int a = 0; a < actionDimensions; a++) {
@@ -56,9 +73,9 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
 			
 		}
 		
-		backprop = Backpropagation(&input);
+		backprop = net::Backpropagation(&input);
 		interpolator = Interpolator::getAnyInterpolatorFromFile(&input);
-		network = new NeuralNet(&input);
+		network = new net::NeuralNet(&input);
 		
 		input.close();
 
@@ -72,19 +89,14 @@ WireFitQLearn::WireFitQLearn(std::string filename) {
 	}
 }
 
-WireFitQLearn::WireFitQLearn() { }
-
-std::vector<double> WireFitQLearn::chooseBestAction(std::vector<double> currentState) {
+Action WireFitQLearn::chooseBestAction(State currentState) {
 	std::vector<double> action = bestAction(currentState);
 	lastAction = action;
 	lastState = currentState;
 	return action;
 }
 
-std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> currentState,
-	const std::vector<double> &minAction,
-	const std::vector<double> &maxAction,
-	int baseOfDimensions,
+Action WireFitQLearn::chooseBoltzmanAction(State currentState,
 	double explorationConstant) {
 
 	if (explorationConstant < 0.01) explorationConstant = 0.01;
@@ -92,7 +104,7 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
 	double determiner = (double)rand() / (double)RAND_MAX;
 	std::vector<double> exponentTerms;
 	double sumOfExponentTerms = 0;
-	std::vector<Wire> wires = getSetOfWires(currentState, minAction, maxAction, baseOfDimensions);
+	std::vector<Wire> wires = getSetOfWires(currentState, baseOfDimensions);
 	
 	for(int a = 0; a < wires.size(); a++) {
 		double exponentTerm = exp(wires[a].reward / explorationConstant);
@@ -117,24 +129,9 @@ std::vector<double> WireFitQLearn::chooseBoltzmanAction(std::vector<double> curr
 	
 }
 
-std::vector<double> WireFitQLearn::chooseRandomAction(const std::vector<double> &state, const std::vector<double> &minAction, const std::vector<double> &maxAction) {
-	if (minAction.size() != maxAction.size()) {
-		std::cout << "Min action and max action sizes don't match\n";
-		throw 1;
-	}
-	
-	std::vector<double> action(minAction.size());
-	for (int a = 0; a < minAction.size(); a++) action[a] = minAction[a] + ((double)rand() / RAND_MAX) * (maxAction[a] - minAction[a]);
-	
-	lastAction = action;
-	lastState = state;
-
-	return action;
-}
-
-void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState, double elapsedTimeMillis) {
+void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState) {
 	std::vector<Wire> controlWires = getWires(lastState);
-	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, elapsedTimeMillis, controlWires);
+	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, controlWires);
 	double oldReward = interpolator->getReward(controlWires, lastAction);
 
 	Wire correctWire = {lastAction, newRewardForLastAction};
@@ -150,10 +147,8 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, std::vector<do
 	backprop.trainOnData(network, input, correctOutput);
 }
 
-void WireFitQLearn::resetControlPoints() {
-	NeuralNet *temp = new NeuralNet(network);
-	delete network;
-	network = temp;
+void WireFitQLearn::reset() {
+	network->randomizeWeights();
 }
 
 
@@ -163,7 +158,7 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
 	if(output.is_open()) {
 		output << learningRate << " " << devaluationFactor << "\n";
 		output << actionDimensions << " " << numberOfWires << "\n";
-		output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << biasMovingAverage << " " << rewardIterations << "\n";
+		output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << biasMovingAverage << " " << rewardIterations <<  " " << baseOfDimensions << "\n";
 		
 		for(int a = 0; a < lastAction.size(); a++) output << lastAction[a] << " ";
 		output << "\n";
@@ -179,7 +174,7 @@ void WireFitQLearn::storeWireFitQLearn(std::string filename) {
 	}
 }
 
-std::vector<Wire> WireFitQLearn::getWires(std::vector<double> state) {
+std::vector<Wire> WireFitQLearn::getWires(State state) {
 	std::vector<Wire> wires(numberOfWires);
 	std::vector<double> rawOutput = network->getOutput(state);
 	
@@ -197,15 +192,9 @@ std::vector<Wire> WireFitQLearn::getWires(std::vector<double> state) {
 	return wires;
 }
 
-std::vector<Wire> WireFitQLearn::getSetOfWires(const std::vector<double> &state,
-	const std::vector<double> &minAction,
-	const std::vector<double> &maxAction,
+std::vector<Wire> WireFitQLearn::getSetOfWires(const State &state,
 	int baseOfDimensions) {
 
-	if (minAction.size() != maxAction.size() || minAction.size() != actionDimensions) {
-		std::cout << "Mismatching minAction max action \n";
-		throw 1;
-	}
 	if (baseOfDimensions <= 1) {
 		std::cout << "Value of baseOfDimensions is too small\n";
 		throw 1;
@@ -260,7 +249,7 @@ std::vector<double> WireFitQLearn::getRawOutput(std::vector<Wire> wires) {
 }
 
 
-double WireFitQLearn::highestReward(std::vector<double> state) {
+double WireFitQLearn::highestReward(State state) {
 	std::vector<Wire> wires = getWires(state);
 	double bestReward = -99999;
 	
@@ -269,9 +258,9 @@ double WireFitQLearn::highestReward(std::vector<double> state) {
 	return bestReward;
 }
 
-std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
+Action WireFitQLearn::bestAction(State state) {
 	std::vector<Wire> wires = getWires(state);
-	double bestReward = -99999;
+	double bestReward = DBL_MIN;
 	std::vector<double> *bestAction = &wires[0].action;
 	
 	for(int a = 0; a < wires.size(); a++) {
@@ -285,14 +274,13 @@ std::vector<double> WireFitQLearn::bestAction(std::vector<double> state) {
 }
 
 double WireFitQLearn::getQValue(double reward,
-	const std::vector<double> &oldState,
-	const std::vector<double> &newState,
-	const std::vector<double> &action,
-	double elapsedTimeMillis,
+	const State &oldState,
+	const State &newState,
+	const Action &action,
 	const std::vector<Wire> &controlWires)
 {
 	
-	double scalingFactor = scalingFactorToMillis * elapsedTimeMillis;
+	double scalingFactor = scalingFactorToMillis;
 
 	/// Update Q value according to adaptive learning
 	double oldRewardForLastAction = interpolator->getReward(controlWires, action);
@@ -324,67 +312,6 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
 	return controlWires;
 
 }
-
-
-/*void WireFitQLearn::graphInterpolatorFunction(const std::vector<Wire> &controlWires, double minAction, double maxAction, double targetAction) {
-	double xSize = 1000, ySize = 800;
-	sf::RenderWindow window(sf::VideoMode(xSize, ySize), "Interpolator Graph");
-	double numberOfDots = 100;
-
-	for (int a = 0; a < controlWires.size(); a++) {
-		if (controlWires[a].action[0] > maxAction) maxAction = controlWires[a].action[0];
-		if (controlWires[a].action[0] < minAction) minAction = controlWires[a].action[0];
-	}
-
-	double increment = (maxAction - minAction) / numberOfDots;
-	double xScale = (xSize - 60) / (maxAction - minAction);
-
-	double maxReward = -99999999, minReward = 99999999;
-	std::vector<double> rewards(numberOfDots);
-	for (int a = 0; a < numberOfDots; a++) {
-		rewards[a] = interpolator->getReward(controlWires, { a*increment });
-		if (rewards[a] > maxReward) maxReward = rewards[a];
-		if (rewards[a] < minReward) minReward = rewards[a];
-	}
-	for (int a = 0; a < controlWires.size(); a++) {
-		if (controlWires[a].reward > maxReward) maxReward = controlWires[a].reward;
-		if (controlWires[a].reward < minReward) minReward = controlWires[a].reward;
-	}
-
-	double yScale = (ySize - 60) / (maxReward - minReward);
-
-	window.clear();
-	sf::CircleShape shape(5.f);
-	shape.setFillColor(sf::Color::Green);
-	for (int a = 0; a < numberOfDots; a++) {
-		shape.setPosition((a*increment - minAction) * xScale + 30, (maxReward - rewards[a])*yScale + 30);
-		window.draw(shape);
-	}
-
-	shape.setRadius(10.f);
-	shape.setFillColor(sf::Color::Red);
-	for (int a = 0; a < controlWires.size(); a++) {
-		shape.setPosition((controlWires[a].action[0] - minAction) * xScale + 30, (maxReward - controlWires[a].reward)*yScale + 30);
-		window.draw(shape);
-	}
-
-	shape.setFillColor(sf::Color::Magenta);
-	shape.setPosition((targetAction - minAction) * xScale + 30, (maxReward - interpolator->getReward(controlWires, { targetAction }))*yScale + 30);
-	window.draw(shape);
-
-	window.display();
-
-
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-	}
-}*/
 
 void WireFitQLearn::updateBias(double oldReward, double correctReward) {
 	rewardIterations++;
