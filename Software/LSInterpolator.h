@@ -3,7 +3,7 @@
 
 #include "Interpolator.h"
 
-namespace net {
+namespace rl {
 	// A least squares wire fitted Interpolator
 	class LSInterpolator : public Interpolator {
 	public:

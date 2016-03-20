@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 
-namespace net {
+namespace rl {
 	// A data point to be interpolated
 	// Outputted by a neural network
 	struct Wire {

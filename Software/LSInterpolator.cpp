@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math.h>
 
-using namespace net;
+using namespace rl;
 
 /// PUBLIC METHODS
 
