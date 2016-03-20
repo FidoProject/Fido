@@ -1,35 +1,29 @@
 #ifndef ROBOTN_H
 #define ROBOTN_H
 
-#include "QLearn.h"
+namespace rl {
+	class Task;
+	class Learner;
+	
+	/* Uses a learning model to progressively learn to to perform a task.
+	 */
+	class Robot {
+	public:
+		// Initializes a robot object
+		Robot(Task *task_, Learner *learner_, double startingExplorationLevel_, double explorationDevaluationPerTimestep_);
 
-class Task;
+		// Runs the robot for a specified number of time steps
+		void run(int trials, int numberOfTimeSteps);
 
-/* Uses the QLearn object paired with the simulator to progressively learn a task through reinforcement learning.
- *
- *
- */
-class Robot {
-public:
-	net::QLearn learner;
-	Task *task;
-	double startingExplorationLevel, currentExplorationLevel, explorationDevaluationPerTimestep, baseOfDimensions;
-	int stateSize, numberOfHiddenLayers, numberOfNeuronsPerHiddenLayer, actionDimensions;
-	std::vector<double> minAction, maxAction;
-	std::vector< std::vector<double> > possibleActions;
+		void performAction();
 
-	// Initializes a robot object
-	Robot(Task *task_);
+	private:
+		rl::Learner *learner;
+		Task *task;
+		double startingExplorationLevel, currentExplorationLevel, explorationDevaluationPerTimestep;
 
-	// Runs the robot for a specified number of time steps
-	void run(int trials, int numberOfTimeSteps);
-
-	void performAction();
-
-private:
-	std::vector<double> getAction(int action);
-	void resetRobot();
-
-};
+		void resetRobot();
+	};
+}
 
 #endif
