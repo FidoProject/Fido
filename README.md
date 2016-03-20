@@ -4,19 +4,33 @@ An open-source, highly modular C++ machine learning library for embedded electro
 
 ## Getting Started
 
-The only dependency for the library is [SFML](http://www.sfml-dev.org/learn.php). Please install this before proceeding.
-
 Clone the github repository.
 ```
 $ git clone https://github.com/FidoProject/Fido.git
 ```
 
-Move to the Software directory and build the library using cmake.
+### With Simulator
+
+Fido's simulator requires [SFML](http://www.sfml-dev.org/learn.php). If you would like the simulator, install SFML.
+
+If you are on a **Unix** machine, use the install script.
 ```
-$ cd Fido/Software && make
+$ cd Fido/ && bash install.sh
 ```
 
-Now you may use Fido in your C++ projects, by including any of the header files located in the Software directory.
+If you are on **Windows**, use
+```
+$ cd Fido/ && install.bat
+```
+
+### Without Simulator
+
+If you do not want the simulator use the install script with the `-noSFML` argument
+```
+$ cd Fido/ && bash install.sh -noSFML
+```
+
+Done! To use Fido, just link the `fido-lib.a` file and include any headers from the `Software` directory.
 
 ## Example Code
 
@@ -25,19 +39,29 @@ An example of creating and training a neural network to perform linear regressio
 ```cpp
 #include "Fido/Software/NeuralNet.h"
 #include "Fido/Software/Backpropagation.h"
+#include <iostream>
 
 int main() {
-  // Creates a neural network with 
-  // 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer, and a sigmoid activation function.
+  // Creates a neural network with
+  // 1 input, 1 output, 2 hidden layers, 4 neurons per hidden layer,
+  // a sigmoid activation function for hidden layers, and a linear activation function on the final layer.
   net::NeuralNet neuralNetwork = net::NeuralNet(1, 1, 2, 4, "sigmoid");
+  neuralNetwork.setOutputActivationFunction("simpleLinear");
+  
   std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
   std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
-  
-  // Create backpropagation object with 
-  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 10%, 
+
+  // Create backpropagation object with
+  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 5%,
   // and a maximum number of training iterations of 10000
-  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.1, 10000);
+  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.05, 10000);
   backprop.trainOnData(&neuralNetwork, input, correctOutput);
+
+  // Cycle through inputs and print the outputs
+  for (std::vector<double> current: input) {
+	  std::vector<double> final = neuralNetwork.getOutput(current);
+	  std::cout << "Correct answer: " << current[0] << "\tActual answer:" << final[0] << std::endl;
+  }
 }
 ```
 
@@ -47,6 +71,10 @@ Send us a pull request. If you are looking for things to do, check out the repo'
 
 If you find a bug or have any trouble with the library, please open an issue. We are happy to help you out.
 
-## Authors
+### Authors
 
 Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gruenstein](https://github.com/joshuagruenstein).
+
+### Contributors
+
+Thanks to [Henry Wildermuth](https://github.com/FlyingGraysons) for his contributions.
