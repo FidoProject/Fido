@@ -3,46 +3,38 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-
 #include <chrono>
 #include <thread>
+#include <algorithm>
 
 #include "NeuralNet.h"
 
-using namespace net;
+using namespace rl;
 
-QLearn::QLearn(NeuralNet *modelNetwork, Backpropagation backprop_, double learningRate_, double devaluationFactor_, int numberOfActions_) {
+QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_) {
 	backprop = backprop_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
-	numberOfActions = numberOfActions_;
-	lastAction = -1;
-	lastReward = -1;
 
-	for(int a = 0; a < numberOfActions; a++) networks.push_back(new net::NeuralNet(modelNetwork));
-
-	history = std::vector< std::vector< std::pair<std::vector<double>, double> > >(numberOfActions, std::vector< std::pair<std::vector<double>, double> >(0));
+	models = std::vector<Model>(possibleActions_.size());
+	for(int a = 0; a < possibleActions_.size(); a++) models.push_back(Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
 }
 
-QLearn::QLearn(std::vector<NeuralNet *> networks_, Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
-	networks = networks_;
+QLearn::QLearn(std::vector< std::pair< net::NeuralNet *, std::vector<double> > > models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, std::vector<double> > possibleActions_) {
+	models = models_;
 	backprop = backprop_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
-	numberOfActions = (int)networks.size();
-	lastAction = -1;
-	lastReward = -1;
 
-	history = std::vector< std::vector< std::pair<std::vector<double>, double> > >(numberOfActions, std::vector< std::pair<std::vector<double>, double> >(0));
 }
 
 QLearn::QLearn(std::string filename) {
 	std::ifstream input;
 	input.open(filename.c_str(), std::ifstream::in);
 	if(input.is_open()) {
-		input >> learningRate >> devaluationFactor >> numberOfActions >> lastAction >> lastReward;
-		backprop = Backpropagation(&input);
-		for(int a = 0; a < numberOfActions; a++) networks.push_back(new NeuralNet(&input));
+		input >> learningRate >> devaluationFactor >> numberOfActions;
+		backprop = net::Backpropagation(&input);
+		for(int a = 0; a < numberOfActions; a++) networks.push_back(new net::NeuralNet(&input));
 
 		input.close();
 	} else {
@@ -51,102 +43,90 @@ QLearn::QLearn(std::string filename) {
 	}
 }
 
-QLearn::QLearn() { }
-
-unsigned int QLearn::chooseBestAction(std::vector<double> currentState) {
-	getBestActionAndReward(currentState, &lastAction, &lastReward);
+Action QLearn::chooseBestAction(State currentState) {
 	lastState = currentState;
-	return lastAction;
+
+	std::vector<double> rewards = getModelRewards(currentState);
+	lastModel = models[std::max_element(rewards.begin(), rewards.end()) - rewards.bein()];
+	return lastModel.action;
 }
 
-unsigned int QLearn::chooseBoltzmanAction(std::vector<double> currentState, double explorationConstant) {
-	double determiner = (double)rand() / (double)RAND_MAX;
-	std::vector<double> rewards(networks.size());
-	std::vector<double> exponentTerms(networks.size());
-	double sumOfExponentTerms = 0;
-
-	if (explorationConstant < 0.01) explorationConstant = 0.01;
-
-	for(int a = 0; a < networks.size(); a++) {
-		double reward = networks[a]->getOutput(currentState)[0];
-		double exponentTerm = exp(reward / explorationConstant);
-		
-		rewards[a] = reward;
-		exponentTerms[a] = exponentTerm;
-		sumOfExponentTerms += exponentTerm;
+Action QLearn::chooseBoltzmanAction(State currentState, double explorationConstant) {
+	if(explorationConstant < 0.01) {
+		std::cout << "Exploration constant (" << explorationConstant << ") is below 0.01. This is too low!. Will cause integer over flow. Assuming an explorationConstant of 0.01 instead.";
+		explorationConstant = 0.01;
 	}
 
+	double determiner = (double)rand() / (double)RAND_MAX;
+
+	std::vector<double> rewards = getModelRewards(currentState);
+
+	std::vector<double> exponentTerms(models.size());
+	double sumOfExponentTerms = 0;
+	std::for_each(rewards.begin(), rewards.end(), [](double reward){
+		double exponentTerm = exp(reward / explorationConstant);
+		exponentTerms.push_back(exponentTerm);
+		sumOfExponentTerms += exponentTerm;
+	});
+
 	double sumOfProbabilities = 0;
-	for(int a = 0; a < networks.size(); a++) {
+	for(int a = 0; a < exponentTerms.size(); a++) {
 		sumOfProbabilities += (exponentTerms[a] / sumOfExponentTerms);
 		if(sumOfProbabilities >= determiner) {
-			lastAction = a;
-			lastReward = rewards[a];
+			lastModel = models[a];
 			lastState = currentState;
-			return a;
+			return lastModel.action;
 		}
 	}
 
 	/// Incase a floating point error resulted in no action
-	lastAction = (unsigned int)networks.size() - 1;
+	std::cout << "Floating point error when choosing an action using a Boltzmann selection policy! Choosing last action.";
+
+	lastModel = models[networks.size() - 1];
 	lastState = currentState;
-	return lastAction;
+	return lastModel.action;
 }
 
-void QLearn::applyReinforcementToLastAction(double reward, std::vector<double> newState) {
+void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 	if(lastAction == -1) return;
 	
-	double lr = networks[lastAction]->getOutput(lastState)[0];
-	//double feedback = (reward + (devaluationFactor*highestReward(newState)));
-	//double targetValueForLastState = ((1 - learningRate) * lastReward) + (learningRate*feedback);
-	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*highestReward(newState))-lr);
+	double lr = lastModel.network->getOutput(lastState)[0];
+	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*getHighestReward(newState))-lr);
 	
-	if(history.size() < 10) history[lastAction].push_back(std::pair<std::vector<double>, double>(lastState, targetValueForLastState));	
+	lastModel.addToHistory(std::pair<State, double>(lastState, targetValueForLastState));
 
-	std::vector< std::vector<double> > input = std::vector< std::vector<double> >(history[lastAction].size());
-	for(int a = 0; a < history[lastAction].size(); a++) input[a] = history[lastAction][a].first;
-	std::vector< std::vector<double> > correctOutput = std::vector< std::vector<double> >(history[lastAction].size());
-	for(int a = 0; a < history[lastAction].size(); a++) correctOutput[a] = { history[lastAction][a].second };
+	std::vector< std::vector<double> > input;
+	std::vector< std::vector<double> > correctOutput;
 
-	//std::cout << "; LastState: " << lastState[0] << "; targetValueForLastState: " << targetValueForLastState << "; lastReward: " << lr << "\n";
+	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(input), [](const std::pair<State, double> &entry) {
+		return entry.first;
+	});
+	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(correctOutput), [](const std::pair<State, double> &entry) {
+		return entry.second;
+	});
 
 	backprop.trainOnData(networks[lastAction], input, correctOutput);
 }
 
-void QLearn::getBestActionAndReward(std::vector<double> state, unsigned int *bestAction, double *bestReward) {
-	*bestAction = 0;
-	*bestReward = -99999;
+std::vector<double> getModelRewards(State state); {
+	std::vector<double> rewards;
+	std::for_each(models.begin(), models.end(), [](Model model){
+		rewards.push_back(models[a].network->getOutput(state)[0]);
+	});
 
-	for(int a = 0; a < networks.size(); a++) {
-		double reward = networks[a]->getOutput(state)[0];
-		if(reward > *bestReward) {
-			*bestAction = a;
-			*bestReward = reward;
-		}
-	}
+	return rewards;
 }
 
-double QLearn::highestReward(std::vector<double> state) {
-	unsigned int bestAction;
-	double bestReward;
-	getBestActionAndReward(state, &bestAction, &bestReward);
-
-	return bestReward;
-}
-
-int QLearn::bestAction(std::vector<double> state) {
-	unsigned int bestAction;
-	double bestReward;
-	getBestActionAndReward(state, &bestAction, &bestReward);
-
-	return bestAction;
+double QLearn::getHighestReward(State state) {
+	std::std::vector<double> rewards = getModelRewards(state);
+	return *std::max_element(rewards.begin(), rewards.end());
 }
 
 void QLearn::storeQLearn(std::string filename) {
 	std::ofstream output;
 	output.open(filename.c_str(), std::ios::app);
 	if(output.is_open()) {
-		output << learningRate << " " << devaluationFactor << " " << numberOfActions << " " << lastAction << " " << lastReward << "\n";
+		output << learningRate << " " << devaluationFactor << " " << numberOfActions << "\n";
 		backprop.storeBackpropagationWithStream(&output);
 		for(std::vector<net::NeuralNet *>::iterator a = networks.begin(); a != networks.end(); ++a) (*a)->storeNetWithStream(&output);
 
