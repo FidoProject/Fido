@@ -2,8 +2,15 @@ language: cpp
 
 compiler: gcc
 
+env:
+  - SFML="yes"
+  - SFML="-noSFML"
+
 before_install:
-#  - sudo apt-get install valgrind
+  - sudo apt-get install valgrind
+
+  # SFML build
+  - if [[ "$SFML" == "yes" ]]; then sudo apt-get install libsfml-dev; fi
 
   # g++4.8.1
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -15,4 +22,6 @@ install:
   - export CXXFLAGS="-std=c++0x"
   - export CXX="g++-4.8"
 
-script: cd ~/build/FidoProject/Fido && sudo ./install.sh -noSFML && cd Tests && sudo ./runtests.sh
+script:
+  - cd ~/build/FidoProject/Fido && sudo ./install.sh $SFML && cd Tests && sudo ./runtests.sh
+  - valgrind --leak-check=full --error-exitcode=1 ./test
