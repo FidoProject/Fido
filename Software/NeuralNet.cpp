@@ -181,7 +181,7 @@ int NeuralNet::numberOfHiddenLayers() {
 }
 
 int NeuralNet::numberOfInputs() {
-	return net[0].neurons.size();
+	return net[0].neurons[0].weights.size() - 1;
 }
 
 int NeuralNet::numberOfOutputs() {

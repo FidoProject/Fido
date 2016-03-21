@@ -1,6 +1,20 @@
 #include <cstdio>
+#include <iostream>
+#include <algorithm>
 #include "catch.h"
 #include "../Software/NeuralNet.h"
+
+inline bool operator==(const std::vector<double>& lhs, const std::vector<double>& rhs){
+	if(lhs.size() != rhs.size()) {
+		return false;
+	}
+	for(int a = 0; a < lhs.size(); a++) {
+		if(fabs(lhs[a] - rhs[a]) > 0.01) {
+			return false;
+		}
+	}
+	return true;
+}
 
 // Constants set for testing, could be anything
 const int INPUTS(4);
@@ -58,8 +72,14 @@ TEST_CASE("Neural Network Storing", "[network]") {
 		std::remove(FILENAME);
 
 		REQUIRE(fileNet.getWeights() == oldWeights);
-		REQUIRE(fileNet.getWeights3D() == oldWeights3d);
 		REQUIRE(fileNet.getOutput(input) == oldOutput);
+
+		std::vector< std::vector< std::vector<double> > > newWeights3d = fileNet.getWeights3D();
+		for(int a = 0; a < oldWeights3d.size(); a++) {
+			for(int b = 0; b < oldWeights3d[a].size(); b++) {
+				REQUIRE(newWeights3d[a][b] == oldWeights3d[a][b]);
+			}
+		}
 	}
 }
 
@@ -72,9 +92,15 @@ TEST_CASE("Neural Network Copying", "[network]") {
 	net::NeuralNet newNet = net::NeuralNet(network);
 
 	SECTION("Different weights") {
-		REQUIRE(newNet.getWeights() != oldWeights);
-		REQUIRE(newNet.getWeights3D() != oldWeights3d);
-		REQUIRE(newNet.getOutput(input) != oldOutput);
+		REQUIRE(newNet.getWeights() == oldWeights);
+		REQUIRE(newNet.getOutput(input) == oldOutput);
+
+		std::vector< std::vector< std::vector<double> > > newWeights3d = network.getWeights3D();
+		for(int a = 0; a < oldWeights3d.size(); a++) {
+			for(int b = 0; b < oldWeights3d[a].size(); b++) {
+				REQUIRE(newWeights3d[a][b] == oldWeights3d[a][b]);
+			}
+		}
 	}
 
 	SECTION("Testing number of inputs") {
