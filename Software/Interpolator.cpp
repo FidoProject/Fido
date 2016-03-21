@@ -4,7 +4,7 @@
 
 #include "LSInterpolator.h"
 
-using namespace net;
+using namespace rl;
 
 Interpolator * Interpolator::getAnyInterpolatorFromFile(std::ifstream *in) {
 	long placeInFile = in->tellg();
