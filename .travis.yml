@@ -38,4 +38,4 @@ install:
 
   - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.4"; fi
 
-script: ls && ls build && ls build/FidoProject && cd build/FidoProject/Fido && ./install.sh && cd Tests && ./runtests.sh
+script: ls && ls build && ls build/FidoProject && cd build/FidoProject/Fido && sudo ./install.sh -noSFML && cd Tests && sudo ./runtests.sh
