@@ -121,6 +121,12 @@ namespace net {
 		void initWithStream(std::ifstream *input);
 
 		/**
+		 * \brief Loads in activation functions from a neural network
+		 * \param network The network which the functions are loaded from
+		*/
+		void loadNeuralNetFunctions(net::NeuralNet *network);
+
+		/**
 		 * \brief Resets the lastchanginweight vector using a neural network is needed (NN is needed cause the number of layers, neurons, and weights are needed).
 		 */
 		void resetLastChangeInWeight(net::NeuralNet *network);
