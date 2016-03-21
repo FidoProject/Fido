@@ -39,8 +39,8 @@ Done! To use Fido, just link the `fido-lib.a` file and include any headers from 
 An example of creating and training a neural network to perform linear regression.
 
 ```cpp
-#include "Fido/Software/NeuralNet.h"
-#include "Fido/Software/Backpropagation.h"
+#include "NeuralNet.h"
+#include "Backpropagation.h"
 #include <iostream>
 
 int main() {
@@ -49,20 +49,20 @@ int main() {
   // a sigmoid activation function for hidden layers, and a linear activation function on the final layer.
   net::NeuralNet neuralNetwork = net::NeuralNet(1, 1, 2, 4, "sigmoid");
   neuralNetwork.setOutputActivationFunction("simpleLinear");
-  
+
   std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
   std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
 
   // Create backpropagation object with
-  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 5%,
+  // a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 0.1%,
   // and a maximum number of training iterations of 10000
-  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.05, 10000);
+  net::Backpropagation backprop = net::Backpropagation(0.1, 0.001, 0.001, 10000);
+  backprop.setDerivedOutputActivationFunction("simpleLinear");
   backprop.trainOnData(&neuralNetwork, input, correctOutput);
 
   // Cycle through inputs and print the outputs
   for (std::vector<double> current: input) {
-	  std::vector<double> final = neuralNetwork.getOutput(current);
-	  std::cout << "Correct answer: " << current[0] << "\tActual answer:" << final[0] << std::endl;
+      std::cout << "Input: " << current[0] << "\tNeural network's answer:" << neuralNetwork.getOutput(current)[0] << std::endl;
   }
 }
 ```
