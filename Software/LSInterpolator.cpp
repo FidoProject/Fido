@@ -1,4 +1,4 @@
-#include "LSInterpolator.h"
+#include "LSInterpolator.hpp"
 
 #include <string>
 #include <iostream>

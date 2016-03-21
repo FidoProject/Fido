@@ -1,8 +1,8 @@
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
-#include "catch.h"
-#include "../Software/NeuralNet.h"
+#include "catch.hpp"
+#include "../Software/NeuralNet.hpp"
 
 inline bool operator==(const std::vector<double>& lhs, const std::vector<double>& rhs){
 	if(lhs.size() != rhs.size()) {

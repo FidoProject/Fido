@@ -1,4 +1,4 @@
-#include "QLearn.h"
+#include "QLearn.hpp"
 
 #include <stdlib.h>
 #include <iostream>
@@ -7,7 +7,7 @@
 #include <thread>
 #include <algorithm>
 
-#include "NeuralNet.h"
+#include "NeuralNet.hpp"
 
 using namespace rl;
 

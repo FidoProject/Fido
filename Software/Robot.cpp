@@ -1,4 +1,4 @@
-#include "Robot.h"
+#include "Robot.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -6,10 +6,10 @@
 #include <chrono>
 #include <thread>
 
-#include "LSInterpolator.h"
-#include "Task.h"
-#include "Learner.h"
-#include "NeuralNet.h"
+#include "LSInterpolator.hpp"
+#include "Task.hpp"
+#include "Learner.hpp"
+#include "NeuralNet.hpp"
 
 using namespace rl;
 
