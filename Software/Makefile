@@ -1,8 +1,12 @@
 CXXFLAGS += -std=c++11
-ifeq ($(SFML), true)
-	LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+ifeq ("$(wildcard $(FidoSim))", "")
+    ifeq ("$(wildcard $(FidoSim))", "")
+        $(info Compiling without SFML flags)
+        LDFLAGS = -pthread
+    endif
 else
-	LDFLAGS = -pthread
+    $(info Compiling with SFML flags)
+    LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 endif
 SOURCES=$(shell find . -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)
