@@ -38,4 +38,4 @@ install:
 
   - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.4"; fi
 
-script: cd Tests && make && ./test
+script: ./install.sh && cd Tests && make && ./test
