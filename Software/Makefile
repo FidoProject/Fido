@@ -1,13 +1,17 @@
 CXXFLAGS += -std=c++11
-ifeq ("$(wildcard $(FidoSim))", "")
-    ifeq ("$(wildcard $(FidoSim))", "")
-        $(info Compiling without SFML flags)
-        LDFLAGS = -pthread
-    endif
-else
+ifneq ($(wildcard ./FidoSim/.*),)
+    $(info Compiling with 1 SFML flags)
+    LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+else ifneq ($(wildcard ./FidoKin/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+else
+    $(info Compiling without SFML flags)
+    LDFLAGS = -pthread
 endif
+
+$(info $(LDFLAGS))
+
 SOURCES=$(shell find . -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)
 TARGET=foo.o
