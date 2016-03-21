@@ -84,6 +84,10 @@ namespace net {
 		// Sets the activation function of the output layer
 		void setOutputActivationFunction(std::string name);
 
+		std::string getHiddenActivationFunctionName();
+
+		std::string getOutputActivationFunctionName();
+
 		// A two dimensional network of neurons.
 		std::vector< Layer > net;
 		

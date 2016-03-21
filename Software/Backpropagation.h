@@ -76,35 +76,6 @@ namespace net {
 		 */
 		double trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput);
 
-		/**
-		 * \brief Gets a map with the names of each activation function derivative as its keys and the available activation function derivatives as its values
-		 */
-		std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames();
-
-		/**
-		 * \brief Sets the derivative of the activation function for the neurons of the hidden layers with the name of the activation funciton
-		 *
-		 * \param name the name of the activation function that you want to set the hidden layers to
-		 */
-		void setDerivedHiddenActivationFunction(std::string name);
-
-		/**
-		 * \brief Sets the derivative of the activation function for the neurons of the output layer with the name of the activation funciton
-		 *
-		 * \param name the name of the activation function that you want to set the output layer to
-		 */
-		void setDerivedOutputActivationFunction(std::string name);
-
-		/**
-		 * \brief Gets the name of the derivative of the activation function of the nuerons of the hidden layers
-		 */
-		std::string getDerivedHiddenActivationFunctionName();
-
-		/**
-		 * \brief Gets the name of the derivative of the activation function of the neurons of the output layer
-		 */
-		std::string getDerivedOutputActivationFunctionName();
-
 		double learningRate; /**< The rate of learning, set by constructor */
 		double momentumTerm; /**< The term of momentum, set by constructor */
 		double targetErrorLevel; /**< The target error level, set by constructor */
@@ -112,8 +83,6 @@ namespace net {
 		std::vector< std::vector< std::vector<double> > > lastChangeInWeight; /**< The last change in weights */
 
 	private:
-		ActivationFunction hiddenActivationFunctionDerivative;
-		ActivationFunction outputActivationFunctionDerivative;
 
 		/**
 		 * \brief Uses a ifstream to initialize a backpropagation object
@@ -124,6 +93,11 @@ namespace net {
 		 * \brief Resets the lastchanginweight vector using a neural network is needed (NN is needed cause the number of layers, neurons, and weights are needed).
 		 */
 		void resetLastChangeInWeight(net::NeuralNet *network);
+
+		/**
+		 * \brief Returns a map of derived activation function names to activation functions.
+		 */
+		std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames();
 	};
 }
 

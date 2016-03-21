@@ -191,3 +191,11 @@ int NeuralNet::numberOfOutputs() {
 void NeuralNet::setOutputActivationFunction(std::string name) {
 	net[net.size() - 1].setActivationFunctionWithName(name);
 }
+
+std::string NeuralNet::getHiddenActivationFunctionName() {
+	return net[0].getActivationFunctionName();
+}
+
+std::string NeuralNet::getOutputActivationFunctionName() {
+	return net[net.size() - 1].getActivationFunctionName();
+}

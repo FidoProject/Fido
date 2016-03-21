@@ -15,14 +15,9 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 	momentumTerm = momentumTerm_;
 	targetErrorLevel = targetErrorLevel_;
 	maximumIterations = maximumIterations_;
-	hiddenActivationFunctionDerivative = sigmoidDerivative;
-	outputActivationFunctionDerivative = sigmoidDerivative;
 }
 
 Backpropagation::Backpropagation() {
-	hiddenActivationFunctionDerivative = sigmoidDerivative;
-	outputActivationFunctionDerivative = sigmoidDerivative;
-
 	learningRate = momentumTerm = targetErrorLevel = 0;
 	maximumIterations = 0;
 }
@@ -48,7 +43,6 @@ void Backpropagation::storeBackpropagation(std::string filename) {
 void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
 	if(output->is_open()) {
 		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumIterations << "\n";
-		*output << getDerivedHiddenActivationFunctionName() << " " << getDerivedOutputActivationFunctionName() << "\n";
 	} else {
 		std::cout << "Could not store backprop\n";
 		throw 1;
@@ -78,6 +72,8 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
 	std::vector< std::vector<double> > errors;
 	double networkError = 0;
+	ActivationFunction hiddenActivationFunctionDerivative = getDerivedActivationFunctionNames()[network->getHiddenActivationFunctionName()];
+	ActivationFunction outputActivationFunctionDerivative = getDerivedActivationFunctionNames()[network->getOutputActivationFunctionName()];
 
 	// Compute output layer error
 	std::vector<double> outputNeuronErrors;
@@ -147,37 +143,9 @@ std::map<std::string, ActivationFunction> Backpropagation::getDerivedActivationF
 	return map;
 }
 
-void Backpropagation::setDerivedHiddenActivationFunction(std::string name) {
-	hiddenActivationFunctionDerivative = getDerivedActivationFunctionNames()[name];
-}
-
-void Backpropagation::setDerivedOutputActivationFunction(std::string name) {
-	outputActivationFunctionDerivative = getDerivedActivationFunctionNames()[name];
-}
-
-std::string Backpropagation::getDerivedHiddenActivationFunctionName() {
-	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
-	for(std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == hiddenActivationFunctionDerivative) return a->first;
-
-	throw 1;
-}
-
-std::string Backpropagation::getDerivedOutputActivationFunctionName() {
-	std::map<std::string, ActivationFunction> nameMap = getDerivedActivationFunctionNames();
-	for(std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if(a->second == outputActivationFunctionDerivative) return a->first;
-
-	throw 1;
-}
-
 void Backpropagation::initWithStream(std::ifstream *input) {
 	if(input->is_open()) {
 		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumIterations;
-
-		std::string hiddenActivationFunctionDerivativeName, outputActivationFunctionDerivativeName;
-		*input >> hiddenActivationFunctionDerivativeName >> outputActivationFunctionDerivativeName;
-		setDerivedHiddenActivationFunction(hiddenActivationFunctionDerivativeName);
-		setDerivedOutputActivationFunction(outputActivationFunctionDerivativeName);
-
 	} else {
 		std::cout << "Could not retrieve backprop from file\n";
 		throw 1;
