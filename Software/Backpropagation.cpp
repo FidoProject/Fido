@@ -56,7 +56,6 @@ void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
 }
 
 void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
-	loadNeuralNetFunctions(network);
 	double totalError = 0;
 	int iterations = 0;
 	resetLastChangeInWeight(network);
@@ -75,7 +74,6 @@ void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< st
 
 
 double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput) {
-	loadNeuralNetFunctions(network);
 	std::vector< std::vector<double> > outputs = network->feedForward(input);
 	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
 	std::vector< std::vector<double> > errors;
@@ -184,11 +182,6 @@ void Backpropagation::initWithStream(std::ifstream *input) {
 		std::cout << "Could not retrieve backprop from file\n";
 		throw 1;
 	}
-}
-
-void Backpropagation::loadNeuralNetFunctions(net::NeuralNet *network) {
-	setDerivedOutputActivationFunction(network->net[network->net.size() -1].getActivationFunctionName());
-	setDerivedHiddenActivationFunction(network->net[0].getActivationFunctionName());
 }
 
 void Backpropagation::resetLastChangeInWeight(net::NeuralNet *network) {
