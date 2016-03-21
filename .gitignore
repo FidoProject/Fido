@@ -190,6 +190,7 @@ Gerbers.zip
 Software/Hardware/src
 FidoExec
 foo
+Tests/test
 
 #############
 ## Doxygen ##
