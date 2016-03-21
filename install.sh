@@ -3,17 +3,13 @@
 echo "Making library..."
 cd Software/
 
+if [[ "$1" == "-noSFML" ]]; then
+	rm -r FidoKin
+	rm -r FidoSim
+fi
+
 make
 make lib
-
-if [[ "$1" == "-noSFML" ]]; then
-	mv ../temp/FidoKin FidoKin
-	mv ../temp/FidoSim FidoSim
-	mv ../temp/Tasks/* Tasks
-	rm -r ../temp
-	# Re-add SFML libraries to Makefile
-	mv Makefile-backup Makefile
-fi
 
 echo "Made library"
 echo "Making fido compiler"
