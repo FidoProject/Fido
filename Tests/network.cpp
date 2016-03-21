@@ -9,7 +9,7 @@ inline bool operator==(const std::vector<double>& lhs, const std::vector<double>
 		return false;
 	}
 	for(int a = 0; a < lhs.size(); a++) {
-		if(fabs(lhs[a] - rhs[a]) > 0.01) {
+		if(fabs(lhs[a] - rhs[a]) > 0.00001) {
 			return false;
 		}
 	}
