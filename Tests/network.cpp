@@ -11,7 +11,7 @@ const char * FILENAME = "dasgfgjhasdgkfhjkgfjaskfgh.dat";
 const char * ACTIVATION_FUNCTION("sigmoid");
 std::vector<double> input = {3, 5, 2, 5};
 
-TEST_CASE( "Neural Network Sizing", "[network]" ) {
+TEST_CASE( "Neural Network Contructor", "[network]" ) {
 	net::NeuralNet network = net::NeuralNet(INPUTS, OUTPUTS, HIDDENS, NUM_IN_HIDDENS, ACTIVATION_FUNCTION);
 
 	SECTION("Testing number of inputs") {
@@ -24,6 +24,10 @@ TEST_CASE( "Neural Network Sizing", "[network]" ) {
 
 	SECTION("Testing number of hidden layers") {
 		REQUIRE(network.numberOfHiddenLayers() == HIDDENS);
+	}
+
+	SECTION("Testing for correct output actication function") {
+		REQUIRE(network.net[network.net.size() -1].getActivationFunctionName() == ACTIVATION_FUNCTION);
 	}
 }
 
