@@ -39,8 +39,8 @@ Done! To use Fido, just link the `fido-lib.a` file and include any headers from 
 An example of creating and training a neural network to perform linear regression.
 
 ```cpp
-#include "NeuralNet.hpp"
-#include "Backpropagation.hpp"
+#include "NeuralNet.h"
+#include "Backpropagation.h"
 #include <iostream>
 
 int main() {
