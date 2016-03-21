@@ -1,4 +1,4 @@
 #define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+#include "catch.h"
 
 // This file is only for the headers.
