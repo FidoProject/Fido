@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script will install the fido compiler and library on a Unix based system.
 echo "Making library..."
 cd Software/
