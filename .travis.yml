@@ -38,7 +38,8 @@ install: #updates compilers and builds
   - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.4"; fi
 
   # Actual install
-  - chmod 777 install.sh && ./install.sh -noSFML
+  - sudo apt-get install libsfml-dev # SFML
+  - bash install.sh
 
 
 script: cd Tests && make && ./test
