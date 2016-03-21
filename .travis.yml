@@ -38,7 +38,7 @@ install: #updates compilers and builds
   - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.4"; fi
 
   # Actual install
-  - bash install.sh -noSFML
+  - ./install.sh -noSFML
 
 
 script: cd Tests && make && ./test
