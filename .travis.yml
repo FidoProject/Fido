@@ -1,6 +1,6 @@
 language: cpp
 install: true
-build: install.sh -noSFML
+build: bash install.sh -noSFML
 compiler:
   - clang
   - gcc
