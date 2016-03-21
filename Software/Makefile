@@ -1,6 +1,6 @@
 CXXFLAGS += -std=c++11
 ifneq ($(wildcard ./FidoSim/.*),)
-    $(info Compiling with 1 SFML flags)
+    $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 else ifneq ($(wildcard ./FidoKin/.*),)
     $(info Compiling with SFML flags)
