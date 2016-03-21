@@ -1,10 +1,9 @@
 cd ../Software
-rm foo.o
-rm fido-lib.a
+make clean
 make
 make lib
 
 cd ../Tests
-rm test
+make clean
 make
 ./test
