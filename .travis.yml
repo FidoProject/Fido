@@ -1,6 +1,6 @@
 language: cpp
-install: true
-script: bash install.sh -noSFML
+install: bash install.sh -noSFML
+script: cd Tests && make && ./test
 compiler:
   - clang
   - gcc
