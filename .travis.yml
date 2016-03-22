@@ -2,8 +2,21 @@ language: cpp
 
 compiler: gcc
 
+env:
+  - SFML="yes" TEST="valgrind"
+  - SFML="-noSFML" TEST="valgrind"
+  - SFML="yes" TEST="unit"
+  - SFML="-noSFML" TEST="unit"
+
 before_install:
-#  - sudo apt-get install valgrind
+  # Valgrind
+  - if [[ "$TEST" == "valgrind" ]]; then sudo apt-get install valgrind; fi
+
+  # SFML
+  - if [[ "$SFML" == "yes" ]]; then wget http://sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2 -O /tmp/sfml.tar.bz2; fi
+  - if [[ "$SFML" == "yes" ]]; then tar -xjvf /tmp/sfml.tar.bz2; fi
+  - if [[ "$SFML" == "yes" ]]; then sudo cp -r SFML-2.1/* /usr/; fi
+  - if [[ "$SFML" == "yes" ]]; then sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1; fi
 
   # g++4.8.1
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -15,4 +28,10 @@ install:
   - export CXXFLAGS="-std=c++0x"
   - export CXX="g++-4.8"
 
-script: cd ~/build/FidoProject/Fido && sudo ./install.sh -noSFML && cd Tests && sudo ./runtests.sh
+script:
+  # Build
+  - cd ~/build/FidoProject/Fido && sudo ./install.sh $SFML && cd Tests
+  # Run Unit Tests
+  - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh; fi
+  # Run Valgrind on unit tests
+  - if [[ "$TEST" == "valgrind" ]]; then make; valgrind --leak-check=full --error-exitcode=1 ./test; fi
