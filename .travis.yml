@@ -3,16 +3,14 @@ language: cpp
 compiler: gcc
 
 env:
-  - SFML="yes" TEST="valgrind unit"
-  - SFML="-noSFML" TEST="valgrind unit"
-  - SFML="yes" TEST="valgrind examples"
-  - SFML="-noSFML" TEST="valgrind examples"
+  - SFML="yes" TEST="valgrind"
+  - SFML="-noSFML" TEST="valgrind"
   - SFML="yes" TEST="unit"
   - SFML="-noSFML" TEST="unit"
 
 before_install:
   # Valgrind
-  - if [[ "$TEST" == "valgrind"* ]]; then sudo apt-get install valgrind; fi
+  - if [[ "$TEST" == "valgrind" ]]; then sudo apt-get install valgrind; fi
 
   # SFML
   - if [[ "$SFML" == "yes" ]]; then wget http://sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2 -O /tmp/sfml.tar.bz2; fi
@@ -36,6 +34,4 @@ script:
   # Run Unit Tests
   - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh; fi
   # Run Valgrind on unit tests
-  - if [[ "$TEST" == "valgrind unit" ]]; then make; valgrind --leak-check=full --error-exitcode=1 ./test; fi
-  # Run Valgrind on examples
-  - if [[ "$TEST" == "valgrind examples" ]]; then cd ../Examples; make; valgrind --leak-check=full --error-exitcode=1 ./linear; fi
+  - if [[ "$TEST" == "valgrind" ]]; then make; valgrind --leak-check=full --error-exitcode=1 ./test; fi
