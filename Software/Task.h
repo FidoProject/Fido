@@ -3,8 +3,6 @@
 
 #include <vector>
 
-class Simlink;
-
 namespace rl {
 	// A virtual class that may be subclassed to implement a task to be carried out by WireFitRobot
 	class Task {
