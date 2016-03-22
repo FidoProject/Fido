@@ -15,7 +15,6 @@ before_install:
   - if [[ "$SFML" == "yes" ]]; then tar -xjvf /tmp/sfml.tar.bz2; fi
   - if [[ "$SFML" == "yes" ]]; then sudo cp -r SFML-2.1/* /usr/; fi
   - if [[ "$SFML" == "yes" ]]; then sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1; fi
-  - if [[ "$SFML" == "yes" ]]; then sudo apt-get install valgrind; fi
 
   # g++4.8.1
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
