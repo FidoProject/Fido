@@ -3,10 +3,10 @@ language: cpp
 compiler: gcc
 
 env:
-  - SFML="yes"
-  - SFML="-noSFML"
-  - TEST="valgrind"
-  - TEST="unit"
+  - SFML="yes" TEST="valgrind"
+  - SFML="-noSFML" TEST="valgrind"
+  - SFML="yes" TEST="unit"
+  - SFML="-noSFML" TEST="unit"
 
 before_install:
   # Valgrind
