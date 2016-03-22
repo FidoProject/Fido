@@ -19,65 +19,7 @@
 *.exe
 *.out
 *.app
-
-###########
-## LaTeX ##
-###########
-
-*.aux
-*.glo
-*.idx
-*.log
-*.toc
-*.ist
-*.acn
-*.acr
-*.alg
-*.bbl
-*.blg
-*.dvi
-*.fdb_latexmk
-*.glg
-*.gls
-*.ilg
-*.ind
-*.lof
-*.lot
-*.maf
-*.mtc
-*.mtc1
-*.out
-*.synctex.gz
-*.nav
-*.snm
-*.fls
-
-###########
-## Eagle ##
-###########
-
-*.s#?
-*.b#?
-*.l#?
-eagle.epf
-*.$$$
-*.cmp
-*.ly2
-*.l15
-*.sol
-*.plc
-*.stc
-*.sts
-*.crc
-*.crs
-*.dri
-*.drl
-*.gpi
-*.pls
-*.drd
-*.drd.*
-*.info
-*.eps
+*.dSYM
 
 ############
 ## Python ##
@@ -155,28 +97,6 @@ DerivedData
 *.launch
 Debug
 
-#############
-## AutoCAD ##
-#############
-
-*.dwl*
-*.bak
-*.stl
-
-###########
-## Ionic ##
-###########
-node_modules
-.tmp
-.sass-cache
-**/bower_components or sometimes it is lib/**
-platforms
-plugins
-*.swp
-*.swo
-*.log
-*.DS_Store
-
 ##########
 ## Fido ##
 ##########
@@ -191,9 +111,3 @@ Software/Hardware/src
 FidoExec
 foo
 Tests/test
-
-#############
-## Doxygen ##
-############
-html/
-latex/
