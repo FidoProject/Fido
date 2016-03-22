@@ -1,3 +1,9 @@
+/** \file ActivationFunctions.h
+ * \brief Fido's supported activation functions and their derivatives.
+ * 
+ * An activation function is the final transformation applied to the output of a neuron. Common examples of activation functions are the sigmoid and inverse tangent functions. Derivatives are for training (ex. back propagation).
+ */
+
 #ifndef ACTIVATIONFUNCTIONS_H
 #define ACTIVATIONFUNCTIONS_H
 
@@ -5,43 +11,64 @@
 #include <math.h>
 
 namespace net {
-	// Defines the type for an activation function for the neurons of a neural net
+	/** The type of an activation function.
+	 * 
+	 * Each activation function must take in a double and output a double.
+	 */
 	typedef double(*ActivationFunction)(double);
-
-	/// ACTIVATION FUNCTIONS
-	// An example of a common "s-shaped" function that takes the initial output of a neuron and uses an activation value of 0 to return a gradient output
-	static double sigmoid(double initialOutput) {
+	
+	/** A sigmoid function.
+	 *
+	 * An "s-shaped" function that uses an activation value of 0 to return a gradient output. Similar to the hyperbolic tangent function.
+	 * \return between -1 and 1
+	 */
+	inline double sigmoid(double initialOutput) {
 		return ( 1 / ( 1 + exp(-initialOutput / 1)));
 	}
 
-	// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
-	static double binary(double initialOutput) {
+	/** A binary function.
+	 * 
+	 * \return Either 0 or 1. 0 if input is less than 0 and 1 otherwise.
+	 */
+	inline double binary(double initialOutput) {
 		return (initialOutput > 0 ? 1 : 0);
 	}
 
-	// An example of a common function that takes the initial output of a neuron and uses an activation value of 0 to return a binary output
-	static double integer(double initialOutput) {
+	/** An flooring function.
+	 *
+	 * \return Floor of the input.
+	 */
+	inline double integer(double initialOutput) {
 		return floor(initialOutput);
 	}
 
-	// Takes the initial output of a neuron and returns it unchanged
-	static double simpleLinear(double initialOutput) {
+	/** A linear function.
+	 *
+	 * \return Same as the input
+	 */
+	inline double simpleLinear(double initialOutput) {
 		return initialOutput;
 	}
 
-	// Hyperbolic tangent (tanh) activation function
-	static double tanSigmoid(double initialOutput) {
+	/** A tangential sigmoid or a hyperbolic tangent function.
+	 *
+	 * An "s-shaped" function that uses an activation value of 0 to return a gradient output. Similar to the sigmoid function
+	 * \return Same as the input
+	 */
+	inline double tanSigmoid(double initialOutput) {
 		return (1 - exp(-2*initialOutput)) / (1 + exp(-2*initialOutput));
 	}
 
-	/// DERIVATIVES OF ACTIVATION FUNCTIONS
-	// Derivative of the sigmoid activation function
-	static double sigmoidDerivative(double neuronOuput) {
+	//--------------------- DERIVATIVES OF ACTIVATION FUNCTIONS ----------------
+	/** Derivative of the sigmoid activation function.
+	 */
+	inline double sigmoidDerivative(double neuronOuput) {
 		return neuronOuput * (1 - neuronOuput);
 	}
 
-	// Derivative of the simple linear activation function
-	static double simpleLinearDerivative(double neuronOutput) {
+	/** Derivative of the linear activation function.
+	 */
+	inline double simpleLinearDerivative(double neuronOutput) {
 		return 1;
 	}
 }
