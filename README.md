@@ -11,25 +11,18 @@ Clone the github repository.
 $ git clone https://github.com/FidoProject/Fido.git
 ```
 
-### With Simulator
+Fido's robotic simulator is not necessary for the library's machine learning features. If you **would like** the simulator, install [SFML](http://www.sfml-dev.org/learn.php) before proceeding.
 
-Fido's simulator requires [SFML](http://www.sfml-dev.org/learn.php). If you would like the simulator, install SFML.
+If you **would not like** the simulator, run the command below with the `-noSFML` flag.
 
-If you are on a **Unix** machine, use the install script.
+If you are on a **Unix** machine, run
 ```
 $ cd Fido/ && bash install.sh
 ```
 
-If you are on **Windows**, use
+If you are on **Windows**, run
 ```
 $ cd Fido/ && install.bat
-```
-
-### Without Simulator
-
-If you do not want the simulator use the install script with the `-noSFML` argument
-```
-$ cd Fido/ && bash install.sh -noSFML
 ```
 
 Done! To use Fido, just link the `fido-lib.a` file and include any headers from the `Software` directory.
