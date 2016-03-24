@@ -79,7 +79,14 @@ namespace net {
 		 * \param name the name of the activation function
 		 */
 		void setActivationFunctionWithName(std::string name) {
-			activationFunction = getActivationFunctionNameMap()[name];
+			std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
+			auto nameIterator = nameMap.find(name);
+			if(nameIterator != nameMap.end()) {
+				activationFunction = getActivationFunctionNameMap()[name];
+			} else {
+				std::cout << "The activation function \"" << name << "\" does not exist! Throwing error!\n";
+				throw 1;
+			}
 		}
 
 

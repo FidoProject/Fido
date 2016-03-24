@@ -30,7 +30,7 @@ namespace net {
 		 * \param numNeuronsPerHiddenLayer the number of neurons per hidden layer.
 		 * \param activationFunctionName the name of the activation function to be used in the NN
 		 */
-		NeuralNet(int numInputs, int numOutputs, int numHiddenLayers, int numNeuronsPerHiddenLayer, std::string activationFunctionName);
+		NeuralNet(unsigned int numInputs, unsigned int numOutputs, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, std::string activationFunctionName);
 		
 		/**
 		 * \brief Constructs a neural network copying another networks architecture with random weights.
