@@ -4,6 +4,7 @@
 #include <map>
 #include <fstream>
 #include <string>
+#include <iostream>
 
 #include "Neuron.h"
 #include "ActivationFunctions.h"
