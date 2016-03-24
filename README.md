@@ -8,7 +8,7 @@ Check out the [project site](http://fidoproject.github.io/) for details.
 
 ## Contributing
 
-Send us a pull request. If you are looking for things to do, check out the repo's open issues. We will be happy to add you as a contributor and credit you in the README.
+Send us a pull request. If you are looking for things to do, check out the repo's open issues.
 
 If you find a bug or have any trouble with the library, please open an issue. We are happy to help you out.
 
