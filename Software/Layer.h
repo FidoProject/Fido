@@ -61,20 +61,6 @@ namespace net {
 		}
 
 		/** 
-		 * \brief Gets the map of activation function name to ActivationFunction
-		 */
-		std::map<std::string, ActivationFunction> getActivationFunctionNameMap() {
-			std::map<std::string, ActivationFunction> map;
-			map["sigmoid"] = sigmoid;
-			map["binary"] = binary;
-			map["integer"] = integer;
-			map["simpleLinear"] = simpleLinear;
-			map["tanSigmoid"] = tanSigmoid;
-
-			return map;
-		}
-
-		/** 
 		 * \brief Sets the activation function to the given string
 		 *
 		 * \param name the name of the activation function
@@ -121,6 +107,31 @@ namespace net {
 				*output << "\n";
 			}
 		}
+
+		/** 
+		 * \brief Gets the map of activation function name to ActivationFunction
+		 */
+		static std::map<std::string, ActivationFunction> getActivationFunctionNameMap() {
+			std::map<std::string, ActivationFunction> map;
+			map["sigmoid"] = sigmoid;
+			map["binary"] = binary;
+			map["integer"] = integer;
+			map["simpleLinear"] = simpleLinear;
+			map["tanSigmoid"] = tanSigmoid;
+
+			return map;
+		}
+		/** 
+		 * \brief Gets the map of activation function name to a derived ActivationFunction
+		 */
+		static std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames() {
+			std::map<std::string, ActivationFunction> map;
+			map["sigmoid"] = sigmoidDerivative;
+			map["simpleLinear"] = simpleLinearDerivative;
+
+			return map;
+		}
+
 	};
 }
 

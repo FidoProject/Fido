@@ -112,6 +112,15 @@ namespace net {
 		 * \return a 2d vector containing the outputs of each layer
 		 */
 		std::vector< std::vector<double> > feedForward(std::vector<double> input);
+
+		/**
+		 * \brief Computes the error gradients of each layer in the NeuralNet
+		 * 
+		 * \param input the input to the neural net
+		 * \param correctOutput what the neural net would ideally output when fed the provided input
+		 * \return a 2d vector containing the gradients of each layer starting from the first layer and ending with the last
+		 */
+		std::vector< std::vector<double> > getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput);
 		
 		/**
 		 * \brief Prints the weights of the neurons of the layers of the net

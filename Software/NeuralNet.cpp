@@ -144,6 +144,44 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 	return output;
 }
 
+std::vector< std::vector<double> > NeuralNet::getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput) {
+	std::vector< std::vector<double> > outputs = feedForward(input);
+	std::vector< std::vector< std::vector<double> > > weights = getWeights3D();
+	std::vector< std::vector<double> > errors;
+	ActivationFunction hiddenActivationFunctionDerivative = Layer::getDerivedActivationFunctionNames()[getHiddenActivationFunctionName()];
+	ActivationFunction outputActivationFunctionDerivative = Layer::getDerivedActivationFunctionNames()[getOutputActivationFunctionName()];
+
+
+	// Compute output layer error
+	std::vector<double> outputNeuronErrors;
+	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];
+	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
+		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputActivationFunctionDerivative(outputLayerOutput[neuronIndex]);
+		outputNeuronErrors.push_back(outputNeuronError);
+	}
+	errors.push_back(outputNeuronErrors);
+
+	// Compute hidden layer error
+	for(int layerIndex = net.size() - 2; layerIndex >= 0; layerIndex--) {
+		std::vector<double> currentLayerError;
+		const std::vector<double> &currentHiddenLayerOutput = outputs[layerIndex];
+		const std::vector<double> &lastLayerError = errors[errors.size() - 1];
+		const std::vector< std::vector<double> > &lastLayerWeights = weights[layerIndex + 1];
+
+		for(int neuronIndex = 0; neuronIndex < net[layerIndex].neurons.size(); neuronIndex++) {
+			double errorsTimesWeights = 0;
+			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
+				errorsTimesWeights += lastLayerError[previousNeuronIndex] * lastLayerWeights[previousNeuronIndex][neuronIndex];
+			}
+			double hiddenNeuronError = hiddenActivationFunctionDerivative(currentHiddenLayerOutput[neuronIndex]) * errorsTimesWeights;
+			currentLayerError.push_back(hiddenNeuronError);
+		}
+		errors.push_back(currentLayerError);
+	}
+
+	return errors;
+}
+
 void NeuralNet::printWeights() {
 	std::cout << "Neuron weights: \n";
 	for(int a = 0; a < net.size(); a++) {

@@ -37,8 +37,6 @@ namespace net {
 		/**
 		 * \brief Stores a Backpropagation object using specified ofstream.
 		 *
-		 * Useful for appending a network to the end of a file without overwriting it. WARNING: will not close ofstream.
-		 *
 		 * \param output pointer to the output stream which the neural network will be written to
 		**/
 		void store(std::ofstream *output);
@@ -77,11 +75,6 @@ namespace net {
 		 * \brief Resets the Backpropagation object's lastchanginweight instance variable using a neural network (NN is needed because the number of layers, neurons, and weights are needed).
 		 */
 		void resetLastChangeInWeight(net::NeuralNet *network);
-
-		/**
-		 * \brief Returns a map of derived activation function names to activation functions.
-		 */
-		std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames();
 	};
 }
 
