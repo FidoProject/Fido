@@ -109,7 +109,7 @@ namespace net {
 		 *
 		 * \param output the text file for the layer object to be written to
 		 */
-		void storeNetWithStream(std::ofstream *output) {
+		void store(std::ofstream *output) {
 			// All the neurons in the same layer have the same number of weights 
 			// so that is stored once along with the number of neurons in the layer
 			// and the activation function name of the layer

@@ -33,14 +33,14 @@ namespace rl {
 		 * 
 		 * \return False if the interpolator stored in the file is not a LSInterpolator.
 		 */ 
-		bool initFromFile(std::ifstream *in);
+		bool initFromStream(std::ifstream *in);
 
 		/**
 		 * \brief Stores the interpolator object in a file
 		 *
 		 * \param out the file to which to write the LSInterpolator
 		 */  
-		void storeInterpolator(std::ofstream *out);
+		void store(std::ofstream *out);
 
 		/**
 		 * \brief Uses the interpolator function to compute the reward of an action vector given a set of control wires

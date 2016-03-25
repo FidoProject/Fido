@@ -96,7 +96,7 @@ void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 		return returnVal;
 	});
 
-	backprop.trainOnData(lastModel.network, input, correctOutput);
+	backprop.train(lastModel.network, input, correctOutput);
 }
 
 void QLearn::reset() {

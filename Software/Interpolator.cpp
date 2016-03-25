@@ -11,7 +11,7 @@ Interpolator * Interpolator::getAnyInterpolatorFromFile(std::ifstream *in) {
 	Interpolator *interpolator;
 
 	interpolator = static_cast<Interpolator *>(new LSInterpolator());
-	if(interpolator->initFromFile(in)) {
+	if(interpolator->initFromStream(in)) {
 		return interpolator;
 	}
 	delete interpolator;

@@ -16,10 +16,10 @@ namespace rl {
 	public:
 
 		/** Initializes the parameters of an interpolator from a file. Returns false if the interpolator stored in the file is not the correct type */
-		virtual bool initFromFile(std::ifstream *in) = 0;
+		virtual bool initFromStream(std::ifstream *in) = 0;
 
 		/** Stores the parameters of an interpolator in a file */
-		virtual void storeInterpolator(std::ofstream *out) = 0;
+		virtual void store(std::ofstream *out) = 0;
 
 		/** Uses the interpolator function to compute the reward of an action vector given a set of control wires */
 		virtual double getReward(const std::vector<Wire> &controlWires, const std::vector<double> &action) = 0;

@@ -44,7 +44,7 @@ namespace rl {
 		WireFitQLearn();
 		
 		// Initializes a WireFitQLearn object from a file
-		WireFitQLearn(std::string filename);
+		WireFitQLearn(std::ifstream *input);
 		
 		// Outputs the action vector that the model thinks will give the most reward
 		Action chooseBestAction(State currentState);
@@ -68,7 +68,7 @@ namespace rl {
 		void reset();
 		
 		// Stores the WireFitQLearn object in a file
-		void storeWireFitQLearn(std::string filename);
+		void store(std::ofstream *output);
 
 	private:
 		// Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires

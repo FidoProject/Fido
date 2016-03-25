@@ -5,13 +5,14 @@
 #include <map>
 #include <vector>
 
+#include "Trainer.h"
 #include "ActivationFunctions.h"
 
 namespace net {
 
 	class NeuralNet;
 
-	class Backpropagation {
+	class Backpropagation : public Trainer {
 	public:
 		/**
 		 * \brief Initialize the Backpropagation object with necessary constants.
@@ -28,22 +29,10 @@ namespace net {
 		Backpropagation();
 
 		/**
-		 * \brief Loads a Backpropagation object from a file
-		 * \param filename the filename of the file being imported
-		 */
-		explicit Backpropagation(std::string filename);
-
-		/**
 		 * \brief Loads a Backpropagation object using an input stream
 		 * \param input a pointer to the input stream that you want to form a neural network from
 		 */
 		explicit Backpropagation(std::ifstream *input);
-
-		/**
-		 * \brief Stores a Backpropagation object in the specified file
-		 * \param filename the filename of the output file
-		 */
-		void storeBackpropagation(std::string filename);
 
 		/**
 		 * \brief Stores a Backpropagation object using specified ofstream.
@@ -52,7 +41,7 @@ namespace net {
 		 *
 		 * \param output pointer to the output stream which the neural network will be written to
 		**/
-		void storeBackpropagationWithStream(std::ofstream *output);
+		void store(std::ofstream *output);
 
 		/**
 		 * \brief Trains a neural network on a training set.
@@ -65,16 +54,7 @@ namespace net {
 		 * \param input a vector of neural network inputs; each element in input, should have a corresponding output in correctOutput
 		 * \param correctOutput network is trained to output an element of correctOutput when fed a corresponding element of the input vector
 		 */
-		void trainOnData(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
-
-		/**
-		 * \brief Gets the output of the neural network, calculates the error of each neuron, and edits the weights of the neurons to reduce error
-		 *
-		 * \param network the neural network to be trained
-		 * \param input the input fed to the neural network
-		 * \param correctOutput network is trained to output this when fed the input vector
-		 */
-		double trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput);
+		void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
 
 		double learningRate; /**< The rate of learning, set by constructor */
 		double momentumTerm; /**< The term of momentum, set by constructor */
@@ -85,12 +65,16 @@ namespace net {
 	private:
 
 		/**
-		 * \brief Uses a ifstream to initialize a backpropagation object
+		 * \brief Gets the output of the neural network, calculates the error of each neuron, and edits the weights of the neurons to reduce error
+		 *
+		 * \param network the neural network to be trained
+		 * \param input the input fed to the neural network
+		 * \param correctOutput network is trained to output this when fed the input vector
 		 */
-		void initWithStream(std::ifstream *input);
+		double trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput);
 
 		/**
-		 * \brief Resets the lastchanginweight vector using a neural network is needed (NN is needed cause the number of layers, neurons, and weights are needed).
+		 * \brief Resets the Backpropagation object's lastchanginweight instance variable using a neural network (NN is needed because the number of layers, neurons, and weights are needed).
 		 */
 		void resetLastChangeInWeight(net::NeuralNet *network);
 

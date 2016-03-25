@@ -36,30 +36,25 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 	randomizeWeights();
 }
 
-NeuralNet::NeuralNet(std::string filename) { 
-	std::ifstream input;
-	input.open(filename.c_str(), std::ifstream::in);
-	initWithStream(&input);
-	input.close();
-}
-
 NeuralNet::NeuralNet(std::ifstream *input) {
-	initWithStream(input);
+	if(input->is_open()) {
+		int numLayers;
+		*input >> numLayers;
+		for (int a = 0; a < numLayers; a++) {
+			net.push_back(Layer(input));
+		}
+	} else {
+		std::cout << "Could not retrieve neural network from file\n";
+		throw 1;
+	}
 }
 
-void NeuralNet::storeNet(std::string filename) {
-	std::ofstream output;
-	output.open(filename.c_str(), std::ios::app);
-	storeNetWithStream(&output);
-	output.close();
-}
-
-void NeuralNet::storeNetWithStream(std::ofstream *output) {
+void NeuralNet::store(std::ofstream *output) {
 	if(output->is_open()) {
 		// Output the net to the file
 		*output << net.size() << "\n";
 		for(int a = 0; a < net.size(); a++) {
-			net[a].storeNetWithStream(output);
+			net[a].store(output);
 		}
 	} else {
 		std::cout << "Could not store neural network\n";
@@ -147,19 +142,6 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 		output.push_back(outputLayer);
 	}
 	return output;
-}
-
-void NeuralNet::initWithStream(std::ifstream *input) {
-	if(input->is_open()) {
-		int numLayers;
-		*input >> numLayers;
-		for (int a = 0; a < numLayers; a++) {
-			net.push_back(Layer(input));
-		}
-	} else {
-		std::cout << "Could not retrieve neural network from file\n";
-		throw 1;
-	}
 }
 
 void NeuralNet::printWeights() {

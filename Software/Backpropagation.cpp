@@ -22,25 +22,16 @@ Backpropagation::Backpropagation() {
 	maximumIterations = 0;
 }
 
-Backpropagation::Backpropagation(std::string filename) {
-	std::ifstream input;
-	input.open(filename.c_str(), std::ifstream::in);
-	initWithStream(&input);
-	input.close();
-}
-
 Backpropagation::Backpropagation(std::ifstream *input) {
-	initWithStream(input);
+	if(input->is_open()) {
+		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumIterations;
+	} else {
+		std::cout << "Could not retrieve backprop from file\n";
+		throw 1;
+	}
 }
 
-void Backpropagation::storeBackpropagation(std::string filename) {
-	std::ofstream output;
-	output.open(filename.c_str(), std::ios::app);
-	storeBackpropagationWithStream(&output);
-	output.close();
-}
-
-void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
+void Backpropagation::store(std::ofstream *output) {
 	if(output->is_open()) {
 		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumIterations << "\n";
 	} else {
@@ -49,7 +40,7 @@ void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
 	}
 }
 
-void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
+void Backpropagation::train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
 	resetLastChangeInWeight(network);
@@ -141,15 +132,6 @@ std::map<std::string, ActivationFunction> Backpropagation::getDerivedActivationF
 	map["simpleLinear"] = simpleLinearDerivative;
 
 	return map;
-}
-
-void Backpropagation::initWithStream(std::ifstream *input) {
-	if(input->is_open()) {
-		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumIterations;
-	} else {
-		std::cout << "Could not retrieve backprop from file\n";
-		throw 1;
-	}
 }
 
 void Backpropagation::resetLastChangeInWeight(net::NeuralNet *network) {
