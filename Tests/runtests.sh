@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e # To quit on first error
+ARGS=$1 # For running specific tests
+
 cd ../Software
 if [[ "$1" == "clean" ]]; then
 	echo "Cleaning software..."
@@ -11,6 +14,9 @@ cd ../Tests
 if [[ "$1" == "clean" ]]; then
 	echo "Cleaning tests..."
 	make clean
+	ARGS=""
 fi
 make
-./test
+./test $ARGS
+
+echo "All tests succeded!"
