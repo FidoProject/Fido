@@ -13,7 +13,7 @@ using namespace net;
 NeuralNet::NeuralNet() {
 }
 
-NeuralNet::NeuralNet(int numInputs, int numOutputs, int numHiddenLayers, int numNeuronsPerHiddenLayer, std::string activationFunctionName) {
+NeuralNet::NeuralNet(unsigned int numInputs, unsigned int numOutputs, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, std::string activationFunctionName) {
 	Layer firstHiddenLayer;
 	for (int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.neurons.push_back(Neuron(numInputs));
 	net.push_back(firstHiddenLayer);
