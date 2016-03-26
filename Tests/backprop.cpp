@@ -1,14 +1,13 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <cstdio>
 #include "catch.h"
 #include "../Software/NeuralNet.h"
 #include "../Software/Backpropagation.h"
 
 const static double ERROR_ALLOWANCE = 0.1;
 const static double DIFFERENCE_ALLOWANCE = 0.01;
-const static char * FILENAME = "backpropfile.txt";
+const static char * FILENAME = "temp/backpropfile.txt";
 
 TEST_CASE("Test back propagation", "[backprop]") {
 	// Creates a neural network with
@@ -60,7 +59,6 @@ TEST_CASE("Save and load backpropagations through streams", "[backprop]") {
 	istream.open(FILENAME, std::ifstream::in);
 	net::Backpropagation newBackprop = net::Backpropagation(&istream); // load new
 	istream.close();
-	std::remove(FILENAME);
 
 	// Train with new backprop
 	backprop.train(&neuralNetwork, input, correctOutput); // train old

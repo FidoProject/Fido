@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -77,7 +76,6 @@ TEST_CASE("Neural Network Storing", "[network]") {
 		istream.open(FILENAME, std::ifstream::in);
 		net::NeuralNet fileNet = net::NeuralNet(&istream); // load new
 		istream.close();
-		std::remove(FILENAME);
 
 		REQUIRE(fileNet.getWeights() == oldWeights);
 		REQUIRE(fileNet.getOutput(input) == oldOutput);
