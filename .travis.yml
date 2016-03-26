@@ -3,20 +3,18 @@ language: cpp
 compiler: gcc
 
 env:
-  - SFML="yes" TEST="valgrind"
-  - SFML="-noSFML" TEST="valgrind"
-  - SFML="yes" TEST="unit"
-  - SFML="-noSFML" TEST="unit"
+  - TEST="valgrind"
+  - TEST="unit"
 
 before_install:
   # Valgrind
   - if [[ "$TEST" == "valgrind" ]]; then sudo apt-get install valgrind; fi
 
   # SFML
-  - if [[ "$SFML" == "yes" ]]; then wget http://sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2 -O /tmp/sfml.tar.bz2; fi
-  - if [[ "$SFML" == "yes" ]]; then tar -xjvf /tmp/sfml.tar.bz2; fi
-  - if [[ "$SFML" == "yes" ]]; then sudo cp -r SFML-2.1/* /usr/; fi
-  - if [[ "$SFML" == "yes" ]]; then sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1; fi
+  - wget http://sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2 -O /tmp/sfml.tar.bz2
+  - tar -xjvf /tmp/sfml.tar.bz2
+  - sudo cp -r SFML-2.1/* /usr/
+  - sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1
 
   # g++4.8.1
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
