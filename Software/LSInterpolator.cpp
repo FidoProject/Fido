@@ -18,7 +18,7 @@ LSInterpolator::LSInterpolator(double smoothingFactor_, double e_) {
 	e = e_;
 }
 
-bool LSInterpolator::initFromFile(std::ifstream *in) {
+bool LSInterpolator::initFromStream(std::ifstream *in) {
 	std::string name;
 	if (!(*in >> name)) {
 		std::cout << "Interpolator could not read ifstrem\n";
@@ -33,7 +33,7 @@ bool LSInterpolator::initFromFile(std::ifstream *in) {
 	return true;
 }
 
-void LSInterpolator::storeInterpolator(std::ofstream *out) {
+void LSInterpolator::store(std::ofstream *out) {
 	*out << " LS " << smoothingFactor << " " << e << " ";
 }
 

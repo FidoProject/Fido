@@ -40,13 +40,6 @@ namespace net {
 		 * \param otherNet the network to be copied
 		 */
 		explicit NeuralNet(NeuralNet* otherNet);
-		
-		/**
-		 * \brief Restores a neural network from the specified file
-		 * 
-		 * \param filename the name of the file the network is to be constructed from
-		 */ 
-		explicit NeuralNet(std::string filename);
 
 		/**
 		 * \brief Restores a neural network from the specified file
@@ -54,13 +47,6 @@ namespace net {
 		 * \param input the file the network is to be constructed from
 		 */
 		explicit NeuralNet(std::ifstream *input);
-		
-		/**
-		 * \brief Stores a neural network in the specified file
-		 *
-		 * \param filename the file the network is to be written to
-		 */ 
-		void storeNet(std::string filename);
 
 		/**
 		 * \brief Stores a neural network in the specified file
@@ -71,7 +57,7 @@ namespace net {
 		 * 
 		 * \param output the file the network is to be written to
 		 */  
-		void storeNetWithStream(std::ofstream *output);
+		void store(std::ofstream *output);
 
 		/**
 		 * \brief Gets the weights of each neuron in the net.
@@ -126,6 +112,15 @@ namespace net {
 		 * \return a 2d vector containing the outputs of each layer
 		 */
 		std::vector< std::vector<double> > feedForward(std::vector<double> input);
+
+		/**
+		 * \brief Computes the error gradients of each layer in the NeuralNet
+		 * 
+		 * \param input the input to the neural net
+		 * \param correctOutput what the neural net would ideally output when fed the provided input
+		 * \return a 2d vector containing the gradients of each layer starting from the first layer and ending with the last
+		 */
+		std::vector< std::vector<double> > getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput);
 		
 		/**
 		 * \brief Prints the weights of the neurons of the layers of the net
@@ -178,9 +173,6 @@ namespace net {
 		 * \brief A two dimensional network of neurons.
 		 */ 
 		std::vector< Layer > net;
-		
-	private:
-		void initWithStream(std::ifstream *input);
 	};
 }
 

@@ -57,34 +57,43 @@ WireFitQLearn::WireFitQLearn() {
 
 }
 
-WireFitQLearn::WireFitQLearn(std::string filename) {
-	std::ifstream input;
-	input.open(filename.c_str(), std::ifstream::in);
-	if(input.is_open()) {
-		input >> learningRate >> devaluationFactor;
-		input >> actionDimensions >> numberOfWires;
-		input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> biasMovingAverage >> rewardIterations >> baseOfDimensions;
-		
-		lastAction = std::vector<double>(actionDimensions);
+WireFitQLearn::WireFitQLearn(std::ifstream *input) {
+	if(input->is_open()) {
+		*input >> learningRate >> devaluationFactor;
+		*input >> actionDimensions >> numberOfWires;
+		*input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> biasMovingAverage >> rewardIterations >> baseOfDimensions;
+
+		double temp;
+		minAction = Action(actionDimensions);
 		for(int a = 0; a < actionDimensions; a++) {
-			double temp;
-			input >> temp;
+			*input >> temp;
+			minAction[a] = temp;
+		}
+
+		maxAction = Action(actionDimensions);
+		for(int a = 0; a < actionDimensions; a++) {
+			*input >> temp;
+			maxAction[a] = temp;
+		}
+
+		lastAction = Action(actionDimensions);
+		for(int a = 0; a < actionDimensions; a++) {
+			*input >> temp;
 			lastAction[a] = temp;
-			
 		}
 		
-		backprop = net::Backpropagation(&input);
-		interpolator = Interpolator::getAnyInterpolatorFromFile(&input);
-		network = new net::NeuralNet(&input);
+		backprop = net::Backpropagation(input);
+		interpolator = Interpolator::getAnyInterpolatorFromFile(input);
+		network = new net::NeuralNet(input);
 		
-		input.close();
+		input->close();
 
 		if(network->numberOfOutputs() != numberOfWires * (actionDimensions+1)) {
-			std::cout << "Neural network incorrectly formatted!\n";
+			std::cout << "WireFitQLearn incorrectly formatted!\n";
 			throw 1;
 		}
 	} else {
-		std::cout << "Could not retrieve wirefitqlearn from file\n";
+		std::cout << "Could not retrieve WireFitQLearn from file\n";
 		throw 1;
 	}
 }
@@ -144,7 +153,7 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
-	backprop.trainOnData(network, input, correctOutput);
+	backprop.train(network, input, correctOutput);
 }
 
 void WireFitQLearn::reset() {
@@ -152,22 +161,21 @@ void WireFitQLearn::reset() {
 }
 
 
-void WireFitQLearn::storeWireFitQLearn(std::string filename) {
-	std::ofstream output;
-	output.open(filename.c_str(), std::ios::app);
-	if(output.is_open()) {
-		output << learningRate << " " << devaluationFactor << "\n";
-		output << actionDimensions << " " << numberOfWires << "\n";
-		output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << biasMovingAverage << " " << rewardIterations <<  " " << baseOfDimensions << "\n";
+void WireFitQLearn::store(std::ofstream *output) {
+	if(output->is_open()) {
+		*output << learningRate << " " << devaluationFactor << "\n";
+		*output << actionDimensions << " " << numberOfWires << "\n";
+		*output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << biasMovingAverage << " " << rewardIterations <<  " " << baseOfDimensions << "\n";
 		
-		for(int a = 0; a < lastAction.size(); a++) output << lastAction[a] << " ";
-		output << "\n";
+		for(int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
+		for(int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
+		for(int a = 0; a < lastAction.size(); a++) *output << lastAction[a] << " ";
 		
-		backprop.storeBackpropagationWithStream(&output);
-		interpolator->storeInterpolator(&output);
-		network->storeNetWithStream(&output);
+		backprop.store(output);
+		interpolator->store(output);
+		network->store(output);
 		
-		output.close();
+		output->close();
 	} else {
 		std::cout << "Could not store wirefitqlearn in file\n";
 		throw 1;

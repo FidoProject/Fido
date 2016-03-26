@@ -68,6 +68,8 @@ namespace rl {
 		void applyReinforcementToLastAction(double reward, State newState);
 
 		void reset();
+
+		void store(std::ofstream *output);
 	private:
 		net::Backpropagation backprop;
 		std::vector<Model> models;

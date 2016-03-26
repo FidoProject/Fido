@@ -61,20 +61,6 @@ namespace net {
 		}
 
 		/** 
-		 * \brief Gets the map of activation function name to ActivationFunction
-		 */
-		std::map<std::string, ActivationFunction> getActivationFunctionNameMap() {
-			std::map<std::string, ActivationFunction> map;
-			map["sigmoid"] = sigmoid;
-			map["binary"] = binary;
-			map["integer"] = integer;
-			map["simpleLinear"] = simpleLinear;
-			map["tanSigmoid"] = tanSigmoid;
-
-			return map;
-		}
-
-		/** 
 		 * \brief Sets the activation function to the given string
 		 *
 		 * \param name the name of the activation function
@@ -109,7 +95,7 @@ namespace net {
 		 *
 		 * \param output the text file for the layer object to be written to
 		 */
-		void storeNetWithStream(std::ofstream *output) {
+		void store(std::ofstream *output) {
 			// All the neurons in the same layer have the same number of weights 
 			// so that is stored once along with the number of neurons in the layer
 			// and the activation function name of the layer
@@ -121,6 +107,31 @@ namespace net {
 				*output << "\n";
 			}
 		}
+
+		/** 
+		 * \brief Gets the map of activation function name to ActivationFunction
+		 */
+		static std::map<std::string, ActivationFunction> getActivationFunctionNameMap() {
+			std::map<std::string, ActivationFunction> map;
+			map["sigmoid"] = sigmoid;
+			map["binary"] = binary;
+			map["integer"] = integer;
+			map["simpleLinear"] = simpleLinear;
+			map["tanSigmoid"] = tanSigmoid;
+
+			return map;
+		}
+		/** 
+		 * \brief Gets the map of activation function name to a derived ActivationFunction
+		 */
+		static std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames() {
+			std::map<std::string, ActivationFunction> map;
+			map["sigmoid"] = sigmoidDerivative;
+			map["simpleLinear"] = simpleLinearDerivative;
+
+			return map;
+		}
+
 	};
 }
 

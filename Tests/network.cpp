@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 #include "catch.h"
 #include "../Software/NeuralNet.h"
 
@@ -21,7 +22,7 @@ const int INPUTS(4);
 const int OUTPUTS(2);
 const int HIDDENS(3);
 const int NUM_IN_HIDDENS(6);
-const char * FILENAME = "dasgfgjhasdgkfhjkgfjaskfgh.dat";
+const char * FILENAME = "netfile.txt";
 const char * ACTIVATION_FUNCTION("sigmoid");
 std::vector<double> input = {3, 5, 2, 5};
 
@@ -67,9 +68,15 @@ TEST_CASE("Neural Network Storing", "[network]") {
 	std::vector<double> oldOutput = network.getOutput(input);
 
 	SECTION("Store into and load from file") {
-		network.storeNet(FILENAME); // Store old
-		net::NeuralNet fileNet = net::NeuralNet(FILENAME); // load new
-		std::remove(FILENAME);
+		std::ofstream ostream;
+		ostream.open(FILENAME, std::ios::app);
+		network.store(&ostream); // Store old
+		ostream.close();
+
+		std::ifstream istream;
+		istream.open(FILENAME, std::ifstream::in);
+		net::NeuralNet fileNet = net::NeuralNet(&istream); // load new
+		istream.close();
 
 		REQUIRE(fileNet.getWeights() == oldWeights);
 		REQUIRE(fileNet.getOutput(input) == oldOutput);

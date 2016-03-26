@@ -22,25 +22,16 @@ Backpropagation::Backpropagation() {
 	maximumIterations = 0;
 }
 
-Backpropagation::Backpropagation(std::string filename) {
-	std::ifstream input;
-	input.open(filename.c_str(), std::ifstream::in);
-	initWithStream(&input);
-	input.close();
-}
-
 Backpropagation::Backpropagation(std::ifstream *input) {
-	initWithStream(input);
+	if(input->is_open()) {
+		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumIterations;
+	} else {
+		std::cout << "Could not retrieve backprop from file\n";
+		throw 1;
+	}
 }
 
-void Backpropagation::storeBackpropagation(std::string filename) {
-	std::ofstream output;
-	output.open(filename.c_str(), std::ios::app);
-	storeBackpropagationWithStream(&output);
-	output.close();
-}
-
-void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
+void Backpropagation::store(std::ofstream *output) {
 	if(output->is_open()) {
 		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumIterations << "\n";
 	} else {
@@ -49,7 +40,7 @@ void Backpropagation::storeBackpropagationWithStream(std::ofstream *output) {
 	}
 }
 
-void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
+void Backpropagation::train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
 	resetLastChangeInWeight(network);
@@ -60,48 +51,16 @@ void Backpropagation::trainOnData(net::NeuralNet *network, const std::vector< st
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
-
-		//std::cout << "Error Level: " << totalError << "; iter: " << iterations << "\n";
 	} while(totalError > targetErrorLevel && iterations < maximumIterations);
-	if(iterations >= maximumIterations-1) std::cout << "HIT MAX ITERATIONS\n";
+	
+	if(iterations >= maximumIterations-1) std::cout << "Backpropagation hit max iterations.\n";
 }
 
 
 double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput) {
 	std::vector< std::vector<double> > outputs = network->feedForward(input);
 	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
-	std::vector< std::vector<double> > errors;
-	double networkError = 0;
-	ActivationFunction hiddenActivationFunctionDerivative = getDerivedActivationFunctionNames()[network->getHiddenActivationFunctionName()];
-	ActivationFunction outputActivationFunctionDerivative = getDerivedActivationFunctionNames()[network->getOutputActivationFunctionName()];
-
-	// Compute output layer error
-	std::vector<double> outputNeuronErrors;
-	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];
-	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
-		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputActivationFunctionDerivative(outputLayerOutput[neuronIndex]);
-		networkError += pow(correctOutput[neuronIndex] - outputLayerOutput[neuronIndex], 2);
-		outputNeuronErrors.push_back(outputNeuronError);
-	}
-	errors.push_back(outputNeuronErrors);
-
-	// Compute hidden layer error
-	for(int layerIndex = network->net.size() - 2; layerIndex >= 0; layerIndex--) {
-		std::vector<double> currentLayerError;
-		const std::vector<double> &currentHiddenLayerOutput = outputs[layerIndex];
-		const std::vector<double> &lastLayerError = errors[errors.size() - 1];
-		const std::vector< std::vector<double> > &lastLayerWeights = weights[layerIndex + 1];
-
-		for(int neuronIndex = 0; neuronIndex < network->net[layerIndex].neurons.size(); neuronIndex++) {
-			double errorsTimesWeights = 0;
-			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
-				errorsTimesWeights += lastLayerError[previousNeuronIndex] * lastLayerWeights[previousNeuronIndex][neuronIndex];
-			}
-			double hiddenNeuronError = hiddenActivationFunctionDerivative(currentHiddenLayerOutput[neuronIndex]) * errorsTimesWeights;
-			currentLayerError.push_back(hiddenNeuronError);
-		}
-		errors.push_back(currentLayerError);
-	}
+	std::vector< std::vector<double> > errors = network->getGradients(input, correctOutput);
 
 	// Update weights
 	for(int errorIndex = 0; errorIndex < errors.size(); errorIndex++) {
@@ -132,25 +91,16 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 
 	network->setWeights3D(weights);
 
+	double networkError = 0;
+	// Compute network error
+	for(int outputNeuronIndex = 0; outputNeuronIndex < outputs[outputs.size()-1].size(); outputNeuronIndex++) {
+		networkError += pow(correctOutput[outputNeuronIndex] - outputs[outputs.size()-1][outputNeuronIndex], 2);
+	}
+
 	return networkError;
 }
 
-std::map<std::string, ActivationFunction> Backpropagation::getDerivedActivationFunctionNames() {
-	std::map<std::string, ActivationFunction> map;
-	map["sigmoid"] = sigmoidDerivative;
-	map["simpleLinear"] = simpleLinearDerivative;
 
-	return map;
-}
-
-void Backpropagation::initWithStream(std::ifstream *input) {
-	if(input->is_open()) {
-		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumIterations;
-	} else {
-		std::cout << "Could not retrieve backprop from file\n";
-		throw 1;
-	}
-}
 
 void Backpropagation::resetLastChangeInWeight(net::NeuralNet *network) {
 	lastChangeInWeight.clear();

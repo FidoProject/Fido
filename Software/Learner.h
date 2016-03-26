@@ -43,6 +43,7 @@ namespace rl {
 		 */
 		virtual void applyReinforcementToLastAction(double reward, State newState) = 0;
 
+		/** Randomizes the leaner.  */
 		virtual void reset() = 0;
 	};
 };
