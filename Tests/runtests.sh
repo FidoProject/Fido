@@ -1,10 +1,6 @@
 #!/bin/bash
-<<<<<<< HEAD
 set -e # To quit on first error
 ARGS=$1 # For running specific tests
-=======
-set -e
->>>>>>> FidoProject/master
 
 cd ../Software
 if [[ "$1" == "clean" ]]; then
