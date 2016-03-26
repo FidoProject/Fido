@@ -39,7 +39,7 @@ namespace rl {
 		 * a learning rate (dictates how fast the reward values for actions change), a devaluation factor (dictates how much future rewards are valued),
 		 * the dimensions of the action vectors, and how many wires the network outputs.
 		 */
-		WireFitQLearn(net::NeuralNet *modelNetwork, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_, Action minAction_, Action maxAction_, int baseOfDimensions_);
+		WireFitQLearn(int stateDimensions, int actionDimensions_, int numHiddenLayers, int numNeuronsPerHiddenLayer, int numberOfWires_, Action minAction_, Action maxAction_, int baseOfDimensions_, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_);
 
 		WireFitQLearn();
 		
@@ -100,9 +100,6 @@ namespace rl {
 		// Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires  
 		std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);
 
-		void updateBias(double oldReward, double correctReward);
-		
-		double biasMovingAverage;
 		int rewardIterations;
 	};
 };
