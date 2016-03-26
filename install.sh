@@ -7,6 +7,7 @@ cd Software/
 if [[ "$1" == "-noSFML" ]]; then
 	rm -r FidoKin
 	rm -r FidoSim
+	rm Tests/simulator.cpp
 fi
 
 make

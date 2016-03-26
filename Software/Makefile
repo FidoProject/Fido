@@ -27,5 +27,5 @@ clean:
 	rm -f $(TARGET) $(OBJECTS)
 
 .PHONY: lib
-lib:
+lib: all
 	ar rvs fido-lib.a $(OBJECTS)
