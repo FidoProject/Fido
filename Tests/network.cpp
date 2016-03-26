@@ -69,7 +69,7 @@ TEST_CASE("Neural Network Storing", "[network]") {
 
 	SECTION("Store into and load from file") {
 		std::ofstream ostream;
-		ostream.open(FILENAME, std::ios::app);
+		ostream.open(FILENAME, std::ofstream::out | std::ofstream::trunc);
 		network.store(&ostream); // Store old
 		ostream.close();
 
