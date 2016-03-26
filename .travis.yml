@@ -32,4 +32,4 @@ script:
   # Run Unit Tests
   - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh; fi
   # Run Valgrind on unit tests
-  - if [[ "$TEST" == "valgrind" ]]; then make; valgrind --leak-check=full --error-exitcode=1 ./test; fi
+  - if [[ "$TEST" == "valgrind" ]]; then make; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
