@@ -1,4 +1,4 @@
-CXXFLAGS += -std=c++11vv
+CXXFLAGS += -std=c++11
 SOURCES=$(shell find . -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)
 TARGET=tests.o

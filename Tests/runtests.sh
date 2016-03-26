@@ -17,6 +17,6 @@ if [[ "$1" == "clean" ]]; then
 	ARGS=""
 fi
 make
-./test.o $ARGS
+./tests.o $ARGS
 
 echo "All tests succeded!"
