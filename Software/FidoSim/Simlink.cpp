@@ -1,5 +1,7 @@
 #include "Simlink.h"
 
+#define _USE_MATH_DEFINES
+
 #include <SFML/Audio.hpp>
 #include <math.h>
 #include <stdio.h>
@@ -7,11 +9,10 @@
 #include <math.h>
 #include <iostream>
 #include <ctime>
+#include <math.h>
 #include <functional>
 
-
-
-Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40), line(sf::Vector2f(0, 0), sf::Vector2f(100, 100)) {
+Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40), line(sf::Vector2f(0, 0), sf::Vector2f(100, 100)), ball(15, 100) {
 	irVal = motors.motorOne = motors.motorTwo = 0;
 	micVal = 30;
 	visVal = batVal = 50;
@@ -23,6 +24,12 @@ Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40), line(sf::Vector2f(0, 
 
 	click = false; 
 	keepWindowsOpen = true;
+
+	ball.setFillColor(sf::Color::Red);
+	ball.setOutlineThickness(-3);
+	ball.setOutlineColor(sf::Color::Black);
+	ball.setOrigin(15,15);
+	ball.setPosition(840, 100);
 
 	mainWindowThread = std::thread(&Simlink::mainWindowHandler, this);
 }
@@ -191,6 +198,11 @@ void Simlink::updateMainWindow() {
 	mainWindow.draw(emitter);
 
 	mainWindow.draw(line);
+	mainWindow.draw(ball);
+
+	double rotationX = robot.getRotation() * M_PI / 180.0;
+	double lineLength = 100;
+	mainWindow.draw(Line(robot.getPosition(), robot.getPosition() + sf::Vector2f(cos(rotationX)*lineLength, sin(rotationX)*lineLength)));
 
 	mainWindow.display();
 
@@ -212,11 +224,25 @@ TDVect Simlink::getCompass() {
 }
 
 bool Simlink::isLeftOfLine() {
-	return line.isLeft(robot);
+	return line.isLeft(robot.getPosition());
 }
 
 double Simlink::distanceFromLine() {
-	return line.distance(robot);
+	return line.distance(robot.getPosition());
+}
+
+void Simlink::getBallDisplacement(double *x, double *z) {
+	double lineLength = 100;
+	double rotationX = robot.getRotation() * M_PI / 180.0;
+	Line xLine = Line(robot.getPosition(), robot.getPosition() + sf::Vector2f(cos(rotationX)*lineLength, sin(rotationX)*lineLength));
+	*x = xLine.distance(ball.getPosition());
+	if(!xLine.isLeft(ball.getPosition())) *x *= -1;
+
+	double rotationZ = (robot.getRotation() - 90) * M_PI / 180.0;
+	Line zLine = Line(robot.getPosition(), robot.getPosition() + sf::Vector2f(cos(rotationZ)*lineLength, sin(rotationZ)*lineLength));
+	*z = zLine.distance(ball.getPosition());
+	if(zLine.isLeft(ball.getPosition())) *z *= -1;
+	std::cout << *x << " " << *z << "\n"; std::cout.flush();
 }
 
 int Simlink::getMicrophone() {

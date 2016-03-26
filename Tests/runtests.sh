@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 cd ../Software
 if [[ "$1" == "clean" ]]; then
 	echo "Cleaning software..."
@@ -8,9 +10,6 @@ make
 make lib
 
 cd ../Tests
-if [[ "$1" == "clean" ]]; then
-	echo "Cleaning tests..."
-	make clean
-fi
+make clean
 make
 ./test

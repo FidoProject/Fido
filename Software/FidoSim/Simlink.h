@@ -85,6 +85,8 @@ public:
 
 	bool isLeftOfLine();
 
+	void getBallDisplacement(double *x, double *z);
+
 	double distanceFromLine();
 
 	// Gets the current temperature value from 0-100
@@ -107,6 +109,7 @@ public:
 
 	Robby robot;
 	Emitter emitter;
+	sf::CircleShape ball;
 	int visVal;
 private:
 	void mainWindowHandler();
