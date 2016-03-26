@@ -107,4 +107,4 @@ stateIn.txt
 graphics.py
 Journal.html
 *.o
-tmp/
+temp/
