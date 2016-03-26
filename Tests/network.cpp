@@ -67,7 +67,7 @@ TEST_CASE("Neural Network Storing", "[network]") {
 	std::vector< std::vector< std::vector<double> > > oldWeights3d = network.getWeights3D();
 	std::vector<double> oldOutput = network.getOutput(input);
 
-	SECTION("Store into and load from file") {
+	SECTION("Store into and load using streams") {
 		std::ofstream ostream;
 		ostream.open(FILENAME, std::ios::app);
 		network.store(&ostream); // Store old
@@ -77,6 +77,7 @@ TEST_CASE("Neural Network Storing", "[network]") {
 		istream.open(FILENAME, std::ifstream::in);
 		net::NeuralNet fileNet = net::NeuralNet(&istream); // load new
 		istream.close();
+		std::remove(FILENAME);
 
 		REQUIRE(fileNet.getWeights() == oldWeights);
 		REQUIRE(fileNet.getOutput(input) == oldOutput);
