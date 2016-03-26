@@ -15,12 +15,7 @@
 
 using namespace rl;
 
-WireFitQLearn::WireFitQLearn(net::NeuralNet *modelNetwork, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, int actionDimensions_, int numberOfWires_, Action minAction_, Action maxAction_, int baseOfDimensions_) {
-	
-	if(modelNetwork->numberOfOutputs() != numberOfWires_ * (actionDimensions_+1)) {
-		std::cout << "Neural network incorrectly formatted!\n";
-		throw 1;
-	}
+WireFitQLearn::WireFitQLearn(int stateDimensions, int actionDimensions_, int numHiddenLayers, int numNeuronsPerHiddenLayer, int numberOfWires_, Action minAction_, Action maxAction_, int baseOfDimensions_, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
 
 	if(minAction_.size() != actionDimensions_) {
 		std::cout << "Min action does not have same dimensions as action dimensions parameter!\n"; std::cout.flush();
@@ -37,13 +32,14 @@ WireFitQLearn::WireFitQLearn(net::NeuralNet *modelNetwork, Interpolator *interpo
 	actionDimensions = actionDimensions_;
 	numberOfWires = numberOfWires_;
 	lastAction = std::vector<double>(actionDimensions);
-	network = modelNetwork;
 	interpolator = interpolator_;
 	minAction = minAction_;
 	maxAction = maxAction_;
+
+	network = new net::NeuralNet(stateDimensions, numberOfWires_ * (actionDimensions_+1), numHiddenLayers, numNeuronsPerHiddenLayer, "sigmoid");
+	network->setOutputActivationFunction("simpleLinear");
 	
 	scalingFactorToMillis = 1;
-	biasMovingAverage = 0;
 	rewardIterations = 0;
 
 	controlPointsGDErrorTarget = 0.001;
@@ -61,7 +57,7 @@ WireFitQLearn::WireFitQLearn(std::ifstream *input) {
 	if(input->is_open()) {
 		*input >> learningRate >> devaluationFactor;
 		*input >> actionDimensions >> numberOfWires;
-		*input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> biasMovingAverage >> rewardIterations >> baseOfDimensions;
+		*input >> scalingFactorToMillis >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> rewardIterations >> baseOfDimensions;
 
 		double temp;
 		minAction = Action(actionDimensions);
@@ -146,9 +142,6 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
-	updateBias(oldReward, newRewardForLastAction);
-
-
 	std::vector< std::vector<double> > input(1, lastState);
 
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
@@ -165,7 +158,7 @@ void WireFitQLearn::store(std::ofstream *output) {
 	if(output->is_open()) {
 		*output << learningRate << " " << devaluationFactor << "\n";
 		*output << actionDimensions << " " << numberOfWires << "\n";
-		*output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << biasMovingAverage << " " << rewardIterations <<  " " << baseOfDimensions << "\n";
+		*output << scalingFactorToMillis << " " << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << rewardIterations <<  " " << baseOfDimensions << "\n";
 		
 		for(int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
 		for(int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
@@ -319,10 +312,4 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
 
 	return controlWires;
 
-}
-
-void WireFitQLearn::updateBias(double oldReward, double correctReward) {
-	rewardIterations++;
-	biasMovingAverage -= biasMovingAverage / (double)rewardIterations;
-	biasMovingAverage += pow(correctReward - oldReward, 2) / (double)rewardIterations;
 }
