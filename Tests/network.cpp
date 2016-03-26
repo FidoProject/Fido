@@ -18,12 +18,12 @@ inline bool operator==(const std::vector<double>& lhs, const std::vector<double>
 }
 
 // Constants set for testing, could be anything
-const int INPUTS(4);
-const int OUTPUTS(2);
-const int HIDDENS(3);
-const int NUM_IN_HIDDENS(6);
-const char * FILENAME = "netfile.txt";
-const char * ACTIVATION_FUNCTION("sigmoid");
+const static int INPUTS(4);
+const static int OUTPUTS(2);
+const static int HIDDENS(3);
+const static int NUM_IN_HIDDENS(6);
+const static char * FILENAME = "netfile.txt";
+const static char * ACTIVATION_FUNCTION("sigmoid");
 std::vector<double> input = {3, 5, 2, 5};
 
 TEST_CASE( "Neural Network Contructor", "[network]" ) {
@@ -88,6 +88,7 @@ TEST_CASE("Neural Network Storing", "[network]") {
 				REQUIRE(newWeights3d[a][b] == oldWeights3d[a][b]);
 			}
 		}
+
 	}
 }
 
