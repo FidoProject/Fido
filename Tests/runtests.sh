@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+set -e # To quit on first error
+ARGS=$1 # For running specific tests
 
 cd ../Software
 if [[ "$1" == "clean" ]]; then
@@ -10,6 +11,12 @@ make
 make lib
 
 cd ../Tests
-make clean
+if [[ "$1" == "clean" ]]; then
+	echo "Cleaning tests..."
+	make clean
+	ARGS=""
+fi
 make
-./tests.o
+./tests.o $ARGS
+
+echo "All tests succeded!"

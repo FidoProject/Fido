@@ -5,7 +5,7 @@
 #include "catch.h"
 #include "../Software/FidoSim/Simlink.h"
 
-TEST_CASE( "Sensors", "[]" ) {
+TEST_CASE( "Sensors", "[simulator]" ) {
 	Simlink simlink;
 	SECTION("Line following") {
 		simlink.robot.setPosition(500, 200);

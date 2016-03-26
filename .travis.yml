@@ -4,7 +4,9 @@ compiler: gcc
 
 env:
   - TEST="valgrind"
-  - TEST="unit"
+  - TEST="unit" TYPE="[network]"
+  - TEST="unit" TYPE="[backprop]"
+  - TEST="unit" TYPE="[simulator]"
 
 before_install:
   # Valgrind
@@ -30,6 +32,6 @@ script:
   # Build
   - cd ~/build/FidoProject/Fido && sudo ./install.sh $SFML && cd Tests
   # Run Unit Tests
-  - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh; fi
+  - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh $TYPE; fi
   # Run Valgrind on unit tests
   - if [[ "$TEST" == "valgrind" ]]; then make; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
