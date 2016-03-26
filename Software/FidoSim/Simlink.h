@@ -3,6 +3,7 @@
 
 #include "../FidoKin/Robby.h"
 #include "../FidoKin/Emitter.h"
+#include "Line.h"
 
 #include <thread>
 #include <SFML/Graphics.hpp>
@@ -82,6 +83,10 @@ public:
 	 */
 	TDVect getGyro();
 
+	bool isLeftOfLine();
+
+	double distanceFromLine();
+
 	// Gets the current temperature value from 0-100
 	int getTemperature();
 
@@ -97,7 +102,8 @@ public:
 	// Gets the displacement of the robot from the emitter in terms of x and y components
 	void getRobotDisplacementFromEmitter(double *x, double *y);
 
-	void drawLine(sf::Vector2f p1, sf::Vector2f p2);
+	// Places a line on the simulator. Can be detected by getLineVal()
+	void placeLine(sf::Vector2f p1, sf::Vector2f p2);
 
 	Robby robot;
 	Emitter emitter;
@@ -137,8 +143,7 @@ private:
 	Motors motors;
 	IMU imu;
 	Piezo piezo;
-	sf::RectangleShape line;
-	bool dodraw = false;
+	Line line;
 
 	bool keepWindowsOpen;
 };

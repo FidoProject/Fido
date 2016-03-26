@@ -11,7 +11,7 @@
 
 
 
-Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40) {
+Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40), line(sf::Vector2f(0, 0), sf::Vector2f(100, 100)) {
 	irVal = motors.motorOne = motors.motorTwo = 0;
 	micVal = 30;
 	visVal = batVal = 50;
@@ -190,7 +190,7 @@ void Simlink::updateMainWindow() {
 	mainWindow.draw(robot);
 	mainWindow.draw(emitter);
 
-	if (dodraw)mainWindow.draw(line);
+	mainWindow.draw(line);
 
 	mainWindow.display();
 
@@ -209,6 +209,14 @@ TDVect Simlink::getCompass() {
 	TDVect emitSense = emitter.sense(robot, 50);
 	imu.compass = { emitSense.xComp / 6.4, emitSense.yComp / 6.4, emitSense.zComp / 6.4 };
 	return imu.compass;
+}
+
+bool Simlink::isLeftOfLine() {
+	return line.isLeft(robot);
+}
+
+double Simlink::distanceFromLine() {
+	return line.distance(robot);
 }
 
 int Simlink::getMicrophone() {
@@ -288,13 +296,6 @@ void Simlink::getRobotDisplacementFromEmitter(double *x, double *y) {
 	*y = emitter.getPosition().y - robot.getPosition().y;
 }
 
-void Simlink::drawLine(sf::Vector2f p1, sf::Vector2f p2) {
-	line = sf::RectangleShape();
-	line.setSize({ 2, sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2)) });
-	line.setPosition(p1);
-	line.setFillColor(sf::Color(0, 0, 0));
-
-	line.setRotation((atan2(p1.y - p2.y, p1.x - p2.x)*180 / 3.14159) - 90);
-
-	dodraw = true;
+void Simlink::placeLine(sf::Vector2f p1, sf::Vector2f p2) {
+	line = Line(p1, p2);
 }
