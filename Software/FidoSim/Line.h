@@ -7,7 +7,7 @@ class Line : public sf::Drawable
 {
 public:
     Line(const sf::Vector2f& point1_, const sf::Vector2f& point2_):
-        color(sf::Color::Yellow), thickness(5.f)
+        color(sf::Color::Yellow), thickness(2.f)
     {
         point1 = point1_;
         point2 = point2_;
@@ -32,15 +32,17 @@ public:
         target.draw(vertices,4,sf::Quads);
     }
 
-    bool isLeft(sf::RectangleShape rect) {
-        sf::Vector2f center = rect.getPosition();
+    bool isLeft(sf::Vector2f center) {
         std::cout << "Center: " << center.x << " " << center.y << "\n";
         return ((point2.x - point1.x)*(center.y - point1.y) - (point2.y - point1.y)*(center.x - point1.x)) > 0;
     }
 
-    double distance(sf::RectangleShape rect) {
-        sf::Vector2f center = rect.getPosition();
+    double distance(sf::Vector2f center) {
         return fabs((point2.y - point1.y)*center.x - (point2.x-point1.x)*center.y + point2.x*point1.y - point2.y*point1.x) / sqrt(pow(point2.y-point1.y, 2) + pow(point2.x-point1.x, 2));
+    }
+
+    double getThickness() {
+        return thickness;
     }
 private:
     sf::Vertex vertices[4];

@@ -22,7 +22,7 @@ const static int INPUTS(4);
 const static int OUTPUTS(2);
 const static int HIDDENS(3);
 const static int NUM_IN_HIDDENS(6);
-const static char * FILENAME = "netfile.txt";
+const static char * FILENAME = "temp/netfile.txt";
 const static char * ACTIVATION_FUNCTION("sigmoid");
 std::vector<double> input = {3, 5, 2, 5};
 
