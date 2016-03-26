@@ -2,7 +2,7 @@ CXXFLAGS += -std=c++11
 LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SOURCES=$(shell find . -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)
-TARGET=test
+TARGET=tests.o
 FIDOLIB=../Software/fido-lib.a
 
 .PHONY: all

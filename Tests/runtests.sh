@@ -12,4 +12,4 @@ make lib
 cd ../Tests
 make clean
 make
-./test
+./tests.o
