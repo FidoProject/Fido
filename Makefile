@@ -1,4 +1,5 @@
 CXXFLAGS += -std=c++11
+PREFIX?=/usr/local
 ifneq ($(wildcard src/FidoSim/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
@@ -15,18 +16,20 @@ $(info $(LDFLAGS))
 SOURCES=$(shell find src/ -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)
 BINS=$(OBJECTS:src/%=bin/%)
-TARGET=src/foo.o
+TARGET=bin/foo.o
 LIB=build/fido-lib.a
 
 .PHONY: all
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@ $(LDFLAGS)
 	@mkdir -p bin/
 	@mv src/*.o bin/
-	@mv src/FidoKin/*.o /bin/FidoKin/
-	@mv src/FidoSim/*.o /bin/FidoSim/
+	@mkdir -p bin/FidoKin/
+	@mkdir -p bin/FidoSim/
+	# @mv src/FidoKin/*.o bin/FidoKin/
+	# @mv src/FidoSim/*.o bin/FidoSim/
+	$(LINK.cpp) $(BINS) $(LOADLIBES) $(LDLIBS) -o $@ $(LDFLAGS)
 	@echo "Made object files in ../bin/"
 
 .PHONY: clean
@@ -41,3 +44,9 @@ lib: all
 	@mkdir -p build/
 	@ar rvs $(LIB) $(BINS)
 	@echo "Built library at $(LIB)"
+
+.PHONY: install
+install: lib
+	install -d $(DESTDIR)/$(PREFIX)/lib/
+	install $(TARGET) $(DESTDIR)/$(PREFIX)/lib/
+	cp include/* $(DESTDIR)/$(PREFIX)/include/Fido/
