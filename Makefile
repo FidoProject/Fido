@@ -25,6 +25,8 @@ $(TARGET): $(OBJECTS)
 	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@ $(LDFLAGS)
 	@mkdir -p bin/
 	@mv src/*.o bin/
+	@mv src/FidoKin/*.o /bin/FidoKin/
+	@mv src/FidoSim/*.o /bin/FidoSim/
 	@echo "Made object files in ../bin/"
 
 .PHONY: clean
