@@ -2,8 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include "catch.h"
-#include "../includes/NeuralNet.h"
-#include "../includes/Backpropagation.h"
+#include "../include/NeuralNet.h"
+#include "../include/Backpropagation.h"
 
 const static double ERROR_ALLOWANCE = 0.1;
 const static double DIFFERENCE_ALLOWANCE = 0.001;

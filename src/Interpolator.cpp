@@ -1,8 +1,8 @@
-#include "../includes/Interpolator.h"
+#include "../include/Interpolator.h"
 
 #include <iostream>
 
-#include "../includes/LSInterpolator.h"
+#include "../include/LSInterpolator.h"
 
 using namespace rl;
 
