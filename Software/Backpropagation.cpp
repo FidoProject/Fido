@@ -18,8 +18,10 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 }
 
 Backpropagation::Backpropagation() {
-	learningRate = momentumTerm = targetErrorLevel = 0;
-	maximumIterations = 0;
+	learningRate = 0.2;
+	momentumTerm = 0.8;
+	targetErrorLevel = 0.2;
+	maximumIterations = 5000;
 }
 
 Backpropagation::Backpropagation(std::ifstream *input) {
@@ -53,7 +55,7 @@ void Backpropagation::train(net::NeuralNet *network, const std::vector< std::vec
 		iterations++;
 	} while(totalError > targetErrorLevel && iterations < maximumIterations);
 	
-	if(iterations >= maximumIterations-1) std::cout << "Backpropagation hit max iterations.\n";
+	if(iterations >= maximumIterations-1) std::cout << "Backpropagation hit max iterations with an error level of " << totalError << ".\n";
 }
 
 
