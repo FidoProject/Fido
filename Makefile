@@ -3,9 +3,11 @@ PREFIX?=/usr/local
 ifneq ($(wildcard src/FidoSim/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+    SFML = "YES"
 else ifneq ($(wildcard src/FidoKin/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+    SFML = "YES"
 else
     $(info Compiling without SFML flags)
     LDFLAGS = -pthread
@@ -24,8 +26,13 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	@mkdir -p bin/
-	@mv src/*.o bin/
-	@if [[ "$(LDFLAGS)" != "-pthread" ]]; then mkdir -p bin/FidoKin/; mkdir -p bin/FidoSim/; mv src/FidoKin/*.o bin/FidoKin/; mv src/FidoSim/*.o bin/FidoSim/; fi
+	@cp src/*.o bin/
+ifneq ($(SFML), )
+	    @mkdir -p bin/FidoKin/
+	    @mkdir -p bin/FidoSim/
+	    @cp src/FidoKin/*.o bin/FidoKin/
+	    @cp src/FidoSim/*.o bin/FidoSim/
+endif
 	$(LINK.cpp) $(BINS) $(LOADLIBES) $(LDLIBS) -o $@ $(LDFLAGS)
 	@echo "Made object files in ../bin/"
 
