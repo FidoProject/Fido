@@ -2,7 +2,7 @@ CXXFLAGS += -std=c++11
 SOURCES=$(shell find . -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)
 TARGET=tests.o
-FIDOLIB=../Software/fido-lib.a
+FIDOLIB=../build/fido-lib.a
 
 ifneq ($(wildcard ../Software/FidoSim/.*),)
     $(info Compiling with SFML flags)
