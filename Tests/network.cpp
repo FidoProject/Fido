@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <fstream>
 #include "catch.h"
-#include "../Software/NeuralNet.h"
+#include "../includes/NeuralNet.h"
 
 inline bool operator==(const std::vector<double>& lhs, const std::vector<double>& rhs){
 	if(lhs.size() != rhs.size()) {

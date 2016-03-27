@@ -30,8 +30,8 @@ install:
 
 script:
   # Build
-  - cd ~/build/FidoProject/Fido && ./configure $SFML && cd Tests
+  - cd ~/build/FidoProject/Fido && ./configure $SFML
   # Run Unit Tests
   - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh $TYPE; fi
   # Run Valgrind on unit tests
-  - if [[ "$TEST" == "valgrind" ]]; then make; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
+  - if [[ "$TEST" == "valgrind" ]]; then cd tests/; make; mkdir -p temp; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
