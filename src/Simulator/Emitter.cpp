@@ -1,12 +1,12 @@
-#include "Emitter.h"
+#include "../../include/Simulator/Emitter.h"
 
 #include <stdio.h>
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <math.h>
 
-#include "Robby.h"
-#include "../FidoSim/Simlink.h"
+#include "../../include/Simulator/Robby.h"
+#include "../../include/Simulator/Simlink.h"
 
 Emitter::Emitter(int str):sf::CircleShape(0) {
 	setFillColor(sf::Color(255,0,0));

@@ -20,7 +20,7 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 Backpropagation::Backpropagation() {
 	learningRate = 0.2;
 	momentumTerm = 0.8;
-	targetErrorLevel = 0.2;
+	targetErrorLevel = 0.4;
 	maximumIterations = 5000;
 }
 
