@@ -8,3 +8,5 @@ if [[ "$1" == "-noSFML" ]]; then
 	rm -r FidoSim
 	rm ../Tests/simulator.cpp
 fi
+
+cd ../
