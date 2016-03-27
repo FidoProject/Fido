@@ -25,10 +25,7 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	@mkdir -p bin/
 	@mv src/*.o bin/
-	@mkdir -p bin/FidoKin/
-	@mkdir -p bin/FidoSim/
-	# @mv src/FidoKin/*.o bin/FidoKin/
-	# @mv src/FidoSim/*.o bin/FidoSim/
+	@if [[ "$(LDFLAGS)" != "-pthread" ]]; then mkdir -p bin/FidoKin/; mkdir -p bin/FidoSim/; mv src/FidoKin/*.o bin/FidoKin/; mv src/FidoSim/*.o bin/FidoSim/; fi
 	$(LINK.cpp) $(BINS) $(LOADLIBES) $(LDLIBS) -o $@ $(LDFLAGS)
 	@echo "Made object files in ../bin/"
 
