@@ -137,22 +137,34 @@ Action WireFitQLearn::chooseBoltzmanAction(State currentState,
 void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState) {
 	std::vector<Wire> controlWires = getWires(lastState);
 	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, controlWires);
-	double oldReward = interpolator->getReward(controlWires, lastAction);
+	//double oldRewa2d = interpolator->getReward(controlWires, lastAction);
+
+	histories.push_back(History(lastState, newState, lastAction, reward));
+	if(histories.size() > 100) {
+		histories.erase(histories.begin());
+	}
 
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
 	std::vector< std::vector<double> > input(1, lastState);
-
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
+
+	for(int a = 0; a < (histories.size() < 5 ? histories.size() : 5); a++) {
+		int index = floor((double(rand()) / double(RAND_MAX))*histories.size());
+		History randomHistory = histories[index];
+		std::vector<Wire> randomControlWires = getWires(randomHistory.initialState);
+		input.push_back(randomHistory.initialState);
+		correctOutput.push_back(getRawOutput(newControlWires({randomHistory.action, getQValue(randomHistory.reward, randomHistory.initialState, randomHistory.newState, randomHistory.action, randomControlWires)}, randomControlWires)));
+	}
 
 	backprop.train(network, input, correctOutput);
 }
 
 void WireFitQLearn::reset() {
 	network->randomizeWeights();
+	histories.clear();
 }
-
 
 void WireFitQLearn::store(std::ofstream *output) {
 	if(output->is_open()) {

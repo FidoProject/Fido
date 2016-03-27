@@ -12,7 +12,7 @@
 #include <math.h>
 #include <functional>
 
-Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40), line(sf::Vector2f(0, 0), sf::Vector2f(100, 100)), ball(15, 100) {
+Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40), line(sf::Vector2f(0, 0), sf::Vector2f(1000, 1000)), ball(15, 100) {
 	irVal = motors.motorOne = motors.motorTwo = 0;
 	micVal = 30;
 	visVal = batVal = 50;
@@ -199,10 +199,6 @@ void Simlink::updateMainWindow() {
 
 	mainWindow.draw(line);
 	mainWindow.draw(ball);
-
-	double rotationX = robot.getRotation() * M_PI / 180.0;
-	double lineLength = 100;
-	mainWindow.draw(Line(robot.getPosition(), robot.getPosition() + sf::Vector2f(cos(rotationX)*lineLength, sin(rotationX)*lineLength)));
 
 	mainWindow.display();
 
