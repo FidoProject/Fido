@@ -1,4 +1,4 @@
-#include "NeuralNet.h"
+#include "../includes/NeuralNet.h"
 
 #include <iostream>
 

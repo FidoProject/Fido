@@ -1,4 +1,4 @@
-#include "Backpropagation.h"
+#include "../includes/Backpropagation.h"
 
 #include <chrono>
 #include <thread>
@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 
-#include "NeuralNet.h"
+#include "../includes/NeuralNet.h"
 
 using namespace net;
 

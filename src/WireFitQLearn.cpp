@@ -1,4 +1,4 @@
-#include "WireFitQLearn.h"
+#include "../includes/WireFitQLearn.h"
 
 #include <random>
 #include <iostream>
@@ -10,8 +10,8 @@
 #include <random>
 #include <cfloat>
 
-#include "Interpolator.h"
-#include "NeuralNet.h"
+#include "../includes/Interpolator.h"
+#include "../includes/NeuralNet.h"
 
 using namespace rl;
 

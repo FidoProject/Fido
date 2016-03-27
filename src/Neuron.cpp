@@ -1,4 +1,4 @@
-#include "Neuron.h"
+#include "../includes/Neuron.h"
 
 #include <iostream>
 #include <stdlib.h>
