@@ -101,10 +101,8 @@ Debug
 ## Fido ##
 ##########
 
-executable
 stateOut.txt
 stateIn.txt
-graphics.py
-Journal.html
-*.o
 temp/
+build/
+bin/
