@@ -30,7 +30,7 @@ install:
 
 script:
   # Build
-  - cd ~/build/FidoProject/Fido && ./configure $SFML
+  - cd ~/build/FidoProject/Fido && ./configure $SFML && make lib
   # Run Unit Tests
   - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh $TYPE; fi
   # Run Valgrind on unit tests
