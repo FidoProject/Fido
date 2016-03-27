@@ -1,4 +1,4 @@
-#include "GeneticAlgo.h"
+#include "../include/GeneticAlgo.h"
 
 #include <iostream>
 #include <stdio.h>

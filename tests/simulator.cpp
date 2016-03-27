@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include "catch.h"
-#include "../Software/FidoSim/Simlink.h"
+#include "../src/FidoSim/Simlink.h"
 
 TEST_CASE( "Sensors", "[simulator]" ) {
 	Simlink simlink;
