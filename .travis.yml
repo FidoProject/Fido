@@ -1,3 +1,5 @@
+sudo: true
+
 language: cpp
 
 compiler: gcc
@@ -30,7 +32,8 @@ install:
 
 script:
   # Build
-  - cd ~/build/FidoProject/Fido && ./configure $SFML && make lib
+  - cd ~/build/FidoProject/Fido
+  - ./configure $SFML && make && sudo make install
   # Run Unit Tests
   - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh $TYPE; fi
   # Run Valgrind on unit tests
