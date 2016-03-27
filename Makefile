@@ -3,11 +3,9 @@ PREFIX?=/usr/local
 ifneq ($(wildcard src/FidoSim/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-    SFML = "YES"
 else ifneq ($(wildcard src/FidoKin/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-    SFML = "YES"
 else
     $(info Compiling without SFML flags)
     LDFLAGS = -pthread
@@ -27,7 +25,7 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	@mkdir -p bin/
 	@cp src/*.o bin/
-ifneq ($(SFML), )
+ifneq ($(LDFLAGS), -pthread)
 	    @mkdir -p bin/FidoKin/
 	    @mkdir -p bin/FidoSim/
 	    @cp src/FidoKin/*.o bin/FidoKin/
