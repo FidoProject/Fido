@@ -70,3 +70,35 @@ double Robby::goAccel(int motLeft,int motRight) {
 	
 	return delta;
 }
+
+void Robby::globalInverseGoKiwi(double x, double y, double r, double deltaT) {
+    double curRot = getRotation()*0.0174532925;
+    double newX = x*cos(curRot) - y*sin(curRot);
+    double newY = x*sin(curRot) + y*cos(curRot);
+    inverseGoKiwi(newX,newY,r,deltaT);
+}
+
+void Robby::inverseGoKiwi(double x, double y, double r, double deltaT) {
+    double i = 0.5*(x - y*sqrt(3)) + r;
+    double j = 0.5*(x + y*sqrt(3)) + r;
+    double k = x + r;
+
+    goKiwi(i,j,k,deltaT);
+}
+
+void Robby::goKiwi(double i, double j, double k, double deltaT) {
+    double x = (2*k-j-i)/3.0;
+    double y = (j-i)/sqrt(3);
+    double r = (i+j+k)/3.0;
+
+    displace(x,y,r,deltaT);
+}
+
+void Robby::displace(double x, double y, double r, double deltaT) {
+    double curRot = getRotation()*0.0174532925;
+    double newX = x*cos(curRot) - y*sin(curRot);
+    double newY = x*sin(curRot) + y*cos(curRot);
+
+    setPosition(getPosition().x+newX*deltaT,getPosition().y+newY*deltaT);
+	setRotation(r+curRot*deltaT);
+}

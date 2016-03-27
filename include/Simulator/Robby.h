@@ -25,12 +25,19 @@ public:
 	 * Usage is identical to Robby::go().
 	 */
 	double goAccel(int motLeft, int motRight);
+
+	void globalInverseGoKiwi(double x, double y, double r, double deltaT);
+	void goKiwi(double i, double j, double k, double deltaT);
+
 protected:
 	// Clock for velocity->distance aproximation.
 	sf::Clock moveClock;
 	
 	int m1Last,m2Last,m1Target,m2Target;
 	double speed;
+
+	void inverseGoKiwi(double x, double y, double r, double deltaT);
+	void displace(double x, double y, double r, double deltaT);
 };
 
 #endif
