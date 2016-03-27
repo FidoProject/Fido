@@ -53,4 +53,5 @@ lib: all
 install: lib
 	install -d $(DESTDIR)/$(PREFIX)/lib/
 	install $(TARGET) $(DESTDIR)/$(PREFIX)/lib/
+	mkdir -p $(DESTDIR)/$(PREFIX)/include/Fido/
 	cp include/* $(DESTDIR)/$(PREFIX)/include/Fido/
