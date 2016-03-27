@@ -150,7 +150,7 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 	std::vector< std::vector<double> > input(1, lastState);
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
-	for(int a = 0; a < (histories.size() < 5 ? histories.size() : 5); a++) {
+	for(int a = 0; a < (histories.size() < 1 ? histories.size() : 1); a++) {
 		int index = floor((double(rand()) / double(RAND_MAX))*histories.size());
 		History randomHistory = histories[index];
 		std::vector<Wire> randomControlWires = getWires(randomHistory.initialState);
