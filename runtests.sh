@@ -10,11 +10,7 @@ make
 make lib
 
 cd tests/
-if [[ "$1" == "clean" ]]; then
-	echo "Cleaning tests..."
-	make clean
-	ARGS=""
-fi
+make clean
 make
 
 mkdir -p temp

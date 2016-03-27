@@ -52,12 +52,12 @@ void Simlink::mainWindowHandler() {
 	mainWindow.create(sf::VideoMode(1200, 900), "Fido Simulator", sf::Style::Default, settings);
 
 	sf::Texture texture;
-	if (!texture.loadFromFile("./background.png")) {
+	if (!texture.loadFromFile("/home/truell20/Documents/Fido/src/Simulator/background.png")) {
 		exit(EXIT_FAILURE);
 	} background = sf::Sprite(texture);
 
 	sf::Font font;
-	if (!font.loadFromFile("./sansation.ttf")) {
+	if (!font.loadFromFile("/home/truell20/Documents/Fido/src/Simulator/sansation.ttf")) {
 		exit(EXIT_FAILURE);
 	} sf::Text text("Hello SFML", font, 50);
 	text.setColor(sf::Color::Black);
