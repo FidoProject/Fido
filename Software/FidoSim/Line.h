@@ -33,7 +33,6 @@ public:
     }
 
     bool isLeft(sf::Vector2f center) {
-        std::cout << "Center: " << center.x << " " << center.y << "\n";
         return ((point2.x - point1.x)*(center.y - point1.y) - (point2.y - point1.y)*(center.x - point1.x)) > 0;
     }
 

@@ -17,6 +17,8 @@ if [[ "$1" == "clean" ]]; then
 	ARGS=""
 fi
 make
+
+mkdir -p temp
 ./tests.o $ARGS
 
 echo "All tests succeded!"
