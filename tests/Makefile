@@ -4,10 +4,10 @@ OBJECTS=$(SOURCES:%.cpp=%.o)
 TARGET=tests.o
 FIDOLIB=../build/fido-lib.a
 
-ifneq ($(wildcard ../Software/FidoSim/.*),)
+ifneq ($(wildcard ../src/FidoSim/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-else ifneq ($(wildcard ../Software/FidoKin/.*),)
+else ifneq ($(wildcard ../src/FidoKin/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 else
