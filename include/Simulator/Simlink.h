@@ -1,9 +1,9 @@
-#ifndef __FidoSim__Simlink__
-#define __FidoSim__Simlink__
+#ifndef __Simulator__Simlink__
+#define __Simulator__Simlink__
 
-#include "../FidoKin/Robby.h"
-#include "../FidoKin/Emitter.h"
-#include "Line.h"
+#include "../../include/Simulator/Robby.h"
+#include "../../include/Simulator/Emitter.h"
+#include "../../include/Simulator/Line.h"
 
 #include <thread>
 #include <SFML/Graphics.hpp>
@@ -151,4 +151,4 @@ private:
 	bool keepWindowsOpen;
 };
 
-#endif /* defined(__FidoSim__Simlink__) */
+#endif /* defined(__Simulator__Simlink__) */
