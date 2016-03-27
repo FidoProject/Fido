@@ -2,12 +2,9 @@ CXXFLAGS += -std=c++11
 SOURCES=$(shell find . -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)
 TARGET=tests.o
-FIDOLIB=../build/fido-lib.a
+FIDOLIB=../build/fido.a
 
-ifneq ($(wildcard ../src/FidoSim/.*),)
-    $(info Compiling with SFML flags)
-    LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-else ifneq ($(wildcard ../src/FidoKin/.*),)
+ifneq ($(wildcard ../src/Simulator/.*),)
     $(info Compiling with SFML flags)
     LDFLAGS = -pthread -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 else
