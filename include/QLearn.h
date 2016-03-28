@@ -26,7 +26,7 @@ namespace rl {
 
 		void addToHistory(std::pair<State, double> entry) {
 			history.push_back(entry);
-			if(history.size() > 5) history.erase(history.begin());
+			if(history.size() > 1) history.erase(history.begin());
 		}
 	};
 

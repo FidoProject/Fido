@@ -13,6 +13,6 @@
 #include "Trainer.h"
 #include "Interpolator.h"
 #include "NeuralNet.h"
-#include "WireFitQLearn.h
+#include "WireFitQLearn.h"
 
 #endif

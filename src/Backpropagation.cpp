@@ -18,10 +18,10 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 }
 
 Backpropagation::Backpropagation() {
-	learningRate = 0.2;
-	momentumTerm = 0.8;
-	targetErrorLevel = 0.4;
-	maximumIterations = 5000;
+	learningRate = 0.01;
+	momentumTerm = 0.9;
+	targetErrorLevel = 0.6;
+	maximumIterations = 35000;
 }
 
 Backpropagation::Backpropagation(std::ifstream *input) {

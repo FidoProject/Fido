@@ -6,7 +6,8 @@
 using namespace net;
 
 Neuron::Neuron(int numInputs) {
-	for(int a = 0; a < numInputs+1; a++) weights.push_back(Neuron::randomWeight());
+	weights = std::vector<double>(numInputs+1);
+	for(int a = 0; a < numInputs+1; a++) weights[a] = Neuron::randomWeight();
 }
 
 Neuron::Neuron(std::vector<double> w) {
