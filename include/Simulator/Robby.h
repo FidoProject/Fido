@@ -9,7 +9,7 @@ public:
 	 * and height.
 	 */
 	Robby(float x, float y, float width, float height);
-	
+
 	/* Set robot motor values and return a
 	 * gyro sensor double.
 	 *
@@ -18,7 +18,7 @@ public:
 	 * DeltaTime is in milliseconds.
 	 */
 	double go(int motLeft, int motRight, double speed, double deltaTime);
-	
+
 	/* In testing method which simulates
 	 * acceleration in the kinematic model.
 	 *
@@ -26,17 +26,16 @@ public:
 	 */
 	double goAccel(int motLeft, int motRight);
 
-	void globalInverseGoKiwi(double x, double y, double r, double deltaT);
-	void goKiwi(double i, double j, double k, double deltaT);
+	void inverseGoKiwi(int x, int y, int r, double deltaT);
+	void goKiwi(int i, int j, int k, double deltaT);
 
 protected:
 	// Clock for velocity->distance aproximation.
 	sf::Clock moveClock;
-	
+
 	int m1Last,m2Last,m1Target,m2Target;
 	double speed;
 
-	void inverseGoKiwi(double x, double y, double r, double deltaT);
 	void displace(double x, double y, double r, double deltaT);
 };
 
