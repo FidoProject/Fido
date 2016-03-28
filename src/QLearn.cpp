@@ -17,7 +17,7 @@ QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, dou
 	devaluationFactor = devaluationFactor_;
 
 	models = std::vector<Model>(possibleActions_.size());
-	for(int a = 0; a < possibleActions_.size(); a++) models.push_back(Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
+	for(int a = 0; a < possibleActions_.size(); a++) models[a] = (Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
 }
 
 QLearn::QLearn(std::vector<Model> models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
@@ -49,7 +49,7 @@ Action QLearn::chooseBoltzmanAction(State currentState, double explorationConsta
 
 	std::vector<double> rewards = getModelRewards(currentState);
 
-	std::vector<double> exponentTerms(models.size());
+	std::vector<double> exponentTerms(0);
 	double sumOfExponentTerms = 0;
 	std::for_each(rewards.begin(), rewards.end(), [&](double reward){
 		double exponentTerm = exp(reward / explorationConstant);
@@ -102,6 +102,7 @@ void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 void QLearn::reset() {
 	std::for_each(models.begin(), models.end(), [&](Model model) {
 		model.network->randomizeWeights();
+		model.history.clear();
 	});
 }
 
