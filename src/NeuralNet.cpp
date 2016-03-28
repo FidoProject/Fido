@@ -29,10 +29,12 @@ NeuralNet::NeuralNet(unsigned int numInputs, unsigned int numOutputs, unsigned i
 	net.push_back(outputLayer);
 
 	for (int a = 0; a < net.size(); a++) net[a].setActivationFunctionWithName(activationFunctionName);
+
+	randomizeWeights();
 }
 
 NeuralNet::NeuralNet(NeuralNet* otherNet) {
-	net = otherNet->net;
+	net = std::vector< Layer >(otherNet->net);
 	randomizeWeights();
 }
 
@@ -111,7 +113,7 @@ void NeuralNet::setWeights3D(std::vector< std::vector< std::vector<double> > > w
 }
 
 void NeuralNet::randomizeWeights() {
-	for(int a = 0; a < net.size(); a++)  for(int b = 0; b < net[a].neurons.size(); b++) net[a].neurons[b].randomizeWeights();
+	for(int a = 0; a < net.size(); a++) for(int b = 0; b < net[a].neurons.size(); b++) net[a].neurons[b].randomizeWeights();
 }
 
 std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
