@@ -150,13 +150,19 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 	std::vector< std::vector<double> > input(1, lastState);
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
-	/*for(int a = 0; a < (histories.size() < 2 ? histories.size() : 2); a++) {
-		int index = floor((double(rand()) / double(RAND_MAX))*histories.size());
-		History randomHistory = histories[index];
-		std::vector<Wire> randomControlWires = getWires(randomHistory.initialState);
-		input.push_back(randomHistory.initialState);
-		correctOutput.push_back(getRawOutput(newControlWires({randomHistory.action, getQValue(randomHistory.reward, randomHistory.initialState, randomHistory.newState, randomHistory.action, randomControlWires)}, randomControlWires)));
-	}*/
+	for(int a = histories.size()-1; a > -1 && input.size() < 5; a--) {
+		bool isGood = true;
+		for(int b = 0; b < input.size(); b++) {
+			if(input[b] == histories[a].initialState) {
+				isGood = false;
+			}
+		}
+		if(isGood) {
+			std::vector<Wire> historyControlWires = getWires(histories[a].initialState);
+			input.push_back(histories[a].initialState);
+			correctOutput.push_back(getRawOutput(newControlWires({histories[a].action, getQValue(histories[a].reward, histories[a].initialState, histories[a].newState, histories[a].action, historyControlWires)}, historyControlWires)));
+		}
+	}
 
 	backprop.train(network, input, correctOutput);
 }
