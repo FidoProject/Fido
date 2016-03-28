@@ -150,18 +150,41 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 	std::vector< std::vector<double> > input(1, lastState);
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
-	for(int a = histories.size()-1; a > -1 && input.size() < 5; a--) {
-		bool isGood = true;
-		for(int b = 0; b < input.size(); b++) {
-			if(input[b] == histories[a].initialState) {
-				isGood = false;
+	std::vector<History> tempHistories(histories);
+	while(input.size() < 4) {
+		bool foundOne = false;
+		double maxDifference = 0;
+		auto bestHistory = tempHistories.begin();
+
+		for(auto history = tempHistories.begin(); history != tempHistories.end(); history++) {
+			double difference = 0;
+			bool equalToOne = false;
+			for(int b = 0; b < input.size(); b++) {
+				double localDifference = 0;
+				for(int c = 0; c < input[b].size(); c++) {
+					localDifference += fabs(input[b][c] - history->initialState[c]);
+				}
+				if(localDifference < 0.2) {
+					equalToOne = true;
+					break;
+				}
+				difference += localDifference;
+			}
+			if(equalToOne) continue;
+			if(difference > maxDifference) {
+				foundOne = true;
+				maxDifference = difference;
+				bestHistory = history;
 			}
 		}
-		if(isGood) {
-			std::vector<Wire> historyControlWires = getWires(histories[a].initialState);
-			input.push_back(histories[a].initialState);
-			correctOutput.push_back(getRawOutput(newControlWires({histories[a].action, getQValue(histories[a].reward, histories[a].initialState, histories[a].newState, histories[a].action, historyControlWires)}, historyControlWires)));
-		}
+
+		if(!foundOne) break;
+
+		std::vector<Wire> historyControlWires = getWires(bestHistory->initialState);
+		input.push_back(bestHistory->initialState);
+		correctOutput.push_back(getRawOutput(newControlWires({bestHistory->action, getQValue(bestHistory->reward, bestHistory->initialState, bestHistory->newState, bestHistory->action, historyControlWires)}, historyControlWires)));	
+
+		tempHistories.erase(bestHistory);
 	}
 
 	backprop.train(network, input, correctOutput);
