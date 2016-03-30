@@ -34,11 +34,11 @@ TEST_CASE( "Sensors", "[simulator]" ) {
 	}
 
 	SECTION("Kiwi drive") {
-		double x = 500, y = 200, r = 5, dx = 100, dy = 20, dr = 50;
+		double x = 500, y = 200, r = 0, dx = 100, dy = 100, dr = 0;
 
 		simlink.robot.setPosition(x, y);
 		simlink.robot.setRotation(r);
-		simlink.robot.globalInverseGoKiwi(dx, dy, dr, 5);
+		simlink.robot.inverseGoKiwi(dx, dy, dr, 1);
 		std::cout << "Simlink " << simlink.robot.getPosition().x << "\n";
 		REQUIRE(simlink.robot.getPosition().x == x+dx);
 		REQUIRE(simlink.robot.getPosition().y ==  y+dy);
