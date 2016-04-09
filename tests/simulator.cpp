@@ -40,8 +40,8 @@ TEST_CASE( "Sensors", "[simulator]" ) {
 		simlink.robot.setRotation(r);
 		simlink.robot.inverseGoKiwi(dx, dy, dr, 1);
 		std::cout << "Simlink " << simlink.robot.getPosition().x << "\n";
-		REQUIRE(simlink.robot.getPosition().x == x+dx);
-		REQUIRE(simlink.robot.getPosition().y ==  y+dy);
-		REQUIRE(simlink.robot.getRotation() == r+dr);
+		REQUIRE(fabs(simlink.robot.getPosition().x - (x+dx)) < 1);
+		REQUIRE(fabs(simlink.robot.getPosition().y - (y+dy)) < 1);
+		REQUIRE(fabs(simlink.robot.getRotation() - (r+dr)) < 1);
 	}
 }
