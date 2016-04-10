@@ -28,7 +28,6 @@ namespace rl {
 		net::Backpropagation backprop;
 		unsigned int numberOfWires, actionDimensions;
 		double learningRate, devaluationFactor;
-		double scalingFactorToMillis;
 		double controlPointsGDErrorTarget, controlPointsGDLearningRate;
 		int controlPointsGDMaxIterations;
 		unsigned int baseOfDimensions;

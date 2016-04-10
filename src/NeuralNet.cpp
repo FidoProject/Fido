@@ -198,15 +198,15 @@ void NeuralNet::printWeights() {
 	}
 }
 
-int NeuralNet::numberOfHiddenLayers() {
+unsigned int  NeuralNet::numberOfHiddenLayers() {
 	return net.size() - 1;
 }
 
-int NeuralNet::numberOfInputs() {
+unsigned int  NeuralNet::numberOfInputs() {
 	return net[0].neurons[0].weights.size() - 1;
 }
 
-int NeuralNet::numberOfOutputs() {
+unsigned int NeuralNet::numberOfOutputs() {
 	return net[net.size() - 1].neurons.size();
 }
 

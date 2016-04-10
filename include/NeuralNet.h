@@ -132,21 +132,21 @@ namespace net {
 		 *
 		 * \return the number of layers minus 1
 		 */
-		int numberOfHiddenLayers();
+		unsigned int numberOfHiddenLayers();
 
 		/**
 		 * \brief Gets the number of input neurons in the NeuralNet
 		 *
 		 * \return the number of inputs to the network
 		 */
-		int numberOfInputs();
+		unsigned int numberOfInputs();
 
 		/**
 		 * \brief Gets the number of output neurons in the NeuralNet
 		 *
 		 * \return the number of outputs to the network
 		 */
-		int numberOfOutputs();
+		unsigned int numberOfOutputs();
 
 		/**
 		 * \brief Sets the activation function of the output layer
