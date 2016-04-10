@@ -29,9 +29,6 @@ namespace rl {
 
 		/** The partial derivative of the interpolator function with respect to the value of one term of the action vector of a control wire */
 		virtual double actionTermDerivative(double actionTerm, double wireActionTerm, const std::vector<double> &action, const Wire &wire, const std::vector<Wire> &controlWires) = 0;
-
-		/** Gets an interpolator from a file. Tries out every interpolator and throws an error none of the interpolators successfully read from the file */
-		static Interpolator * getAnyInterpolatorFromFile(std::ifstream *in);
 	};
 }
 
