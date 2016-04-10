@@ -17,7 +17,7 @@ namespace gen {
 		// A set of fitness levels of corresponding to each neural network in the population set
 		std::vector<double> fitnesses;
 
-		int populationSize, numberOfGenerations;
+		unsigned int populationSize, numberOfGenerations;
 		float mutationRate, crossoverRate;
 
 		/*The number of times the most fit neural network of a generation is inserted directly into the subsequent generation.
@@ -30,7 +30,7 @@ namespace gen {
 		 *
 		 * Model traits are passed in such as population size, mutation rate, crossover rate, etc.
 		 */
-		GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet *> neuralNet));
+		GeneticAlgo(unsigned int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet *> neuralNet));
 
 		/* Produce two new neural networks from two parent neural networks.
 		 *

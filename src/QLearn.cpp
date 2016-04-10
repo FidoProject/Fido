@@ -17,7 +17,7 @@ QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, dou
 	devaluationFactor = devaluationFactor_;
 
 	models = std::vector<Model>(possibleActions_.size());
-	for(int a = 0; a < possibleActions_.size(); a++) models[a] = (Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
+	for(unsigned int a = 0; a < possibleActions_.size(); a++) models[a] = (Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
 }
 
 QLearn::QLearn(std::vector<Model> models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
@@ -28,7 +28,7 @@ QLearn::QLearn(std::vector<Model> models_, net::Backpropagation backprop_, doubl
 }
 
 QLearn::QLearn() {
-	
+
 }
 
 Action QLearn::chooseBestAction(State currentState) {
@@ -58,7 +58,7 @@ Action QLearn::chooseBoltzmanAction(State currentState, double explorationConsta
 	});
 
 	double sumOfProbabilities = 0;
-	for(int a = 0; a < exponentTerms.size(); a++) {
+	for(unsigned int a = 0; a < exponentTerms.size(); a++) {
 		sumOfProbabilities += (exponentTerms[a] / sumOfExponentTerms);
 		if(sumOfProbabilities >= determiner) {
 			lastModel = models[a];
@@ -82,7 +82,7 @@ void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 
 	double lr = lastModel.network->getOutput(lastState)[0];
 	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*getHighestReward(newState))-lr);
-	
+
 	lastModel.addToHistory(std::pair<State, double>(lastState, targetValueForLastState));
 
 	std::vector< std::vector<double> > input;

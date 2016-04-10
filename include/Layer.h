@@ -14,26 +14,26 @@ namespace net {
 	 * \brief A layer in a NeuralNet.
 	 */
 	struct Layer {
-		/** 
+		/**
 		 * \brief The activation function for the neurons of this layer
-		 * 
+		 *
 		 * An activation function takes the summation of the inputs times the weights of a neuron and uses an activation value of 0 to filter the output
 		 */
 		ActivationFunction activationFunction;
-		
-		/** 
+
+		/**
 		 * \brief Holds the neurons of this layer
 		 */
 		std::vector<Neuron> neurons;
 
-		/** 
-		 * \brief Initialize a layer with the default sigmoid activation function. 
+		/**
+		 * \brief Initialize a layer with the default sigmoid activation function.
 		 */
 		Layer() {
 			activationFunction = sigmoid;
 		}
 
-		/** 
+		/**
 		 * \brief Initialize a layer from a saved text file
 		 *
 		 * The saved text file must be formatted as outputted
@@ -60,14 +60,14 @@ namespace net {
 			}
 		}
 
-		/** 
+		/**
 		 * \brief Sets the activation function to the given string
 		 *
 		 * \param name the name of the activation function
 		 */
 		void setActivationFunctionWithName(std::string name) {
 			std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
-			auto nameIterator = nameMap.find(name);
+			std::map<std::string, ActivationFunction>::iterator nameIterator = nameMap.find(name);
 			if(nameIterator != nameMap.end()) {
 				activationFunction = getActivationFunctionNameMap()[name];
 			} else {
@@ -77,7 +77,7 @@ namespace net {
 		}
 
 
-		/** 
+		/**
 		 * \brief Gets the name of the layer's activation function
 		 */
 		std::string getActivationFunctionName() {
@@ -88,7 +88,7 @@ namespace net {
 		}
 
 
-		/** 
+		/**
 		 * \brief Store the layer to a text file
 		 *
 		 * This can later be read by the Layer(std::ifstream *input) constructor.
@@ -96,19 +96,19 @@ namespace net {
 		 * \param output the text file for the layer object to be written to
 		 */
 		void store(std::ofstream *output) {
-			// All the neurons in the same layer have the same number of weights 
+			// All the neurons in the same layer have the same number of weights
 			// so that is stored once along with the number of neurons in the layer
 			// and the activation function name of the layer
 			*output << neurons.size() << " " << neurons[0].weights.size() << " " << getActivationFunctionName() << "\n";
-			for (int a = 0; a < neurons.size(); a++) {
-				for (int b = 0; b < neurons[a].weights.size(); b++) {
+			for (unsigned int a = 0; a < neurons.size(); a++) {
+				for (unsigned int b = 0; b < neurons[a].weights.size(); b++) {
 					*output << neurons[a].weights[b] << " ";
 				}
 				*output << "\n";
 			}
 		}
 
-		/** 
+		/**
 		 * \brief Gets the map of activation function name to ActivationFunction
 		 */
 		static std::map<std::string, ActivationFunction> getActivationFunctionNameMap() {
@@ -121,7 +121,7 @@ namespace net {
 
 			return map;
 		}
-		/** 
+		/**
 		 * \brief Gets the map of activation function name to a derived ActivationFunction
 		 */
 		static std::map<std::string, ActivationFunction> getDerivedActivationFunctionNames() {

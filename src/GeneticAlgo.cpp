@@ -8,7 +8,7 @@
 
 using namespace gen;
 
-GeneticAlgo::GeneticAlgo(int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet *> neuralNet)) {
+GeneticAlgo::GeneticAlgo(unsigned int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet *> neuralNet)) {
 	populationSize = populationSize_;
 	mutationRate = mutationRate_;
 	crossoverRate = crossoverRate_;
@@ -35,7 +35,7 @@ void GeneticAlgo::crossover(net::NeuralNet *mom, net::NeuralNet *dad, net::Neura
 		offspring1Weights.push_back(momWeights[a]);
 		offspring2Weights.push_back(dadWeights[a]);
 	}
-	for(int a = crossoverIndex; a < momWeights.size(); a++) {
+	for(unsigned int a = crossoverIndex; a < momWeights.size(); a++) {
 		offspring1Weights.push_back(dadWeights[a]);
 		offspring2Weights.push_back(momWeights[a]);
 	}
@@ -54,7 +54,7 @@ void GeneticAlgo::crossover(net::NeuralNet *mom, net::NeuralNet *dad, net::Neura
 void GeneticAlgo::mutate(net::NeuralNet *net) {
 	std::vector<double> weights = net->getWeights();
 
-	for(int a = 0; a < weights.size(); a++) {
+	for(unsigned int a = 0; a < weights.size(); a++) {
 		float mutationDeterminer = (float)rand() / (float)RAND_MAX;
 		if(mutationDeterminer <= mutationRate) {
 			weights[a] = net::Neuron::randomWeight();
@@ -69,11 +69,11 @@ void GeneticAlgo::mutate(net::NeuralNet *net) {
 
 net::NeuralNet* GeneticAlgo::selectNNBasedOnFitness() {
 	double totalFitnessOfPopulation = 0;
-	for(int a = 0; a < fitnesses.size(); a++) totalFitnessOfPopulation += fitnesses[a];
+	for(unsigned int a = 0; a < fitnesses.size(); a++) totalFitnessOfPopulation += fitnesses[a];
 	double cutOff = (((double)rand() / (double)RAND_MAX) * totalFitnessOfPopulation);
 
 	double fitnessCounter = 0;
-	for (int a = 0; a < fitnesses.size(); a++) {
+	for (unsigned int a = 0; a < fitnesses.size(); a++) {
 		fitnessCounter += fitnesses[a];
 		if(fitnessCounter >= cutOff) {
 			return population[a];
@@ -87,7 +87,7 @@ void GeneticAlgo::createNextGeneration() {
 	std::vector<net::NeuralNet *> nextGeneration;
 
 	int mostFitIndex = 0;
-	for(int a = 1; a < fitnesses.size(); a++) {
+	for(unsigned int a = 1; a < fitnesses.size(); a++) {
 		if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
 	}
 	for(int a = 0; a < numberOfElitismCopies; a++) nextGeneration.push_back(population[mostFitIndex]);
@@ -114,7 +114,7 @@ net::NeuralNet* GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::
 	fitnesses.clear();
 
 	population.push_back(modelNetwork);
-	for(int a = 0; a < populationSize-1; a++) population.push_back(new net::NeuralNet(modelNetwork));
+	for(unsigned int a = 0; a < populationSize-1; a++) population.push_back(new net::NeuralNet(modelNetwork));
 
 	fitnesses = getPopulationFitness(population);
 
@@ -126,6 +126,6 @@ net::NeuralNet* GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::
 	}
 
 	int mostFitIndex = 0;
-	for(int a = 1; a < fitnesses.size(); a++)if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
+	for(unsigned int a = 1; a < fitnesses.size(); a++)if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
 	return population[mostFitIndex];
 }
