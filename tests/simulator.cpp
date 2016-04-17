@@ -32,4 +32,16 @@ TEST_CASE( "Sensors", "[simulator]" ) {
 		REQUIRE(fabs(x+300) < 0.01);
 		REQUIRE(fabs(z+200) < 0.01);
 	}
+
+	SECTION("Kiwi drive") {
+		double x = 500, y = 200, r = 0, dx = 100, dy = 100, dr = 0;
+
+		simlink.robot.setPosition(x, y);
+		simlink.robot.setRotation(r);
+		simlink.robot.inverseGoKiwi(dx, dy, dr, 1);
+		std::cout << "Simlink " << simlink.robot.getPosition().x << "\n";
+		REQUIRE(fabs(simlink.robot.getPosition().x - (x+dx)) < 1);
+		REQUIRE(fabs(simlink.robot.getPosition().y - (y+dy)) < 1);
+		REQUIRE(fabs(simlink.robot.getRotation() - (r+dr)) < 1);
+	}
 }

@@ -2,6 +2,11 @@
 #define LINE_FIDO_H
 
 #include <iostream>
+#include <math.h>
+
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Vertex.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 
 class Line : public sf::Drawable
 {
@@ -13,7 +18,7 @@ public:
         point2 = point2_;
 
         sf::Vector2f direction = point2 - point1;
-        sf::Vector2f unitDirection = direction/std::sqrt(direction.x*direction.x+direction.y*direction.y);
+        sf::Vector2f unitDirection = direction / (float)sqrt(direction.x*direction.x+direction.y*direction.y);
         sf::Vector2f unitPerpendicular(-unitDirection.y,unitDirection.x);
 
         sf::Vector2f offset = (thickness/2.f)*unitPerpendicular;

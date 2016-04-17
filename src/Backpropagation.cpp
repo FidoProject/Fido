@@ -18,10 +18,10 @@ Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, dou
 }
 
 Backpropagation::Backpropagation() {
-	learningRate = 0.2;
-	momentumTerm = 0.8;
-	targetErrorLevel = 0.4;
-	maximumIterations = 5000;
+	learningRate = 0.01;
+	momentumTerm = 0.9;
+	targetErrorLevel = 0.6;
+	maximumIterations = 35000;
 }
 
 Backpropagation::Backpropagation(std::ifstream *input) {
@@ -49,12 +49,12 @@ void Backpropagation::train(net::NeuralNet *network, const std::vector< std::vec
 
 	do {
 		totalError = 0;
-		for(int a = 0; a < input.size(); a++) {
+		for(unsigned int a = 0; a < input.size(); a++) {
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
 	} while(totalError > targetErrorLevel && iterations < maximumIterations);
-	
+
 	if(iterations >= maximumIterations-1) std::cout << "Backpropagation hit max iterations with an error level of " << totalError << ".\n";
 }
 
@@ -65,18 +65,18 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 	std::vector< std::vector<double> > errors = network->getGradients(input, correctOutput);
 
 	// Update weights
-	for(int errorIndex = 0; errorIndex < errors.size(); errorIndex++) {
+	for(unsigned int errorIndex = 0; errorIndex < errors.size(); errorIndex++) {
 		int layerIndex = ((int)errors.size() - 1) - errorIndex;
 
-		for(int neuronIndex = 0; neuronIndex < errors[errorIndex].size(); neuronIndex++) {
+		for(unsigned int neuronIndex = 0; neuronIndex < errors[errorIndex].size(); neuronIndex++) {
 			if(errorIndex == errors.size() - 1) {
-				for(int inputIndex = 0; inputIndex < input.size(); inputIndex++) {
+				for(unsigned int inputIndex = 0; inputIndex < input.size(); inputIndex++) {
 					double deltaWeight = learningRate * errors[errorIndex][neuronIndex] * input[inputIndex] + lastChangeInWeight[layerIndex][neuronIndex][inputIndex]*momentumTerm;
 					weights[layerIndex][neuronIndex][inputIndex] += deltaWeight;
 					lastChangeInWeight[layerIndex][neuronIndex][inputIndex] = deltaWeight;
 				}
 			} else {
-				for(int previousOutput = 0; previousOutput < outputs[layerIndex - 1].size(); previousOutput++) {
+				for(unsigned int previousOutput = 0; previousOutput < outputs[layerIndex - 1].size(); previousOutput++) {
 					double deltaWeight = learningRate * errors[errorIndex][neuronIndex] * outputs[layerIndex - 1][previousOutput] + lastChangeInWeight[layerIndex][neuronIndex][previousOutput]*momentumTerm;
 					weights[layerIndex][neuronIndex][previousOutput] += deltaWeight;
 					lastChangeInWeight[layerIndex][neuronIndex][previousOutput] = deltaWeight;
@@ -95,7 +95,7 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 
 	double networkError = 0;
 	// Compute network error
-	for(int outputNeuronIndex = 0; outputNeuronIndex < outputs[outputs.size()-1].size(); outputNeuronIndex++) {
+	for(unsigned int outputNeuronIndex = 0; outputNeuronIndex < outputs[outputs.size()-1].size(); outputNeuronIndex++) {
 		networkError += pow(correctOutput[outputNeuronIndex] - outputs[outputs.size()-1][outputNeuronIndex], 2);
 	}
 
@@ -107,11 +107,11 @@ double Backpropagation::trainOnDataPoint(net::NeuralNet *network, const std::vec
 void Backpropagation::resetLastChangeInWeight(net::NeuralNet *network) {
 	lastChangeInWeight.clear();
 	std::vector< std::vector< std::vector<double> > > weights = network->getWeights3D();
-	for(int a = 0; a < weights.size(); a++) {
+	for(unsigned int a = 0; a < weights.size(); a++) {
 		std::vector< std::vector<double> > layer;
-		for(int b = 0; b < weights[a].size(); b++) {
+		for(unsigned int b = 0; b < weights[a].size(); b++) {
 			std::vector<double> neuron;
-			for(int c = 0; c < weights[a][b].size(); c++) {
+			for(unsigned int c = 0; c < weights[a][b].size(); c++) {
 				neuron.push_back(0);
 			}
 			layer.push_back(neuron);

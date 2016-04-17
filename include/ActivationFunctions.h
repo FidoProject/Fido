@@ -1,6 +1,6 @@
 /** \file ActivationFunctions.h
  * \brief Fido's supported activation functions and their derivatives.
- * 
+ *
  * An activation function is the final transformation applied to the output of a neuron. Common examples of activation functions are the sigmoid and inverse tangent functions. Derivatives are for training (ex. back propagation).
  */
 
@@ -12,11 +12,11 @@
 
 namespace net {
 	/** The type of an activation function.
-	 * 
+	 *
 	 * Each activation function must take in a double and output a double.
 	 */
 	typedef double(*ActivationFunction)(double);
-	
+
 	/** A sigmoid function.
 	 *
 	 * An "s-shaped" function that uses an activation value of 0 to return a gradient output. Similar to the hyperbolic tangent function.
@@ -27,7 +27,7 @@ namespace net {
 	}
 
 	/** A binary function.
-	 * 
+	 *
 	 * \return Either 0 or 1. 0 if input is less than 0 and 1 otherwise.
 	 */
 	inline double binary(double initialOutput) {

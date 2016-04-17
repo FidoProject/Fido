@@ -15,24 +15,26 @@ NeuralNet::NeuralNet() {
 
 NeuralNet::NeuralNet(unsigned int numInputs, unsigned int numOutputs, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, std::string activationFunctionName) {
 	Layer firstHiddenLayer;
-	for (int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.neurons.push_back(Neuron(numInputs));
+	for (unsigned int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.neurons.push_back(Neuron(numInputs));
 	net.push_back(firstHiddenLayer);
 
-	for (int a = 0; a < numHiddenLayers - 1; a++) {
+	for (unsigned int a = 0; a < numHiddenLayers - 1; a++) {
 		Layer hiddenLayer;
-		for (int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
+		for (unsigned int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
 		net.push_back(hiddenLayer);
 	}
 
 	Layer outputLayer;
-	for (int a = 0; a < numOutputs; a++) outputLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
+	for (unsigned int a = 0; a < numOutputs; a++) outputLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
 	net.push_back(outputLayer);
 
-	for (int a = 0; a < net.size(); a++) net[a].setActivationFunctionWithName(activationFunctionName);
+	for (unsigned int a = 0; a < net.size(); a++) net[a].setActivationFunctionWithName(activationFunctionName);
+
+	randomizeWeights();
 }
 
 NeuralNet::NeuralNet(NeuralNet* otherNet) {
-	net = otherNet->net;
+	net = std::vector< Layer >(otherNet->net);
 	randomizeWeights();
 }
 
@@ -53,7 +55,7 @@ void NeuralNet::store(std::ofstream *output) {
 	if(output->is_open()) {
 		// Output the net to the file
 		*output << net.size() << "\n";
-		for(int a = 0; a < net.size(); a++) {
+		for(unsigned int a = 0; a < net.size(); a++) {
 			net[a].store(output);
 		}
 	} else {
@@ -64,9 +66,9 @@ void NeuralNet::store(std::ofstream *output) {
 
 std::vector<double> NeuralNet::getWeights() {
 	std::vector<double> weights;
-	for(int a = 0; a < net.size(); a++) {
-		for(int b = 0; b < net[a].neurons.size(); b++) {
-			for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+	for(unsigned int a = 0; a < net.size(); a++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
+			for(unsigned int c = 0; c < net[a].neurons[b].weights.size(); c++) {
 				weights.push_back(net[a].neurons[b].weights[c]);
 			}
 		}
@@ -76,9 +78,9 @@ std::vector<double> NeuralNet::getWeights() {
 
 std::vector< std::vector< std::vector<double> > > NeuralNet::getWeights3D() {
 	std::vector< std::vector< std::vector<double> > > weights;
-	for(int a = 0; a < net.size(); a++) {
+	for(unsigned int a = 0; a < net.size(); a++) {
 		std::vector< std::vector<double> > layer;
-		for(int b = 0; b < net[a].neurons.size(); b++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
 			layer.push_back(net[a].neurons[b].weights);
 		}
 		weights.push_back(layer);
@@ -87,10 +89,10 @@ std::vector< std::vector< std::vector<double> > > NeuralNet::getWeights3D() {
 }
 
 void NeuralNet::setWeights(std::vector<double> w) {
-	int counter = 0;
-	for(int a = 0; a < net.size(); a++) {
-		for(int b = 0; b < net[a].neurons.size(); b++) {
-			for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+	unsigned int counter = 0;
+	for(unsigned int a = 0; a < net.size(); a++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
+			for(unsigned int c = 0; c < net[a].neurons[b].weights.size(); c++) {
 				net[a].neurons[b].weights[c] = w[counter];
 				counter++;
 			}
@@ -103,23 +105,23 @@ void NeuralNet::setWeights(std::vector<double> w) {
 }
 
 void NeuralNet::setWeights3D(std::vector< std::vector< std::vector<double> > > w) {
-	for(int a = 0; a < net.size(); a++) {
-		for(int b = 0; b < net[a].neurons.size(); b++) {
+	for(unsigned int a = 0; a < net.size(); a++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
 			net[a].neurons[b].weights = w[a][b];
 		}
 	}
 }
 
 void NeuralNet::randomizeWeights() {
-	for(int a = 0; a < net.size(); a++)  for(int b = 0; b < net[a].neurons.size(); b++) net[a].neurons[b].randomizeWeights();
+	for(unsigned int a = 0; a < net.size(); a++) for(unsigned int b = 0; b < net[a].neurons.size(); b++) net[a].neurons[b].randomizeWeights();
 }
 
 std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 	std::vector<double> output;
-	for(int a = 0; a < net.size(); a++) {
+	for(unsigned int a = 0; a < net.size(); a++) {
 		if(a > 0) input = output;
 		output.clear();
-		for(int b = 0; b < net[a].neurons.size(); b++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
 			double out = net[a].activationFunction(net[a].neurons[b].getOutput(input));
 			output.push_back(out);
 		}
@@ -129,12 +131,12 @@ std::vector<double> NeuralNet::getOutput(std::vector<double> input) {
 
 std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> input) {
 	std::vector< std::vector<double> > output;
-	for(int a = 0; a < net.size(); a++) {
+	for(unsigned int a = 0; a < net.size(); a++) {
 		if(a > 0) input = output[output.size() - 1];
 
 		std::vector<double> outputLayer;
 
-		for(int b = 0; b < net[a].neurons.size(); b++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
 			double out = net[a].activationFunction(net[a].neurons[b].getOutput(input));
 			outputLayer.push_back(out);
 		}
@@ -155,7 +157,7 @@ std::vector< std::vector<double> > NeuralNet::getGradients(const std::vector<dou
 	// Compute output layer error
 	std::vector<double> outputNeuronErrors;
 	std::vector<double> outputLayerOutput = outputs[outputs.size() - 1];
-	for(int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
+	for(unsigned int neuronIndex = 0; neuronIndex < outputLayerOutput.size(); neuronIndex++) {
 		double outputNeuronError = (correctOutput[neuronIndex] - outputLayerOutput[neuronIndex]) * outputActivationFunctionDerivative(outputLayerOutput[neuronIndex]);
 		outputNeuronErrors.push_back(outputNeuronError);
 	}
@@ -168,9 +170,9 @@ std::vector< std::vector<double> > NeuralNet::getGradients(const std::vector<dou
 		const std::vector<double> &lastLayerError = errors[errors.size() - 1];
 		const std::vector< std::vector<double> > &lastLayerWeights = weights[layerIndex + 1];
 
-		for(int neuronIndex = 0; neuronIndex < net[layerIndex].neurons.size(); neuronIndex++) {
+		for(unsigned int neuronIndex = 0; neuronIndex < net[layerIndex].neurons.size(); neuronIndex++) {
 			double errorsTimesWeights = 0;
-			for(int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
+			for(unsigned int previousNeuronIndex = 0; previousNeuronIndex < lastLayerError.size(); previousNeuronIndex++) {
 				errorsTimesWeights += lastLayerError[previousNeuronIndex] * lastLayerWeights[previousNeuronIndex][neuronIndex];
 			}
 			double hiddenNeuronError = hiddenActivationFunctionDerivative(currentHiddenLayerOutput[neuronIndex]) * errorsTimesWeights;
@@ -184,11 +186,11 @@ std::vector< std::vector<double> > NeuralNet::getGradients(const std::vector<dou
 
 void NeuralNet::printWeights() {
 	std::cout << "Neuron weights: \n";
-	for(int a = 0; a < net.size(); a++) {
+	for(unsigned int a = 0; a < net.size(); a++) {
 		std::cout << "  Layer " << a << ":\n";
-		for(int b = 0; b < net[a].neurons.size(); b++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
 			std::cout << "	  Neuron " << b << ": ";
-			for(int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+			for(unsigned int c = 0; c < net[a].neurons[b].weights.size(); c++) {
 				std::cout << net[a].neurons[b].weights[c] << " ";
 			}
 			std::cout << "\n";
@@ -196,15 +198,15 @@ void NeuralNet::printWeights() {
 	}
 }
 
-int NeuralNet::numberOfHiddenLayers() {
+unsigned int  NeuralNet::numberOfHiddenLayers() {
 	return net.size() - 1;
 }
 
-int NeuralNet::numberOfInputs() {
+unsigned int  NeuralNet::numberOfInputs() {
 	return net[0].neurons[0].weights.size() - 1;
 }
 
-int NeuralNet::numberOfOutputs() {
+unsigned int NeuralNet::numberOfOutputs() {
 	return net[net.size() - 1].neurons.size();
 }
 

@@ -31,10 +31,10 @@ namespace net {
 		 * \param activationFunctionName the name of the activation function to be used in the NN
 		 */
 		NeuralNet(unsigned int numInputs, unsigned int numOutputs, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, std::string activationFunctionName);
-		
+
 		/**
 		 * \brief Constructs a neural network copying another networks architecture with random weights.
-		 * 
+		 *
 		 * The new network has the same number of inputs, outputs, hidden layers, and neurons per hidden layer as the network given.
 		 *
 		 * \param otherNet the network to be copied
@@ -54,26 +54,26 @@ namespace net {
 		 * Stores a neural network using ofstream. Useful for appending a
 		 * network to the end of a file without overwriting it. WARNING:
 		 * will not close ofstream.
-		 * 
+		 *
 		 * \param output the file the network is to be written to
-		 */  
+		 */
 		void store(std::ofstream *output);
 
 		/**
 		 * \brief Gets the weights of each neuron in the net.
-		 * 
+		 *
 		 * \return A 1d vector of neuron weights starting from the first neuron
-		 * in the first layer to the last neuron in the output layer. 
+		 * in the first layer to the last neuron in the output layer.
 		 */
 		std::vector<double> getWeights();
 
 		/**
 		 * \brief Gets the weights of each neuron in the net
-		 * 
+		 *
 		 * \return A 3d vector of neuron weights.
 		 */
 		std::vector< std::vector< std::vector<double> > > getWeights3D();
-		
+
 		/**
 		 * \brief Sets the weights of each input for each neuron in the net
 		 *
@@ -87,7 +87,7 @@ namespace net {
 		 * \brief Sets the weights of each input for each neuron in the net
 		 *
 		 * \param w the 3d vector of weights from which neuron weights are set
-		 */ 
+		 */
 		void setWeights3D(std::vector< std::vector< std::vector<double> > > w);
 
 		/**
@@ -107,7 +107,7 @@ namespace net {
 
 		/**
 		 * \brief Gets the output of each layer of neurons as an input is fed for just as it is fed forward in getOutput
-		 * 
+		 *
 		 * \param input the inputs to the neural network
 		 * \return a 2d vector containing the outputs of each layer
 		 */
@@ -115,38 +115,38 @@ namespace net {
 
 		/**
 		 * \brief Computes the error gradients of each layer in the NeuralNet
-		 * 
+		 *
 		 * \param input the input to the neural net
 		 * \param correctOutput what the neural net would ideally output when fed the provided input
 		 * \return a 2d vector containing the gradients of each layer starting from the first layer and ending with the last
 		 */
 		std::vector< std::vector<double> > getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput);
-		
+
 		/**
 		 * \brief Prints the weights of the neurons of the layers of the net
 		 */
 		void printWeights();
-		
+
 		/**
 		 * \brief Gets the number of hidden layers in the neural net
 		 *
 		 * \return the number of layers minus 1
 		 */
-		int numberOfHiddenLayers();
+		unsigned int numberOfHiddenLayers();
 
 		/**
 		 * \brief Gets the number of input neurons in the NeuralNet
 		 *
 		 * \return the number of inputs to the network
-		 */ 
-		int numberOfInputs();
+		 */
+		unsigned int numberOfInputs();
 
 		/**
 		 * \brief Gets the number of output neurons in the NeuralNet
 		 *
 		 * \return the number of outputs to the network
-		 */ 
-		int numberOfOutputs();
+		 */
+		unsigned int numberOfOutputs();
 
 		/**
 		 * \brief Sets the activation function of the output layer
@@ -171,7 +171,7 @@ namespace net {
 
 		/**
 		 * \brief A two dimensional network of neurons.
-		 */ 
+		 */
 		std::vector< Layer > net;
 	};
 }

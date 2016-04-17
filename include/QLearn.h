@@ -15,7 +15,7 @@ namespace rl {
 	struct Model {
 		net::NeuralNet *network;
 		Action action;
-		std::vector<std::pair<State, double>> history;
+		std::vector<std::pair<State, double> > history;
 
 		Model(net::NeuralNet * network_, Action action_) {
 			network = network_;
@@ -26,7 +26,7 @@ namespace rl {
 
 		void addToHistory(std::pair<State, double> entry) {
 			history.push_back(entry);
-			if(history.size() > 5) history.erase(history.begin());
+			if(history.size() > 1) history.erase(history.begin());
 		}
 	};
 
@@ -36,8 +36,8 @@ namespace rl {
 		 *
 		 * The model network is used as a model architecture for the networks that will rate the reward of each action.
 		 * Learning rate is a constant between 0 and 1 that dictates how fast the robot learns from reinforcement.
-		 * Devaluation factor is a constant between 0 and 1 that weighs future reward vs immediate reward. 
-		 * A value of 0 will make the network only value immediate reward, while a value of 1 will make it consider future reward with the same weight as immediate reward. 
+		 * Devaluation factor is a constant between 0 and 1 that weighs future reward vs immediate reward.
+		 * A value of 0 will make the network only value immediate reward, while a value of 1 will make it consider future reward with the same weight as immediate reward.
 		 */
 		QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_);
 
@@ -57,12 +57,12 @@ namespace rl {
 
 		/* Gets an action using the Boltzman softmax probability distribution
 		 *
-		 * Non-random search heuristic used so that the neural network explores actions despite their reward value. 
+		 * Non-random search heuristic used so that the neural network explores actions despite their reward value.
 		 * The lower the exploration constanstant, the more likely it is to pick the best action for the current state.
 		 */
 		Action chooseBoltzmanAction(State currentState, double explorationConstant);
 
-		/* Given the immediate reward from the last action taken and the new state, 
+		/* Given the immediate reward from the last action taken and the new state,
 		 * this function updates the correct value for the longterm reward of the lastAction and trains the network in charge of the lastAction to output the corect reward value
 		 */
 		void applyReinforcementToLastAction(double reward, State newState);
