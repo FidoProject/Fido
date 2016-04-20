@@ -17,13 +17,14 @@ TEST_CASE("Test pruning", "[pruner]") {
 	net::NeuralNet neuralNetwork = net::NeuralNet(input[0].size(), correctOutput[0].size(), HIDDEN_LAYERS, int(NEURONS/double(HIDDEN_LAYERS+1)), "sigmoid");
 	neuralNetwork.setOutputActivationFunction("simpleLinear");
 
-	net::Pruner pruner = net::Pruner(0.1, 0, -1, 14000, 0.05, 1000);
+	net::Pruner pruner = net::Pruner(0.1, 0, -1, 14000, 1000);
 	pruner.train(&neuralNetwork, input, correctOutput);
 
-	// Cycle through inputs and print the outputs
 	for (std::vector<double> current: input) {
 		REQUIRE(fabs(current[0]*2 - neuralNetwork.getOutput(current)[0]) < ERROR_ALLOWANCE);
 	}
 
 	REQUIRE(neuralNetwork.numberOfHiddenNeurons() < MAX_FINAL_NEURONS);
+
+
 }
