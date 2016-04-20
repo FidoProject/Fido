@@ -64,7 +64,7 @@ TEST_CASE("Save and load backpropagations through streams", "[backprop]") {
 	REQUIRE(backprop.learningRate == newBackprop.learningRate);
 	REQUIRE(backprop.momentumTerm == newBackprop.momentumTerm);
 	REQUIRE(backprop.targetErrorLevel == newBackprop.targetErrorLevel);
-	REQUIRE(backprop.maximumIterations == newBackprop.maximumIterations);
+	REQUIRE(backprop.maximumEpochs == newBackprop.maximumEpochs);
 
 	// Train with new backprop
 	backprop.train(&neuralNetwork, input, correctOutput); // train old

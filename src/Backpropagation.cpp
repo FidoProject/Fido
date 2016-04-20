@@ -10,23 +10,23 @@
 
 using namespace net;
 
-Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_) {
+Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumEpochs_) {
 	learningRate = learningRate_;
 	momentumTerm = momentumTerm_;
 	targetErrorLevel = targetErrorLevel_;
-	maximumIterations = maximumIterations_;
+	maximumEpochs = maximumEpochs_;
 }
 
 Backpropagation::Backpropagation() {
 	learningRate = 0.01;
 	momentumTerm = 0.9;
 	targetErrorLevel = 0.6;
-	maximumIterations = 35000;
+	maximumEpochs = 35000;
 }
 
 Backpropagation::Backpropagation(std::ifstream *input) {
 	if(input->is_open()) {
-		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumIterations;
+		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumEpochs;
 	} else {
 		std::cout << "Could not retrieve backprop from file\n";
 		throw 1;
@@ -35,7 +35,7 @@ Backpropagation::Backpropagation(std::ifstream *input) {
 
 void Backpropagation::store(std::ofstream *output) {
 	if(output->is_open()) {
-		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumIterations << "\n";
+		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumEpochs << "\n";
 	} else {
 		std::cout << "Could not store backprop\n";
 		throw 1;
@@ -53,9 +53,23 @@ void Backpropagation::train(net::NeuralNet *network, const std::vector< std::vec
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
-	} while(totalError > targetErrorLevel && iterations < maximumIterations);
+	} while(totalError > targetErrorLevel && iterations < maximumEpochs);
 
-	if(iterations >= maximumIterations-1) std::cout << "Backpropagation hit max iterations with an error level of " << totalError << ".\n";
+	if(iterations >= maximumEpochs-1) std::cout << "Backpropagation hit max epochs with an error level of " << totalError << ".\n";
+}
+
+double Backpropagation::trainEpocs(double numberOfEpochs, net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
+	resetLastChangeInWeight(network);
+
+	double totalError;
+	for(int epochs = 0; epochs < numberOfEpochs; epochs++) {
+		totalError = 0;
+		for(unsigned int a = 0; a < input.size(); a++) {
+			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
+		}
+	}
+
+	return totalError;
 }
 
 

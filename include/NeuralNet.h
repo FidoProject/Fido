@@ -149,6 +149,13 @@ namespace net {
 		unsigned int numberOfOutputs();
 
 		/**
+		 * \brief Gets the number of hidden neurons in the NeuralNet
+		 *
+		 * \return the number of hidden neurons in the network
+		 */
+		unsigned int numberOfHiddenNeurons();
+
+		/**
 		 * \brief Sets the activation function of the output layer
 		 *
 		 * \param name the name of the activation function
@@ -168,6 +175,14 @@ namespace net {
 		 * \return the string representing the activation function
 		 */
 		std::string getOutputActivationFunctionName();
+
+		/**
+		 * \brief Removes a neuron from the network. Deletes all weights associated with the deleted neuron.
+		 *
+		 * \return hiddenLayerIndex the index of the layer of the neuron to be deleted; 0 is input layer
+		 * \return neuronIndex the index of the neuron; same as the neuron's index in the neurons vector of its layer
+		 */
+		void removeNeuron(unsigned int hiddenLayerIndex, unsigned int neuronIndex);
 
 		/**
 		 * \brief A two dimensional network of neurons.

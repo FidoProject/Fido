@@ -210,6 +210,19 @@ unsigned int NeuralNet::numberOfOutputs() {
 	return net[net.size() - 1].neurons.size();
 }
 
+unsigned int NeuralNet::numberOfHiddenNeurons() {
+	unsigned int num = 0;
+	for(unsigned int a = 0; a < net.size()-1; a++) {
+		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
+			for(unsigned int c = 0; c < net[a].neurons[b].weights.size(); c++) {
+				num++;
+			}
+		}
+	}
+
+	return num;
+}
+
 void NeuralNet::setOutputActivationFunction(std::string name) {
 	net[net.size() - 1].setActivationFunctionWithName(name);
 }
@@ -220,4 +233,20 @@ std::string NeuralNet::getHiddenActivationFunctionName() {
 
 std::string NeuralNet::getOutputActivationFunctionName() {
 	return net[net.size() - 1].getActivationFunctionName();
+}
+
+void NeuralNet::removeNeuron(unsigned int hiddenLayerIndex, unsigned int neuronIndex) {
+	if(hiddenLayerIndex >= numberOfHiddenLayers()) {
+		std::cout << "Impossible hidden layer index\n";
+		throw 1;
+	}
+	if(neuronIndex >= net[hiddenLayerIndex].neurons.size()) {
+		std::cout << "Impossible neuron index\n";
+		throw 1;
+	}
+	net[hiddenLayerIndex].neurons.erase(net[hiddenLayerIndex].neurons.begin() + neuronIndex);
+	for(unsigned int nextLayerNeuronIndex = 0; nextLayerNeuronIndex < net[hiddenLayerIndex+1].neurons.size(); nextLayerNeuronIndex++) {
+		std::vector<double> &nextLayerWeightsRef = net[hiddenLayerIndex+1].neurons[nextLayerNeuronIndex].weights;
+		nextLayerWeightsRef.erase(nextLayerWeightsRef.begin() + neuronIndex);
+	}
 }
