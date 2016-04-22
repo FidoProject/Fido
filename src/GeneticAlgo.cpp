@@ -118,8 +118,6 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
 	for(unsigned int a = 0; a < populationSize-1; a++) population.push_back(net::NeuralNet(modelNetwork));
 
 	for(int a = 0; a < numberOfGenerations; a++) {
-		std::cout << "Generation: " << a << "\n";
-
 		getPopulationFitness();
 		createNextGeneration();
 	}
