@@ -39,8 +39,6 @@ WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDi
 	network = new net::NeuralNet(stateDimensions, numberOfWires_ * (actionDimensions_+1), numHiddenLayers, numNeuronsPerHiddenLayer, "sigmoid");
 	network->setOutputActivationFunction("simpleLinear");
 
-	rewardIterations = 0;
-
 	controlPointsGDErrorTarget = 0.001;
 	controlPointsGDLearningRate = 0.1;
 	controlPointsGDMaxIterations = 10000;
@@ -56,7 +54,7 @@ WireFitQLearn::WireFitQLearn(std::ifstream *input) {
 	if(input->is_open()) {
 		*input >> learningRate >> devaluationFactor;
 		*input >> actionDimensions >> numberOfWires;
-	 	*input >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> rewardIterations >> baseOfDimensions;
+	 	*input >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> baseOfDimensions;
 
 		double temp;
 		minAction = Action(actionDimensions);
@@ -136,12 +134,6 @@ Action WireFitQLearn::chooseBoltzmanAction(State currentState,
 void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState) {
 	std::vector<Wire> controlWires = getWires(lastState);
 	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, controlWires);
-	//double oldRewa2d = interpolator->getReward(controlWires, lastAction);
-
-	histories.push_back(History(lastState, newState, lastAction, reward));
-	if(histories.size() > 100) {
-		histories.erase(histories.begin());
-	}
 
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
@@ -149,56 +141,18 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 	std::vector< std::vector<double> > input(1, lastState);
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
-	std::vector<History> tempHistories(histories);
-	while(input.size() < 4) {
-		bool foundOne = false;
-		double maxDifference = 0;
-		auto bestHistory = tempHistories.begin();
-
-		for(auto history = tempHistories.begin(); history != tempHistories.end(); history++) {
-			double difference = 0;
-			bool equalToOne = false;
-			for(unsigned int b = 0; b < input.size(); b++) {
-				double localDifference = 0;
-				for(unsigned int c = 0; c < input[b].size(); c++) {
-					localDifference += fabs(input[b][c] - history->initialState[c]);
-				}
-				if(localDifference < 0.2) {
-					equalToOne = true;
-					break;
-				}
-				difference += localDifference;
-			}
-			if(equalToOne) continue;
-			if(difference > maxDifference) {
-				foundOne = true;
-				maxDifference = difference;
-				bestHistory = history;
-			}
-		}
-
-		if(!foundOne) break;
-
-		std::vector<Wire> historyControlWires = getWires(bestHistory->initialState);
-		input.push_back(bestHistory->initialState);
-		correctOutput.push_back(getRawOutput(newControlWires({bestHistory->action, getQValue(bestHistory->reward, bestHistory->initialState, bestHistory->newState, bestHistory->action, historyControlWires)}, historyControlWires)));
-
-		tempHistories.erase(bestHistory);
-	}
-
 	backprop.train(network, input, correctOutput);
 }
 
 void WireFitQLearn::reset() {
 	network->randomizeWeights();
-	histories.clear();
 }
 
 void WireFitQLearn::store(std::ofstream *output) {
 	if(output->is_open()) {
 		*output << learningRate << " " << devaluationFactor << "\n";
 		*output << actionDimensions << " " << numberOfWires << "\n";
-		*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << rewardIterations <<  " " << baseOfDimensions << "\n";
+		*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations <<  " " << baseOfDimensions << "\n";
 
 		for(unsigned int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
 		for(unsigned int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";

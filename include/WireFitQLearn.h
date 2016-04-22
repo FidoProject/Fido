@@ -69,21 +69,7 @@ namespace rl {
 		// Stores the WireFitQLearn object in a file
 		void store(std::ofstream *output);
 
-	private:
-		struct History {
-			State initialState, newState;
-			Action action;
-			double reward;
-
-			History(State initialState_, State newState_, Action action_, double reward_) {
-				initialState = initialState_;
-				newState = newState_;
-				action = action_;
-				reward = reward_;
-			}
-		};
-		std::vector<History> histories;
-
+	protected:
 		// Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
 		std::vector<Wire> getWires(State state);
 
@@ -112,8 +98,6 @@ namespace rl {
 
 		// Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires
 		std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);
-
-		int rewardIterations;
 	};
 };
 
