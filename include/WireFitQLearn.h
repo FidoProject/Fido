@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Backpropagation.h"
+#include "Trainer.h"
 #include "Learner.h"
 
 namespace net{
@@ -25,7 +25,7 @@ namespace rl {
 	public:
 		net::NeuralNet *network;
 		Interpolator *interpolator;
-		net::Backpropagation backprop;
+		net::Trainer *trainer;
 		unsigned int numberOfWires, actionDimensions;
 		double learningRate, devaluationFactor;
 		double controlPointsGDErrorTarget, controlPointsGDLearningRate;
@@ -38,7 +38,7 @@ namespace rl {
 		 * a learning rate (dictates how fast the reward values for actions change), a devaluation factor (dictates how much future rewards are valued),
 		 * the dimensions of the action vectors, and how many wires the network outputs.
 		 */
-		WireFitQLearn(unsigned int stateDimensions, unsigned int actionDimensions_, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, unsigned int numberOfWires_, Action minAction_, Action maxAction_, unsigned int baseOfDimensions_, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_);
+		WireFitQLearn(unsigned int stateDimensions, unsigned int actionDimensions_, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, unsigned int numberOfWires_, Action minAction_, Action maxAction_, unsigned int baseOfDimensions_, Interpolator *interpolator_, net::Trainer *trainer_, double learningRate_, double devaluationFactor_);
 
 		WireFitQLearn();
 

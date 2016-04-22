@@ -11,7 +11,7 @@
 using namespace net;
 
 Pruner::Pruner() : Backpropagation() {
-  pruningSampleSize = 10;
+  pruningSampleSize = 200;
 }
 
 Pruner::Pruner(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumEpochs_, int pruningSampleSize_) : Backpropagation(learningRate_, momentumTerm_, targetErrorLevel_, maximumEpochs_) {

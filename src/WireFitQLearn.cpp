@@ -15,7 +15,7 @@
 
 using namespace rl;
 
-WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDimensions_, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, unsigned int numberOfWires_, Action minAction_, Action maxAction_, unsigned int baseOfDimensions_, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
+WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDimensions_, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, unsigned int numberOfWires_, Action minAction_, Action maxAction_, unsigned int baseOfDimensions_, Interpolator *interpolator_, net::Trainer *trainer_, double learningRate_, double devaluationFactor_) {
 
 	if(minAction_.size() != actionDimensions_) {
 		std::cout << "Min action does not have same dimensions as action dimensions parameter!\n"; std::cout.flush();
@@ -26,7 +26,7 @@ WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDi
 		throw 1;
 	}
 
-	backprop = backprop_;
+	trainer = trainer_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
 	actionDimensions = actionDimensions_;
@@ -51,44 +51,7 @@ WireFitQLearn::WireFitQLearn() {
 }
 
 WireFitQLearn::WireFitQLearn(std::ifstream *input) {
-	if(input->is_open()) {
-		*input >> learningRate >> devaluationFactor;
-		*input >> actionDimensions >> numberOfWires;
-	 	*input >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> baseOfDimensions;
 
-		double temp;
-		minAction = Action(actionDimensions);
-		for(unsigned int a = 0; a < actionDimensions; a++) {
-			*input >> temp;
-			minAction[a] = temp;
-		}
-
-		maxAction = Action(actionDimensions);
-		for(unsigned int a = 0; a < actionDimensions; a++) {
-			*input >> temp;
-			maxAction[a] = temp;
-		}
-
-		lastAction = Action(actionDimensions);
-		for(unsigned int a = 0; a < actionDimensions; a++) {
-			*input >> temp;
-			lastAction[a] = temp;
-		}
-
-		backprop = net::Backpropagation(input);
-		interpolator = Interpolator::getAnyInterpolatorFromFile(input);
-		network = new net::NeuralNet(input);
-
-		input->close();
-
-		if(network->numberOfOutputs() != numberOfWires * (actionDimensions+1)) {
-			std::cout << "WireFitQLearn incorrectly formatted!\n";
-			throw 1;
-		}
-	} else {
-		std::cout << "Could not retrieve WireFitQLearn from file\n";
-		throw 1;
-	}
 }
 
 Action WireFitQLearn::chooseBestAction(State currentState) {
@@ -141,7 +104,7 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 	std::vector< std::vector<double> > input(1, lastState);
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
-	backprop.train(network, input, correctOutput);
+	trainer->train(network, input, correctOutput);
 }
 
 void WireFitQLearn::reset() {
@@ -158,7 +121,7 @@ void WireFitQLearn::store(std::ofstream *output) {
 		for(unsigned int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
 		for(unsigned int a = 0; a < lastAction.size(); a++) *output << lastAction[a] << " ";
 
-		backprop.store(output);
+		trainer->store(output);
 		interpolator->store(output);
 		network->store(output);
 

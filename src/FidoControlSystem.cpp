@@ -1,13 +1,13 @@
 #include "../include/FidoControlSystem.h"
 
 #include "../include/NeuralNet.h"
-#include "../include/Backpropagation.h"
+#include "../include/Pruner.h"
 #include "../include/LSInterpolator.h"
 
 
 using namespace rl;
 
-FidoControlSystem::FidoControlSystem(int stateDimensions, int actionDimensions, Action minAction, Action maxAction) : WireFitQLearn(stateDimensions, actionDimensions, 1, 12, 4, minAction, maxAction, 11, new rl::LSInterpolator(), net::Backpropagation(), 0.95, 0.4)  { }
+FidoControlSystem::FidoControlSystem(int stateDimensions, int actionDimensions, Action minAction, Action maxAction) : WireFitQLearn(stateDimensions, actionDimensions, 1, 12, 4, minAction, maxAction, 11, new rl::LSInterpolator(), new net::Pruner(), 0.95, 0.4)  { }
 
 
 void FidoControlSystem::applyReinforcementToLastAction(double reward, State newState) {
@@ -62,7 +62,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 		tempHistories.erase(bestHistory);
 	}
 
-	backprop.train(network, input, correctOutput);
+	trainer->train(network, input, correctOutput);
 }
 
 void FidoControlSystem::reset() {
