@@ -14,7 +14,12 @@ Pruner::Pruner() : Backpropagation() {
   pruningSampleSize = 200;
 }
 
-Pruner::Pruner(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumEpochs_, int pruningSampleSize_) : Backpropagation(learningRate_, momentumTerm_, targetErrorLevel_, maximumEpochs_) {
+Pruner::Pruner(double learningRate_, double momentumTerm_, double targetErrorLevel_, unsigned int maximumEpochs_, unsigned int pruningSampleSize_) : Backpropagation(learningRate_, momentumTerm_, targetErrorLevel_, maximumEpochs_) {
+  if(pruningSampleSize > maximumEpochs) {
+    std::cout << "Error: pruning sample size greater than maximum epochs\n";
+    throw 1;
+  }
+
   pruningSampleSize = pruningSampleSize_;
 }
 
@@ -40,18 +45,17 @@ void Pruner::train(net::NeuralNet *network, const std::vector< std::vector<doubl
   double totalError = INT_MAX;
   int epochs;
   for(epochs = 0; epochs < maximumEpochs && totalError > targetErrorLevel; epochs++) {
-    if(epochs != 0 && maximumEpochs - epochs > pruningSampleSize && epochs % pruningSampleSize == 0) {
+    if(epochs != 0 && epochs % pruningSampleSize == 0) {
       // If lowered error, continue pruning
-      if(totalError <= lowestError+0.00001) {
+      if(totalError > lowestError+0.00001) {
+        std::cout << "Back up: " << totalError << "\n";
+        network->net = lastNet;
+      } else if(maximumEpochs - epochs > pruningSampleSize) { // If raised error, revert
         std::cout << "Lowered error to " << totalError << "\n";
         lowestError = totalError;
         lastNet = network->net;
 
-        // Prune between 1 and one quarter of the network
         prune(network, initialWeights, deltaWeights, 1+int(network->numberOfHiddenNeurons()*0.25*(double(rand()) / double(RAND_MAX))));
-      } else { // If raised error, revert
-        std::cout << "Back up: " << totalError << "\n";
-        network->net = lastNet;
       }
 
       initialWeights = network->getWeights3D();

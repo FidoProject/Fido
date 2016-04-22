@@ -29,7 +29,7 @@ namespace net {
 		 * \param maximumEpochs_ after this number of training iterations (one pass through all of the data points), a net will stop being trained no matter what
 		 * \param sensitivityThreshold_ if the weights of a neuron are on average below this, the neuron will be taken out of the network.
 		 */
-    Pruner(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumEpochs_, int pruningSampleSize_);
+    Pruner(double learningRate_, double momentumTerm_, double targetErrorLevel_, unsigned int maximumEpochs_, unsigned int pruningSampleSize_);
 
 		/**
 		 * \brief Loads a Pruner object using an input stream
