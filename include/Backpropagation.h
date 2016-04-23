@@ -12,6 +12,7 @@ namespace net {
 
 	class NeuralNet;
 
+	/** A classic backpropagation SGD Trainer. */
 	class Backpropagation : public Trainer {
 	public:
 		/**

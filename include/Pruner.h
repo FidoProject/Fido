@@ -13,7 +13,7 @@ namespace net {
 
 	class NeuralNet;
 
-	/** A Neural Network Trainer that couples backpropagation with a pruning algorithm as described in Karnin to both modify a neural networks weights and eliminate neurons  */
+	/** A Trainer that couples backpropagation with a pruning algorithm (Karnin) to eliminate, unneccessary neurons  */
 	class Pruner : public Backpropagation {
 	public:
 		/**
@@ -21,13 +21,13 @@ namespace net {
 		 */
     Pruner();
 
-		/**
-		 * \brief Initialize the Pruner object with necessary constants.
+		/** Initialize the Pruner object with necessary constants.
+		 *
 		 * \param learningRate_ controls how much the neural network is modified each learning iteration
 		 * \param momentumTerm_ allows a network to escape a local max
 		 * \param targetErrorLevel_ at this error level, a net will be considered trained
 		 * \param maximumEpochs_ after this number of training iterations (one pass through all of the data points), a net will stop being trained no matter what
-		 * \param sensitivityThreshold_ if the weights of a neuron are on average below this, the neuron will be taken out of the network.
+		 * \param pruningSampleSize_ the number of training epochs performed between trying to resize the network
 		 */
     Pruner(double learningRate_, double momentumTerm_, double targetErrorLevel_, unsigned int maximumEpochs_, unsigned int pruningSampleSize_);
 
@@ -66,3 +66,4 @@ namespace net {
 }
 
 #endif
+

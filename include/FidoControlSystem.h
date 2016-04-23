@@ -4,17 +4,31 @@
 #include "WireFitQLearn.h"
 
 namespace rl {
+
+	/** A highly effective reinforcement learning control system (Truell and Gruenstein) */
 	class FidoControlSystem : public WireFitQLearn {
 	public:
-		/* Initializes a WireFitQLearn object with a model NN (network is copied from this), a net::Backpropagation object (used to train network),
-		 * a learning rate (dictates how fast the reward values for actions change), a devaluation factor (dictates how much future rewards are valued),
-		 * the dimensions of the action vectors, and how many wires the network outputs.
+		/** Initializes a FidoControlSystem
+		 *
+		 * \param stateDimensions the number of dimensions of the state being fed to the control system (aka. number of elements in the state vector)
+		 * \param minAction the minimum possible action (e.g. a vector of doubles) that the control system may output
+		 * \param maxAction the maximum possible action (e.g. a vector of doubles) that the control system may output
 		 */
-		FidoControlSystem(int stateDimensions, int actionDimensions, Action minAction, Action maxAction);
+		FidoControlSystem(int stateDimensions, Action minAction, Action maxAction);
 
+		/** Update the control system's model, by giving it reward for its last action.
+		 *
+		 * \param reward the reward associated with the control system's last action
+		 * \param newState the new state vector (needed because states may change after performing an action)
+		*/
 		void applyReinforcementToLastAction(double reward, State newState);
 
+		/** Reverts the control system to a newely initialized state
+		 *
+		 * Reset's the control system's model and wipes the system's memory of past actions, states, and rewards.
+		*/
 		void reset();
+
 	private:
 		struct History {
 			State initialState, newState;
@@ -30,8 +44,6 @@ namespace rl {
 		};
 
 		std::vector<History> histories;
-
-
 	};
 };
 

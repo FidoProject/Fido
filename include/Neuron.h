@@ -7,7 +7,7 @@
 namespace net {
 
 	/**
-	 * \brief Class representing a single neuron.
+	 * \brief A neuron in a Layer of a NeuralNet.
 	 *
 	 * Each neuron takes a variable number of inputs each assigned
 	 * a weight and returns one output.  Each neuron has a threshold

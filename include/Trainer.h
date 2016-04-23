@@ -8,6 +8,7 @@ namespace net {
 
 	class NeuralNet;
 
+	/** Trains neural networks */
 	class Trainer {
 	public:
 		/**

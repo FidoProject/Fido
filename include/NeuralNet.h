@@ -10,7 +10,7 @@
 namespace net {
 
 	/**
-	 * \brief Class representing a neural network.
+	 * \brief A neural network.
 	 *
 	 * A flexible implementation designed to be usable in a wide scope of projects.
 	 */
