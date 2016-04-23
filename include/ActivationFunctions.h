@@ -56,7 +56,7 @@ namespace net {
 	 * \return Same as the input
 	 */
 	inline double tanSigmoid(double initialOutput) {
-		return (1 - exp(-2*initialOutput)) / (1 + exp(-2*initialOutput));
+		return (exp(2*initialOutput)-1) / (exp(2*initialOutput)+1);
 	}
 
 	//--------------------- DERIVATIVES OF ACTIVATION FUNCTIONS ----------------
@@ -70,6 +70,10 @@ namespace net {
 	 */
 	inline double simpleLinearDerivative(double neuronOutput) {
 		return 1;
+	}
+
+	inline double tanSigmoidDerivative(double neuronOutput) {
+		return 1 - pow(tanSigmoid(neuronOutput), 2);
 	}
 }
 
