@@ -85,7 +85,3 @@ void Adadelta::resetAccumulatedVectors(net::NeuralNet *network) {
     accumulatedUpdates.push_back(layer);
   }
 }
-
-double Adadelta::rms(double input) {
-  return sqrt(input+epsilon);
-}
