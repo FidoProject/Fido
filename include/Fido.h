@@ -3,6 +3,7 @@
 
 // Includes everything
 #include "ActivationFunctions.h"
+#include "Adadelta.h"
 #include "Backpropagation.h"
 #include "FidoControlSystem.h"
 #include "GeneticAlgo.h"

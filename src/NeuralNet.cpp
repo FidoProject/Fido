@@ -146,13 +146,12 @@ std::vector< std::vector<double> > NeuralNet::feedForward(std::vector<double> in
 	return output;
 }
 
-std::vector< std::vector<double> > NeuralNet::getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput) {
+std::vector< std::vector< std::vector<double> > > NeuralNet::getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput) {
 	std::vector< std::vector<double> > outputs = feedForward(input);
 	std::vector< std::vector< std::vector<double> > > weights = getWeights3D();
 	std::vector< std::vector<double> > errors;
 	ActivationFunction hiddenActivationFunctionDerivative = Layer::getDerivedActivationFunctionNames()[getHiddenActivationFunctionName()];
 	ActivationFunction outputActivationFunctionDerivative = Layer::getDerivedActivationFunctionNames()[getOutputActivationFunctionName()];
-
 
 	// Compute output layer error
 	std::vector<double> outputNeuronErrors;
@@ -181,7 +180,35 @@ std::vector< std::vector<double> > NeuralNet::getGradients(const std::vector<dou
 		errors.push_back(currentLayerError);
 	}
 
-	return errors;
+	// Compute gradients
+	std::vector< std::vector< std::vector<double> > > gradients(weights.size());
+	for(unsigned int errorIndex = 0; errorIndex < errors.size(); errorIndex++) {
+		int layerIndex = ((int)errors.size() - 1) - errorIndex;
+		std::vector< std::vector<double> > layerGradient;
+
+		for(unsigned int neuronIndex = 0; neuronIndex < errors[errorIndex].size(); neuronIndex++) {
+			std::vector<double> neuronGradient;
+
+			if(layerIndex == 0) {
+				for(unsigned int inputIndex = 0; inputIndex < input.size(); inputIndex++) {
+					neuronGradient.push_back(errors[errorIndex][neuronIndex] * input[inputIndex]);
+				}
+			} else {
+				for(unsigned int previousOutput = 0; previousOutput < outputs[layerIndex - 1].size(); previousOutput++) {
+					neuronGradient.push_back(errors[errorIndex][neuronIndex] * outputs[layerIndex - 1][previousOutput]);
+				}
+			}
+
+			// Activation weight gradient
+			neuronGradient.push_back(-errors[errorIndex][neuronIndex]);
+
+			layerGradient.push_back(neuronGradient);
+		}
+
+		gradients[layerIndex] = layerGradient;
+	}
+
+	return gradients;
 }
 
 void NeuralNet::printWeights() {
