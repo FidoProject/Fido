@@ -8,7 +8,7 @@ Adadelta::Adadelta(double rho_, double targetErrorLevel_, int maximumEpochs_) {
   rho = rho_;
   targetErrorLevel = targetErrorLevel_;
   maximumEpochs = maximumEpochs_;
-  epsilon = 0.001;
+  epsilon = 0.000001;
 }
 
 void Adadelta::train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
