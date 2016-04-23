@@ -13,8 +13,8 @@ TEST_CASE("Test adadelta", "[adadelta]") {
 	net::NeuralNet neuralNetwork = net::NeuralNet(1, 1, 2, 4, "sigmoid");
   neuralNetwork.setOutputActivationFunction("simpleLinear");
 
-	std::vector< std::vector<double> > input = { {0.1}, {0.2}, {0.3} };
-	std::vector< std::vector<double> > correctOutput = { {0.2}, {0.4}, {0.6} };
+  std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
+	std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
 
   std::cout << "start" << "\n";
 	net::Adadelta trainer = net::Adadelta(0.95, 0.001, 10000);
