@@ -14,7 +14,7 @@ Send us a pull request. If you are looking for things to do, check out the repo'
 
 ### Authors
 
-Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gruenstein](https://github.com/joshuagruenstein).
+Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gruenstein](https://github.com/joshuagruenstein). The library was adapted from their work on [a universal robot control system](https://github.com/FidoProject/Research).
 
 ### Contributors
 
