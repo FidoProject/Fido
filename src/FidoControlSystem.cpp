@@ -33,20 +33,17 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
 	// Select the last (most recent) 20 histories as input
-	std::vector<History> tempHistories(histories);
-	while(input.size() < samplesOfHistory && tempHistories.size() > 0) {
-		auto bestHistory = tempHistories.end()-1;
+	std::vector<History> selectedHistories = selectHistories();
+	for(History history : selectedHistories) {
 
-		std::vector<Wire> historyControlWires = getWires(bestHistory->initialState);
-		double newRewardForLastAction = getQValue(bestHistory->reward, bestHistory->initialState, bestHistory->newState, bestHistory->action, historyControlWires);
+		std::vector<Wire> historyControlWires = getWires(history.initialState);
+		double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, historyControlWires);
 
-		Wire correctHistoryWire = {bestHistory->action, newRewardForLastAction};
+		Wire correctHistoryWire = {history.action, newRewardForLastAction};
 		std::vector<Wire> newContolWires = newControlWires(correctHistoryWire, historyControlWires);
 
-		input.push_back(bestHistory->newState);
+		input.push_back(history.newState);
 		correctOutput.push_back(getRawOutput(newContolWires));
-
-		tempHistories.erase(bestHistory);
 	}
 
 
@@ -58,7 +55,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	//std::cout << getError(input[0], correctOutput[0]) << ", ";
 	double error = getError(input[0], correctOutput[0]);
 	if(input.size() >= samplesOfHistory) {
-		explorationLevel = pow(error, 3) * 10000000;
+		explorationLevel = pow(error, 3) * 60000000;
 	}
 	lastError = error;
 	std::cout << explorationLevel << ", " << reward << "\n";
@@ -80,5 +77,18 @@ double FidoControlSystem::getError(std::vector<double> input, std::vector<double
 		totalError += pow(output[a] - correctOutput[a], 2);
 	}
 
-	return totalError / output.size();
+	return totalError / (double)output.size();
+}
+
+std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
+	std::vector<History> selectedHistories;
+	std::vector<History> tempHistories(histories);
+	while(selectedHistories.size() < samplesOfHistory && tempHistories.size() > 0) {
+		auto bestHistory = tempHistories.end()-1;
+
+		selectedHistories.push_back(*bestHistory);
+		tempHistories.erase(bestHistory);
+	}
+
+	return selectedHistories;
 }

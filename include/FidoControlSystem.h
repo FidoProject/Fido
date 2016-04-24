@@ -32,7 +32,7 @@ namespace rl {
 		*/
 		void reset();
 
-		const double initialExploration = 0.5;
+		const double initialExploration = 1;
 		const int samplesOfHistory = 10;
 		double explorationLevel;
 		double lastError;
@@ -53,6 +53,7 @@ namespace rl {
 
 		std::vector<History> histories;
 
+		std::vector<FidoControlSystem::History> selectHistories();
 		double getError(std::vector<double> input, std::vector<double> correctOutput);
 	};
 };
