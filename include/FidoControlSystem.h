@@ -13,8 +13,9 @@ namespace rl {
 		 * \param stateDimensions the number of dimensions of the state being fed to the control system (aka. number of elements in the state vector)
 		 * \param minAction the minimum possible action (e.g. a vector of doubles) that the control system may output
 		 * \param maxAction the maximum possible action (e.g. a vector of doubles) that the control system may output
+		 * \param baseOfDimensions the number of possible descrete values in each dimension. Ex. if baseOfDimensions=2, minAction={0, 0}, maxAction={1, 1}, possibleActions={{0, 0}, {0, 1}, {1, 0}, {1, 1}}.
 		 */
-		FidoControlSystem(int stateDimensions, Action minAction, Action maxAction);
+		FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions);
 
 		/** Update the control system's model, by giving it reward for its last action.
 		 *

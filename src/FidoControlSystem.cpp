@@ -7,7 +7,7 @@
 
 using namespace rl;
 
-FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 4, minAction, maxAction, 11, new rl::LSInterpolator(), new net::Pruner(), 0.95, 0.4)  { }
+FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 5, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Backpropagation(), 1, 0)  { }
 
 
 void FidoControlSystem::applyReinforcementToLastAction(double reward, State newState) {
@@ -15,7 +15,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, controlWires);
 
 	histories.push_back(History(lastState, newState, lastAction, reward));
-	if(histories.size() > 100) {
+	if(histories.size() > 200) {
 		histories.erase(histories.begin());
 	}
 
@@ -26,45 +26,24 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
 	std::vector<History> tempHistories(histories);
-	while(input.size() < 4) {
-		bool foundOne = false;
-		double maxDifference = 0;
+	while(input.size() < 20 && tempHistories.size() > 0) {
 		auto bestHistory = tempHistories.begin();
 
-		// Find the history that differs the most from the input
-		for(auto history = tempHistories.begin(); history != tempHistories.end(); history++) {
-			double difference = 0;
-			bool equalToOne = false;
-			for(unsigned int b = 0; b < input.size(); b++) {
-				double localDifference = 0;
-				for(unsigned int c = 0; c < input[b].size(); c++) {
-					localDifference += fabs(input[b][c] - history->initialState[c]);
-				}
-				if(localDifference < 0.1) {
-					equalToOne = true;
-					break;
-				}
-				difference += localDifference;
-			}
-
-			if(equalToOne) continue;
-			if(difference > maxDifference) {
-				foundOne = true;
-				maxDifference = difference;
-				bestHistory = history;
-			}
-		}
-
-		if(!foundOne) break;
-
 		std::vector<Wire> historyControlWires = getWires(bestHistory->initialState);
-		input.push_back(bestHistory->initialState);
-		correctOutput.push_back(getRawOutput(newControlWires({bestHistory->action, getQValue(bestHistory->reward, bestHistory->initialState, bestHistory->newState, bestHistory->action, historyControlWires)}, historyControlWires)));
+		double newRewardForLastAction = getQValue(bestHistory->reward, bestHistory->initialState, bestHistory->newState, bestHistory->action, historyControlWires);
+
+		Wire correctHistoryWire = {bestHistory->action, newRewardForLastAction};
+		std::vector<Wire> newContolWires = newControlWires(correctHistoryWire, historyControlWires);
+
+		input.push_back(bestHistory->newState);
+		correctOutput.push_back(getRawOutput(newContolWires));
 
 		tempHistories.erase(bestHistory);
 	}
 
-	trainer->train(network, input, correctOutput);
+	for(int inputIndex = input.size()-1; inputIndex > -1; inputIndex--) {
+		trainer->train(network, {input[inputIndex]}, {correctOutput[inputIndex]});
+	}
 }
 
 void FidoControlSystem::reset() {
