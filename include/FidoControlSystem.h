@@ -17,6 +17,8 @@ namespace rl {
 		 */
 		FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions);
 
+		std::vector<double> chooseBoltzmanActionDynamic(State state);
+
 		/** Update the control system's model, by giving it reward for its last action.
 		 *
 		 * \param reward the reward associated with the control system's last action
@@ -29,6 +31,11 @@ namespace rl {
 		 * Reset's the control system's model and wipes the system's memory of past actions, states, and rewards.
 		*/
 		void reset();
+
+		const double initialExploration = 0.5;
+		const int samplesOfHistory = 10;
+		double explorationLevel;
+		double lastError;
 
 	private:
 		struct History {
@@ -45,6 +52,8 @@ namespace rl {
 		};
 
 		std::vector<History> histories;
+
+		double getError(std::vector<double> input, std::vector<double> correctOutput);
 	};
 };
 
