@@ -2,7 +2,7 @@
 #include "Fido/Simulator/Simlink.h"
 
 int main() {
-  rl::FidoControlSystem learner = rl::FidoControlSystem(1, 2, {-1, -1}, {1, 1}, 0.4);
+  rl::FidoControlSystem learner = rl::FidoControlSystem(1, 2, {-1, -1}, {1, 1}, 3);
   Simlink simulator;
   int goodIterations = 0;
 
