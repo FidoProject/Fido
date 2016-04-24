@@ -60,6 +60,12 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	} else if(input.size() >= samplesOfHistory) {
  		explorationLevel *= pow(error, 3) / pow(lastError, 3);
 	}
+	if(explorationLevel < 0.00001) {
+		explorationLevel = 0.00001;
+	}
+	if(explorationLevel > 1000) {
+		explorationLevel = 1000;
+	}
 	lastError = error;
 	std::cout << explorationLevel << ", " << reward << "\n";
 

@@ -22,11 +22,8 @@ void Adadelta::train(net::NeuralNet *network, const std::vector< std::vector<dou
 			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 		iterations++;
-    if(iterations % 100 == 0) {
-      std::cout << "Error: " << totalError << "\n";
-    }
  	} while(totalError > targetErrorLevel && iterations < maximumEpochs);
-  std::cout << "Iterations: " << iterations << "\n";
+
 	if(iterations >= maximumEpochs-1) std::cout << "Adadelta hit max epochs with an error level of " << totalError << ".\n";
 }
 
