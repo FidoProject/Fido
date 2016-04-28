@@ -31,6 +31,7 @@ namespace rl {
 		unsigned int baseOfDimensions;
 		State lastState;
 		Action minAction, maxAction, lastAction;
+		net::NeuralNet * modelNet;
 
 		/** Initializes a completely new WireFitQLearn object with all necesary values.
 		*

@@ -19,10 +19,7 @@ TEST_CASE("Test back propagation", "[backprop]") {
 	std::vector< std::vector<double> > input = { {1}, {2}, {5}, {6} };
 	std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
 
-	// Create backpropagation object with
-	// a learning rate of 10%, a momentum term of 0.001, an acceptable error level of 0.1%,
-	// and a maximum number of training iterations of 10000
-	net::Backpropagation backprop = net::Backpropagation(0.1, 0.01, 0.001, 10000);
+	net::Backpropagation backprop = net::Backpropagation(0.1, 0.2, 0.001, 10000);
 	backprop.train(&neuralNetwork, input, correctOutput);
 
 	// Cycle through inputs and print the outputs

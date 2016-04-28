@@ -1,5 +1,8 @@
 #include "../include/Adadelta.h"
 
+#include <climits>
+#include <algorithm>
+
 #include "../include/NeuralNet.h"
 
 using namespace net;
@@ -59,6 +62,59 @@ double Adadelta::trainOnDataPoint(net::NeuralNet *network, const std::vector<dou
 	}
 
 	return networkError;
+}
+
+
+void Adadelta::prune(NeuralNet *network, const std::vector< std::vector< std::vector<double> > > &initialWeights, const std::vector< std::vector< std::vector< std::vector<double> > > > &weightChanges, unsigned int numNeuronsToPrune) {
+  std::vector< std::vector< std::vector<double> > > finalWeights = network->getWeights3D();
+
+  std::cout << "Num neurons " << network->numberOfHiddenNeurons() << "\n";
+  std::cout << "Prune " << numNeuronsToPrune << "\n";
+
+  std::vector<std::vector<double> > sensitivities;
+
+  // Get sensitivities of all neurons
+  for(unsigned int a = 0; a < network->numberOfHiddenLayers(); a++) {
+    std::vector<double> layerSensitivities;
+    for(unsigned int b = 0; b < network->net[a].neurons.size(); b++) {
+      double sensitivity = 0;
+
+      for(unsigned int c = 0; c < network->net[a].neurons[b].weights.size(); c++) {
+        if(finalWeights[a][b][c]-initialWeights[a][b][c] < 0.001) {
+          std::for_each(weightChanges.begin(), weightChanges.end(), [&] (const std::vector< std::vector< std::vector<double> > > &weightChange) {
+            sensitivity += fabs(pow(weightChange[a][b][c], 2) * finalWeights[a][b][c]/(1 * (finalWeights[a][b][c]-initialWeights[a][b][c])));
+          });
+        } else {
+          sensitivity += 10000;
+        }
+      }
+
+      sensitivity /= weightChanges.size()*network->net[a].neurons[b].weights.size();
+      layerSensitivities.push_back(sensitivity);
+    }
+    sensitivities.push_back(layerSensitivities);
+  }
+
+  for(unsigned int numPruned = 0; numPruned < numNeuronsToPrune; numPruned++) {
+    double lowestSensitivity = INT_MAX;
+    int hiddenLayerIndex = 0, neuronIndex = 0;
+    for(unsigned int a = 0; a < network->numberOfHiddenLayers(); a++) {
+      for(unsigned int b = 0; b < network->net[a].neurons.size(); b++) {
+        if(network->net[a].neurons.size() > 1 && sensitivities[a][b] < lowestSensitivity) {
+          lowestSensitivity = sensitivities[a][b];
+          hiddenLayerIndex = a;
+          neuronIndex = b;
+        }
+      }
+    }
+
+    network->removeNeuron(hiddenLayerIndex, neuronIndex);
+    sensitivities[hiddenLayerIndex].erase(sensitivities[hiddenLayerIndex].begin() + neuronIndex);
+  }
+}
+
+void Adadelta::store(std::ofstream *output) {
+
 }
 
 void Adadelta::resetAccumulatedVectors(net::NeuralNet *network) {

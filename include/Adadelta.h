@@ -54,6 +54,8 @@ namespace net {
 		 */
 		double trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput);
 
+		void prune(NeuralNet *network, const std::vector< std::vector< std::vector<double> > > &initialWeights, const std::vector< std::vector< std::vector< std::vector<double> > > > &weightChanges, unsigned int numNeuronsToPrune);
+
 		/** Resets the Adadelta object's accumulation vectors */
 		void resetAccumulatedVectors(net::NeuralNet *network);
 

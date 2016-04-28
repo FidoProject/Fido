@@ -36,8 +36,10 @@ WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDi
 	minAction = minAction_;
 	maxAction = maxAction_;
 
-	network = new net::NeuralNet(stateDimensions, numberOfWires_ * (actionDimensions_+1), numHiddenLayers, numNeuronsPerHiddenLayer, "sigmoid");
-	network->setOutputActivationFunction("simpleLinear");
+	modelNet = new net::NeuralNet(stateDimensions, numberOfWires_ * (actionDimensions_+1), numHiddenLayers, numNeuronsPerHiddenLayer, "sigmoid");
+	modelNet->setOutputActivationFunction("simpleLinear");
+
+	network = new net::NeuralNet(modelNet);
 
 	controlPointsGDErrorTarget = 0.001;
 	controlPointsGDLearningRate = 0.1;
@@ -100,7 +102,9 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 }
 
 void WireFitQLearn::reset() {
+	network = new net::NeuralNet(modelNet);
 	network->randomizeWeights();
+	std::cout << "number: " << network->numberOfHiddenNeurons() << "\n";
 }
 
 std::vector<Wire> WireFitQLearn::getWires(State state) {

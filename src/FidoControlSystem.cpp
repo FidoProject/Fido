@@ -7,7 +7,7 @@
 
 using namespace rl;
 
-FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 6, 3, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Backpropagation(), 1, 0)  {
+FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 20, 3, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Backpropagation(), 1, 0)  {
 	explorationLevel = initialExploration;
 }
 
@@ -54,10 +54,10 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 
 	//std::cout << getError(input[0], correctOutput[0]) << ", ";
 	double error = getError(input[0], correctOutput[0]);
-	if(input.size() == samplesOfHistory) {
+	if(input.size() == samplesOfHistory/2.0) {
 		//explorationLevel = pow(error, 3) * 60000000;
 		explorationLevel = 0.02 * pow(error, 3) / pow(lastError, 3);
-	} else if(input.size() >= samplesOfHistory) {
+	} else if(input.size() >= samplesOfHistory/2.0) {
  		explorationLevel *= pow(error, 3) / pow(lastError, 3);
 	}
 	if(explorationLevel < 0.00001) {
@@ -67,13 +67,14 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 		explorationLevel = 1000;
 	}
 	lastError = error;
-	std::cout << explorationLevel << ", " << reward << "\n";
+	//std::cout << explorationLevel << ", " << reward << "\n";
 
 	trainer->train(network, {input[0]}, {correctOutput[0]});
 }
 
 void FidoControlSystem::reset() {
-	network->randomizeWeights();
+	std::cout << "RESET\n";
+	WireFitQLearn::reset();
 	histories.clear();
 	explorationLevel = initialExploration;
 }
