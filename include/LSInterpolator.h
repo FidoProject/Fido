@@ -27,6 +27,22 @@ namespace rl {
 		LSInterpolator(double smoothingFactor_, double e_);
 
 		/**
+		 * \brief Initializes a LSInterpolator using the information from a file.
+		 *
+		 * \param in the file from which initialize the LSInterpolator
+		 *
+		 * \return False if the interpolator stored in the file is not a LSInterpolator.
+		 */
+		bool initFromStream(std::ifstream *in);
+
+		/**
+		 * \brief Stores the interpolator object in a file
+		 *
+		 * \param out the file to which to write the LSInterpolator
+		 */
+		void store(std::ofstream *out);
+
+		/**
 		 * \brief Uses the interpolator function to compute the reward of an action vector given a set of control wires
 		 *
 		 * \param controlWires the input vector of control wires

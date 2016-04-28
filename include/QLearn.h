@@ -83,6 +83,8 @@ namespace rl {
 		*/
 		void reset();
 
+		/** Stores this model in a stream. */
+		void store(std::ofstream *output);
 	private:
 		net::Backpropagation backprop;
 		std::vector<Model> models;

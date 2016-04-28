@@ -48,6 +48,14 @@ WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDi
 	baseOfDimensions = baseOfDimensions_;
 }
 
+WireFitQLearn::WireFitQLearn() {
+
+}
+
+WireFitQLearn::WireFitQLearn(std::ifstream *input) {
+
+}
+
 Action WireFitQLearn::chooseBestAction(State currentState) {
 	std::vector<double> action = bestAction(currentState);
 	lastAction = action;
@@ -105,6 +113,27 @@ void WireFitQLearn::reset() {
 	network = new net::NeuralNet(modelNet);
 	network->randomizeWeights();
 	std::cout << "number: " << network->numberOfHiddenNeurons() << "\n";
+}
+
+void WireFitQLearn::store(std::ofstream *output) {
+	if(output->is_open()) {
+		*output << learningRate << " " << devaluationFactor << "\n";
+		*output << actionDimensions << " " << numberOfWires << "\n";
+		*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations <<  " " << baseOfDimensions << "\n";
+
+		for(unsigned int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
+		for(unsigned int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
+		for(unsigned int a = 0; a < lastAction.size(); a++) *output << lastAction[a] << " ";
+
+		trainer->store(output);
+		interpolator->store(output);
+		network->store(output);
+
+		output->close();
+	} else {
+		std::cout << "Could not store wirefitqlearn in file\n";
+		throw 1;
+	}
 }
 
 std::vector<Wire> WireFitQLearn::getWires(State state) {
