@@ -52,9 +52,6 @@ namespace rl {
 		/** Initializes an empty, non-valid WireFitQLearn object. */
 		WireFitQLearn();
 
-		/** Initializes a WireFitQLearn object from a stream */
-		WireFitQLearn(std::ifstream *input);
-
 		/** Gets the action that the network deems most benificial for the current state
 		 *
 		 * \param currentState a vector of doubles representing the "inputs" or sensor values of the system
@@ -79,9 +76,6 @@ namespace rl {
 
 		/** Resets the system's model so that to a newely initialized state */
 		void reset();
-
-		/** Stores this model in a stream. */
-		void store(std::ofstream *output);
 
 	protected:
 		// Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires

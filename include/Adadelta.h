@@ -35,12 +35,6 @@ namespace net {
 		 */
 		void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
 
-    /**
-		 * \brief Stores an Adadelta object using specified ofstream.
-		 *
-		 * \param output pointer to the output stream which the neural network will be written to
-		**/
-		void store(std::ofstream *output);
 
 		double targetErrorLevel; /**< The target error level, set by constructor */
 		int maximumEpochs; /**< The maximum number of epochs for one training run, set by constructor */

@@ -17,6 +17,10 @@ namespace rl {
 		 */
 		FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions);
 
+		/** Choose an action using a non-specified, dynamically adjusted exploration level.
+		 *
+		 * \param state a vector of the current sensor values
+		*/
 		std::vector<double> chooseBoltzmanActionDynamic(State state);
 
 		/** Update the control system's model, by giving it reward for its last action.
@@ -32,12 +36,6 @@ namespace rl {
 		*/
 		void reset();
 
-		const double initialExploration = 1;
-		//const double initialExploration = 0.4;
-		const int samplesOfHistory = 10;
-		double explorationLevel;
-		double lastError;
-
 	private:
 		struct History {
 			State initialState, newState;
@@ -51,6 +49,11 @@ namespace rl {
 				reward = reward_;
 			}
 		};
+
+		const double initialExploration = 1;
+		const int samplesOfHistory = 10;
+		double explorationLevel;
+		double lastError;
 
 		std::vector<History> histories;
 

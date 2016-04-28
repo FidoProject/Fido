@@ -61,10 +61,6 @@ double Adadelta::trainOnDataPoint(net::NeuralNet *network, const std::vector<dou
 	return networkError;
 }
 
-void Adadelta::store(std::ofstream *output) {
-
-}
-
 void Adadelta::resetAccumulatedVectors(net::NeuralNet *network) {
   accumulatedGradients.clear();
   accumulatedUpdates.clear();

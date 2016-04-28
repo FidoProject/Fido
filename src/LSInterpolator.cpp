@@ -18,25 +18,6 @@ LSInterpolator::LSInterpolator(double smoothingFactor_, double e_) {
 	e = e_;
 }
 
-bool LSInterpolator::initFromStream(std::ifstream *in) {
-	std::string name;
-	if (!(*in >> name)) {
-		std::cout << "Interpolator could not read ifstrem\n";
-		throw 1;
-	}
-
-	if (name != "LS") {
-		return false;
-	}
-
-	*in >> smoothingFactor >> e;
-	return true;
-}
-
-void LSInterpolator::store(std::ofstream *out) {
-	*out << " LS " << smoothingFactor << " " << e << " ";
-}
-
 double LSInterpolator::getReward(const std::vector<Wire> &controlWires, const std::vector<double> &action) {
 	double maxReward = -9999999;
 	for (std::vector<Wire>::const_iterator a = controlWires.begin(); a != controlWires.end(); ++a) if (a->reward > maxReward) maxReward = a->reward;

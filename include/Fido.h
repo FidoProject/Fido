@@ -13,7 +13,6 @@
 #include "LSInterpolator.h"
 #include "NeuralNet.h"
 #include "Neuron.h"
-#include "Pruner.h"
 #include "QLearn.h"
 #include "Trainer.h"
 #include "WireFitQLearn.h"
