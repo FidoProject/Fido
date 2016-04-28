@@ -45,17 +45,17 @@ void Pruner::train(net::NeuralNet *network, const std::vector< std::vector<doubl
   // Train. Record weight changes.
   double totalError = INT_MAX;
   int epochs;
-  for(epochs = 0; epochs < maximumEpochs && (epochs < pruningSampleSize*2 || totalError > targetErrorLevel); epochs++) {
+
+  for(epochs = 0; epochs < maximumEpochs && (epochs < maximumEpochs/2.0 || totalError > targetErrorLevel); epochs++) {
     if(epochs != 0 && epochs % pruningSampleSize == 0) {
       // If lowered error, continue pruning
-      if(totalError > lowestError-0.0001) {
-        //std::cout << "Back up: " << totalError << "\n";
+      if(totalError > lowestError+0.0000001) {
+        std::cout << "Back up: " << totalError << "\n";
         network->net = lastNet;
       } else if(maximumEpochs - epochs > pruningSampleSize) { // If raised error, revert
         //std::cout << "Lowered error to " << totalError << "\n";
         lowestError = totalError;
         lastNet = network->net;
-        std::cout << "Num neurons " << network->numberOfHiddenNeurons() << "\n";
 
         if(network->numberOfHiddenNeurons() > 4) {
           prune(network, initialWeights, deltaWeights, 1+int(network->numberOfHiddenNeurons()*0.25*(double(rand()) / double(RAND_MAX))));
@@ -79,7 +79,7 @@ void Pruner::train(net::NeuralNet *network, const std::vector< std::vector<doubl
 void Pruner::prune(NeuralNet *network, const std::vector< std::vector< std::vector<double> > > &initialWeights, const std::vector< std::vector< std::vector< std::vector<double> > > > &weightChanges, unsigned int numNeuronsToPrune) {
   std::vector< std::vector< std::vector<double> > > finalWeights = network->getWeights3D();
 
-
+  std::cout << "Num neurons " << network->numberOfHiddenNeurons() << "\n";
   std::cout << "Prune " << numNeuronsToPrune << "\n";
 
   std::vector<std::vector<double> > sensitivities;
