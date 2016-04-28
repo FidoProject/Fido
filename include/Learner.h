@@ -12,6 +12,7 @@ namespace rl {
 	typedef std::vector<double> Action;
 	typedef std::vector<double> State;
 
+	/** A reinforcement learning system. */
 	class Learner {
 	public:
 		/**

@@ -6,19 +6,34 @@
 #include "NeuralNet.h"
 
 namespace gen {
-	/* Class representing a genetic algorithm used to prodece fit neural netwokrs.
-	 *
-	 *
-	 */
+	/** Genetic algorithms used to produce fit neural networks. */
 	class GeneticAlgo {
 	public:
-		// A set of neural networks to act as a population.
-		std::vector<net::NeuralNet *> population;
-		// A set of fitness levels of corresponding to each neural network in the population set
-		std::vector<double> fitnesses;
+		/** Initializes a genetic algorithm with the necessary parameters.
+		 *
+		 * \param populationSize_ the number of neural networks in the population for each generation
+		 * \param mutationRate_ the chance between 0 and 1 that a weight in a neural network will be mutated
+		 * \param crossoverRate_ the chance between 0 and 1 that a couple will produce offspring having a fused verion of their parents' networks, instead of offspring that have the same neural networks as their parents; if set to 0, the population's composition will only change as a result of mutations.
+		 * \param numberOfElitismCopies_ the number of times that best neural network from the past generation shows up in the current generation
+		 * \param getPopulationFitness_ a function that returns a vector of doubles housing the fitness of every individual in the population, when given the population of neural networks
+		 */
+		GeneticAlgo(unsigned int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(const std::vector<net::NeuralNet> &neuralNet));
 
+		/** Returns the most fit neural network in a population that undergoes a specified number of generations.
+		 *
+		 * \param numberOfGenerations the number of generations that the simulation will run for; in each generation, fitnesses are assigned, mating occurs, and offspring are added
+		 * \param modelNetwork used to determine the architecuture of the neural networks in the population,.
+		 */
+		net::NeuralNet getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork);
+
+	private:
+		std::vector<net::NeuralNet> population;
+		std::vector<double> fitnesses;
 		unsigned int populationSize, numberOfGenerations;
 		float mutationRate, crossoverRate;
+
+		/** Returns the fitness of every individual in the population, when given the population of neural networks. */
+		std::vector<double>(*userProvidedGetPopulationFitness)(const std::vector<net::NeuralNet> &neuralNet);
 
 		/*The number of times the most fit neural network of a generation is inserted directly into the subsequent generation.
 		 *
@@ -26,37 +41,23 @@ namespace gen {
 		 */
 		int numberOfElitismCopies;
 
-		/* Initialize a genetic algorithm from a population.
-		 *
-		 * Model traits are passed in such as population size, mutation rate, crossover rate, etc.
-		 */
-		GeneticAlgo(unsigned int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet *> neuralNet));
-
 		/* Produce two new neural networks from two parent neural networks.
 		 *
 		 * The method uses the crossoverRate variable to determine if two neural networks are mixed
 		 * and then and mixes their neurons weights to produce two new neural networks.
 		 */
-		void crossover(net::NeuralNet *mom, net::NeuralNet *dad, net::NeuralNet *&offspring1, net::NeuralNet *&offspring2);
+		void crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet *offspring1, net::NeuralNet *offspring2);
 
 		// Randomnly change the weights of the inputs of a neural network based on the mutation rate.
 		void mutate(net::NeuralNet *net);
 
 		// Select a random network from the population with a weight towards higher fitness levels
-		net::NeuralNet* selectNNBasedOnFitness();
+		net::NeuralNet selectNNBasedOnFitness();
 
 		// Uses the fitness and population values to mate fit individuals, mutate their weights, and place them into the next generation
 		void createNextGeneration();
 
-		/* Return the most fit neural network in a population that undergoes a specified number of generations.
-		 *
-		 * modelNetwork is used to determine the number of inputs, outputs, hidden layers,
-		 * and neurons per hidden layer for each network in the population.
-		 */
-		net::NeuralNet* getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet *modelNetwork);
-
-		// Get the fitnesses of each neural network in the population.
-		std::vector<double>(*getPopulationFitness)(std::vector<net::NeuralNet *> neuralNet);
+		void getPopulationFitness();
 	};
 }
 

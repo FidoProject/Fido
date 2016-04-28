@@ -3,16 +3,19 @@
 
 // Includes everything
 #include "ActivationFunctions.h"
-#include "LSInterpolator.h"
-#include "Neuron.h"
+#include "Adadelta.h"
 #include "Backpropagation.h"
-#include "Layer.h"
-#include "QLearn.h"
+#include "FidoControlSystem.h"
 #include "GeneticAlgo.h"
-#include "Learner.h"
-#include "Trainer.h"
 #include "Interpolator.h"
+#include "Layer.h"
+#include "Learner.h"
+#include "LSInterpolator.h"
 #include "NeuralNet.h"
+#include "Neuron.h"
+#include "Pruner.h"
+#include "QLearn.h"
+#include "Trainer.h"
 #include "WireFitQLearn.h"
 
 #endif

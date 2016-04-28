@@ -8,25 +8,26 @@
 
 using namespace gen;
 
-GeneticAlgo::GeneticAlgo(unsigned int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(std::vector<net::NeuralNet *> neuralNet)) {
+GeneticAlgo::GeneticAlgo(unsigned int populationSize_, float mutationRate_, float crossoverRate_, int numberOfElitismCopies_, std::vector<double>(*getPopulationFitness_)(const std::vector<net::NeuralNet> &population)) {
 	populationSize = populationSize_;
 	mutationRate = mutationRate_;
 	crossoverRate = crossoverRate_;
-	getPopulationFitness = getPopulationFitness_;
+	userProvidedGetPopulationFitness = getPopulationFitness_;
 	numberOfElitismCopies = numberOfElitismCopies_;
 }
 
-void GeneticAlgo::crossover(net::NeuralNet *mom, net::NeuralNet *dad, net::NeuralNet *&offspring1, net::NeuralNet *&offspring2) {
+void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralNet *offspring1, net::NeuralNet *offspring2) {
 	float crossoverDeterminer = (float)rand() / (float)RAND_MAX;
 	if(crossoverDeterminer > crossoverRate) {
-		offspring1 = mom;
-		offspring2 = dad;
+		*offspring1 = mom;
+		*offspring2 = dad;
 		return;
 	}
+
 	std::vector<double> offspring1Weights;
 	std::vector<double> offspring2Weights;
-	std::vector<double> momWeights = mom->getWeights();
-	std::vector<double> dadWeights = dad->getWeights();
+	std::vector<double> momWeights = mom.getWeights();
+	std::vector<double> dadWeights = dad.getWeights();
 
 	/// Crossover index must be a minimum of 1 and a maxiumum of the second to last index of the weights
 	int crossoverIndex = (rand() % (momWeights.size() - 2)) + 1;
@@ -40,9 +41,9 @@ void GeneticAlgo::crossover(net::NeuralNet *mom, net::NeuralNet *dad, net::Neura
 		offspring2Weights.push_back(momWeights[a]);
 	}
 
-	offspring1 = new net::NeuralNet(mom);
+	*offspring1 = net::NeuralNet(mom);
 	offspring1->setWeights(offspring1Weights);
-	offspring2 = new net::NeuralNet(dad);
+	*offspring2 = net::NeuralNet(dad);
 	offspring2->setWeights(offspring2Weights);
 
 	std::vector<double>().swap(offspring1Weights);
@@ -67,7 +68,7 @@ void GeneticAlgo::mutate(net::NeuralNet *net) {
 }
 
 
-net::NeuralNet* GeneticAlgo::selectNNBasedOnFitness() {
+net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
 	double totalFitnessOfPopulation = 0;
 	for(unsigned int a = 0; a < fitnesses.size(); a++) totalFitnessOfPopulation += fitnesses[a];
 	double cutOff = (((double)rand() / (double)RAND_MAX) * totalFitnessOfPopulation);
@@ -84,48 +85,54 @@ net::NeuralNet* GeneticAlgo::selectNNBasedOnFitness() {
 }
 
 void GeneticAlgo::createNextGeneration() {
-	std::vector<net::NeuralNet *> nextGeneration;
+	std::vector<net::NeuralNet> nextGeneration;
 
 	int mostFitIndex = 0;
 	for(unsigned int a = 1; a < fitnesses.size(); a++) {
 		if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
 	}
+
 	for(int a = 0; a < numberOfElitismCopies; a++) nextGeneration.push_back(population[mostFitIndex]);
-	std::cout << "Highest: " << fitnesses[mostFitIndex] << "\n";
 
 	while(nextGeneration.size() < populationSize) {
-		net::NeuralNet *parent1 = selectNNBasedOnFitness(), *parent2 = selectNNBasedOnFitness();
-		net::NeuralNet *baby1, *baby2;
+		net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();
+		net::NeuralNet baby1, baby2;
 
-		crossover(parent1, parent2, baby1, baby2);
-		mutate(baby1);
-		mutate(baby2);
+		crossover(parent1, parent2, &baby1, &baby2);
+		mutate(&baby1);
+		mutate(&baby2);
 
 		nextGeneration.push_back(baby1);
 		nextGeneration.push_back(baby2);
 	}
-	std::vector<net::NeuralNet *>().swap(population);
+
 	population = nextGeneration;
-	std::vector<net::NeuralNet *>().swap(nextGeneration);
+	nextGeneration.clear();
 }
 
-net::NeuralNet* GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet *modelNetwork) {
+net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::NeuralNet modelNetwork) {
 	population.clear();
 	fitnesses.clear();
 
 	population.push_back(modelNetwork);
-	for(unsigned int a = 0; a < populationSize-1; a++) population.push_back(new net::NeuralNet(modelNetwork));
-
-	fitnesses = getPopulationFitness(population);
+	for(unsigned int a = 0; a < populationSize-1; a++) population.push_back(net::NeuralNet(modelNetwork));
 
 	for(int a = 0; a < numberOfGenerations; a++) {
-		std::cout << "Generation: " << a << "\n";
-
+		getPopulationFitness();
 		createNextGeneration();
-		fitnesses = getPopulationFitness(population);
 	}
+
+	getPopulationFitness();
 
 	int mostFitIndex = 0;
 	for(unsigned int a = 1; a < fitnesses.size(); a++)if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
 	return population[mostFitIndex];
+}
+
+void GeneticAlgo::getPopulationFitness() {
+	fitnesses = userProvidedGetPopulationFitness(population);
+	if(fitnesses.size() != population.size()) {
+		std::cout << "Incorrectly sized fitness vector was returned from your getPopulationFitness function!\n";
+		throw 1;
+	}
 }

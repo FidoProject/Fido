@@ -10,7 +10,7 @@
 namespace net {
 
 	/**
-	 * \brief Class representing a neural network.
+	 * \brief A neural network.
 	 *
 	 * A flexible implementation designed to be usable in a wide scope of projects.
 	 */
@@ -120,7 +120,7 @@ namespace net {
 		 * \param correctOutput what the neural net would ideally output when fed the provided input
 		 * \return a 2d vector containing the gradients of each layer starting from the first layer and ending with the last
 		 */
-		std::vector< std::vector<double> > getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput);
+		std::vector< std::vector< std::vector<double> > > getGradients(const std::vector<double> &input, const std::vector<double> &correctOutput);
 
 		/**
 		 * \brief Prints the weights of the neurons of the layers of the net
@@ -149,6 +149,13 @@ namespace net {
 		unsigned int numberOfOutputs();
 
 		/**
+		 * \brief Gets the number of hidden neurons in the NeuralNet
+		 *
+		 * \return the number of hidden neurons in the network
+		 */
+		unsigned int numberOfHiddenNeurons();
+
+		/**
 		 * \brief Sets the activation function of the output layer
 		 *
 		 * \param name the name of the activation function
@@ -168,6 +175,14 @@ namespace net {
 		 * \return the string representing the activation function
 		 */
 		std::string getOutputActivationFunctionName();
+
+		/**
+		 * \brief Removes a neuron from the network. Deletes all weights associated with the deleted neuron.
+		 *
+		 * \return hiddenLayerIndex the index of the layer of the neuron to be deleted; 0 is input layer
+		 * \return neuronIndex the index of the neuron; same as the neuron's index in the neurons vector of its layer
+		 */
+		void removeNeuron(unsigned int hiddenLayerIndex, unsigned int neuronIndex);
 
 		/**
 		 * \brief A two dimensional network of neurons.

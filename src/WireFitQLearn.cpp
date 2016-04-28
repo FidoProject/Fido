@@ -15,7 +15,7 @@
 
 using namespace rl;
 
-WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDimensions_, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, unsigned int numberOfWires_, Action minAction_, Action maxAction_, unsigned int baseOfDimensions_, Interpolator *interpolator_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
+WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDimensions_, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, unsigned int numberOfWires_, Action minAction_, Action maxAction_, unsigned int baseOfDimensions_, Interpolator *interpolator_, net::Trainer *trainer_, double learningRate_, double devaluationFactor_) {
 
 	if(minAction_.size() != actionDimensions_) {
 		std::cout << "Min action does not have same dimensions as action dimensions parameter!\n"; std::cout.flush();
@@ -26,7 +26,7 @@ WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDi
 		throw 1;
 	}
 
-	backprop = backprop_;
+	trainer = trainer_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
 	actionDimensions = actionDimensions_;
@@ -36,10 +36,10 @@ WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDi
 	minAction = minAction_;
 	maxAction = maxAction_;
 
-	network = new net::NeuralNet(stateDimensions, numberOfWires_ * (actionDimensions_+1), numHiddenLayers, numNeuronsPerHiddenLayer, "sigmoid");
-	network->setOutputActivationFunction("simpleLinear");
+	modelNet = new net::NeuralNet(stateDimensions, numberOfWires_ * (actionDimensions_+1), numHiddenLayers, numNeuronsPerHiddenLayer, "sigmoid");
+	modelNet->setOutputActivationFunction("simpleLinear");
 
-	rewardIterations = 0;
+	network = new net::NeuralNet(modelNet);
 
 	controlPointsGDErrorTarget = 0.001;
 	controlPointsGDLearningRate = 0.1;
@@ -53,44 +53,7 @@ WireFitQLearn::WireFitQLearn() {
 }
 
 WireFitQLearn::WireFitQLearn(std::ifstream *input) {
-	if(input->is_open()) {
-		*input >> learningRate >> devaluationFactor;
-		*input >> actionDimensions >> numberOfWires;
-	 	*input >> controlPointsGDErrorTarget >> controlPointsGDLearningRate >> controlPointsGDMaxIterations >> rewardIterations >> baseOfDimensions;
 
-		double temp;
-		minAction = Action(actionDimensions);
-		for(unsigned int a = 0; a < actionDimensions; a++) {
-			*input >> temp;
-			minAction[a] = temp;
-		}
-
-		maxAction = Action(actionDimensions);
-		for(unsigned int a = 0; a < actionDimensions; a++) {
-			*input >> temp;
-			maxAction[a] = temp;
-		}
-
-		lastAction = Action(actionDimensions);
-		for(unsigned int a = 0; a < actionDimensions; a++) {
-			*input >> temp;
-			lastAction[a] = temp;
-		}
-
-		backprop = net::Backpropagation(input);
-		interpolator = Interpolator::getAnyInterpolatorFromFile(input);
-		network = new net::NeuralNet(input);
-
-		input->close();
-
-		if(network->numberOfOutputs() != numberOfWires * (actionDimensions+1)) {
-			std::cout << "WireFitQLearn incorrectly formatted!\n";
-			throw 1;
-		}
-	} else {
-		std::cout << "Could not retrieve WireFitQLearn from file\n";
-		throw 1;
-	}
 }
 
 Action WireFitQLearn::chooseBestAction(State currentState) {
@@ -136,12 +99,6 @@ Action WireFitQLearn::chooseBoltzmanAction(State currentState,
 void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState) {
 	std::vector<Wire> controlWires = getWires(lastState);
 	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, controlWires);
-	//double oldRewa2d = interpolator->getReward(controlWires, lastAction);
-
-	histories.push_back(History(lastState, newState, lastAction, reward));
-	if(histories.size() > 100) {
-		histories.erase(histories.begin());
-	}
 
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
@@ -149,62 +106,26 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 	std::vector< std::vector<double> > input(1, lastState);
 	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
 
-	std::vector<History> tempHistories(histories);
-	while(input.size() < 4) {
-		bool foundOne = false;
-		double maxDifference = 0;
-		auto bestHistory = tempHistories.begin();
-
-		for(auto history = tempHistories.begin(); history != tempHistories.end(); history++) {
-			double difference = 0;
-			bool equalToOne = false;
-			for(unsigned int b = 0; b < input.size(); b++) {
-				double localDifference = 0;
-				for(unsigned int c = 0; c < input[b].size(); c++) {
-					localDifference += fabs(input[b][c] - history->initialState[c]);
-				}
-				if(localDifference < 0.2) {
-					equalToOne = true;
-					break;
-				}
-				difference += localDifference;
-			}
-			if(equalToOne) continue;
-			if(difference > maxDifference) {
-				foundOne = true;
-				maxDifference = difference;
-				bestHistory = history;
-			}
-		}
-
-		if(!foundOne) break;
-
-		std::vector<Wire> historyControlWires = getWires(bestHistory->initialState);
-		input.push_back(bestHistory->initialState);
-		correctOutput.push_back(getRawOutput(newControlWires({bestHistory->action, getQValue(bestHistory->reward, bestHistory->initialState, bestHistory->newState, bestHistory->action, historyControlWires)}, historyControlWires)));
-
-		tempHistories.erase(bestHistory);
-	}
-
-	backprop.train(network, input, correctOutput);
+	trainer->train(network, input, correctOutput);
 }
 
 void WireFitQLearn::reset() {
+	network = new net::NeuralNet(modelNet);
 	network->randomizeWeights();
-	histories.clear();
+	std::cout << "number: " << network->numberOfHiddenNeurons() << "\n";
 }
 
 void WireFitQLearn::store(std::ofstream *output) {
 	if(output->is_open()) {
 		*output << learningRate << " " << devaluationFactor << "\n";
 		*output << actionDimensions << " " << numberOfWires << "\n";
-		*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations << " " << rewardIterations <<  " " << baseOfDimensions << "\n";
+		*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations <<  " " << baseOfDimensions << "\n";
 
 		for(unsigned int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
 		for(unsigned int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
 		for(unsigned int a = 0; a < lastAction.size(); a++) *output << lastAction[a] << " ";
 
-		backprop.store(output);
+		trainer->store(output);
 		interpolator->store(output);
 		network->store(output);
 

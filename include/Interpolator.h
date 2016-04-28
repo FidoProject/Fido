@@ -5,13 +5,13 @@
 #include <fstream>
 
 namespace rl {
-	/** A data point to be interpolated. Outputted by a neural network */
+	/** A multi-dimensional data point */
 	struct Wire {
 		std::vector<double> action;
 		double reward;
 	};
 
-	/** Defines the functionality of a Wire Fitted Interpolator to be used by the WireFitQLearn class */
+	/** An interpolator of multi-dimensional data points */
 	class Interpolator {
 	public:
 

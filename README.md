@@ -1,6 +1,8 @@
 # Fido
 
+[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/FidoProject/Fido.svg?branch=master)](https://travis-ci.org/FidoProject/Fido/)
+
 
 Fido is an open-source, highly modular C++ machine learning library for embedded electronics and robotics. Fido is especially suited for robotic and embedded contexts, as it is written in C++ with minimal use of the standard library, comes packaged with a robotic simulator, and provides and easy interface in which to write robotic drivers.
 
@@ -12,7 +14,7 @@ Send us a pull request. If you are looking for things to do, check out the repo'
 
 ### Authors
 
-Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gruenstein](https://github.com/joshuagruenstein).
+Fido was created by [Michael Truell](https://github.com/truell20) and [Joshua Gruenstein](https://github.com/joshuagruenstein). The library was adapted from their work on [a universal robot control system](https://github.com/FidoProject/Research).
 
 ### Contributors
 

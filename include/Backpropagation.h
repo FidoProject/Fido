@@ -12,6 +12,7 @@ namespace net {
 
 	class NeuralNet;
 
+	/** A classic backpropagation SGD Trainer. */
 	class Backpropagation : public Trainer {
 	public:
 		/**
@@ -19,9 +20,9 @@ namespace net {
 		 * \param learningRate_ controls how much the neural network is modified each learning iteration
 		 * \param momentumTerm_ allows a network to escape a local max
 		 * \param targetErrorLevel_ at this error level, a net will be considered trained
-		 * \param maxIterations_ after this number of training iterations, a net will stop being trained no matter what
+		 * \param maximumEpochs_ after this number of training iterations (one pass through all of the data points), a net will stop being trained no matter what
 		 */
-		Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumIterations_);
+		Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumEpochs_);
 
 		/**
 		 * \brief Initialize empty Backpropagation object
@@ -30,7 +31,7 @@ namespace net {
 
 		/**
 		 * \brief Loads a Backpropagation object using an input stream
-		 * \param input a pointer to the input stream that you want to form a neural network from
+		 * \param input a pointer to the input stream that contains a stored Backpropagation model
 		 */
 		explicit Backpropagation(std::ifstream *input);
 
@@ -42,7 +43,7 @@ namespace net {
 		void store(std::ofstream *output);
 
 		/**
-		 * \brief Trains a neural network on a training set.
+		 * \brief Trains a neural network on a training set until the target error level is reached.
 		 *
 		 * Edits the weights of the neural network until its error in predicting the correctOutput of each input reaches the value of targetErrorLevel
 		 * or the number of training cycles reaches the value of maximumIterations.
@@ -54,13 +55,27 @@ namespace net {
 		 */
 		void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
 
+		/**
+		 * \brief Trains a neural network on a training set for a specified number of epochs.
+		 *
+		 * Edits the weights of the neural network until its error in predicting the correctOutput of each input reaches the value of targetErrorLevel
+		 * or the number of training cycles reaches the value of maximumIterations.
+		 * NOTE: If learning rate is not low enough, the weights of the neural network may got to infinity due to the nature of backpropagation.
+		 *
+		 * \param numberOfEpochs the number of training passes that will be made through the data
+		 * \param network the neural network to be trained
+		 * \param input a vector of neural network inputs; each element in input, should have a corresponding output in correctOutput
+		 * \param correctOutput network is trained to output an element of correctOutput when fed a corresponding element of the input vector
+		 */
+		double trainEpocs(double numberOfEpochs, net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
+
 		double learningRate; /**< The rate of learning, set by constructor */
 		double momentumTerm; /**< The term of momentum, set by constructor */
 		double targetErrorLevel; /**< The target error level, set by constructor */
-		int maximumIterations; /**< The maximum number of iterations, set by constructor */
+		int maximumEpochs; /**< The maximum number of iterations, set by constructor */
 		std::vector< std::vector< std::vector<double> > > lastChangeInWeight; /**< The last change in weights */
 
-	private:
+	protected:
 
 		/**
 		 * \brief Gets the output of the neural network, calculates the error of each neuron, and edits the weights of the neurons to reduce error

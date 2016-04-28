@@ -22,7 +22,7 @@ namespace rl {
 		 * \brief Initializes a LSInterpolator with custom parameters
 		 *
 		 * \param smoothingFactor_ the smoothing factor for the interpolator
-		 * \param e eeeeeeeeee
+		 * \param e_ a small constant (less than 1)
 		 */
 		LSInterpolator(double smoothingFactor_, double e_);
 

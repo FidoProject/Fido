@@ -83,6 +83,7 @@ namespace net {
 			std::map<std::string, ActivationFunction> map;
 			map["sigmoid"] = sigmoidDerivative;
 			map["simpleLinear"] = simpleLinearDerivative;
+			map["tanSigmoid"] = tanSigmoidDerivative;
 
 			return map;
 		}
