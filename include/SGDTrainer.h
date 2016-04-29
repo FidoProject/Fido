@@ -74,7 +74,7 @@ namespace net {
 		 */
 		void resetNetworkVectors(net::NeuralNet *network);
 
-    virtual double getChangeInWeight(double weight, int hiddenLayerIndex, int neuronIndex, int weightIndexs) = 0;
+    virtual double getChangeInWeight(double weight, int layerIndex, int neuronIndex, int weightIndex) = 0;
 	};
 }
 
