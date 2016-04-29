@@ -1,7 +1,7 @@
 #include "../include/FidoControlSystem.h"
 
 #include "../include/NeuralNet.h"
-#include "../include/Pruner.h"
+#include "../include/Backpropagation.h"
 #include "../include/LSInterpolator.h"
 
 

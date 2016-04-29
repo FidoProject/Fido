@@ -33,8 +33,7 @@ namespace rl {
 		void reset();
 
 		const double initialExploration = 1;
-		//const double initialExploration = 0.4;
-		const int samplesOfHistory = 10;
+		const unsigned int samplesOfHistory = 10;
 		double explorationLevel;
 		double lastError;
 

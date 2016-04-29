@@ -17,7 +17,7 @@ TEST_CASE("Test adadelta", "[adadelta]") {
 	std::vector< std::vector<double> > correctOutput = { {2}, {4}, {10}, {12} };
 
   std::cout << "start" << "\n";
-	net::Adadelta trainer = net::Adadelta(0.95, 0.001, 10000);
+	net::Adadelta trainer = net::Adadelta(0.95, 0.0005, 10000);
 	trainer.train(&neuralNetwork, input, correctOutput);
   std::cout << "end" << "\n";
 
