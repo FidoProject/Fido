@@ -11,8 +11,8 @@
 
 using namespace rl;
 
-QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_) {
-	backprop = backprop_;
+QLearn::QLearn(net::NeuralNet *modelNetwork, net::Trainer *trainer_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_) {
+	trainer = trainer_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
 
@@ -20,9 +20,9 @@ QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, dou
 	for(unsigned int a = 0; a < possibleActions_.size(); a++) models[a] = (Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
 }
 
-QLearn::QLearn(std::vector<Model> models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
+QLearn::QLearn(std::vector<Model> models_, net::Trainer *trainer_, double learningRate_, double devaluationFactor_) {
 	models = models_;
-	backprop = backprop_;
+	trainer = trainer_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
 }
@@ -96,7 +96,7 @@ void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 		return returnVal;
 	});
 
-	backprop.train(lastModel.network, input, correctOutput);
+	trainer->train(lastModel.network, input, correctOutput);
 }
 
 void QLearn::reset() {

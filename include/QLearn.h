@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Learner.h"
-#include "Backpropagation.h"
+#include "Trainer.h"
 
 namespace net{
 	class NeuralNet;
@@ -41,7 +41,7 @@ namespace rl {
 		 * \param devaluationFactor_ a constant between 0 and 1 that weighs future reward vs immediate reward. A value of 0 will make the network only value immediate reward, while a value of 1 will make it consider future reward with the same weight as immediate reward.
 		 * \param possibleActions_ all of the actions that this object could possibly choose
 		 */
-		QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_);
+		QLearn(net::NeuralNet *modelNetwork, net::Trainer *trainer_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_);
 
 		/** Initializes a QLearn object with an vector of networks and the values of learning rate and devaluationFactor.
 		*
@@ -50,7 +50,7 @@ namespace rl {
 		* \param learningRate_ a constant between 0 and 1 that dictates how fast the robot learns from reinforcement.
 		* \param devaluationFactor_ a constant between 0 and 1 that weighs future reward vs immediate reward. A value of 0 will make the network only value immediate reward, while a value of 1 will make it consider future reward with the same weight as immediate reward.
 		*/
-		QLearn(std::vector<Model> models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_);
+		QLearn(std::vector<Model> models_, net::Trainer *trainer_, double learningRate_, double devaluationFactor_);
 
 		/** Initializes an empty, non-valid Q-learning object. */
 		QLearn();
@@ -86,7 +86,7 @@ namespace rl {
 		/** Stores this model in a stream. */
 		void store(std::ofstream *output);
 	private:
-		net::Backpropagation backprop;
+		net::Trainer *trainer;
 		std::vector<Model> models;
 		double learningRate, devaluationFactor;
 
