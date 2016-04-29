@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-#include "Trainer.h"
+#include "SGDTrainer.h"
 #include "ActivationFunctions.h"
 
 namespace net {
@@ -13,7 +13,7 @@ namespace net {
 	class NeuralNet;
 
 	/** An adaptive learning rate Trainer (Zeiler). */
-	class Adadelta : public Trainer {
+	class Adadelta : public SGDTrainer {
 	public:
 		/**
 		 * \brief Initialize an Adadelta object with necessary constants.
@@ -24,47 +24,25 @@ namespace net {
 		Adadelta(double rho_, double targetErrorLevel_, int maximumEpochs_);
 
 		/**
-		 * \brief Trains a neural network on a training set until the target error level is reached.
-		 *
-		 * Edits the weights of the neural network until its error in predicting the correctOutput of each input reaches the value of targetErrorLevel
-		 * or the number of training cycles reaches the value of maximumIterations.
-		 *
-		 * \param network the neural network to be trained
-		 * \param input a vector of neural network inputs; each element in input, should have a corresponding output in correctOutput
-		 * \param correctOutput network is trained to output an element of correctOutput when fed a corresponding element of the input vector
-		 */
-		void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
-
-    /**
 		 * \brief Stores an Adadelta object using specified ofstream.
 		 *
 		 * \param output pointer to the output stream which the neural network will be written to
 		**/
 		void store(std::ofstream *output);
 
-		double targetErrorLevel; /**< The target error level, set by constructor */
-		int maximumEpochs; /**< The maximum number of epochs for one training run, set by constructor */
+		bool initFromStream(std::ifstream *in);
+
     double rho; /**< the decay rate of the system, set by constructor */
 		double epsilon; /**< a very small number used for root mean square calculations */
 
-	private:
+	protected:
 		std::vector< std::vector< std::vector<double> > > accumulatedGradients;
     std::vector< std::vector< std::vector<double> > > accumulatedUpdates;
 
-		/**
-		 * \brief Gets the output of the neural network, calculates the error of each neuron, and edits the weights of the neurons to reduce error
-		 *
-		 * \param network the neural network to be trained
-		 * \param input the input fed to the neural network
-		 * \param correctOutput network is trained to output this when fed the input vector
-		 */
-		double trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput);
-
-		void prune(NeuralNet *network, const std::vector< std::vector< std::vector<double> > > &initialWeights, const std::vector< std::vector< std::vector< std::vector<double> > > > &weightChanges, unsigned int numNeuronsToPrune);
-
 		/** Resets the Adadelta object's accumulation vectors */
-		void resetVectors(net::NeuralNet *network);
+		void resetNetworkVectors(net::NeuralNet *network);
 
+		double getChangeInWeight(double weight, int layerIndex, int neuronIndex, int weightIndex);
 	};
 }
 

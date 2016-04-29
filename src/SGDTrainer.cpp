@@ -84,7 +84,6 @@ double SGDTrainer::trainOnDataPoint(net::NeuralNet *network, const std::vector<d
 }
 
 
-
 void SGDTrainer::resetNetworkVectors(net::NeuralNet *network) {
 	initialWeights = network->getWeights3D();
 
@@ -92,4 +91,24 @@ void SGDTrainer::resetNetworkVectors(net::NeuralNet *network) {
 
 	finalWeights.clear();
 	gradients.clear();
+}
+
+
+void SGDTrainer::store(std::ofstream *out) {
+  if(out->is_open()) {
+		*out << targetErrorLevel << " " << maximumEpochs << "\n";
+	} else {
+		std::cout << "Could not store sgdtrainer in file\n";
+		throw 1;
+	}
+}
+
+bool SGDTrainer::initFromStream(std::ifstream *in) {
+  if(in->is_open()) {
+		*in >> targetErrorLevel >> maximumEpochs;
+		return true;
+	} else {
+		std::cout << "Could not retrieve sgdtrainer from file\n";
+		throw 1;
+	}
 }

@@ -5,16 +5,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cassert>
 
 #include "../include/NeuralNet.h"
 
 using namespace net;
 
-Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumEpochs_) {
+Backpropagation::Backpropagation(double learningRate_, double momentumTerm_, double targetErrorLevel_, int maximumEpochs_) : SGDTrainer(targetErrorLevel_, maximumEpochs_) {
 	learningRate = learningRate_;
 	momentumTerm = momentumTerm_;
-	targetErrorLevel = targetErrorLevel_;
-	maximumEpochs = maximumEpochs_;
 }
 
 Backpropagation::Backpropagation() {
@@ -25,19 +24,26 @@ Backpropagation::Backpropagation() {
 }
 
 Backpropagation::Backpropagation(std::ifstream *input) {
-	if(input->is_open()) {
-		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumEpochs;
-	} else {
-		std::cout << "Could not retrieve backprop from file\n";
-		throw 1;
-	}
+	initFromStream(input);
 }
 
 void Backpropagation::store(std::ofstream *output) {
 	if(output->is_open()) {
-		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumEpochs << "\n";
+		SGDTrainer::store(output);
+		*output << learningRate << " " << momentumTerm << "\n";
 	} else {
 		std::cout << "Could not store backprop\n";
+		throw 1;
+	}
+}
+
+bool Backpropagation::initFromStream(std::ifstream *in) {
+  if(in->is_open()) {
+		assert(SGDTrainer::initFromStream(in) == true);
+		*in >> learningRate >> momentumTerm;
+		return true;
+	} else {
+		std::cout << "Could not retrieve sgdtrainer from file\n";
 		throw 1;
 	}
 }

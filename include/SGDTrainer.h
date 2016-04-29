@@ -55,6 +55,11 @@ namespace net {
 		 */
 		double trainEpocs(double numberOfEpochs, net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
 
+		void store(std::ofstream *out);
+
+		bool initFromStream(std::ifstream *in);
+
+
 		double targetErrorLevel; /**< The target error level, set by constructor */
 		int maximumEpochs; /**< The maximum number of iterations, set by constructor */
 
@@ -72,7 +77,7 @@ namespace net {
 		/**
 		 * \brief Resets the Backpropagation object's neural network specific vectors using a neural network (NN is needed because the number of layers, neurons, and weights are needed).
 		 */
-		void resetNetworkVectors(net::NeuralNet *network);
+		virtual void resetNetworkVectors(net::NeuralNet *network);
 
     virtual double getChangeInWeight(double weight, int layerIndex, int neuronIndex, int weightIndex) = 0;
 	};

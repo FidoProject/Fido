@@ -42,6 +42,8 @@ namespace net {
 		**/
 		void store(std::ofstream *output);
 
+		bool initFromStream(std::ifstream *in);
+
 		double learningRate; /**< The rate of learning, set by constructor */
 		double momentumTerm; /**< The term of momentum, set by constructor */
 
