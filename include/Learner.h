@@ -2,6 +2,7 @@
 #define LEARNER_H
 
 #include <vector>
+#include <iostream>
 
 namespace net{
 	class NeuralNet;
@@ -46,6 +47,16 @@ namespace rl {
 
 		/** Randomizes the leaner.  */
 		virtual void reset() = 0;
+
+		/** Initializes the parameters of an learner from a file. Returns false if the interpolator stored in the file is not the correct type */
+		virtual bool initFromStream(std::ifstream *in) = 0;
+
+		/**
+		 * \brief Stores a Learner object using specified stream.
+		 *
+		 * \param output pointer to the output stream which the neural network will be written to
+		**/
+		virtual void store(std::ofstream *output) = 0;
 	};
 };
 

@@ -38,6 +38,8 @@ namespace rl {
 		double explorationLevel;
 		double lastError;
 
+		void store(std::ofstream *output);
+
 	private:
 		struct History {
 			State initialState, newState;

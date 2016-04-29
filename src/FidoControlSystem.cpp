@@ -102,3 +102,7 @@ std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
 
 	return selectedHistories;
 }
+
+void FidoControlSystem::store(std::ofstream *output) {
+	*output << "FidoControlSystem ";
+}
