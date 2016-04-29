@@ -22,7 +22,7 @@ Simlink::Simlink() : emitter(20), robot(850, 250, 50, 40), line(sf::Vector2f(0, 
 	imu.compass.xComp = imu.compass.yComp = imu.compass.zComp = 0;
 	imu.gyro.xComp = imu.gyro.yComp = imu.gyro.zComp = 0;
 
-	click = false; 
+	click = false;
 	keepWindowsOpen = true;
 
 	ball.setFillColor(sf::Color::Red);
@@ -52,12 +52,12 @@ void Simlink::mainWindowHandler() {
 	mainWindow.create(sf::VideoMode(1200, 900), "Fido Simulator", sf::Style::Default, settings);
 
 	sf::Texture texture;
-	if (!texture.loadFromFile("/home/truell20/Documents/Fido/src/Simulator/background.png")) {
+	if (!texture.loadFromFile("resources/background.png")) {
 		exit(EXIT_FAILURE);
 	} background = sf::Sprite(texture);
 
 	sf::Font font;
-	if (!font.loadFromFile("/home/truell20/Documents/Fido/src/Simulator/sansation.ttf")) {
+	if (!font.loadFromFile("resources/sansation.ttf")) {
 		exit(EXIT_FAILURE);
 	} sf::Text text("Hello SFML", font, 50);
 	text.setColor(sf::Color::Black);
@@ -278,7 +278,7 @@ void Simlink::setMotors(int motorOne, int motorTwo, double speed, double deltaTi
 		|| newRobotPosition.y > 595 - robot.getGlobalBounds().height / 2) {
 		robot.setPosition(previousRobotPosition);
 	}
-} 
+}
 
 void Simlink::chirp(int volume, int frequency) {
 	piezo.frequency = frequency;
