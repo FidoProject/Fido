@@ -14,6 +14,10 @@ Adadelta::Adadelta(double rho_, double targetErrorLevel_, int maximumEpochs_) {
   epsilon = 0.000001;
 }
 
+Adadelta::Adadelta(std::ifstream *in) {
+	initFromStream(in);
+}
+
 void Adadelta::train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
   double totalError = 0;
 	int iterations = 0;
@@ -114,7 +118,22 @@ void Adadelta::prune(NeuralNet *network, const std::vector< std::vector< std::ve
 }
 
 void Adadelta::store(std::ofstream *output) {
+	*output << "Adadelta " << targetErrorLevel << " " << maximumEpochs << " " << rho << " " << epsilon;
+}
 
+bool Adadelta::initFromStream(std::ifstream *in) {
+	if(in->is_open()) {
+		std::string name;
+		*in >> name;
+		if (name != "Adadelta") {
+			return false;
+		}
+		*in >> targetErrorLevel >> maximumEpochs >> rho >> epsilon;
+		return true;
+	} else {
+		std::cout << "Could not retrieve backprop from file\n";
+		throw 1;
+	}
 }
 
 void Adadelta::resetAccumulatedVectors(net::NeuralNet *network) {

@@ -42,6 +42,9 @@ namespace net {
 		**/
 		void store(std::ofstream *output);
 
+		/** Initializes the parameters of an Trainer from a file. Returns false if the interpolator stored in the file is not the correct type */
+		bool initFromStream(std::ifstream *in);
+
 		/**
 		 * \brief Trains a neural network on a training set until the target error level is reached.
 		 *

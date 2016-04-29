@@ -23,6 +23,8 @@ namespace net {
 		 */
 		virtual void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) = 0;
 
+		/** Initializes the parameters of an Trainer from a file. Returns false if the interpolator stored in the file is not the correct type */
+		virtual bool initFromStream(std::ifstream *in) = 0;
 		/**
 		 * \brief Stores a Trainer object using specified stream.
 		 *

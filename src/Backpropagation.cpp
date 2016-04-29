@@ -25,8 +25,18 @@ Backpropagation::Backpropagation() {
 }
 
 Backpropagation::Backpropagation(std::ifstream *input) {
-	if(input->is_open()) {
-		*input >> learningRate >> momentumTerm >> targetErrorLevel >> maximumEpochs;
+	initFromStream(input);
+}
+
+bool Backpropagation::initFromStream(std::ifstream *in) {
+	if(in->is_open()) {
+		std::string name;
+		*in >> name;
+		if (name != "BackProp") {
+			return false;
+		}
+		*in >> learningRate >> momentumTerm >> targetErrorLevel >> maximumEpochs;
+		return true;
 	} else {
 		std::cout << "Could not retrieve backprop from file\n";
 		throw 1;
@@ -35,7 +45,7 @@ Backpropagation::Backpropagation(std::ifstream *input) {
 
 void Backpropagation::store(std::ofstream *output) {
 	if(output->is_open()) {
-		*output << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumEpochs << "\n";
+		*output << "BackProp " << learningRate << " " << momentumTerm << " " << targetErrorLevel << " " << maximumEpochs << "\n";
 	} else {
 		std::cout << "Could not store backprop\n";
 		throw 1;

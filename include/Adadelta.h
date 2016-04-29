@@ -23,6 +23,8 @@ namespace net {
 		 */
 		Adadelta(double rho_, double targetErrorLevel_, int maximumEpochs_);
 
+		Adadelta(std::ifstream *in);
+
 		/**
 		 * \brief Trains a neural network on a training set until the target error level is reached.
 		 *
@@ -41,6 +43,9 @@ namespace net {
 		 * \param output pointer to the output stream which the neural network will be written to
 		**/
 		void store(std::ofstream *output);
+
+		/** Initializes the parameters of an Trainer from a file. Returns false if the interpolator stored in the file is not the correct type */
+		bool initFromStream(std::ifstream *in);
 
 		double targetErrorLevel; /**< The target error level, set by constructor */
 		int maximumEpochs; /**< The maximum number of epochs for one training run, set by constructor */
