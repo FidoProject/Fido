@@ -73,7 +73,6 @@ namespace net {
 		double momentumTerm; /**< The term of momentum, set by constructor */
 		double targetErrorLevel; /**< The target error level, set by constructor */
 		int maximumEpochs; /**< The maximum number of iterations, set by constructor */
-		std::vector< std::vector< std::vector<double> > > lastChangeInWeight; /**< The last change in weights */
 
 	protected:
 
@@ -87,9 +86,9 @@ namespace net {
 		double trainOnDataPoint(net::NeuralNet *network, const std::vector<double> &input, const std::vector<double> &correctOutput);
 
 		/**
-		 * \brief Resets the Backpropagation object's lastchanginweight instance variable using a neural network (NN is needed because the number of layers, neurons, and weights are needed).
+		 * \brief Resets the Backpropagation object's neural network specific vectors using a neural network (NN is needed because the number of layers, neurons, and weights are needed).
 		 */
-		void resetLastChangeInWeight(net::NeuralNet *network);
+		void resetNetworkVectors(net::NeuralNet *network);
 	};
 }
 

@@ -29,6 +29,23 @@ namespace net {
 		 * \param output pointer to the output stream which the neural network will be written to
 		**/
 		virtual void store(std::ofstream *output) = 0;
+		
+		std::vector< std::vector< std::vector< std::vector<double> > > > getGradients() {
+			return gradients;
+		};
+		std::vector< std::vector< std::vector< std::vector<double> > > > getWeightChanges() {
+			return weightChanges;
+		};
+		std::vector< std::vector< std::vector<double> > > getInitialWeights() {
+			return initialWeights;
+		};
+		std::vector< std::vector< std::vector<double> > > getFinalWeights() {
+			return finalWeights;
+		};
+
+	protected:
+		std::vector< std::vector< std::vector< std::vector<double> > > > gradients, weightChanges;
+		std::vector< std::vector< std::vector<double> > > initialWeights, finalWeights;
 	};
 }
 

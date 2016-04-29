@@ -63,7 +63,7 @@ namespace net {
 		void prune(NeuralNet *network, const std::vector< std::vector< std::vector<double> > > &initialWeights, const std::vector< std::vector< std::vector< std::vector<double> > > > &weightChanges, unsigned int numNeuronsToPrune);
 
 		/** Resets the Adadelta object's accumulation vectors */
-		void resetAccumulatedVectors(net::NeuralNet *network);
+		void resetVectors(net::NeuralNet *network);
 
 	};
 }
