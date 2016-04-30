@@ -197,7 +197,7 @@ void Simlink::updateMainWindow() {
 	mainWindow.draw(robot);
 	mainWindow.draw(emitter);
 
-	mainWindow.draw(line);
+	//mainWindow.draw(line);
 	mainWindow.draw(ball);
 
 	mainWindow.display();

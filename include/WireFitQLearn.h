@@ -113,6 +113,7 @@ namespace rl {
 
 		// Using gradient descent, outputs a new set of control wires using a new "correct" wire and the old control wires
 		std::vector<Wire> newControlWires(const Wire &correctWire, std::vector<Wire> controlWires);
+		std::vector<Wire> newControlWires(const std::vector<Wire> &correctWires, std::vector<Wire> controlWires);
 	};
 };
 
