@@ -74,7 +74,7 @@ void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History>
 		net::Adadelta testTrainer = net::Adadelta(0.95, 0, 400);
 		net::NeuralNet originalNet;
 		int iter = 0;
-		while(iter < 10) {
+		while(iter < 6) {
 			iter++;
 			for(net::Layer &l : network->net) {
 				for(net::Neuron &n : l.neurons) {
