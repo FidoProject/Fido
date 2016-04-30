@@ -23,6 +23,10 @@ void Pruner::prune(NeuralNet *network, Trainer *networkTrainer) {
 
 void Pruner::prune(NeuralNet *network, const std::vector< std::vector< std::vector<double> > > &initialWeights, const std::vector< std::vector< std::vector< std::vector<double> > > > &weightChanges, const std::vector< std::vector< std::vector< std::vector<double> > > > &gradients) {
 
+  if(network->numberOfHiddenNeurons() <= 1) {
+    return;
+  }
+
   std::vector< std::vector< std::vector<double> > > finalWeights = network->getWeights3D();
 
   // Get sensitivities of all neurons

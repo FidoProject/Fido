@@ -60,10 +60,9 @@ void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History>
 		correctOutput.push_back(getRawOutput(newControlWiresForHistory(history)));
 	}
 
-	if(selectedHistories.size() > 2) {
-		std::cout << "Change nn architecture\n";
+	if(selectedHistories.size() > 1) {
 		net::Pruner pruner;
-		net::Adadelta testTrainer = net::Adadelta(0.95, 0.1, 1000);
+		net::Adadelta testTrainer = net::Adadelta(0.95, 0, 100);
 		while(true) {
 			for(net::Layer &l : network->net) {
 				for(net::Neuron &n : l.neurons) {
