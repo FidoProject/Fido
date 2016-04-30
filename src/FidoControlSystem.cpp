@@ -31,18 +31,8 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 
 	std::vector< std::vector<double> > input;
 	std::vector< std::vector<double> > correctOutput;
-	/*for(History history : selectedHistories) {
-		input.push_back(history.newState);
-		correctOutput.push_back(getRawOutput(newControlWiresForHistory(history)));
-	}*/
-	std::vector<Wire> correctWires;
-	for(History history : selectedHistories) {
-		std::vector<Wire> controlWires = getWires(history.initialState);
-		double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, controlWires);
-		correctWires.push_back({history.action, newRewardForLastAction});
-	}
-	input.push_back({1});
-	correctOutput.push_back(getRawOutput(WireFitQLearn::newControlWires(correctWires, getWires({1}))));
+	inputOutputForHistories(selectedHistories, &input, &correctOutput);
+
 	trainer->train(network, input, correctOutput);
 
 	histories.push_back(History(lastState, newState, lastAction, reward));
@@ -76,28 +66,7 @@ void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History>
 
 	std::vector< std::vector<double> > input;
 	std::vector< std::vector<double> > correctOutput;
-	std::vector<Wire> correctWires;
-	for(History history : selectedHistories) {
-		std::vector<Wire> controlWires = getWires(history.initialState);
-		double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, controlWires);
-		correctWires.push_back({history.action, newRewardForLastAction});
-	}
-	input.push_back({1});
-	correctOutput.push_back(getRawOutput(WireFitQLearn::newControlWires(correctWires, getWires({1}))));
-
-	std::vector< std::vector<double> > otherInput;
-	std::vector< std::vector<double> > otherCorrectOutput;
-	inputOutputForHistories(selectedHistories, &otherInput, &otherCorrectOutput);
-	std::cout << "Other input: ";
-	for(std::vector<double> v : otherInput) {
-		for(double d : v) {
-			std::cout << d << ", ";
-		}
-	}
-	std::cout << ";\n";
-	std::cout.flush();
-	assert(otherInput == input);
-	assert(otherCorrectOutput == correctOutput);
+	inputOutputForHistories(selectedHistories, &input, &correctOutput);
 
 	if(selectedHistories.size() > 3) {
 		bool didChange = false;
@@ -185,7 +154,6 @@ void FidoControlSystem::inputOutputForHistories(std::vector<FidoControlSystem::H
 	std::map<State, std::vector<History>> historiesByState;
 
 	for(const History &history : histories) {
-		std::cout << "around\n";
 		bool foundState = false;
 		for(const auto &historiesStatePair : historiesByState) {
 			if(historiesStatePair.first == history.initialState) {
