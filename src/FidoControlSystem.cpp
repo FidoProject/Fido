@@ -2,12 +2,13 @@
 
 #include "../include/NeuralNet.h"
 #include "../include/Backpropagation.h"
+#include "../include/Adadelta.h"
 #include "../include/LSInterpolator.h"
 
 
 using namespace rl;
 
-FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 20, 3, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Backpropagation(), 1, 0)  {
+FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 6, 3, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Adadelta(0.95, 0.2, 10000), 1, 0)  {
 	explorationLevel = initialExploration;
 }
 
@@ -18,48 +19,36 @@ std::vector<double> FidoControlSystem::chooseBoltzmanActionDynamic(State state) 
 }
 
 void FidoControlSystem::applyReinforcementToLastAction(double reward, State newState) {
-	std::vector<Wire> controlWires = getWires(lastState);
-	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, controlWires);
+	// History sampling
+	if(histories.size() > 0) {
+		std::vector< std::vector<double> > input;
+		std::vector< std::vector<double> > correctOutput;
 
-	histories.push_back(History(lastState, newState, lastAction, reward));
-	if(histories.size() > 200) {
-		histories.erase(histories.begin());
+		std::vector<History> selectedHistories = selectHistories();
+		for(History history : selectedHistories) {
+
+			std::vector<Wire> historyControlWires = getWires(history.initialState);
+			double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, historyControlWires);
+
+			Wire correctHistoryWire = {history.action, newRewardForLastAction};
+			std::vector<Wire> newContolWires = newControlWires(correctHistoryWire, historyControlWires);
+
+			input.push_back(history.newState);
+			correctOutput.push_back(getRawOutput(newContolWires));
+		}
+		trainer->train(network, input, correctOutput);
 	}
 
+
+	// Compute new input and output
+	std::vector<Wire> controlWires = getWires(lastState);
+	double newRewardForLastAction = getQValue(reward, lastState, newState, lastAction, controlWires);
 	Wire correctWire = {lastAction, newRewardForLastAction};
 	std::vector<Wire> newContolWires = newControlWires(correctWire, controlWires);
 
-	std::vector< std::vector<double> > input(1, lastState);
-	std::vector< std::vector<double> > correctOutput(1, getRawOutput(newContolWires));
-
-	// Select the last (most recent) 20 histories as input
-	std::vector<History> selectedHistories = selectHistories();
-	for(History history : selectedHistories) {
-
-		std::vector<Wire> historyControlWires = getWires(history.initialState);
-		double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, historyControlWires);
-
-		Wire correctHistoryWire = {history.action, newRewardForLastAction};
-		std::vector<Wire> newContolWires = newControlWires(correctHistoryWire, historyControlWires);
-
-		input.push_back(history.newState);
-		correctOutput.push_back(getRawOutput(newContolWires));
-	}
-
-
-	// Play back all of the histories
-	for(int inputIndex = input.size()-1; inputIndex > 0; inputIndex--) {
-		trainer->train(network, {input[inputIndex]}, {correctOutput[inputIndex]});
-	}
-
-	//std::cout << getError(input[0], correctOutput[0]) << ", ";
-	double error = getError(input[0], correctOutput[0]);
-	if(input.size() == samplesOfHistory/2.0) {
-		//explorationLevel = pow(error, 3) * 60000000;
-		explorationLevel = 0.02 * pow(error, 3) / pow(lastError, 3);
-	} else if(input.size() >= samplesOfHistory/2.0) {
- 		explorationLevel *= pow(error, 3) / pow(lastError, 3);
-	}
+	// Compute new boltzman value using uncertainty value
+	double error = getError(lastState, getRawOutput(newContolWires));
+	explorationLevel = pow(error, 3) * 60000000;
 	if(explorationLevel < 0.00001) {
 		explorationLevel = 0.00001;
 	}
@@ -67,9 +56,14 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 		explorationLevel = 1000;
 	}
 	lastError = error;
-	//std::cout << explorationLevel << ", " << reward << "\n";
 
-	trainer->train(network, {input[0]}, {correctOutput[0]});
+	trainer->train(network, {lastState}, {getRawOutput(newContolWires)});
+
+	// Add to histories
+	histories.push_back(History(lastState, newState, lastAction, reward));
+	if(histories.size() > 200) {
+		histories.erase(histories.begin());
+	}
 }
 
 void FidoControlSystem::reset() {
