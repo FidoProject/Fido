@@ -295,7 +295,7 @@ std::vector<Wire> WireFitQLearn::newControlWires(const std::vector<Wire> &correc
 
 		//std::cout << "Error: " << error << "\n";
 		iterations++;
-	} while(error > controlPointsGDErrorTarget*correctWires.size()*3 && iterations < controlPointsGDMaxIterations);
+	} while(error > controlPointsGDErrorTarget*correctWires.size()*20 && iterations < controlPointsGDMaxIterations);
 	if(iterations == controlPointsGDMaxIterations) std::cout << "Hit max iterwith interpolator. Error: " << error << "\n";
 	return controlWires;
 }

@@ -10,7 +10,7 @@
 
 using namespace rl;
 
-FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 5, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Adadelta(0.95, 0.02, 10000), 1, 0)  {
+FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 5, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Adadelta(0.95, 0.1, 10000), 1, 0)  {
 	explorationLevel = initialExploration;
 }
 
@@ -71,10 +71,10 @@ void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History>
 	if(selectedHistories.size() > 3) {
 		bool didChange = false;
 		net::Pruner pruner;
-		net::Adadelta testTrainer = net::Adadelta(0.95, 0, 400);
+		net::Adadelta testTrainer = net::Adadelta(0.95, 0.2, 100);
 		net::NeuralNet originalNet;
 		int iter = 0;
-		while(iter < 6) {
+		while(iter < 2) {
 			iter++;
 			for(net::Layer &l : network->net) {
 				for(net::Neuron &n : l.neurons) {
