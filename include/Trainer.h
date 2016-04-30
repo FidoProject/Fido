@@ -21,7 +21,7 @@ namespace net {
 		 * \param input a vector of neural network inputs; each element in input, should have a corresponding output in correctOutput
 		 * \param correctOutput network is trained to output an element of correctOutput when fed a corresponding element of the input vector
 		 */
-		virtual void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) = 0;
+		virtual double train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) = 0;
 
 		/**
 		 * \brief Stores a Trainer object using specified stream.
@@ -29,7 +29,7 @@ namespace net {
 		 * \param output pointer to the output stream which the neural network will be written to
 		**/
 		virtual void store(std::ofstream *output) = 0;
-		
+
 		std::vector< std::vector< std::vector< std::vector<double> > > > getGradients() {
 			return gradients;
 		};

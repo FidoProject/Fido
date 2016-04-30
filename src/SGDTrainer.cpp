@@ -20,7 +20,7 @@ SGDTrainer::SGDTrainer(double targetErrorLevel_, int maximumEpochs_) {
   maximumEpochs = maximumEpochs_;
 }
 
-void SGDTrainer::train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
+double SGDTrainer::train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
 	double totalError = 0;
 	int iterations = 0;
 	resetNetworkVectors(network);
@@ -36,6 +36,8 @@ void SGDTrainer::train(net::NeuralNet *network, const std::vector< std::vector<d
 	if(iterations >= maximumEpochs-1) std::cout << "SGDTrainer hit max epochs with an error level of " << totalError << ".\n";
 
 	finalWeights = network->getWeights3D();
+
+  return totalError;
 }
 
 double SGDTrainer::trainEpocs(double numberOfEpochs, net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {

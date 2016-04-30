@@ -39,7 +39,7 @@ namespace net {
 		 * \param input a vector of neural network inputs; each element in input, should have a corresponding output in correctOutput
 		 * \param correctOutput network is trained to output an element of correctOutput when fed a corresponding element of the input vector
 		 */
-		void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
+		double train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput);
 
 		/**
 		 * \brief Trains a neural network on a training set for a specified number of epochs.

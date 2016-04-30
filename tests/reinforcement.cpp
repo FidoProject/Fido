@@ -10,7 +10,7 @@
 
 void train(rl::Learner *learner) {
 	int selector;
-	for(int a = 0; a < 1000; a++) {
+	for(int a = 0; a < 100; a++) {
     selector = rand() % 2;
     int action = (int)learner->chooseBoltzmanAction({(double)selector}, 100)[0];
     learner->applyReinforcementToLastAction((1 - 2*fabs(action-selector)) / 3.0, {(double)selector});

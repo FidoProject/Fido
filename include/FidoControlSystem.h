@@ -33,11 +33,11 @@ namespace rl {
 		void reset();
 
 		const double initialExploration = 1;
-		const unsigned int samplesOfHistory = 5;
+		const unsigned int samplesOfHistory = 10;
 		double explorationLevel;
-		double lastError;
+		double lastUncertainty;
 
-	private:
+	protected:
 		struct History {
 			State initialState, newState;
 			Action action;
@@ -54,7 +54,10 @@ namespace rl {
 		std::vector<History> histories;
 
 		std::vector<FidoControlSystem::History> selectHistories();
+		void trainOnHistories(std::vector<FidoControlSystem::History> selectedHistories);
+		void adjustExploration(double uncertainty);
 		double getError(std::vector<double> input, std::vector<double> correctOutput);
+		std::vector<Wire> newControlWiresForHistory(History history);
 	};
 };
 

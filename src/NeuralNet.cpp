@@ -241,9 +241,7 @@ unsigned int NeuralNet::numberOfHiddenNeurons() {
 	unsigned int num = 0;
 	for(unsigned int a = 0; a < net.size()-1; a++) {
 		for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
-			for(unsigned int c = 0; c < net[a].neurons[b].weights.size(); c++) {
-				num++;
-			}
+			num++;
 		}
 	}
 
