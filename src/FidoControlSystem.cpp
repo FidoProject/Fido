@@ -34,7 +34,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	histories.push_back(History(lastState, newState, lastAction, reward));
 	std::vector<History> selectedHistories = selectHistories();
 
-	/*std::cout << "----------RESIZING-----------\n";
+	std::cout << "----------RESIZING-----------\n";
 	if(selectedHistories.size() > 3) {
 		bool didChange = false;
 		net::Pruner pruner;
@@ -83,7 +83,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 		}
 		std::cout << "Num neurons: " << network->numberOfHiddenNeurons() << "\n";
 	}
-	std::cout << "-----------------\n";*/
+	std::cout << "-----------------\n";
 
 	trainOnHistories(selectedHistories, 0.01, 100);
 }
