@@ -26,10 +26,17 @@ double SGDTrainer::train(net::NeuralNet *network, const std::vector< std::vector
 	resetNetworkVectors(network);
 
 	do {
-		totalError = 0;
 		for(unsigned int a = 0; a < input.size(); a++) {
-			totalError += trainOnDataPoint(network, input[a], correctOutput[a]);
+			trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
+
+    totalError = 0;
+    for(unsigned int trialIndex = 0; trialIndex < input.size(); trialIndex++) {
+      std::vector<double> output = network->getOutput(input[trialIndex]);
+    	for(unsigned int outputIndex = 0; outputIndex < output.size(); outputIndex++) {
+    		totalError += pow(correctOutput[trialIndex][outputIndex] - output[outputIndex], 2);
+    	}
+    }
 		iterations++;
 	} while(totalError > targetErrorLevel && iterations < maximumEpochs);
 
