@@ -33,7 +33,59 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	// History sample and resize nn
 	histories.push_back(History(lastState, newState, lastAction, reward));
 	std::vector<History> selectedHistories = selectHistories();
-	trainOnHistories(selectedHistories);
+
+	/*std::cout << "----------RESIZING-----------\n";
+	if(selectedHistories.size() > 3) {
+		bool didChange = false;
+		net::Pruner pruner;
+		net::NeuralNet originalNet;
+		int iter = 0;
+		while(iter < 1) {
+			iter++;
+			originalNet = net::NeuralNet(network);
+
+			// Randomize
+			for(net::Layer &l : network->net) {
+				for(net::Neuron &n : l.neurons) {
+					n.randomizeWeights();
+				}
+			}
+
+			double totalCurrentError = trainOnHistories(selectedHistories, 0.001, 5);
+
+			if(network->numberOfHiddenNeurons() > 4) {
+				pruner.pruneRandomnly(network);
+				double totalPrunedError = trainOnHistories(selectedHistories, 0.001, 5);
+				if(totalPrunedError*1.05 < totalCurrentError) {
+					didChange = true;
+					continue;
+				}
+			}
+
+			*network = originalNet;
+			network->net[0].neurons.push_back(net::Neuron(network->numberOfInputs()));
+			for(net::Neuron &n : network->net[1].neurons) {
+				n.weights.push_back(1);
+				n.randomizeWeights();
+			}
+			double totalAddedError = trainOnHistories(selectedHistories, 0.001, 5);
+			if(totalAddedError*1.05 < totalCurrentError) {
+				didChange = true;
+				continue;
+			}
+
+			*network = originalNet;
+			break;
+		}
+
+		if(didChange == false) {
+			*network = originalNet;
+		}
+		std::cout << "Num neurons: " << network->numberOfHiddenNeurons() << "\n";
+	}
+	std::cout << "-----------------\n";*/
+
+	trainOnHistories(selectedHistories, 0.01, 100);
 }
 
 void FidoControlSystem::reset() {
@@ -54,10 +106,11 @@ double FidoControlSystem::getError(std::vector<double> input, std::vector<double
 	return totalError / (double)output.size();
 }
 
-void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History> selectedHistories) {
+double FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History> selectedHistories, double allowedError, unsigned int maxIterations) {
 
 	double totalError = DBL_MAX;
-	net::Adadelta tempTrainer = net::Adadelta(0.95, 0.01, 100);
+	net::Adadelta tempTrainer = net::Adadelta(0.95, allowedError, 100);
+	unsigned int iter = 0;
 	do {
 		std::vector< std::vector<double> > input, correctOutput;
 		for(History history : selectedHistories) {
@@ -82,9 +135,10 @@ void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History>
 		}
 
 		std::cout << "Error: " << totalError << "\n";
-	} while (totalError > 0.01*selectedHistories.size());
+		iter++;
+	} while (totalError > allowedError*selectedHistories.size() && iter < maxIterations);
 
-	std::cout << "Num neurons: " << network->numberOfHiddenNeurons() << "\n";
+	return totalError;
 }
 
 void FidoControlSystem::adjustExploration(double uncertainty) {
@@ -130,35 +184,4 @@ std::vector<Wire> FidoControlSystem::newControlWiresForHistory(History history) 
 	double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, controlWires);
 	Wire correctWire = {history.action, newRewardForLastAction};
 	return WireFitQLearn::newControlWires(correctWire, controlWires);
-}
-
-void FidoControlSystem::inputOutputForHistories(std::vector<FidoControlSystem::History> histories, std::vector< std::vector<double> > * input, std::vector< std::vector<double> > * correctOutput) {
-	std::map<State, std::vector<History>> historiesByState;
-
-	for(const History &history : histories) {
-		bool foundState = false;
-		for(const auto &historiesStatePair : historiesByState) {
-			if(historiesStatePair.first == history.initialState) {
-				foundState = true;
-				break;
-			}
-		}
-		if(foundState == false) {
-			historiesByState[history.initialState] = {history};
-		} else {
-			historiesByState[history.initialState].push_back(history);
-		}
-	}
-
-	for(const auto &historiesStatePair : historiesByState) {
-		std::vector<Wire> correctWires;
-		for(History history : historiesStatePair.second) {
-			std::vector<Wire> controlWires = getWires(history.initialState);
-			double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, controlWires);
-			correctWires.push_back({history.action, newRewardForLastAction});
-		}
-
-		input->push_back(historiesStatePair.first);
-		correctOutput->push_back(getRawOutput(WireFitQLearn::newControlWires(correctWires, getWires(historiesStatePair.first))));
-	}
 }

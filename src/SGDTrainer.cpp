@@ -40,7 +40,7 @@ double SGDTrainer::train(net::NeuralNet *network, const std::vector< std::vector
 		iterations++;
 	} while(totalError > targetErrorLevel && iterations < maximumEpochs);
 
-	if(iterations >= maximumEpochs-1) std::cout << "SGDTrainer hit max epochs with an error level of " << totalError << ".\n";
+	//if(iterations >= maximumEpochs-1) std::cout << "SGDTrainer hit max epochs with an error level of " << totalError << ".\n";
 
 	finalWeights = network->getWeights3D();
 

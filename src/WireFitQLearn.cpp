@@ -274,7 +274,6 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
 std::vector<Wire> WireFitQLearn::newControlWires(const std::vector<Wire> &correctWires, std::vector<Wire> controlWires) {
 	double error = 0;
 	int iterations = 0;
-	std::cout << "size: " << correctWires.size() << "\n";
 
 	do {
 		for(Wire correctWire : correctWires) {

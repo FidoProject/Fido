@@ -59,10 +59,9 @@ namespace rl {
 		std::vector<History> histories;
 
 		std::vector<FidoControlSystem::History> selectHistories();
-		void trainOnHistories(std::vector<FidoControlSystem::History> selectedHistories);
+		double trainOnHistories(std::vector<FidoControlSystem::History> selectedHistories, double allowedError, unsigned int maxIterations);
 		void adjustExploration(double uncertainty);
 		double getError(std::vector<double> input, std::vector<double> correctOutput);
-		void inputOutputForHistories(std::vector<History> histories, std::vector< std::vector<double> > * input, std::vector< std::vector<double> > * correctOutput);
 		std::vector<Wire> newControlWiresForHistory(History history);
 	};
 };
