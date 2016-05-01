@@ -38,6 +38,7 @@ namespace rl {
 		double lastUncertainty;
 
 	protected:
+
 		struct History {
 			State initialState, newState;
 			Action action;
@@ -48,6 +49,10 @@ namespace rl {
 				newState = newState_;
 				action = action_;
 				reward = reward_;
+			}
+
+			bool operator==(const History& other) {
+				return initialState == other.initialState && newState == other.newState && action == other.action && reward == other.reward;
 			}
 		};
 

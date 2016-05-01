@@ -1,6 +1,8 @@
 #include "../include/FidoControlSystem.h"
 
 #include <cassert>
+#include <float.h>
+#include <algorithm>
 
 #include "../include/NeuralNet.h"
 #include "../include/Backpropagation.h"
@@ -10,7 +12,7 @@
 
 using namespace rl;
 
-FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 5, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Adadelta(0.95, 0.1, 10000), 1, 0)  {
+FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 5, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Adadelta(0.95, 0.15, 10000), 1, 0)  {
 	explorationLevel = initialExploration;
 }
 
@@ -20,25 +22,19 @@ std::vector<double> FidoControlSystem::chooseBoltzmanActionDynamic(State state) 
 }
 
 void FidoControlSystem::applyReinforcementToLastAction(double reward, State newState) {
+	// SGD on current scenario
 	std::vector<Wire> newContolWires = newControlWiresForHistory(History(lastState, newState, lastAction, reward));
 
+	// Calculate uncertainty and adjust exploration
 	double uncertainty = getError(lastState, getRawOutput(newContolWires));
 	adjustExploration(uncertainty);
 	lastUncertainty = uncertainty;
 
+
+	// History sample and resize nn
+	histories.push_back(History(lastState, newState, lastAction, reward));
 	std::vector<History> selectedHistories = selectHistories();
 	trainOnHistories(selectedHistories);
-
-	std::vector< std::vector<double> > input;
-	std::vector< std::vector<double> > correctOutput;
-	inputOutputForHistories(selectedHistories, &input, &correctOutput);
-
-	trainer->train(network, input, correctOutput);
-
-	histories.push_back(History(lastState, newState, lastAction, reward));
-	if(histories.size() > 200) {
-		histories.erase(histories.begin());
-	}
 }
 
 void FidoControlSystem::reset() {
@@ -68,7 +64,7 @@ void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History>
 	std::vector< std::vector<double> > correctOutput;
 	inputOutputForHistories(selectedHistories, &input, &correctOutput);
 
-	if(selectedHistories.size() > 3) {
+	/*if(selectedHistories.size() > 3) {
 		bool didChange = false;
 		net::Pruner pruner;
 		net::Adadelta testTrainer = net::Adadelta(0.95, 0.2, 100);
@@ -112,9 +108,19 @@ void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History>
 		if(didChange == false) {
 			*network = originalNet;
 		}
-	}
+	}*/
 
+	std::cout << "-----Input-------\n";
+	for(auto v : input) {
+		std::cout << "Vector: ";
+		for(auto d : v) {
+			std::cout << d << ", ";
+		}
+		std::cout << "\n";
+	}
+	std::cout << "---------------\n";
 	trainer->train(network, input, correctOutput);
+
 
 	std::cout << "Num neurons: " << network->numberOfHiddenNeurons() << "\n";
 }
@@ -134,10 +140,24 @@ std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
 	std::vector<History> selectedHistories;
 	std::vector<History> tempHistories(histories);
 	while(selectedHistories.size() < samplesOfHistory && tempHistories.size() > 0) {
-		auto bestHistory = tempHistories.end()-1;
+		History bestHistory = *(tempHistories.end()-1);
+		double maxDifference = DBL_MIN;
+		for(History prospectiveHistory : tempHistories) {
+			double difference = 0;
+			for(History selectedHistory : selectedHistories) {
+				for(unsigned int stateIndex = 0; stateIndex < selectedHistory.initialState.size(); stateIndex++) {
+					difference += pow(prospectiveHistory.initialState[stateIndex] - selectedHistory.initialState[stateIndex], 2);
+				}
+			}
+			
+			if(difference > maxDifference) {
+				maxDifference = difference;
+				bestHistory = prospectiveHistory;
+			}
+		}
 
-		selectedHistories.push_back(*bestHistory);
-		tempHistories.erase(bestHistory);
+		selectedHistories.push_back(bestHistory);
+		tempHistories.erase(std::remove(tempHistories.begin(), tempHistories.end(), bestHistory), tempHistories.end());
 	}
 
 	return selectedHistories;
