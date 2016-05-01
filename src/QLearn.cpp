@@ -83,26 +83,12 @@ void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 	double lr = lastModel.network->getOutput(lastState)[0];
 	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*getHighestReward(newState))-lr);
 
-	lastModel.addToHistory(std::pair<State, double>(lastState, targetValueForLastState));
-
-	std::vector< std::vector<double> > input;
-	std::vector< std::vector<double> > correctOutput;
-
-	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(input), [](std::pair<State, double> entry) {
-		return entry.first;
-	});
-	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(correctOutput), [](std::pair<State, double> entry) {
-		std::vector<double> returnVal = {entry.second};
-		return returnVal;
-	});
-
-	trainer->train(lastModel.network, input, correctOutput);
+	trainer->train(lastModel.network, {lastState}, {{targetValueForLastState}});
 }
 
 void QLearn::reset() {
 	std::for_each(models.begin(), models.end(), [&](Model model) {
 		model.network->randomizeWeights();
-		model.history.clear();
 	});
 }
 

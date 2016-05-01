@@ -15,7 +15,6 @@ namespace rl {
 	struct Model {
 		net::NeuralNet *network;
 		Action action;
-		std::vector<std::pair<State, double> > history;
 
 		Model(net::NeuralNet * network_, Action action_) {
 			network = network_;
@@ -23,11 +22,6 @@ namespace rl {
 		}
 
 		Model() {}
-
-		void addToHistory(std::pair<State, double> entry) {
-			history.push_back(entry);
-			if(history.size() > 1) history.erase(history.begin());
-		}
 	};
 
 	/** A Learner that follows the Q-Learning algorithm */
