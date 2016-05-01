@@ -12,7 +12,7 @@
 
 using namespace rl;
 
-FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 5, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Adadelta(0.95, 0.15, 10000), 1, 0)  {
+FidoControlSystem::FidoControlSystem(int stateDimensions, Action minAction, Action maxAction, int baseOfDimensions) : WireFitQLearn(stateDimensions, minAction.size(), 1, 12, 6, minAction, maxAction, baseOfDimensions, new rl::LSInterpolator(), new net::Adadelta(0.95, 0.15, 10000), 1, 0)  {
 	explorationLevel = initialExploration;
 }
 
@@ -29,7 +29,6 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	double uncertainty = getError(lastState, getRawOutput(newContolWires));
 	adjustExploration(uncertainty);
 	lastUncertainty = uncertainty;
-
 
 	// History sample and resize nn
 	histories.push_back(History(lastState, newState, lastAction, reward));
@@ -56,71 +55,34 @@ double FidoControlSystem::getError(std::vector<double> input, std::vector<double
 }
 
 void FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::History> selectedHistories) {
-	if(selectedHistories.size() < 1) {
-		return;
-	}
 
-	std::vector< std::vector<double> > input;
-	std::vector< std::vector<double> > correctOutput;
-	inputOutputForHistories(selectedHistories, &input, &correctOutput);
+	double totalError = DBL_MAX;
+	net::Adadelta tempTrainer = net::Adadelta(0.95, 0.01, 100);
+	do {
+		std::vector< std::vector<double> > input, correctOutput;
+		for(History history : selectedHistories) {
+			std::vector<Wire> historyControlWires = getWires(history.initialState);
+			double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, historyControlWires);
 
-	/*if(selectedHistories.size() > 3) {
-		bool didChange = false;
-		net::Pruner pruner;
-		net::Adadelta testTrainer = net::Adadelta(0.95, 0.2, 100);
-		net::NeuralNet originalNet;
-		int iter = 0;
-		while(iter < 2) {
-			iter++;
-			for(net::Layer &l : network->net) {
-				for(net::Neuron &n : l.neurons) {
-					n.randomizeWeights();
-				}
-			}
+			Wire correctHistoryWire = {history.action, newRewardForLastAction};
+			std::vector<Wire> newContolWires = newControlWires(correctHistoryWire, historyControlWires);
 
-			originalNet = net::NeuralNet(network);
-			double totalCurrentError = testTrainer.train(network, input, correctOutput);
+			input.push_back(history.newState);
+			correctOutput.push_back(getRawOutput(newContolWires));
 
-			pruner.prune(network, &testTrainer);
-			double totalPrunedError = testTrainer.train(network, input, correctOutput);
-
-			if(totalPrunedError*1.05 < totalCurrentError) {
-				didChange = true;
-				continue;
-			}
-
-			*network = originalNet;
-			network->net[0].neurons.push_back(net::Neuron(network->numberOfInputs()));
-			for(net::Neuron &n : network->net[1].neurons) {
-				n.weights.push_back(1);
-				n.randomizeWeights();
-			}
-			double totalAddedError = testTrainer.train(network, input, correctOutput);
-			if(totalAddedError*1.05 < totalCurrentError) {
-				didChange = true;
-				continue;
-			}
-
-			*network = originalNet;
-			break;
+			tempTrainer.train(network, {input.back()}, {correctOutput.back()});
 		}
 
-		if(didChange == false) {
-			*network = originalNet;
+		totalError = 0;
+		for(unsigned int a = 0; a < input.size(); a++) {
+			std::vector<double> output = network->getOutput(input[a]);
+			for(unsigned int b = 0; b < input[a].size(); b++) {
+				totalError += pow(output[b] - correctOutput[a][b], 2);
+			}
 		}
-	}*/
 
-	std::cout << "-----Input-------\n";
-	for(auto v : input) {
-		std::cout << "Vector: ";
-		for(auto d : v) {
-			std::cout << d << ", ";
-		}
-		std::cout << "\n";
-	}
-	std::cout << "---------------\n";
-	trainer->train(network, input, correctOutput);
-
+		std::cout << "Error: " << totalError << "\n";
+	} while (totalError > 0.01*selectedHistories.size());
 
 	std::cout << "Num neurons: " << network->numberOfHiddenNeurons() << "\n";
 }
@@ -149,7 +111,7 @@ std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
 					difference += pow(prospectiveHistory.initialState[stateIndex] - selectedHistory.initialState[stateIndex], 2);
 				}
 			}
-			
+
 			if(difference > maxDifference) {
 				maxDifference = difference;
 				bestHistory = prospectiveHistory;
