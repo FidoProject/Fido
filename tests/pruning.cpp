@@ -19,7 +19,7 @@ TEST_CASE("Test pruning", "[pruner]") {
 	net::Backpropagation backprop = net::Backpropagation(0.1, 0.9, 0.01, 10000);
 	double error1, error2;
 
-	for(int a = 0; a < 200; a++) {
+	for(int a = 0; a < 500; a++) {
 		net::NeuralNet neuralNetwork1(input[0].size(), correctOutput[0].size(), HIDDEN_LAYERS, NEURONS, "sigmoid");
 		neuralNetwork1.setOutputActivationFunction("simpleLinear");
 		net::NeuralNet neuralNetwork2(neuralNetwork1);
