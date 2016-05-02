@@ -85,8 +85,7 @@ Action WireFitQLearn::chooseBoltzmanAction(State currentState,
 		if(sumOfProbabilities >= determiner) {
 			lastAction = wires[a].action;
 			lastState = currentState;
-            std::cout << "Expected reward: " << wires[a].reward << "\n";
-            return wires[a].action;
+			return wires[a].action;
 		}
 	}
 

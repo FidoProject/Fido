@@ -35,7 +35,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	std::vector<History> selectedHistories = selectHistories();
 
 	std::cout << "----------RESIZING-----------\n";
-	/*if(selectedHistories.size() > 3) {
+	if(selectedHistories.size() > 3) {
 		bool didChange = false;
 		net::Pruner pruner;
 		net::NeuralNet originalNet;
@@ -84,10 +84,10 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 		std::cout << "Num neurons: " << network->numberOfHiddenNeurons() << "\n";
 	}
 	std::cout << "-----------------\n";
-    */
-	trainOnHistories(selectedHistories, 0.02, 1);
+
+	trainOnHistories(selectedHistories, 0.01, 100);
 }
-//
+
 void FidoControlSystem::reset() {
 	std::cout << "RESET\n";
 	WireFitQLearn::reset();
@@ -112,8 +112,7 @@ double FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::Histor
 	net::Adadelta tempTrainer = net::Adadelta(0.95, allowedError, 100);
 	unsigned int iter = 0;
 	do {
-		std::cout << "DONE\n";
-        std::vector< std::vector<double> > input, correctOutput;
+		std::vector< std::vector<double> > input, correctOutput;
 		for(History history : selectedHistories) {
 			std::vector<Wire> historyControlWires = getWires(history.initialState);
 			double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, historyControlWires);
@@ -154,16 +153,11 @@ void FidoControlSystem::adjustExploration(double uncertainty) {
 }
 
 std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
-	std::cout << "START\n";
-    std::vector<History> selectedHistories;
+	std::vector<History> selectedHistories;
 	std::vector<History> tempHistories(histories);
-    int samplesLeft = std::min(samplesOfHistory, tempHistories.size());
-    std::cout << "LEFT" << samplesLeft << "\n";
-    while(selectedHistories.size() < samplesOfHistory && tempHistories.size() > 0) {
-		History bestHistory = *(tempHistories.end()-samplesLeft);
-        samplesLeft--;
-        std::cout << "AGAINLEFT" << samplesLeft << "\n";
-		/*double maxDifference = DBL_MIN;
+	while(selectedHistories.size() < samplesOfHistory && tempHistories.size() > 0) {
+		History bestHistory = *(tempHistories.end()-1);
+		double maxDifference = DBL_MIN;
 		for(History prospectiveHistory : tempHistories) {
 			double difference = 0;
 			for(History selectedHistory : selectedHistories) {
@@ -176,8 +170,8 @@ std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
 				maxDifference = difference;
 				bestHistory = prospectiveHistory;
 			}
-		}*/
-        //
+		}
+
 		selectedHistories.push_back(bestHistory);
 		tempHistories.erase(std::remove(tempHistories.begin(), tempHistories.end(), bestHistory), tempHistories.end());
 	}
