@@ -85,7 +85,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 	}
 	std::cout << "-----------------\n";
 
-	trainOnHistories(selectedHistories, 0.01, 100);
+	trainOnHistories(selectedHistories, 0.02, 100);
 }
 
 void FidoControlSystem::reset() {
@@ -128,9 +128,9 @@ double FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::Histor
 
 		totalError = 0;
 		for(unsigned int a = 0; a < input.size(); a++) {
-			std::vector<double> output = network->getOutput(input[a]);
+			std::vector<Wire> wires = getWires(input[a]);
 			for(unsigned int b = 0; b < input[a].size(); b++) {
-				totalError += pow(output[b] - correctOutput[a][b], 2);
+				totalError += pow(selectedHistories[a].reward - interpolator->getReward(wires, selectedHistories[a].action), 2);
 			}
 		}
 
@@ -157,7 +157,7 @@ std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
 	std::vector<History> tempHistories(histories);
 	while(selectedHistories.size() < samplesOfHistory && tempHistories.size() > 0) {
 		History bestHistory = *(tempHistories.end()-1);
-		double maxDifference = DBL_MIN;
+		/*double maxDifference = DBL_MIN;
 		for(History prospectiveHistory : tempHistories) {
 			double difference = 0;
 			for(History selectedHistory : selectedHistories) {
@@ -170,7 +170,7 @@ std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
 				maxDifference = difference;
 				bestHistory = prospectiveHistory;
 			}
-		}
+		}*/
 
 		selectedHistories.push_back(bestHistory);
 		tempHistories.erase(std::remove(tempHistories.begin(), tempHistories.end(), bestHistory), tempHistories.end());
