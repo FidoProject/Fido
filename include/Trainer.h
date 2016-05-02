@@ -31,6 +31,8 @@ namespace net {
 		 * \param output pointer to the output stream which the neural network will be written to
 		**/
 		virtual void store(std::ofstream *output) = 0;
+
+		static Trainer * create(std::istream& istr);
 	};
 }
 
