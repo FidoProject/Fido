@@ -32,7 +32,9 @@ namespace net {
 		**/
 		virtual void store(std::ofstream *output) = 0;
 
-		static Trainer * create(std::istream& istr);
+		static Trainer * create(std::istream& istr) {
+
+		}
 	};
 }
 

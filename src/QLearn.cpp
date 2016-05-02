@@ -11,8 +11,8 @@
 
 using namespace rl;
 
-QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_) {
-	backprop = backprop_;
+QLearn::QLearn(net::NeuralNet *modelNetwork, net::Trainer *trainer_, double learningRate_, double devaluationFactor_, std::vector<Action> possibleActions_) {
+	trainer = trainer_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
 
@@ -20,9 +20,9 @@ QLearn::QLearn(net::NeuralNet *modelNetwork, net::Backpropagation backprop_, dou
 	for(unsigned int a = 0; a < possibleActions_.size(); a++) models[a] = (Model(new net::NeuralNet(modelNetwork), possibleActions_[a]));
 }
 
-QLearn::QLearn(std::vector<Model> models_, net::Backpropagation backprop_, double learningRate_, double devaluationFactor_) {
+QLearn::QLearn(std::vector<Model> models_, net::Trainer *trainer_, double learningRate_, double devaluationFactor_) {
 	models = models_;
-	backprop = backprop_;
+	trainer = trainer_;
 	learningRate = learningRate_;
 	devaluationFactor = devaluationFactor_;
 }
@@ -41,7 +41,7 @@ Action QLearn::chooseBestAction(State currentState) {
 
 Action QLearn::chooseBoltzmanAction(State currentState, double explorationConstant) {
 	if(explorationConstant < 0.01) {
-		std::cout << "Exploration constant (" << explorationConstant << ") is below 0.01. This is too low!. Will cause integer over flow. Assuming an explorationConstant of 0.01 instead.";
+		std::cout << "Exploration constant (" << explorationConstant << ") is below 0.01. This is too low!. Will cause integer over flow. Assuming an explorationConstant of 0.01 instead.\n";
 		explorationConstant = 0.01;
 	}
 
@@ -83,26 +83,12 @@ void QLearn::applyReinforcementToLastAction(double reward, State newState) {
 	double lr = lastModel.network->getOutput(lastState)[0];
 	double targetValueForLastState = lr + learningRate*(reward+(devaluationFactor*getHighestReward(newState))-lr);
 
-	lastModel.addToHistory(std::pair<State, double>(lastState, targetValueForLastState));
-
-	std::vector< std::vector<double> > input;
-	std::vector< std::vector<double> > correctOutput;
-
-	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(input), [](std::pair<State, double> entry) {
-		return entry.first;
-	});
-	std::transform(lastModel.history.begin(), lastModel.history.end(), std::back_inserter(correctOutput), [](std::pair<State, double> entry) {
-		std::vector<double> returnVal = {entry.second};
-		return returnVal;
-	});
-
-	backprop.train(lastModel.network, input, correctOutput);
+	trainer->train(lastModel.network, {lastState}, {{targetValueForLastState}});
 }
 
 void QLearn::reset() {
 	std::for_each(models.begin(), models.end(), [&](Model model) {
 		model.network->randomizeWeights();
-		model.history.clear();
 	});
 }
 

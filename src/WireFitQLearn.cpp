@@ -42,7 +42,7 @@ WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDi
 	network = new net::NeuralNet(modelNet);
 
 	controlPointsGDErrorTarget = 0.001;
-	controlPointsGDLearningRate = 0.1;
+	controlPointsGDLearningRate = 0.01;
 	controlPointsGDMaxIterations = 10000;
 
 	baseOfDimensions = baseOfDimensions_;
@@ -269,4 +269,32 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
 
 	return controlWires;
 
+}
+
+std::vector<Wire> WireFitQLearn::newControlWires(const std::vector<Wire> &correctWires, std::vector<Wire> controlWires) {
+	double error = 0;
+	int iterations = 0;
+
+	do {
+		for(Wire correctWire : correctWires) {
+			for(unsigned int a = 0; a < controlWires.size(); a++) {
+				double deltaReward = -2 * (-interpolator->getReward(controlWires, correctWire.action) + correctWire.reward)*interpolator->rewardDerivative(correctWire.action, controlWires[a], controlWires);
+				controlWires[a].reward = controlWires[a].reward - controlPointsGDLearningRate*deltaReward;
+				for(unsigned int b = 0; b < controlWires[a].action.size(); b++) {
+					double deltaActionTerm = -2 * (-interpolator->getReward(controlWires, correctWire.action) + correctWire.reward)*interpolator->actionTermDerivative(correctWire.action[b], controlWires[a].action[b], correctWire.action, controlWires[a], controlWires);
+					controlWires[a].action[b] = controlWires[a].action[b] - controlPointsGDLearningRate*deltaActionTerm;
+				}
+			}
+		}
+
+		error = 0;
+		for(Wire correctWire : correctWires) {
+			error += pow(correctWire.reward - interpolator->getReward(controlWires, correctWire.action), 2);
+		}
+
+		//std::cout << "Error: " << error << "\n";
+		iterations++;
+	} while(error > controlPointsGDErrorTarget*correctWires.size()*20 && iterations < controlPointsGDMaxIterations);
+	if(iterations == controlPointsGDMaxIterations) std::cout << "Hit max iterwith interpolator. Error: " << error << "\n";
+	return controlWires;
 }

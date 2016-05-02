@@ -106,3 +106,4 @@ stateIn.txt
 temp/
 build/
 bin/
+doxygen_log.txt

@@ -10,10 +10,13 @@ make
 make lib
 
 cd tests/
-make clean
 make
+
+mv tests.o ../
+cd ../
 
 mkdir -p temp
 ./tests.o $ARGS
+rm -r temp
 
 echo "All tests succeded!"

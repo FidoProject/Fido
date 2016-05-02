@@ -33,14 +33,14 @@ namespace rl {
 		void reset();
 
 		const double initialExploration = 1;
-		//const double initialExploration = 0.4;
-		const int samplesOfHistory = 10;
+		const unsigned int samplesOfHistory = 10;
 		double explorationLevel;
-		double lastError;
+		double lastUncertainty;
+
+	protected:
 
 		void store(std::ofstream *output);
 
-	private:
 		struct History {
 			State initialState, newState;
 			Action action;
@@ -52,12 +52,19 @@ namespace rl {
 				action = action_;
 				reward = reward_;
 			}
+
+			bool operator==(const History& other) {
+				return initialState == other.initialState && newState == other.newState && action == other.action && reward == other.reward;
+			}
 		};
 
 		std::vector<History> histories;
 
 		std::vector<FidoControlSystem::History> selectHistories();
+		double trainOnHistories(std::vector<FidoControlSystem::History> selectedHistories, double allowedError, unsigned int maxIterations);
+		void adjustExploration(double uncertainty);
 		double getError(std::vector<double> input, std::vector<double> correctOutput);
+		std::vector<Wire> newControlWiresForHistory(History history);
 	};
 };
 
