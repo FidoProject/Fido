@@ -1,6 +1,6 @@
 CXXFLAGS += -std=c++11
 ifeq ($(COVER), YES)
-    CXXFLAGS += -g -fprofile-arcs -ftest-coverage
+    CXXFLAGS += --coverage
 endif
 PREFIX?=/usr/local
 ifneq ($(wildcard src/Simulator/.*),)

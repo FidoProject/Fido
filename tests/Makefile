@@ -1,6 +1,6 @@
 CXXFLAGS += -std=c++11 -ggdb
 ifeq ($(COVER), YES)
-    CXXFLAGS += -g -fprofile-arcs -ftest-coverage
+    CXXFLAGS += --coverage
 endif
 SOURCES=$(shell find . -name "*.cpp")
 OBJECTS=$(SOURCES:%.cpp=%.o)

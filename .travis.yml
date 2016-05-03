@@ -50,4 +50,4 @@ script:
   - if [[ "$TEST" == "valgrind" ]]; then cd tests/; make; mkdir -p temp; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
 
 after_success:
-  if [[ "$COVER" == "YES" ]]; then coveralls --exclude build --exclude tests --exclude bin --exclude docs --exclude examples --gcov-options '\-lp'; fi
+  if [[ "$COVER" == "YES" ]]; then coveralls --exclude tests --exclude bin --exclude docs --exclude examples --gcov-options '\-lp'; fi
