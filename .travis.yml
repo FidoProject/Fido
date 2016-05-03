@@ -5,12 +5,22 @@ language: cpp
 compiler: gcc
 
 env:
-  # - TEST="valgrind" # commented out until you finish the simulator code
+  - TEST="valgrind" # commented out until you finish the simulator code
   - TEST="unit" TYPE="[network]"
   - TEST="unit" TYPE="[backprop]"
-  # - TEST="unit" TYPE="[simulator]" # commented out while it doesnt work
+  - TEST="unit" TYPE="[adadelta]"
+  - TEST="unit" TYPE="[exploration]"
+  # - TEST="unit" TYPE="[pruner]" # unstable
+  - TEST="unit" TYPE="[reinforcement]"
+  # - TEST="unit" TYPE="[simulator]" # unstable
+  - TEST="unit" TYPE="" COVER="YES" # For coveralls, will take longer than the others
 
 before_install:
+  # Coveralls
+  - if [[ "$COVER" == "YES" ]]; then pip install --user cpp-coveralls; fi
+  - if [[ "$COVER" == "YES" ]]; then rm tests/pruning.cpp; rm tests/simulator.cpp; fi # Remove pruning test
+
+
   # Valgrind
   - if [[ "$TEST" == "valgrind" ]]; then sudo apt-get install valgrind; fi
 
@@ -38,3 +48,6 @@ script:
   - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh $TYPE; fi
   # Run Valgrind on unit tests
   - if [[ "$TEST" == "valgrind" ]]; then cd tests/; make; mkdir -p temp; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
+
+after_success:
+  if [[ "$COVER" == "YES" ]]; then coveralls --exclude build --exclude tests --exclude bin --exclude docs --exclude examples --gcov-options '\-lp'; fi
