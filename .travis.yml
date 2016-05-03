@@ -11,7 +11,7 @@ env:
   - TEST="unit" TYPE="[adadelta]"
   - TEST="unit" TYPE="[exploration]"
   # - TEST="unit" TYPE="[pruner]" # unstable
-  - TEST="unit" TYPE="[reinforcement]"
+  # - TEST="unit" TYPE="[reinforcement]" # unstable (uses pruning)
   # - TEST="unit" TYPE="[simulator]" # unstable
   - TEST="unit" TYPE="" COVER="YES" # For coveralls, will take longer than the others
 
