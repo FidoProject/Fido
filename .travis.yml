@@ -5,7 +5,7 @@ language: cpp
 compiler: gcc
 
 env:
-  - TEST="valgrind" # commented out until you finish the simulator code
+  # - TEST="valgrind" # commented out until you finish the simulator code
   - TEST="unit" TYPE="[network]"
   - TEST="unit" TYPE="[backprop]"
   - TEST="unit" TYPE="[adadelta]"
