@@ -18,7 +18,7 @@ env:
 before_install:
   # Coveralls
   - if [[ "$COVER" == "YES" ]]; then pip install --user cpp-coveralls; fi
-  - if [[ "$COVER" == "YES" ]]; then rm tests/pruning.cpp; rm tests/simulator.cpp; fi # Remove pruning test
+  - if [[ "$COVER" == "YES" ]]; then rm tests/pruning.cpp; rm tests/simulator.cpp; rm tests/reinforcment.cpp; fi # Remove pruning test
 
 
   # Valgrind
