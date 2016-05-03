@@ -105,3 +105,7 @@ double QLearn::getHighestReward(State state) {
 	std::vector<double> rewards = getModelRewards(state);
 	return *std::max_element(rewards.begin(), rewards.end());
 }
+
+void QLearn::store(std::ofstream *output) {
+	*output << "QLearn ";
+}

@@ -23,6 +23,8 @@ namespace net {
 		 */
 		Adadelta(double rho_, double targetErrorLevel_, int maximumEpochs_);
 
+		Adadelta(std::ifstream *in);
+
 		/**
 		 * \brief Stores an Adadelta object using specified ofstream.
 		 *
@@ -30,8 +32,11 @@ namespace net {
 		**/
 		void store(std::ofstream *output);
 
+		/** Initializes the parameters of an Trainer from a file. Returns false if the interpolator stored in the file is not the correct type */
 		bool initFromStream(std::ifstream *in);
 
+		double targetErrorLevel; /**< The target error level, set by constructor */
+		int maximumEpochs; /**< The maximum number of epochs for one training run, set by constructor */
     double rho; /**< the decay rate of the system, set by constructor */
 		double epsilon; /**< a very small number used for root mean square calculations */
 

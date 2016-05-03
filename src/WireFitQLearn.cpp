@@ -117,7 +117,7 @@ void WireFitQLearn::reset() {
 
 void WireFitQLearn::store(std::ofstream *output) {
 	if(output->is_open()) {
-		*output << learningRate << " " << devaluationFactor << "\n";
+		*output << "WireFitQLearn " << learningRate << " " << devaluationFactor << "\n";
 		*output << actionDimensions << " " << numberOfWires << "\n";
 		*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations <<  " " << baseOfDimensions << "\n";
 

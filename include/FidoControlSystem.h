@@ -39,6 +39,8 @@ namespace rl {
 
 	protected:
 
+		void store(std::ofstream *output);
+
 		struct History {
 			State initialState, newState;
 			Action action;
