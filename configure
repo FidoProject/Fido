@@ -21,8 +21,7 @@ do
 		rm -r include/Simulator
 		rm tests/simulator.cpp
 	elif [[ "$var" == "--enable-GCOV" ]]; then
-		COVER=YES
-		export COVER
+		export COVER=YES
 	else
 		help
 	fi
