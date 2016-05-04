@@ -59,4 +59,4 @@ after_success:
   - if [[ "$COVER" == "YES" ]]; then lcov --directory . --capture --output-file coverage.info; fi # capture coverage info
   - if [[ "$COVER" == "YES" ]]; then lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info; fi # filter out system and test code
   - if [[ "$COVER" == "YES" ]]; then lcov --list coverage.info; fi # debug before upload
-  - if [[ "$COVER" == "YES" ]]; then coveralls-lcov --repo-token ${COVERALLS_TOKEN} coverage.info; fi # uploads to coveral
+  - if [[ "$COVER" == "YES" ]]; then coveralls-lcov coverage.info; fi # uploads to coveral
