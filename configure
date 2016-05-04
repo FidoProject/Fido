@@ -5,7 +5,7 @@ set -e # to quit on errors
 function help {
 	echo "Usage: ./configure --argument"
 	echo "Available Arguments:"
-	echo "	-noSFML"
+	echo "	--noSFML"
 	echo "	Remove files which use SFML"
 	echo ""
 	echo "	--enable-GCOV"
