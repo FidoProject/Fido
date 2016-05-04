@@ -2,14 +2,28 @@
 set -e # to quit on errors
 # This script will install the fido compiler and library on a Unix based system.
 
+function help {
+	echo "Usage: ./configure --argument"
+	echo "Available Arguments:"
+	echo "	-noSFML"
+	echo "	Remove files which use SFML"
+	echo ""
+	echo "	--enable-GCOV"
+	echo "	Add GCOV to compilations"
+}
+
+if [[ "$#" == "0" ]]; then help; fi
+
 for var in "$@"
 do
-	if [[ "$var" == "-noSFML" ]]; then
+	if [[ "$var" == "--noSFML" ]]; then
 		rm -r src/Simulator
 		rm -r include/Simulator
 		rm tests/simulator.cpp
 	elif [[ "$var" == "--enable-GCOV" ]]; then
 		COVER=YES
 		export COVER
+	else
+		help
 	fi
 done
