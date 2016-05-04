@@ -17,13 +17,9 @@ env:
 
 before_install:
   # Coveralls
+  - if [[ "$COVER" == "YES" ]]; then pip install --user cpp-coveralls; fi
   - if [[ "$COVER" == "YES" ]]; then rm tests/pruning.cpp; rm tests/simulator.cpp; rm tests/reinforcement.cpp; fi # Remove pruning test
 
-  - if [[ "$COVER" == "YES" ]]; then wget http://ftp.de.debian.org/debian/pool/main/l/lcov/lcov_1.11.orig.tar.gz; fi
-  - if [[ "$COVER" == "YES" ]]; then tar xf lcov_1.11.orig.tar.gz; fi
-  - if [[ "$COVER" == "YES" ]]; then sudo make -C lcov-1.11/ install; fi
-# install lcov to coveralls conversion + upload tool
-  - if [[ "$COVER" == "YES" ]]; then gem install coveralls-lcov; fi
 
   # Valgrind
   - if [[ "$TEST" == "valgrind" ]]; then sudo apt-get install valgrind; fi
@@ -43,8 +39,6 @@ install:
   - sudo apt-get install -qq libstdc++6-4.7-dev
   - export CXXFLAGS="-std=c++0x"
   - export CXX="g++-4.8"
-  - cd ~/build/FidoProject/Fido
-  - if [[ "$COVER" == "YES" ]]; then lcov --directory . --zerocounters; fi
 
 script:
   # Build
@@ -56,7 +50,4 @@ script:
   - if [[ "$TEST" == "valgrind" ]]; then cd tests/; make; mkdir -p temp; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
 
 after_success:
-  - if [[ "$COVER" == "YES" ]]; then lcov --directory . --capture --output-file coverage.info; fi # capture coverage info
-  - if [[ "$COVER" == "YES" ]]; then lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info; fi # filter out system and test code
-  - if [[ "$COVER" == "YES" ]]; then lcov --list coverage.info; fi # debug before upload
-  - if [[ "$COVER" == "YES" ]]; then coveralls-lcov coverage.info; fi # uploads to coveral
+  if [[ "$COVER" == "YES" ]]; then coveralls --exclude tests --exclude bin --exclude docs --exclude examples --gcov-options '\-lp \-o bin'; fi
