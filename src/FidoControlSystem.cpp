@@ -51,11 +51,11 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 				}
 			}
 
-			double totalCurrentError = trainOnHistories(selectedHistories, 0.001, 5);
+			double totalCurrentError = trainOnHistories(selectedHistories, 0.001, 1);
 
 			if(network->numberOfHiddenNeurons() > 4) {
 				pruner.pruneRandomnly(network);
-				double totalPrunedError = trainOnHistories(selectedHistories, 0.001, 5);
+				double totalPrunedError = trainOnHistories(selectedHistories, 0.001, 1);
 				if(totalPrunedError*1.05 < totalCurrentError) {
 					didChange = true;
 					continue;
@@ -68,7 +68,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 				n.weights.push_back(1);
 				n.randomizeWeights();
 			}
-			double totalAddedError = trainOnHistories(selectedHistories, 0.001, 5);
+			double totalAddedError = trainOnHistories(selectedHistories, 0.001, 1);
 			if(totalAddedError*1.05 < totalCurrentError) {
 				didChange = true;
 				continue;
