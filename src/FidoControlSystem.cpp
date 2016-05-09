@@ -51,11 +51,11 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 				}
 			}
 
-			double totalCurrentError = trainOnHistories(selectedHistories, 0.001, 5);
+			double totalCurrentError = trainOnHistories(selectedHistories, 0.001, 1);
 
 			if(network->numberOfHiddenNeurons() > 4) {
 				pruner.pruneRandomnly(network);
-				double totalPrunedError = trainOnHistories(selectedHistories, 0.001, 5);
+				double totalPrunedError = trainOnHistories(selectedHistories, 0.001, 1);
 				if(totalPrunedError*1.05 < totalCurrentError) {
 					didChange = true;
 					continue;
@@ -68,7 +68,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 				n.weights.push_back(1);
 				n.randomizeWeights();
 			}
-			double totalAddedError = trainOnHistories(selectedHistories, 0.001, 5);
+			double totalAddedError = trainOnHistories(selectedHistories, 0.001, 1);
 			if(totalAddedError*1.05 < totalCurrentError) {
 				didChange = true;
 				continue;
@@ -120,7 +120,7 @@ double FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::Histor
 			Wire correctHistoryWire = {history.action, newRewardForLastAction};
 			std::vector<Wire> newContolWires = newControlWires(correctHistoryWire, historyControlWires);
 
-			input.push_back(history.newState);
+			input.push_back(history.initialState);
 			correctOutput.push_back(getRawOutput(newContolWires));
 
 			tempTrainer.train(network, {input.back()}, {correctOutput.back()});
@@ -153,30 +153,7 @@ void FidoControlSystem::adjustExploration(double uncertainty) {
 }
 
 std::vector<FidoControlSystem::History> FidoControlSystem::selectHistories() {
-	std::vector<History> selectedHistories;
-	std::vector<History> tempHistories(histories);
-	while(selectedHistories.size() < samplesOfHistory && tempHistories.size() > 0) {
-		History bestHistory = *(tempHistories.end()-1);
-		/*double maxDifference = DBL_MIN;
-		for(History prospectiveHistory : tempHistories) {
-			double difference = 0;
-			for(History selectedHistory : selectedHistories) {
-				for(unsigned int stateIndex = 0; stateIndex < selectedHistory.initialState.size(); stateIndex++) {
-					difference += pow(prospectiveHistory.initialState[stateIndex] - selectedHistory.initialState[stateIndex], 2);
-				}
-			}
-
-			if(difference > maxDifference) {
-				maxDifference = difference;
-				bestHistory = prospectiveHistory;
-			}
-		}*/
-
-		selectedHistories.push_back(bestHistory);
-		tempHistories.erase(std::remove(tempHistories.begin(), tempHistories.end(), bestHistory), tempHistories.end());
-	}
-
-	return selectedHistories;
+	return histories;
 }
 
 std::vector<Wire> FidoControlSystem::newControlWiresForHistory(History history) {
