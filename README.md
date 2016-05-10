@@ -2,7 +2,6 @@
 
 [![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/FidoProject/Fido.svg?branch=master)](https://travis-ci.org/FidoProject/Fido/)
-[![Coverage Status](https://coveralls.io/repos/github/FidoProject/Fido/badge.svg)](https://coveralls.io/github/FidoProject/Fido)
 
 Fido is an lightweight, highly modular C++ machine learning library for embedded electronics and robotics. Fido is especially suited for robotic and embedded contexts, as it is written in C++ with minimal use of the standard library, comes packaged with a robotic simulator, and provides and easy interface in which to write robotic drivers.
 
