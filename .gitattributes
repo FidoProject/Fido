@@ -1,1 +1,7 @@
 catch.h linguist-vendored
+
+## Exclude from release
+tests/ export-ignore
+docs/ export-ignore
+.travis.yml export-ignore
+runtests.sh export-ignore
