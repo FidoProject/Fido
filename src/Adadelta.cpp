@@ -13,6 +13,10 @@ Adadelta::Adadelta(double rho_, double targetErrorLevel_, int maximumEpochs_) : 
   epsilon = 0.000001;
 }
 
+Adadelta::Adadelta(std::ifstream *in) {
+	initFromStream(in);
+}
+
 double Adadelta::getChangeInWeight(double weight, int layerIndex, int neuronIndex, int weightIndex) {
   double grad = gradients.back()[layerIndex][neuronIndex][weightIndex];
   accumulatedGradients[layerIndex][neuronIndex][weightIndex] = rho*accumulatedGradients[layerIndex][neuronIndex][weightIndex] + (1.0-rho)*grad*grad;
@@ -44,6 +48,24 @@ bool Adadelta::initFromStream(std::ifstream *in) {
 	}
 }
 
+void Adadelta::store(std::ofstream *output) {
+	*output << "Adadelta " << targetErrorLevel << " " << maximumEpochs << " " << rho << " " << epsilon;
+}
+
+bool Adadelta::initFromStream(std::ifstream *in) {
+	if(in->is_open()) {
+		std::string name;
+		*in >> name;
+		if (name != "Adadelta") {
+			return false;
+		}
+		*in >> targetErrorLevel >> maximumEpochs >> rho >> epsilon;
+		return true;
+	} else {
+		std::cout << "Could not retrieve backprop from file\n";
+		throw 1;
+	}
+}
 void Adadelta::resetNetworkVectors(net::NeuralNet *network) {
   SGDTrainer::resetNetworkVectors(network);
 

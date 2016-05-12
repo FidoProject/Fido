@@ -27,10 +27,24 @@ Backpropagation::Backpropagation(std::ifstream *input) {
 	initFromStream(input);
 }
 
+bool Backpropagation::initFromStream(std::ifstream *in) {
+	if(in->is_open()) {
+		std::string name;
+		*in >> name;
+		if (name != "BackProp") {
+			return false;
+		}
+		*in >> learningRate >> momentumTerm >> targetErrorLevel >> maximumEpochs;
+		return true;
+	} else {
+		std::cout << "Could not retrieve backprop from file\n";
+		throw 1;
+	}
+}
+
 void Backpropagation::store(std::ofstream *output) {
 	if(output->is_open()) {
-		SGDTrainer::store(output);
-		*output << learningRate << " " << momentumTerm << "\n";
+		*output << "BackProp " << learningRate << " " << momentumTerm << "\n";
 	} else {
 		std::cout << "Could not store backprop\n";
 		throw 1;

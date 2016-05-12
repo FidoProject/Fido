@@ -21,8 +21,10 @@ namespace net {
 		 * \param input a vector of neural network inputs; each element in input, should have a corresponding output in correctOutput
 		 * \param correctOutput network is trained to output an element of correctOutput when fed a corresponding element of the input vector
 		 */
-		virtual double train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) = 0;
+		virtual void train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) = 0;
 
+		/** Initializes the parameters of an Trainer from a file. Returns false if the interpolator stored in the file is not the correct type */
+		virtual bool initFromStream(std::ifstream *in) = 0;
 		/**
 		 * \brief Stores a Trainer object using specified stream.
 		 *
@@ -30,22 +32,9 @@ namespace net {
 		**/
 		virtual void store(std::ofstream *output) = 0;
 
-		std::vector< std::vector< std::vector< std::vector<double> > > > getGradients() {
-			return gradients;
-		};
-		std::vector< std::vector< std::vector< std::vector<double> > > > getWeightChanges() {
-			return weightChanges;
-		};
-		std::vector< std::vector< std::vector<double> > > getInitialWeights() {
-			return initialWeights;
-		};
-		std::vector< std::vector< std::vector<double> > > getFinalWeights() {
-			return finalWeights;
-		};
+		static Trainer * create(std::istream& istr) {
 
-	protected:
-		std::vector< std::vector< std::vector< std::vector<double> > > > gradients, weightChanges;
-		std::vector< std::vector< std::vector<double> > > initialWeights, finalWeights;
+		}
 	};
 }
 
