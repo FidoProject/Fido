@@ -22,6 +22,7 @@ do
 		rm tests/simulator.cpp
 	elif [[ "$var" == "--enable-GCOV" ]]; then
 		export COVER=YES
+		eval $SHELL --login -i
 	else
 		help
 	fi
