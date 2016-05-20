@@ -4,7 +4,7 @@
 #include "catch.h"
 #include "../include/NeuralNet.h"
 
-inline bool operator==(const std::vector<double>& lhs, const std::vector<double>& rhs){
+bool approximateVectorCompare(const std::vector<double>& lhs, const std::vector<double>& rhs){
 	if(lhs.size() != rhs.size()) {
 		return false;
 	}
@@ -77,8 +77,8 @@ TEST_CASE("Neural Network Storing", "[network]") {
 		net::NeuralNet fileNet = net::NeuralNet(&istream); // load new
 		istream.close();
 
-		REQUIRE(fileNet.getWeights() == oldWeights);
-		REQUIRE(fileNet.getOutput(input) == oldOutput);
+		REQUIRE(approximateVectorCompare(fileNet.getWeights(), oldWeights));
+		REQUIRE(approximateVectorCompare(fileNet.getOutput(input), oldOutput));
 
 		std::vector< std::vector< std::vector<double> > > newWeights3d = fileNet.getWeights3D();
 		for(int a = 0; a < oldWeights3d.size(); a++) {
@@ -99,8 +99,8 @@ TEST_CASE("Neural Network Copying", "[network]") {
 	net::NeuralNet newNet = net::NeuralNet(network);
 
 	SECTION("Different weights") {
-		REQUIRE(newNet.getWeights() == oldWeights);
-		REQUIRE(newNet.getOutput(input) == oldOutput);
+		REQUIRE(approximateVectorCompare(newNet.getWeights(), oldWeights));
+		REQUIRE(approximateVectorCompare(newNet.getOutput(input), oldOutput));
 
 		std::vector< std::vector< std::vector<double> > > newWeights3d = network.getWeights3D();
 		for(int a = 0; a < oldWeights3d.size(); a++) {
