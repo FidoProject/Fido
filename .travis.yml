@@ -5,18 +5,11 @@ language: cpp
 compiler: gcc
 
 env:
-  - TEST="unit" TYPE="[network]"
-  - TEST="unit" TYPE="[backprop]"
+  - TEST="unit"
 
 before_install:
   # Valgrind
   - if [[ "$TEST" == "valgrind" ]]; then sudo apt-get install valgrind; fi
-
-  # SFML
-  - wget http://sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2 -O /tmp/sfml.tar.bz2
-  - tar -xjvf /tmp/sfml.tar.bz2
-  - sudo cp -r SFML-2.1/* /usr/
-  - sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1
 
   # g++4.8.1
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -32,7 +25,9 @@ script:
   # Build
   - cd ~/build/FidoProject/Fido
   - make && sudo make install
+
   # Run Unit Tests
-  - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh $TYPE; fi
+  - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh; fi
+
   # Run Valgrind on unit tests
   - if [[ "$TEST" == "valgrind" ]]; then cd tests/; make; mkdir -p temp; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
