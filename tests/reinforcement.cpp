@@ -9,7 +9,7 @@
 #include "../include/LSInterpolator.h"
 
 static const unsigned int NUM_TRIALS_FIDO = 50;
-static const unsigned int NUM_TRIALS_QLEARN = 30;
+static const unsigned int NUM_TRIALS_QLEARN = 300;
 static const unsigned int NUM_TRIALS_WIREFIT = 200;
 static const double PERCENT_CORRECT = 0.70;
 
