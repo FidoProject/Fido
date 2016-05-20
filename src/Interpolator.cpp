@@ -1,5 +1,6 @@
 #include "../include/Interpolator.h"
 
+#include <assert.h>
 #include <iostream>
 
 #include "../include/LSInterpolator.h"
@@ -16,7 +17,5 @@ Interpolator * Interpolator::getAnyInterpolatorFromFile(std::ifstream *in) {
 	}
 	delete interpolator;
 	in->seekg(placeInFile);
-
-	std::cout << "Could not get any interpolator from file\n";
-	throw 1;
+	assert(false);
 };

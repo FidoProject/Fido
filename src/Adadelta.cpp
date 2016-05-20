@@ -6,6 +6,8 @@
 
 #include "../include/NeuralNet.h"
 
+#include <assert.h>
+
 using namespace net;
 
 Adadelta::Adadelta(double rho_, double targetErrorLevel_, int maximumEpochs_) : SGDTrainer(targetErrorLevel_, maximumEpochs_) {
@@ -24,13 +26,9 @@ double Adadelta::getChangeInWeight(double weight, int layerIndex, int neuronInde
 }
 
 void Adadelta::store(std::ofstream *output) {
-  if(output->is_open()) {
-		SGDTrainer::store(output);
-		*output << rho << " " << epsilon << "\n";
-	} else {
-		std::cout << "Could not store backprop\n";
-		throw 1;
-	}
+  assert(output->is_open());
+	SGDTrainer::store(output);
+	*output << rho << " " << epsilon << "\n";
 }
 
 bool Adadelta::initFromStream(std::ifstream *in) {

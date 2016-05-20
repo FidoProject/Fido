@@ -1,5 +1,6 @@
 #include "../include/WireFitQLearn.h"
 
+#include <assert.h>
 #include <random>
 #include <iostream>
 #include <thread>
@@ -17,14 +18,8 @@ using namespace rl;
 
 WireFitQLearn::WireFitQLearn(unsigned int stateDimensions, unsigned int actionDimensions_, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, unsigned int numberOfWires_, Action minAction_, Action maxAction_, unsigned int baseOfDimensions_, Interpolator *interpolator_, net::Trainer *trainer_, double learningRate_, double devaluationFactor_) {
 
-	if(minAction_.size() != actionDimensions_) {
-		std::cout << "Min action does not have same dimensions as action dimensions parameter!\n"; std::cout.flush();
-		throw 1;
-	}
-	if(maxAction_.size() != actionDimensions_) {
-		std::cout << "Max action does not have same dimensions as action dimensions parameter!\n"; std::cout.flush();
-		throw 1;
-	}
+	assert(minAction_.size() == actionDimensions_);
+	assert(maxAction_.size() == actionDimensions_);
 
 	trainer = trainer_;
 	learningRate = learningRate_;
@@ -116,24 +111,20 @@ void WireFitQLearn::reset() {
 }
 
 void WireFitQLearn::store(std::ofstream *output) {
-	if(output->is_open()) {
-		*output << learningRate << " " << devaluationFactor << "\n";
-		*output << actionDimensions << " " << numberOfWires << "\n";
-		*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations <<  " " << baseOfDimensions << "\n";
+	assert(output->is_open());
+	*output << learningRate << " " << devaluationFactor << "\n";
+	*output << actionDimensions << " " << numberOfWires << "\n";
+	*output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations <<  " " << baseOfDimensions << "\n";
 
-		for(unsigned int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
-		for(unsigned int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
-		for(unsigned int a = 0; a < lastAction.size(); a++) *output << lastAction[a] << " ";
+	for(unsigned int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
+	for(unsigned int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
+	for(unsigned int a = 0; a < lastAction.size(); a++) *output << lastAction[a] << " ";
 
-		trainer->store(output);
-		interpolator->store(output);
-		network->store(output);
+	trainer->store(output);
+	interpolator->store(output);
+	network->store(output);
 
-		output->close();
-	} else {
-		std::cout << "Could not store wirefitqlearn in file\n";
-		throw 1;
-	}
+	output->close();
 }
 
 std::vector<Wire> WireFitQLearn::getWires(State state) {
@@ -154,13 +145,9 @@ std::vector<Wire> WireFitQLearn::getWires(State state) {
 	return wires;
 }
 
-std::vector<Wire> WireFitQLearn::getSetOfWires(const State &state,
-	int baseOfDimensions) {
+std::vector<Wire> WireFitQLearn::getSetOfWires(const State &state, int baseOfDimensions) {
 
-	if (baseOfDimensions <= 1) {
-		std::cout << "Value of baseOfDimensions is too small\n";
-		throw 1;
-	}
+	assert(baseOfDimensions > 1);
 
 	std::vector<Wire> controlWires = getWires(state);
 
@@ -268,7 +255,6 @@ std::vector<Wire> WireFitQLearn::newControlWires(const Wire &correctWire, std::v
 	} while(error > controlPointsGDErrorTarget && iterations < controlPointsGDMaxIterations);
 
 	return controlWires;
-
 }
 
 std::vector<Wire> WireFitQLearn::newControlWires(const std::vector<Wire> &correctWires, std::vector<Wire> controlWires) {
