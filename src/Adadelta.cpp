@@ -1,12 +1,10 @@
 #include "../include/Adadelta.h"
 
 #include <climits>
-#include <cassert>
 #include <algorithm>
+#include <assert.h>
 
 #include "../include/NeuralNet.h"
-
-#include <assert.h>
 
 using namespace net;
 
@@ -31,15 +29,10 @@ void Adadelta::store(std::ofstream *output) {
 	*output << rho << " " << epsilon << "\n";
 }
 
-bool Adadelta::initFromStream(std::ifstream *in) {
-  if(in->is_open()) {
-		assert(SGDTrainer::initFromStream(in) == true);
-		*in >> rho >> epsilon;
-		return true;
-	} else {
-		std::cout << "Could not retrieve sgdtrainer from file\n";
-		throw 1;
-	}
+void Adadelta::initFromStream(std::ifstream *in) {
+  assert(in->is_open()) {
+  SGDTrainer::initFromStream(in);
+  *in >> rho >> epsilon;
 }
 
 void Adadelta::resetNetworkVectors(net::NeuralNet *network) {
