@@ -20,7 +20,7 @@ void Neuron::randomizeWeights() {
 }
 
 double Neuron::getOutput(std::vector<double> inputs) {
-	assert(inputs.size() != weights.size() - 1);
+	assert(inputs.size() == weights.size() - 1);
 	double returnNumber = 0;
 	for(unsigned int a = 0; a < inputs.size(); a++) returnNumber += inputs[a]*weights[a];
 	returnNumber += -1 * weights[weights.size()-1];

@@ -30,7 +30,7 @@ Layer::Layer(std::ifstream *input) {
 void Layer::setActivationFunctionWithName(std::string name) {
 	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
 	std::map<std::string, ActivationFunction>::iterator nameIterator = nameMap.find(name);
-	assert(nameIterator == nameMap.end());
+	assert(nameIterator != nameMap.end());
 	activationFunction = getActivationFunctionNameMap()[name];
 }
 
