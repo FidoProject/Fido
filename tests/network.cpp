@@ -83,6 +83,7 @@ TEST_CASE("Neural Network Storing", "[network]") {
 		std::vector< std::vector< std::vector<double> > > newWeights3d = fileNet.getWeights3D();
 		for(int a = 0; a < oldWeights3d.size(); a++) {
 			for(int b = 0; b < oldWeights3d[a].size(); b++) {
+				std::cout << "a: " << a << "; b: " << b << "\n";
 				REQUIRE(approximateVectorCompare(newWeights3d[a][b], oldWeights3d[a][b]));
 			}
 		}
