@@ -109,8 +109,7 @@ void SGDTrainer::store(std::ofstream *out) {
 	*out << targetErrorLevel << " " << maximumEpochs << "\n";
 }
 
-bool SGDTrainer::initFromStream(std::ifstream *in) {
+void SGDTrainer::initFromStream(std::ifstream *in) {
   assert(in->is_open());
 	*in >> targetErrorLevel >> maximumEpochs;
-	return true;
 }
