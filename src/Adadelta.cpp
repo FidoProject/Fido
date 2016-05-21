@@ -30,7 +30,7 @@ void Adadelta::store(std::ofstream *output) {
 }
 
 void Adadelta::initFromStream(std::ifstream *in) {
-  assert(in->is_open()) {
+  assert(in->is_open());
   SGDTrainer::initFromStream(in);
   *in >> rho >> epsilon;
 }
