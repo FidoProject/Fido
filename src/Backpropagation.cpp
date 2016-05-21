@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cassert>
+#include <assert.h>
 
 #include "../include/NeuralNet.h"
 
@@ -28,24 +28,15 @@ Backpropagation::Backpropagation(std::ifstream *input) {
 }
 
 void Backpropagation::store(std::ofstream *output) {
-	if(output->is_open()) {
-		SGDTrainer::store(output);
-		*output << learningRate << " " << momentumTerm << "\n";
-	} else {
-		std::cout << "Could not store backprop\n";
-		throw 1;
-	}
+	assert(output->is_open());
+	SGDTrainer::store(output);
+	*output << learningRate << " " << momentumTerm << "\n";
 }
 
-bool Backpropagation::initFromStream(std::ifstream *in) {
-  if(in->is_open()) {
-		assert(SGDTrainer::initFromStream(in) == true);
-		*in >> learningRate >> momentumTerm;
-		return true;
-	} else {
-		std::cout << "Could not retrieve sgdtrainer from file\n";
-		throw 1;
-	}
+void Backpropagation::initFromStream(std::ifstream *in) {
+  assert(in->is_open());
+	SGDTrainer::initFromStream(in);
+	*in >> learningRate >> momentumTerm;
 }
 
 double Backpropagation::getChangeInWeight(double weight, int layerIndex, int neuronIndex, int weightIndex) {

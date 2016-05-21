@@ -1,5 +1,6 @@
 #include "../include/LSInterpolator.h"
 
+#include <assert.h>
 #include <string>
 #include <iostream>
 #include <math.h>
@@ -20,14 +21,8 @@ LSInterpolator::LSInterpolator(double smoothingFactor_, double e_) {
 
 bool LSInterpolator::initFromStream(std::ifstream *in) {
 	std::string name;
-	if (!(*in >> name)) {
-		std::cout << "Interpolator could not read ifstrem\n";
-		throw 1;
-	}
-
-	if (name != "LS") {
-		return false;
-	}
+	assert(*in >> name);
+	assert(name == "LS");
 
 	*in >> smoothingFactor >> e;
 	return true;

@@ -57,7 +57,7 @@ namespace net {
 
 		void store(std::ofstream *out);
 
-		bool initFromStream(std::ifstream *in);
+		void initFromStream(std::ifstream *in);
 
 
 		double targetErrorLevel; /**< The target error level, set by constructor */

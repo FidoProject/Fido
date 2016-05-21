@@ -1,6 +1,5 @@
 #include "../include/FidoControlSystem.h"
 
-#include <cassert>
 #include <float.h>
 #include <algorithm>
 

@@ -1,5 +1,6 @@
 #include "../include/GeneticAlgo.h"
 
+#include <assert.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,8 +81,7 @@ net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
 			return population[a];
 		}
 	}
-	std::cout << "There was an error in selecting a network based on fitness\n";
-	throw 1;
+	assert(false);
 }
 
 void GeneticAlgo::createNextGeneration() {
@@ -131,8 +131,5 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
 
 void GeneticAlgo::getPopulationFitness() {
 	fitnesses = userProvidedGetPopulationFitness(population);
-	if(fitnesses.size() != population.size()) {
-		std::cout << "Incorrectly sized fitness vector was returned from your getPopulationFitness function!\n";
-		throw 1;
-	}
+	assert(fitnesses.size() == population.size());
 }
