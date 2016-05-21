@@ -10,14 +10,14 @@
 
 static const unsigned int NUM_TRIALS_FIDO = 50;
 static const unsigned int NUM_TRIALS_QLEARN = 300;
-static const unsigned int NUM_TRIALS_WIREFIT = 300;
-static const double PERCENT_CORRECT = 0.65;
+static const unsigned int NUM_TRIALS_WIREFIT = 600;
+static const double PERCENT_CORRECT = 0.6;
 
 void train(rl::Learner *learner, int trials) {
 	int correct = 0;
 	int selector;
 
-	int testingTrials = trials / 10.0;
+	int testingTrials = trials / 4.0;
 	for(unsigned int a = 0; a < trials; a++) {
     selector = rand() % 2;
     int action = (int)learner->chooseBoltzmanAction({(double)selector}, 100)[0];
