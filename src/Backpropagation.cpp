@@ -35,7 +35,7 @@ void Backpropagation::store(std::ofstream *output) {
 
 void Backpropagation::initFromStream(std::ifstream *in) {
   assert(in->is_open());
-	assert(SGDTrainer::initFromStream(in) == true);
+	SGDTrainer::initFromStream(in);
 	*in >> learningRate >> momentumTerm;
 }
 
