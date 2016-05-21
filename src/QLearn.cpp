@@ -41,7 +41,6 @@ Action QLearn::chooseBestAction(State currentState) {
 
 Action QLearn::chooseBoltzmanAction(State currentState, double explorationConstant) {
 	if(explorationConstant < 0.01) {
-		std::cout << "Exploration constant (" << explorationConstant << ") is below 0.01. This is too low!. Will cause integer over flow. Assuming an explorationConstant of 0.01 instead.\n";
 		explorationConstant = 0.01;
 	}
 

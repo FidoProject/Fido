@@ -10,22 +10,27 @@
 
 static const unsigned int NUM_TRIALS_FIDO = 50;
 static const unsigned int NUM_TRIALS_QLEARN = 300;
-static const unsigned int NUM_TRIALS_WIREFIT = 200;
-static const double PERCENT_CORRECT = 0.70;
+static const unsigned int NUM_TRIALS_WIREFIT = 300;
+static const double PERCENT_CORRECT = 0.65;
 
 void train(rl::Learner *learner, int trials) {
 	int correct = 0;
 	int selector;
+
+	int testingTrials = trials / 10.0;
 	for(unsigned int a = 0; a < trials; a++) {
     selector = rand() % 2;
     int action = (int)learner->chooseBoltzmanAction({(double)selector}, 100)[0];
     learner->applyReinforcementToLastAction((1 - 2*fabs(action-selector)) / 3.0, {(double)selector});
 
-		if((int)learner->chooseBoltzmanAction({0}, 0)[0] == 0) correct++; if((int)learner->chooseBoltzmanAction({1}, 0)[0] == 1) correct++;
+		if(trials - testingTrials <= a) {
+			if((int)learner->chooseBoltzmanAction({0}, 0)[0] == 0) correct++;
+			if((int)learner->chooseBoltzmanAction({1}, 0)[0] == 1) correct++;
+		}
   }
 
 	std::cout << "Last selector: " << selector << "\n";
-	REQUIRE(correct / double(trials*2) > PERCENT_CORRECT);
+	REQUIRE(correct / double(testingTrials*2) > PERCENT_CORRECT);
 }
 
 TEST_CASE("QLearn ", "[reinforcement]") {

@@ -21,13 +21,16 @@ std::vector<double> getPopulationFitness(const std::vector<net::NeuralNet> &popu
   return fitnesses;
 }
 
-TEST_CASE("Test genetic algorithms on linear regression", "[exploration]") {
+TEST_CASE("Test genetic algorithms on linear regression", "[genetic]") {
   srand(time(NULL));
   gen::GeneticAlgo geneticAlgo = gen::GeneticAlgo(20, 0.4, 0.5, 10, getPopulationFitness);
 	net::NeuralNet modelNetwork = net::NeuralNet(1, 1, 1, 4, "simpleLinear");
   net::NeuralNet bestNetwork = geneticAlgo.getBestNeuralNetwork(600, modelNetwork);
 
+  double totalError = 0;
   for(unsigned int inputIndex = 0; inputIndex < input.size(); inputIndex++) {
-    REQUIRE(fabs(correctOutput[inputIndex][0] - bestNetwork.getOutput(input[inputIndex])[0]) < acceptableError);
+    totalError += fabs(correctOutput[inputIndex][0] - bestNetwork.getOutput(input[inputIndex])[0]);
   }
+
+  REQUIRE(totalError / double(input.size()) < acceptableError);
 }
