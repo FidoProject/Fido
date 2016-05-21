@@ -30,7 +30,7 @@ namespace net {
 		**/
 		void store(std::ofstream *output);
 
-		bool initFromStream(std::ifstream *in);
+		void initFromStream(std::ifstream *in);
 
     double rho; /**< the decay rate of the system, set by constructor */
 		double epsilon; /**< a very small number used for root mean square calculations */

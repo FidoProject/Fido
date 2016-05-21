@@ -1,5 +1,7 @@
 #include "../include/Layer.h"
 
+#include <assert.h>
+
 using namespace net;
 
 Layer::Layer() {
@@ -28,19 +30,14 @@ Layer::Layer(std::ifstream *input) {
 void Layer::setActivationFunctionWithName(std::string name) {
 	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
 	std::map<std::string, ActivationFunction>::iterator nameIterator = nameMap.find(name);
-	if(nameIterator != nameMap.end()) {
-		activationFunction = getActivationFunctionNameMap()[name];
-	} else {
-		std::cout << "The activation function \"" << name << "\" does not exist! Throwing error!\n";
-		throw 1;
-	}
+	assert(nameIterator != nameMap.end());
+	activationFunction = getActivationFunctionNameMap()[name];
 }
 
 std::string Layer::getActivationFunctionName() {
 	std::map<std::string, ActivationFunction> nameMap = getActivationFunctionNameMap();
 	for (std::map<std::string, ActivationFunction>::iterator a = nameMap.begin(); a != nameMap.end(); ++a) if (a->second == activationFunction) return a->first;
-
-	throw 1;
+	assert(false);
 }
 
 void Layer::store(std::ofstream *output) {

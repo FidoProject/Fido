@@ -1,5 +1,6 @@
 #include "../include/SGDTrainer.h"
 
+#include <assert.h>
 #include <chrono>
 #include <thread>
 #include <iostream>
@@ -104,20 +105,11 @@ void SGDTrainer::resetNetworkVectors(net::NeuralNet *network) {
 
 
 void SGDTrainer::store(std::ofstream *out) {
-  if(out->is_open()) {
-		*out << targetErrorLevel << " " << maximumEpochs << "\n";
-	} else {
-		std::cout << "Could not store sgdtrainer in file\n";
-		throw 1;
-	}
+  assert(out->is_open());
+	*out << targetErrorLevel << " " << maximumEpochs << "\n";
 }
 
-bool SGDTrainer::initFromStream(std::ifstream *in) {
-  if(in->is_open()) {
-		*in >> targetErrorLevel >> maximumEpochs;
-		return true;
-	} else {
-		std::cout << "Could not retrieve sgdtrainer from file\n";
-		throw 1;
-	}
+void SGDTrainer::initFromStream(std::ifstream *in) {
+  assert(in->is_open());
+	*in >> targetErrorLevel >> maximumEpochs;
 }

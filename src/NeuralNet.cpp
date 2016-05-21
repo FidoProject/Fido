@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include <assert.h>
 #include <sstream>
 #include <vector>
 #include <math.h>
@@ -39,28 +40,20 @@ NeuralNet::NeuralNet(NeuralNet* otherNet) {
 }
 
 NeuralNet::NeuralNet(std::ifstream *input) {
-	if(input->is_open()) {
-		int numLayers;
-		*input >> numLayers;
-		for (int a = 0; a < numLayers; a++) {
-			net.push_back(Layer(input));
-		}
-	} else {
-		std::cout << "Could not retrieve neural network from file\n";
-		throw 1;
+	assert(input->is_open());
+	int numLayers;
+	*input >> numLayers;
+	for (int a = 0; a < numLayers; a++) {
+		net.push_back(Layer(input));
 	}
 }
 
 void NeuralNet::store(std::ofstream *output) {
-	if(output->is_open()) {
-		// Output the net to the file
-		*output << net.size() << "\n";
-		for(unsigned int a = 0; a < net.size(); a++) {
-			net[a].store(output);
-		}
-	} else {
-		std::cout << "Could not store neural network\n";
-		throw 1;
+	assert(output->is_open());
+	// Output the net to the file
+	*output << net.size() << "\n";
+	for(unsigned int a = 0; a < net.size(); a++) {
+		net[a].store(output);
 	}
 }
 
@@ -98,10 +91,7 @@ void NeuralNet::setWeights(std::vector<double> w) {
 			}
 		}
 	}
-	if(counter != w.size()) {
-		std::cout << "Not the right number of weights\n";
-		throw 1;
-	}
+	assert(counter == w.size());
 }
 
 void NeuralNet::setWeights3D(std::vector< std::vector< std::vector<double> > > w) {
@@ -261,14 +251,8 @@ std::string NeuralNet::getOutputActivationFunctionName() {
 }
 
 void NeuralNet::removeNeuron(unsigned int hiddenLayerIndex, unsigned int neuronIndex) {
-	if(hiddenLayerIndex >= numberOfHiddenLayers()) {
-		std::cout << "Impossible hidden layer index\n";
-		throw 1;
-	}
-	if(neuronIndex >= net[hiddenLayerIndex].neurons.size()) {
-		std::cout << "Impossible neuron index\n";
-		throw 1;
-	}
+	assert(hiddenLayerIndex < numberOfHiddenLayers());
+	assert(neuronIndex < net[hiddenLayerIndex].neurons.size());
 	net[hiddenLayerIndex].neurons.erase(net[hiddenLayerIndex].neurons.begin() + neuronIndex);
 	for(unsigned int nextLayerNeuronIndex = 0; nextLayerNeuronIndex < net[hiddenLayerIndex+1].neurons.size(); nextLayerNeuronIndex++) {
 		std::vector<double> &nextLayerWeightsRef = net[hiddenLayerIndex+1].neurons[nextLayerNeuronIndex].weights;
