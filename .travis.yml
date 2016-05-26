@@ -31,3 +31,6 @@ script:
 
   # Run Valgrind on unit tests
   - if [[ "$TEST" == "valgrind" ]]; then cd tests/; make; mkdir -p temp; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
+
+notifications:
+  slack: frclions:LE3sAtc8YdaDewbnX0Kt1u47
