@@ -25,8 +25,8 @@ double Adadelta::getChangeInWeight(double weight, int layerIndex, int neuronInde
 
 void Adadelta::store(std::ofstream *output) {
   assert(output->is_open());
-	SGDTrainer::store(output);
-	*output << rho << " " << epsilon << "\n";
+  SGDTrainer::store(output);
+  *output << rho << " " << epsilon << "\n";
 }
 
 void Adadelta::initFromStream(std::ifstream *in) {
