@@ -12,13 +12,13 @@
 using namespace net;
 
 SGDTrainer::SGDTrainer() {
-  targetErrorLevel = 0.01;
-  maximumEpochs = 10000;
+	targetErrorLevel = 0.01;
+	maximumEpochs = 10000;
 }
 
 SGDTrainer::SGDTrainer(double targetErrorLevel_, int maximumEpochs_) {
-  targetErrorLevel = targetErrorLevel_;
-  maximumEpochs = maximumEpochs_;
+	targetErrorLevel = targetErrorLevel_;
+	maximumEpochs = maximumEpochs_;
 }
 
 double SGDTrainer::train(net::NeuralNet *network, const std::vector< std::vector<double> > &input, const std::vector< std::vector<double> > &correctOutput) {
@@ -31,13 +31,13 @@ double SGDTrainer::train(net::NeuralNet *network, const std::vector< std::vector
 			trainOnDataPoint(network, input[a], correctOutput[a]);
 		}
 
-    totalError = 0;
-    for(unsigned int trialIndex = 0; trialIndex < input.size(); trialIndex++) {
-      std::vector<double> output = network->getOutput(input[trialIndex]);
-    	for(unsigned int outputIndex = 0; outputIndex < output.size(); outputIndex++) {
-    		totalError += pow(correctOutput[trialIndex][outputIndex] - output[outputIndex], 2);
-    	}
-    }
+		totalError = 0;
+		for(unsigned int trialIndex = 0; trialIndex < input.size(); trialIndex++) {
+			std::vector<double> output = network->getOutput(input[trialIndex]);
+			for(unsigned int outputIndex = 0; outputIndex < output.size(); outputIndex++) {
+				totalError += pow(correctOutput[trialIndex][outputIndex] - output[outputIndex], 2);
+			}
+		}
 		iterations++;
 	} while(totalError > targetErrorLevel && iterations < maximumEpochs);
 
@@ -85,7 +85,7 @@ double SGDTrainer::trainOnDataPoint(net::NeuralNet *network, const std::vector<d
 	network->setWeights3D(weights);
 
 	double networkError = 0;
-  std::vector<double> output = network->getOutput(input);
+	std::vector<double> output = network->getOutput(input);
 	for(unsigned int outputIndex = 0; outputIndex < output.size(); outputIndex++) {
 		networkError += pow(correctOutput[outputIndex] - output[outputIndex], 2);
 	}
@@ -105,11 +105,11 @@ void SGDTrainer::resetNetworkVectors(net::NeuralNet *network) {
 
 
 void SGDTrainer::store(std::ofstream *out) {
-  assert(out->is_open());
+	assert(out->is_open());
 	*out << targetErrorLevel << " " << maximumEpochs << "\n";
 }
 
 void SGDTrainer::initFromStream(std::ifstream *in) {
-  assert(in->is_open());
+	assert(in->is_open());
 	*in >> targetErrorLevel >> maximumEpochs;
 }
