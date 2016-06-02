@@ -4,7 +4,7 @@
 #include "catch.h"
 #include "../include/NeuralNet.h"
 
-bool approximateVectorCompare(const std::vector<double>& lhs, const std::vector<double>& rhs){
+bool approximateVectorCompare(const std::vector<double>& lhs, const std::vector<double>& rhs) {
   if(lhs.size() != rhs.size()) {
     return false;
   }

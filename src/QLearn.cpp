@@ -50,7 +50,7 @@ Action QLearn::chooseBoltzmanAction(State currentState, double explorationConsta
 
   std::vector<double> exponentTerms(0);
   double sumOfExponentTerms = 0;
-  std::for_each(rewards.begin(), rewards.end(), [&](double reward){
+  std::for_each(rewards.begin(), rewards.end(), [&](double reward) {
     double exponentTerm = exp(reward / explorationConstant);
     exponentTerms.push_back(exponentTerm);
     sumOfExponentTerms += exponentTerm;
@@ -93,7 +93,7 @@ void QLearn::reset() {
 
 std::vector<double> QLearn::getModelRewards(State state) {
   std::vector<double> rewards;
-  std::for_each(models.begin(), models.end(), [&](Model model){
+  std::for_each(models.begin(), models.end(), [&](Model model) {
     rewards.push_back(model.network->getOutput(state)[0]);
   });
 
