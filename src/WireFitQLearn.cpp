@@ -59,7 +59,7 @@ Action WireFitQLearn::chooseBestAction(State currentState) {
 }
 
 Action WireFitQLearn::chooseBoltzmanAction(State currentState,
-  double explorationConstant) {
+    double explorationConstant) {
 
   if (explorationConstant < 0.01) explorationConstant = 0.01;
 
@@ -223,11 +223,10 @@ Action WireFitQLearn::bestAction(State state) {
 }
 
 double WireFitQLearn::getQValue(double reward,
-  const State &oldState,
-  const State &newState,
-  const Action &action,
-  const std::vector<Wire> &controlWires)
-{
+                                const State &oldState,
+                                const State &newState,
+                                const Action &action,
+                                const std::vector<Wire> &controlWires) {
   /// Update Q value according to adaptive learning
   double oldRewardForLastAction = interpolator->getReward(controlWires, action);
   double feedback = reward + devaluationFactor * highestReward(newState);
