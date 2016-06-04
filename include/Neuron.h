@@ -1,5 +1,4 @@
-#ifndef NEURON_H
-#define NEURON_H
+#pragma once
 
 #include <vector>
 #include <cstdlib>
@@ -60,5 +59,3 @@ public:
   }
 };
 }
-
-#endif

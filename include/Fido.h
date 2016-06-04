@@ -1,5 +1,4 @@
-#ifndef FIDO_H
-#define FIDO_H
+#pragma once
 
 // Includes everything
 #include "ActivationFunctions.h"
@@ -17,5 +16,3 @@
 #include "QLearn.h"
 #include "Trainer.h"
 #include "WireFitQLearn.h"
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef LSINTERPOLATOR_H
-#define LSINTERPOLATOR_H
+#pragma once
 
 #include "Interpolator.h"
 
@@ -100,5 +99,3 @@ private:
   double normalize(const std::vector<Wire> &wires, const std::vector<double> &action, double maxReward);
 };
 }
-
-#endif

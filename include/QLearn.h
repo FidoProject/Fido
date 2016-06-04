@@ -1,5 +1,4 @@
-#ifndef QLEARN_H
-#define QLEARN_H
+#pragma once
 
 #include <vector>
 
@@ -94,5 +93,3 @@ private:
   double getHighestReward(State state);
 };
 };
-
-#endif

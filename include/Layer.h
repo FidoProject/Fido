@@ -1,5 +1,4 @@
-#ifndef LAYER_H
-#define LAYER_H
+#pragma once
 
 #include <map>
 #include <fstream>
@@ -90,5 +89,3 @@ public:
 
 };
 }
-
-#endif

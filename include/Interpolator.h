@@ -1,5 +1,4 @@
-#ifndef INTERPOLATOR_H
-#define INTERPOLATOR_H
+#pragma once
 
 #include <vector>
 #include <fstream>
@@ -34,5 +33,3 @@ public:
   static Interpolator * getAnyInterpolatorFromFile(std::ifstream *in);
 };
 }
-
-#endif

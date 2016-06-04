@@ -1,5 +1,4 @@
-#ifndef GENETICALGO_H
-#define GENETICALGO_H
+#pragma once
 
 #include <vector>
 
@@ -60,5 +59,3 @@ private:
   void getPopulationFitness();
 };
 }
-
-#endif

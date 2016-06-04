@@ -1,5 +1,4 @@
-#ifndef LEARNER_H
-#define LEARNER_H
+#pragma once
 
 #include <vector>
 
@@ -48,5 +47,3 @@ public:
   virtual void reset() = 0;
 };
 };
-
-#endif
