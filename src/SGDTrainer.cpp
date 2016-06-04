@@ -52,7 +52,7 @@ double SGDTrainer::trainEpocs(double numberOfEpochs, net::NeuralNet *network, co
   resetNetworkVectors(network);
 
   double totalError;
-  for(int epochs = 0; epochs < numberOfEpochs; epochs++) {
+  for(unsigned int epochs = 0; epochs < numberOfEpochs; epochs++) {
     totalError = 0;
     for(unsigned int a = 0; a < input.size(); a++) {
       totalError += trainOnDataPoint(network, input[a], correctOutput[a]);

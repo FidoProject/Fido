@@ -1,5 +1,4 @@
-#ifndef WIREFITQLEARN_H
-#define WIREFITQLEARN_H
+#pragma once
 
 #include <vector>
 
@@ -116,5 +115,3 @@ protected:
   std::vector<Wire> newControlWires(const std::vector<Wire> &correctWires, std::vector<Wire> controlWires);
 };
 };
-
-#endif

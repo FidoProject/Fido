@@ -19,7 +19,7 @@ TEST_CASE("Test adadelta", "[adadelta]") {
   net::Adadelta trainer = net::Adadelta(0.95, 0.0005, 10000);
   trainer.train(&neuralNetwork, input, correctOutput);
 
-  for (std::vector<double> current: input) {
+  for(std::vector<double> current: input) {
     REQUIRE(fabs(current[0]*2 - neuralNetwork.getOutput(current)[0]) < ERROR_ALLOWANCE);
   }
 }

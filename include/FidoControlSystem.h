@@ -1,5 +1,4 @@
-#ifndef FIDOCONTROLSYSTEM_H
-#define FIDOCONTROLSYSTEM_H
+#pragma once
 
 #include "WireFitQLearn.h"
 
@@ -65,5 +64,3 @@ protected:
   std::vector<Wire> newControlWiresForHistory(History history);
 };
 };
-
-#endif

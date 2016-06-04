@@ -44,8 +44,8 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
       originalNet = net::NeuralNet(network);
 
       // Randomize
-      for(net::Layer &l : network->net) {
-        for(net::Neuron &n : l.neurons) {
+      for(auto &l : network->net) {
+        for(auto &n : l.neurons) {
           n.randomizeWeights();
         }
       }
@@ -63,7 +63,7 @@ void FidoControlSystem::applyReinforcementToLastAction(double reward, State newS
 
       *network = originalNet;
       network->net[0].neurons.push_back(net::Neuron(network->numberOfInputs()));
-      for(net::Neuron &n : network->net[1].neurons) {
+      for(auto &n : network->net[1].neurons) {
         n.weights.push_back(1);
         n.randomizeWeights();
       }
@@ -112,7 +112,7 @@ double FidoControlSystem::trainOnHistories(std::vector<FidoControlSystem::Histor
   unsigned int iter = 0;
   do {
     std::vector< std::vector<double> > input, correctOutput;
-    for(History history : selectedHistories) {
+    for(const auto history : selectedHistories) {
       std::vector<Wire> historyControlWires = getWires(history.initialState);
       double newRewardForLastAction = getQValue(history.reward, history.initialState, history.newState, history.action, historyControlWires);
 

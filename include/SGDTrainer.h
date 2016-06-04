@@ -1,5 +1,4 @@
-#ifndef SGDTRAINER_H
-#define SGDTRAINER_H
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -82,5 +81,3 @@ protected:
   virtual double getChangeInWeight(double weight, int layerIndex, int neuronIndex, int weightIndex) = 0;
 };
 }
-
-#endif

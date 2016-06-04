@@ -1,5 +1,4 @@
-#ifndef ADADELTA_H
-#define ADADELTA_H
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -45,5 +44,3 @@ protected:
   double getChangeInWeight(double weight, int layerIndex, int neuronIndex, int weightIndex);
 };
 }
-
-#endif

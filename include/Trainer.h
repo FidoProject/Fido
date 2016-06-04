@@ -1,5 +1,4 @@
-#ifndef TRAINER_H
-#define TRAINER_H
+#pragma once
 
 #include <vector>
 #include <fstream>
@@ -48,5 +47,3 @@ protected:
   std::vector< std::vector< std::vector<double> > > initialWeights, finalWeights;
 };
 }
-
-#endif

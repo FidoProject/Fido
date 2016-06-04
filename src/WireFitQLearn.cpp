@@ -116,9 +116,15 @@ void WireFitQLearn::store(std::ofstream *output) {
   *output << actionDimensions << " " << numberOfWires << "\n";
   *output << controlPointsGDErrorTarget << " " << controlPointsGDLearningRate << " " << controlPointsGDMaxIterations <<  " " << baseOfDimensions << "\n";
 
-  for(unsigned int a = 0; a < minAction.size(); a++) *output << minAction[a] << " ";
-  for(unsigned int a = 0; a < maxAction.size(); a++) *output << maxAction[a] << " ";
-  for(unsigned int a = 0; a < lastAction.size(); a++) *output << lastAction[a] << " ";
+  for(unsigned int a = 0; a < minAction.size(); a++) {
+    *output << minAction[a] << " ";
+  }
+  for(unsigned int a = 0; a < maxAction.size(); a++) {
+    *output << maxAction[a] << " ";
+  }
+  for(unsigned int a = 0; a < lastAction.size(); a++) {
+    *output << lastAction[a] << " ";
+  }
 
   trainer->store(output);
   interpolator->store(output);
@@ -135,7 +141,9 @@ std::vector<Wire> WireFitQLearn::getWires(State state) {
     int currentIndex = a * (actionDimensions + 1);
     Wire wire;
     wire.action = std::vector<double>(actionDimensions);
-    for(unsigned int b = 0; b < actionDimensions; b++) wire.action[b] = rawOutput[currentIndex + b];
+    for(unsigned int b = 0; b < actionDimensions; b++) {
+      wire.action[b] = rawOutput[currentIndex + b];
+    }
 
     wire.reward = rawOutput[currentIndex + actionDimensions];
 
@@ -152,7 +160,7 @@ std::vector<Wire> WireFitQLearn::getSetOfWires(const State &state, int baseOfDim
   std::vector<Wire> controlWires = getWires(state);
 
   std::vector<double> scaleVector(minAction.size());
-  for (unsigned int a = 0; a < minAction.size(); a++) {
+  for(unsigned int a = 0; a < minAction.size(); a++) {
     scaleVector[a] = (maxAction[a] - minAction[a]) / ((double)baseOfDimensions - 1);
   }
 
@@ -160,11 +168,13 @@ std::vector<Wire> WireFitQLearn::getSetOfWires(const State &state, int baseOfDim
   std::vector<Wire> wires(numberOfWiresReturned);
 
   std::vector<int> iteratorVector(actionDimensions);
-  for (unsigned int a = 0; a < iteratorVector.size(); a++) iteratorVector[a] = 0;
+  for(unsigned int a = 0; a < iteratorVector.size(); a++) {
+    iteratorVector[a] = 0;
+  }
 
-  for (int a = 0; a < numberOfWiresReturned; a++) {
+  for(int a = 0; a < numberOfWiresReturned; a++) {
     Wire wire;
-    for (unsigned int actionDimension = 0; actionDimension < minAction.size(); actionDimension++) {
+    for(unsigned int actionDimension = 0; actionDimension < minAction.size(); actionDimension++) {
       wire.action.push_back(iteratorVector[actionDimension] * scaleVector[actionDimension] + minAction[actionDimension]);
     }
     wire.reward = interpolator->getReward(controlWires, wire.action);
@@ -172,7 +182,7 @@ std::vector<Wire> WireFitQLearn::getSetOfWires(const State &state, int baseOfDim
 
     /// Increment iterator vector
     iteratorVector[iteratorVector.size() - 1]++;
-    for (int iteratorVectorIndex = iteratorVector.size() - 1; iteratorVectorIndex >= 0; iteratorVectorIndex--) {
+    for(int iteratorVectorIndex = iteratorVector.size() - 1; iteratorVectorIndex >= 0; iteratorVectorIndex--) {
       if (iteratorVector[iteratorVectorIndex] >= baseOfDimensions) {
         iteratorVector[iteratorVectorIndex] = 0;
         if(iteratorVectorIndex > 0)iteratorVector[iteratorVectorIndex - 1]++;
@@ -189,7 +199,9 @@ std::vector<double> WireFitQLearn::getRawOutput(std::vector<Wire> wires) {
   for(unsigned int a = 0; a < wires.size(); a++) {
     int currentIndex = a * (actionDimensions + 1);
     Wire wire = wires[a];
-    for(unsigned int b = 0; b < wire.action.size(); b++) rawOutput[currentIndex + b] = wire.action[b];
+    for(unsigned int b = 0; b < wire.action.size(); b++) {
+      rawOutput[currentIndex + b] = wire.action[b];
+    }
 
     rawOutput[currentIndex + wire.action.size()] = wire.reward;
   }
@@ -202,7 +214,9 @@ double WireFitQLearn::highestReward(State state) {
   std::vector<Wire> wires = getWires(state);
   double bestReward = -99999;
 
-  for(unsigned int a = 0; a < wires.size(); a++) if(wires[a].reward > bestReward) bestReward = wires[a].reward;
+  for(unsigned int a = 0; a < wires.size(); a++) {
+    if(wires[a].reward > bestReward) bestReward = wires[a].reward;
+  }
 
   return bestReward;
 }
@@ -261,7 +275,7 @@ std::vector<Wire> WireFitQLearn::newControlWires(const std::vector<Wire> &correc
   int iterations = 0;
 
   do {
-    for(Wire correctWire : correctWires) {
+    for(const auto &correctWire : correctWires) {
       for(unsigned int a = 0; a < controlWires.size(); a++) {
         double deltaReward = -2 * (-interpolator->getReward(controlWires, correctWire.action) + correctWire.reward)*interpolator->rewardDerivative(correctWire.action, controlWires[a], controlWires);
         controlWires[a].reward = controlWires[a].reward - controlPointsGDLearningRate*deltaReward;
@@ -273,7 +287,7 @@ std::vector<Wire> WireFitQLearn::newControlWires(const std::vector<Wire> &correc
     }
 
     error = 0;
-    for(Wire correctWire : correctWires) {
+    for(const auto &correctWire : correctWires) {
       error += pow(correctWire.reward - interpolator->getReward(controlWires, correctWire.action), 2);
     }
 

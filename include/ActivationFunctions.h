@@ -4,8 +4,7 @@
  * An activation function is the final transformation applied to the output of a neuron. Common examples of activation functions are the sigmoid and inverse tangent functions. Derivatives are for training (ex. back propagation).
  */
 
-#ifndef ACTIVATIONFUNCTIONS_H
-#define ACTIVATIONFUNCTIONS_H
+#pragma once
 
 #include <stdio.h>
 #include <math.h>
@@ -76,5 +75,3 @@ inline double tanSigmoidDerivative(double neuronOutput) {
   return 1 - pow(tanSigmoid(neuronOutput), 2);
 }
 }
-
-#endif

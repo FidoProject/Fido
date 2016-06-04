@@ -4,9 +4,9 @@
 std::vector<double> getPopulationFitness(const std::vector<net::NeuralNet> &population) {
   std::vector<double> fitnesses;
 
-  for(net::NeuralNet network : population) {
+  for(auto const network : population) {
     double totalError = 0;
-    for(double input = 1; input < 4; input++) {
+    for(unsigned double input = 1; input < 4; input++) {
       totalError += pow(input*2 - network.getOutput({input})[0], 2);
     }
     fitnesses.push_back(1/totalError);

@@ -1,5 +1,4 @@
-#ifndef NEURALNET_H
-#define NEURALNET_H
+#pragma once
 
 #include <fstream>
 #include <map>
@@ -190,5 +189,3 @@ public:
   std::vector< Layer > net;
 };
 }
-
-#endif

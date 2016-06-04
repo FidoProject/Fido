@@ -1,5 +1,4 @@
-#ifndef PRUNER_H
-#define PRUNER_H
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -25,5 +24,3 @@ public:
 
 };
 }
-
-#endif
