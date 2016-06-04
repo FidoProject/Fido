@@ -23,7 +23,7 @@ TEST_CASE("Test back propagation", "[backprop]") {
   backprop.train(&neuralNetwork, input, correctOutput);
 
   // Cycle through inputs and print the outputs
-  for (std::vector<double> current: input) {
+  for(std::vector<double> current: input) {
     REQUIRE(fabs(current[0]*2 - neuralNetwork.getOutput(current)[0]) < ERROR_ALLOWANCE);
   }
 }
@@ -68,7 +68,7 @@ TEST_CASE("Save and load backpropagations through streams", "[backprop]") {
   newBackprop.train(&newNeuralNetwork, input, correctOutput); // train new
 
   // Test similarity
-  for (std::vector<double> current: input) {
+  for(std::vector<double> current: input) {
     REQUIRE( fabs(newNeuralNetwork.getOutput(current)[0] - neuralNetwork.getOutput(current)[0]) < DIFFERENCE_ALLOWANCE);
   }
 }

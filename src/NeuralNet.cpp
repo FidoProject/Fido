@@ -16,20 +16,28 @@ NeuralNet::NeuralNet() {
 
 NeuralNet::NeuralNet(unsigned int numInputs, unsigned int numOutputs, unsigned int numHiddenLayers, unsigned int numNeuronsPerHiddenLayer, std::string activationFunctionName) {
   Layer firstHiddenLayer;
-  for (unsigned int a = 0; a < numNeuronsPerHiddenLayer; a++) firstHiddenLayer.neurons.push_back(Neuron(numInputs));
+  for(unsigned int a = 0; a < numNeuronsPerHiddenLayer; a++) {
+    firstHiddenLayer.neurons.push_back(Neuron(numInputs));
+  }
   net.push_back(firstHiddenLayer);
 
-  for (unsigned int a = 0; a < numHiddenLayers - 1; a++) {
+  for(unsigned int a = 0; a < numHiddenLayers - 1; a++) {
     Layer hiddenLayer;
-    for (unsigned int b = 0; b < numNeuronsPerHiddenLayer; b++) hiddenLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
+    for(unsigned int b = 0; b < numNeuronsPerHiddenLayer; b++) {
+      hiddenLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
+    }
     net.push_back(hiddenLayer);
   }
 
   Layer outputLayer;
-  for (unsigned int a = 0; a < numOutputs; a++) outputLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
+  for(unsigned int a = 0; a < numOutputs; a++) {
+    outputLayer.neurons.push_back(Neuron(numNeuronsPerHiddenLayer));
+  }
   net.push_back(outputLayer);
 
-  for (unsigned int a = 0; a < net.size(); a++) net[a].setActivationFunctionWithName(activationFunctionName);
+  for(unsigned int a = 0; a < net.size(); a++) {
+    net[a].setActivationFunctionWithName(activationFunctionName);
+  }
 
   randomizeWeights();
 }
@@ -43,7 +51,7 @@ NeuralNet::NeuralNet(std::ifstream *input) {
   assert(input->is_open());
   int numLayers;
   *input >> numLayers;
-  for (int a = 0; a < numLayers; a++) {
+  for(unsigned int a = 0; a < numLayers; a++) {
     net.push_back(Layer(input));
   }
 }
@@ -103,7 +111,9 @@ void NeuralNet::setWeights3D(std::vector< std::vector< std::vector<double> > > w
 }
 
 void NeuralNet::randomizeWeights() {
-  for(unsigned int a = 0; a < net.size(); a++) for(unsigned int b = 0; b < net[a].neurons.size(); b++) net[a].neurons[b].randomizeWeights();
+  for(unsigned int a = 0; a < net.size(); a++) for(unsigned int b = 0; b < net[a].neurons.size(); b++) {
+    net[a].neurons[b].randomizeWeights();
+  }
 }
 
 std::vector<double> NeuralNet::getOutput(std::vector<double> input) {

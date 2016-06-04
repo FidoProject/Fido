@@ -8,7 +8,7 @@ bool approximateVectorCompare(const std::vector<double>& lhs, const std::vector<
   if(lhs.size() != rhs.size()) {
     return false;
   }
-  for(int a = 0; a < lhs.size(); a++) {
+  for(unsigned int a = 0; a < lhs.size(); a++) {
     if(fabs(lhs[a] - rhs[a]) > 0.00001) {
       return false;
     }
@@ -81,8 +81,8 @@ TEST_CASE("Neural Network Storing", "[network]") {
     REQUIRE(approximateVectorCompare(fileNet.getOutput(input), oldOutput));
 
     std::vector< std::vector< std::vector<double> > > newWeights3d = fileNet.getWeights3D();
-    for(int a = 0; a < oldWeights3d.size(); a++) {
-      for(int b = 0; b < oldWeights3d[a].size(); b++) {
+    for(unsigned int a = 0; a < oldWeights3d.size(); a++) {
+      for(unsigned int b = 0; b < oldWeights3d[a].size(); b++) {
         std::cout << "a: " << a << "; b: " << b << "\n";
         REQUIRE(approximateVectorCompare(newWeights3d[a][b], oldWeights3d[a][b]));
       }
@@ -104,8 +104,8 @@ TEST_CASE("Neural Network Copying", "[network]") {
     REQUIRE(approximateVectorCompare(newNet.getOutput(input), oldOutput));
 
     std::vector< std::vector< std::vector<double> > > newWeights3d = network.getWeights3D();
-    for(int a = 0; a < oldWeights3d.size(); a++) {
-      for(int b = 0; b < oldWeights3d[a].size(); b++) {
+    for(unsigned int a = 0; a < oldWeights3d.size(); a++) {
+      for(unsigned int b = 0; b < oldWeights3d[a].size(); b++) {
         REQUIRE(newWeights3d[a][b] == oldWeights3d[a][b]);
       }
     }

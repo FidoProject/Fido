@@ -33,7 +33,7 @@ void GeneticAlgo::crossover(net::NeuralNet mom, net::NeuralNet dad, net::NeuralN
   /// Crossover index must be a minimum of 1 and a maxiumum of the second to last index of the weights
   int crossoverIndex = (rand() % (momWeights.size() - 2)) + 1;
 
-  for(int a = 0; a < crossoverIndex; a++) {
+  for(unsigned int a = 0; a < crossoverIndex; a++) {
     offspring1Weights.push_back(momWeights[a]);
     offspring2Weights.push_back(dadWeights[a]);
   }
@@ -75,7 +75,7 @@ net::NeuralNet GeneticAlgo::selectNNBasedOnFitness() {
   double cutOff = (((double)rand() / (double)RAND_MAX) * totalFitnessOfPopulation);
 
   double fitnessCounter = 0;
-  for (unsigned int a = 0; a < fitnesses.size(); a++) {
+  for(unsigned int a = 0; a < fitnesses.size(); a++) {
     fitnessCounter += fitnesses[a];
     if(fitnessCounter >= cutOff) {
       return population[a];
@@ -92,7 +92,9 @@ void GeneticAlgo::createNextGeneration() {
     if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
   }
 
-  for(int a = 0; a < numberOfElitismCopies; a++) nextGeneration.push_back(population[mostFitIndex]);
+  for(unsigned int a = 0; a < numberOfElitismCopies; a++) {
+    nextGeneration.push_back(population[mostFitIndex]);
+  }
 
   while(nextGeneration.size() < populationSize) {
     net::NeuralNet parent1 = selectNNBasedOnFitness(), parent2 = selectNNBasedOnFitness();
@@ -115,9 +117,11 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
   fitnesses.clear();
 
   population.push_back(modelNetwork);
-  for(unsigned int a = 0; a < populationSize-1; a++) population.push_back(net::NeuralNet(modelNetwork));
+  for(unsigned int a = 0; a < populationSize-1; a++) {
+    population.push_back(net::NeuralNet(modelNetwork));
+  }
 
-  for(int a = 0; a < numberOfGenerations; a++) {
+  for(unsigned int a = 0; a < numberOfGenerations; a++) {
     getPopulationFitness();
     createNextGeneration();
   }
@@ -125,7 +129,10 @@ net::NeuralNet GeneticAlgo::getBestNeuralNetwork(int numberOfGenerations, net::N
   getPopulationFitness();
 
   int mostFitIndex = 0;
-  for(unsigned int a = 1; a < fitnesses.size(); a++)if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
+  for(unsigned int a = 1; a < fitnesses.size(); a++) {
+    if(fitnesses[a] > fitnesses[mostFitIndex]) mostFitIndex = a;
+  }
+
   return population[mostFitIndex];
 }
 
