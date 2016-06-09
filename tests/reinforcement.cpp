@@ -30,7 +30,7 @@ void train(rl::Learner *learner, int trials) {
   }
 
   std::cout << "Last selector: " << selector << "\n";
-  REQUIRE(correct / double(testingTrials*2) > PERCENT_CORRECT);
+  REQUIRE(correct / double(testingTrials) > PERCENT_CORRECT);
 }
 
 TEST_CASE("QLearn ", "[reinforcement]") {
