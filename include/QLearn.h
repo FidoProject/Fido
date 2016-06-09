@@ -48,7 +48,7 @@ public:
   /** Initializes an empty, non-valid Q-learning object. */
   QLearn();
 
-  /** Gets the action that the network deems most benificial for the current state
+  /** Gets the action that the network deems most beneficial for the current state
    *
    * \param currentState a vector of doubles representing the "inputs" or sensor values of the system
    */
