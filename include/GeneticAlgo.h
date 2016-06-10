@@ -36,7 +36,7 @@ private:
 
   /*The number of times the most fit neural network of a generation is inserted directly into the subsequent generation.
    *
-   * The practice of taking the most fit neural network of a generation and inserting it directly into the subsequent generation a number of times without mutation is refered to as "Elitism" for our purposes.
+   * The practice of taking the most fit neural network of a generation and inserting it directly into the subsequent generation a number of times without mutation is referred to as "Elitism" for our purposes.
    */
   int numberOfElitismCopies;
 

@@ -14,7 +14,7 @@ namespace rl {
 class Interpolator;
 struct Wire;
 
-/** A Learner using Q-learning that works with continous state action spaces (Gaskett et al.).
+/** A Learner using Q-learning that works with continuous state action spaces (Gaskett et al.).
  *
  * A wire fitted interpolator function is used in conjunction with a neural network to extend Q-Learning to continuous actions and state vectors.
  */
@@ -32,7 +32,7 @@ public:
   Action minAction, maxAction, lastAction;
   net::NeuralNet * modelNet;
 
-  /** Initializes a completely new WireFitQLearn object with all necesary values.
+  /** Initializes a completely new WireFitQLearn object with all necessary values.
   *
   * \param stateDimensions the dimensions of the state vector being fed to the system
   * \param actionDimensions_ the dimensions of the action vector that will be outputted by the system
@@ -55,7 +55,7 @@ public:
   /** Initializes a WireFitQLearn object from a stream */
   WireFitQLearn(std::ifstream *input);
 
-  /** Gets the action that the network deems most benificial for the current state
+  /** Gets the action that the network deems most beneficial for the current state
    *
    * \param currentState a vector of doubles representing the "inputs" or sensor values of the system
    */
