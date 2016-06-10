@@ -18,7 +18,7 @@ TEST_CASE("Test pruning", "[pruner]") {
   net::Pruner pruner;
   double error1, error2;
 
-  for(unsigned int a = 0; a < 200; a++) {
+  for(unsigned int a = 0; a < 1000; a++) {
     std::cout << a << ", " << error1 << ", " << error2 << "\n";
     net::NeuralNet neuralNetwork1(input[0].size(), correctOutput[0].size(), HIDDEN_LAYERS, NEURONS, "sigmoid");
     neuralNetwork1.setOutputActivationFunction("simpleLinear");
@@ -41,5 +41,5 @@ TEST_CASE("Test pruning", "[pruner]") {
     }
   }
 
-  REQUIRE(error1 < error2);
+  REQUIRE((error2 - error1) / error2) < 0.1);
 }
