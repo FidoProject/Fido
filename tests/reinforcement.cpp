@@ -11,7 +11,7 @@
 static const unsigned int NUM_TRIALS_FIDO = 50;
 static const unsigned int NUM_TRIALS_QLEARN = 300;
 static const unsigned int NUM_TRIALS_WIREFIT = 600;
-static const double PERCENT_CORRECT = 0.6;
+static const double PERCENT_CORRECT = 0.5;
 
 void train(rl::Learner *learner, int trials) {
   int correct = 0;
@@ -30,7 +30,7 @@ void train(rl::Learner *learner, int trials) {
   }
 
   std::cout << "Last selector: " << selector << "\n";
-  REQUIRE(correct / double(testingTrials) > PERCENT_CORRECT);
+  REQUIRE(correct / double(2 * testingTrials) > PERCENT_CORRECT);
 }
 
 TEST_CASE("QLearn ", "[reinforcement]") {
