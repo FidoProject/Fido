@@ -41,5 +41,5 @@ TEST_CASE("Test pruning", "[pruner]") {
     }
   }
 
-  REQUIRE((error2 - error1) / error2) < 0.1);
+  REQUIRE(((error2 - error1) / error2) < 0.1);
 }
