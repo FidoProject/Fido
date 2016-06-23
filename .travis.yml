@@ -4,12 +4,7 @@ language: cpp
 
 compiler: gcc
 
-env:
-  - TEST="unit"
-
 before_install:
-  # Valgrind
-  - if [[ "$TEST" == "valgrind" ]]; then sudo apt-get install valgrind; fi
 
   # g++4.8.1
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -27,10 +22,7 @@ script:
   - make && sudo make install
 
   # Run Unit Tests
-  - if [[ "$TEST" == "unit" ]]; then sudo ./runtests.sh; fi
-
-  # Run Valgrind on unit tests
-  - if [[ "$TEST" == "valgrind" ]]; then cd tests/; make; mkdir -p temp; valgrind --leak-check=full --error-exitcode=1 ./tests.o; fi
-
+  - sudo ./runtests.sh
+  
 notifications:
   slack: frclions:LE3sAtc8YdaDewbnX0Kt1u47
