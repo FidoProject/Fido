@@ -10,6 +10,10 @@ Check out the [project site](http://fidoproject.github.io/) and [documentation](
 
 The library was adapted from [a universal robot control system](https://github.com/FidoProject/Research).
 
+## Beta Status
+
+This library is in **beta**. It has been used in a couple of projects, but the API may still change in backward-incompatible ways. There are definetly bugs.
+
 ## Contributing
 
 Send us a pull request. If you are looking for things to do, check out the repo's open issues. If you find a bug or have any trouble with the library, please open an issue. We are happy to help you out.
