@@ -1,5 +1,7 @@
 # Fido
 
+[![Join the chat at https://gitter.im/FidoProject/Fido](https://badges.gitter.im/FidoProject/Fido.svg)](https://gitter.im/FidoProject/Fido?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/FidoProject/Fido.svg?branch=master)](https://travis-ci.org/FidoProject/Fido/)
 [![Join the chat at https://gitter.im/FidoProject/Fido](https://badges.gitter.im/FidoProject/Fido.svg)](https://gitter.im/FidoProject/Fido?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
