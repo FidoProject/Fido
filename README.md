@@ -12,7 +12,7 @@ The library was adapted from [a universal robot control system](https://github.c
 
 ## Authors
 
-The Fido library was primarily developed by [Michael Truell](https://github.com/truell20). [Joshua Gruenstein](https://github.com/joshuagruenstein) helped develop Fido's robotic simulator.
+The Fido library was primarily developed by [Michael Truell](https://github.com/truell20). [Joshua Gruenstein](https://github.com/joshuagruenstein) helped develop Fido's robotic simulator; most of his commits are to the schematics and paper of [a recently decoupled research study](https://github.com/FidoProject/Research).
 
 ## Beta Status
 
