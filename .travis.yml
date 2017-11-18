@@ -13,6 +13,7 @@ before_install:
 install:
   - sudo apt-get install -qq g++-4.8
   - sudo apt-get install -qq libstdc++6-4.7-dev
+  - sudo apt-get install libsfml-dev 
   - export CXXFLAGS="-std=c++0x"
   - export CXX="g++-4.8"
 
