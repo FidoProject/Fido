@@ -1,28 +1,39 @@
-# Fido
+# Creative Cloud for PlayOnLinux
 
-[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
-[![Join the chat at https://gitter.im/FidoProject/Fido](https://badges.gitter.im/FidoProject/Fido.svg)](https://gitter.im/FidoProject/Fido?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+**This script currently does not work, see [issue #52](https://github.com/corbindavenport/creative-cloud-linux/issues/52) for more details.**
 
-Fido is an lightweight, highly modular C++ machine learning library for embedded electronics and robotics. Fido is especially suited for robotic and embedded contexts, as it is written in C++ with minimal use of the standard library, comes packaged with a robotic simulator, and provides and easy interface in which to write robotic drivers.
+This is an install script for [Adobe Creative Cloud](https://www.adobe.com/creativecloud.html), designed to be used with [PlayOnLinux](https://www.playonlinux.com). The script sets up the Adobe Creative Cloud desktop program, which can be used to install and update Photoshop, Lightroom, Dreamweaver, Illustrator, and other apps.
 
-Check out the [project site](http://fidoproject.github.io/) and [documentation](http://fidoproject.github.io/docs/html/) for more information.
+Only Photoshop CC, Bridge CC, Lightroom 5, and the Creative Cloud manager have been extensively tested. The newest Lightroom CC app is not supported right now. File syncing currently [does not work](https://github.com/corbindavenport/creative-cloud-linux/issues/29).
 
-The library was adapted from [a universal robot control system](https://github.com/FidoProject/Research).
+![Photoshop CC Screenshot](https://i.imgur.com/HtXe9WK.png)
 
-## Authors
+A (free) Adobe ID is required. Most Adobe applications require [a paid subscription](https://www.adobe.com/creativecloud/plans.html).
 
-The Fido library was primarily developed by [Michael Truell](https://github.com/truell20). [Joshua Gruenstein](https://github.com/joshuagruenstein) helped develop Fido's robotic simulator. Most of his commits are to the schematics and paper of [a decoupled research study](https://github.com/FidoProject/Research) that he and Michael performed together.
+## How to use this script
 
-## Beta Status
+1. Download PlayOnLinux from your distribution's package manager (e.g. Ubuntu Software Center) or from [the PlayOnLinux website](https://www.playonlinux.com/en/download.html)
+2. Save the [install script](https://raw.githubusercontent.com/corbindavenport/creative-cloud-linux/master/creativecloud.sh) to your computer
+3. Open PlayOnLinux, go to Tools > Run a local script
+4. Select the install script you just downloaded
 
-This library is in **beta**. It has been used in a couple of projects, but the API may still change in backward-incompatible ways. There are definetly bugs.
+After the setup process is finished, you can open `Adobe Creative Cloud` from PlayOnLinux to download and install the apps you need. After you download an app, you can add a PlayOnLinux shortcut for it by clicking Adobe Application Manager in the app list, clicking `Configure`, and clicking `Make a new shortcut from this virtual drive`. Then look for the app you need, like Photoshop.exe, and add it.
 
-## Contributing
+**Tip:** Tooltips in Photoshop might not disappear automatically. You can turn off tooltips completely by going to `Edit > Preferences > Tools` and un-checking the `Show tooltips` box.
 
-Send us a pull request. If you are looking for things to do, check out the repo's open issues. If you find a bug or have any trouble with the library, please open an issue. We are happy to help you out.
+If the installer crashes, see the [Troubleshooting page](https://github.com/corbindavenport/creative-cloud-linux/wiki/Troubleshooting). If you still have issues, try [the classic script](https://github.com/corbindavenport/creative-cloud-linux/tree/classic).
 
-[![Author](http://wsbadge.herokuapp.com/badge/Author-Michael_Truell-red.svg)](https://github.com/truell20)
+---------------------------------------
 
-[![Author](http://wsbadge.herokuapp.com/badge/Author-Joshua_Gruenstein-red.svg)](https://github.com/joshuagruenstein)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-Henry_Wildermuth-blue.svg)](https://github.com/FlyingGraysons)
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
