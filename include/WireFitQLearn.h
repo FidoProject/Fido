@@ -83,6 +83,8 @@ public:
   /** Stores this model in a stream. */
   void store(std::ofstream *output);
 
+  ~WireFitQLearn();
+
 protected:
   // Feeds the state into the network, parses to the output of the network into wire form, and outputs these wires
   std::vector<Wire> getWires(State state);

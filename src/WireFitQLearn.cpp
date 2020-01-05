@@ -51,6 +51,11 @@ WireFitQLearn::WireFitQLearn(std::ifstream *input) {
 
 }
 
+WireFitQLearn::~WireFitQLearn() {
+    delete modelNet;
+    delete network;
+}
+
 Action WireFitQLearn::chooseBestAction(State currentState) {
   std::vector<double> action = bestAction(currentState);
   lastAction = action;
@@ -105,6 +110,7 @@ void WireFitQLearn::applyReinforcementToLastAction(double reward, State newState
 }
 
 void WireFitQLearn::reset() {
+  delete network;
   network = new net::NeuralNet(modelNet);
   network->randomizeWeights();
   std::cout << "number: " << network->numberOfHiddenNeurons() << "\n";
